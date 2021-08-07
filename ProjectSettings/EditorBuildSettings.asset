@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Story.unity
+    guid: 8f09bfa174993354481282331234c5d9
+  - enabled: 1
+    path: Assets/Scenes/Battle.unity
+    guid: 5b416dcb836641d4292e0e41292062ee
+  - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
@@ -26,7 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ikusei.unity
     guid: b13c06e8a3ae8314da39ccb9e3400fac
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Battle.unity
     guid: cbc7e80924eb753479e4a8bcb711b133
   m_configObjects: {}
