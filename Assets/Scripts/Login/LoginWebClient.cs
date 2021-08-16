@@ -23,19 +23,16 @@ public class LoginWebClient: WebClient
     [Serializable]
     public struct LoginRequestData
     {
-        [SerializeField] public string username;
         [SerializeField] public string email;
         [SerializeField] public string password;
 
         /// <summary>
         /// COnstructor
         /// </summary>
-        /// <param name="username"></param>
         /// <param name="email"></param>
         /// <param name="password"></param>
         public LoginRequestData(string username,string email,string password)
         {
-            this.username = username;
             this.email = email;
             this.password = password;
         }
@@ -47,14 +44,16 @@ public class LoginWebClient: WebClient
     [Serializable]
     public struct LoginResponseData
     {
-        [SerializeField] public string status;
-        [SerializeField] public Session session;
+        [SerializeField] public string error;
+        [SerializeField] public string result;
+        [SerializeField] public int user_id;
+        [SerializeField] public string access_token;
     }
     [Serializable]
-    public class Session
+    public class Auth
     {
         [SerializeField] public string user_id;
-        [SerializeField] public string session_id;
+        [SerializeField] public string access_token;
     }
 
     /// <summary>
@@ -108,10 +107,10 @@ public class LoginWebClient: WebClient
     /// 
     /// </summary>
     /// <param name="lrd"></param>
-    /// <returns></returns>
+    /// <returns>true if response data is correctry parsed</returns>
     protected bool CheckResponseData(LoginResponseData lrd)
     {
-        return lrd.status != null;
+        return !(string.IsNullOrEmpty(lrd.result) || string.IsNullOrEmpty(lrd.error) ) || !string.IsNullOrEmpty(lrd.access_token);
     }
 
     /// <summary>
@@ -120,11 +119,7 @@ public class LoginWebClient: WebClient
     protected override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.loginRequestData.username.Length > USERNAME_LENGTH_MAX || this.loginRequestData.username.Length < USERNAME_LENGTH_MIN)
-        {
-            ok = false;
-            this.message = $"不適切なユーザ名です!\n{USERNAME_LENGTH_MIN}文字〜{USERNAME_LENGTH_MAX}文字で入力してください。";
-        }else if (this.loginRequestData.email.Length > EMAIL_LENGTH_MAX || this.loginRequestData.email.Length<EMAIL_LENGTH_MIN)
+        if (this.loginRequestData.email.Length > EMAIL_LENGTH_MAX || this.loginRequestData.email.Length<EMAIL_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なメールアドレスです!\n{EMAIL_LENGTH_MIN}文字〜{EMAIL_LENGTH_MAX}文字で入力してください。";
@@ -155,7 +150,7 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes("{\"user\":" + JsonUtility.ToJson(this.loginRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
@@ -177,12 +172,18 @@ public class LoginWebClient: WebClient
         {
             this.message = "Failed to parse response data. ";
             this.isSuccess = false;
-            Debug.Log(this.message);
         }
         else
         {
-            //this.message = $"通信成功!\nData: {lrd.ToString()}";
-            this.message = $"通信成功!\nData: status: {lrd.status}, session: {{user_id: {lrd.session.user_id}, session_id: {lrd.session.user_id}}} ";
+            if (lrd.result == "success")
+            {
+                this.message = "ログイン成功!!";
+                OnLoginSuccess(lrd.user_id,lrd.access_token);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(lrd.error)) this.message = lrd.error;
+            }
         }
     }
 
@@ -202,5 +203,16 @@ public class LoginWebClient: WebClient
     {
         this.message = "通信中..."; 
         Debug.LogError("Unexpected UnityWebRequest Result");
+    }
+
+
+    /// <summary>
+    /// ログイン成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
+    /// </summary>
+    /// <param name="user_id"></param>
+    /// <param name="access_token"></param>
+    private void OnLoginSuccess(int user_id, string access_token)
+    {
+        Debug.Log($"user_id: {user_id}, access_token: {access_token}\n<color=\"red\">TO DO: デバイスに保存する。</color>");
     }
 }

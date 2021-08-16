@@ -13,13 +13,15 @@ public abstract class WebClient : MonoBehaviour
     [SerializeField] protected  string              path                = "/";
     [SerializeField] protected  HttpRequestMethod   httpRequestMethod   = HttpRequestMethod.Get;
 
+    [Header("Certification for HTTPS")]
     [SerializeField] protected bool certAllowAll = false;
 
+
     //store data read from response 
-    public object data { get; protected set; } //parsed data
-    public string message { get; protected set; } //message show to users or developers 
-    public bool isSuccess { get; protected set; } //connection and data parse success 
-    public bool isInProgress { get; private set; } //connection in progress 
+    public object data { get; protected set; }      //parsed data
+    public string message { get; protected set; }   //message shown to users or developers 
+    public bool isSuccess { get; protected set; }   //connection and data parse success 
+    public bool isInProgress { get; private set; }  //connection in progress
     
 
     [Serializable]

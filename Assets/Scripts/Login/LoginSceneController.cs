@@ -6,29 +6,62 @@ using UnityEngine.UI;
 [RequireComponent(typeof(LoginWebClient))]
 public class LoginSceneController : SceneVisor 
 {
+    [Header("Login Web Client")]
     [SerializeField] private LoginWebClient loginWebClient; 
 
+    [Header("Input")]
     [SerializeField] InputField usernameInputField;
     [SerializeField] InputField emailInputField;
     [SerializeField] InputField passwordInputField;
+    [SerializeField] Button     loginButton;
 
+    [Header("Display")]
+    [SerializeField] GameObject ConnectionInProgressDisplayGameObject;
     [SerializeField] GameObject ConnectionSuccessDisplayGameObject;
-    [SerializeField] Text ConnectionSuccessDisplayText;
+    [SerializeField] Text       ConnectionSuccessDisplayText;
     [SerializeField] GameObject ConnectionErrorDisplayGameObject;
-    [SerializeField] Text ConnectionErrorDisplayText;
+    [SerializeField] Text       ConnectionErrorDisplayText;
+
+    private bool isConnectionInProgress = false;
+
+
+    private void Start()
+    {
+        SetUpButtonEvent();
+    }
+
+    private void SetUpButtonEvent()
+    {
+        loginButton.onClick.AddListener(() => {
+            OnLoginButtonClicked();
+        });
+    }
 
     private void OnLoginButtonClicked()
     {
+        if (isConnectionInProgress) return;
         StartCoroutine(Login());
     }
 
+    /// <summary>
+    /// Login Request 
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Login()
     {
+        isConnectionInProgress = true;
+
         string username = usernameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
         loginWebClient.SetData(username, email, password);
+
+        ConnectionInProgressDisplayGameObject.SetActive(true);
+        float conn_start = Time.time;
         yield return StartCoroutine(loginWebClient.Send());
+        float conn_end = Time.time;
+        if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
+        ConnectionInProgressDisplayGameObject.SetActive(false);
 
         //処理
         if (loginWebClient.isSuccess==true && loginWebClient.isInProgress==false)
@@ -38,20 +71,20 @@ public class LoginSceneController : SceneVisor
             LoginWebClient.LoginResponseData lrd = (LoginWebClient.LoginResponseData)loginWebClient.data;
             Debug.Log("ParsedResponseData: \n"+lrd.ToString());
             ConnectionSuccessDisplayText.text = loginWebClient.message; 
-            ShowForWhile(5.0f, ConnectionSuccessDisplayGameObject);
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionSuccessDisplayGameObject));
         }
         else
         {
             //失敗した時
-            ConnectionErrorDisplayText.text = loginWebClient.message; 
-            ShowForWhile(5.0f,ConnectionErrorDisplayGameObject);
+            ConnectionErrorDisplayText.text = loginWebClient.message;
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionErrorDisplayGameObject));
         }
+
+        isConnectionInProgress = false;
+        yield break;
     }
 
-    private void ShowForWhile(float duration, GameObject gm)
-    {
-        StartCoroutine(ShowForWhileCoroutine(duration, gm));
-    }
+    //Show (GameObject)gm for (float)duration seconds
     private IEnumerator ShowForWhileCoroutine(float duration,GameObject gm)
     {
         gm.SetActive(true);
