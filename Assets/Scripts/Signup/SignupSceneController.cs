@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(LoginWebClient))]
-public class LoginSceneController : SceneVisor 
+[RequireComponent(typeof(SignupWebClient))]
+public class SignupSceneController : SceneVisor
 {
-    [Header("Login Web Client")]
-    [SerializeField] private LoginWebClient loginWebClient; 
+    [Header("SignUp Web Client")]
+    [SerializeField] private SignupWebClient signupWebClient;
 
     [Header("Input")]
+    [SerializeField] InputField usernameInputField;
     [SerializeField] InputField emailInputField;
     [SerializeField] InputField passwordInputField;
-    [SerializeField] Button     loginButton;
+    [SerializeField] Button signupButton;
 
     [Header("Display")]
     [SerializeField] GameObject ConnectionInProgressDisplayGameObject;
     [SerializeField] GameObject ConnectionSuccessDisplayGameObject;
-    [SerializeField] Text       ConnectionSuccessDisplayText;
+    [SerializeField] Text ConnectionSuccessDisplayText;
     [SerializeField] GameObject ConnectionErrorDisplayGameObject;
-    [SerializeField] Text       ConnectionErrorDisplayText;
+    [SerializeField] Text ConnectionErrorDisplayText;
 
-    [Header("Load Signup Scene")]
-    [SerializeField] Button loadSignupSceneButton;
+    [Header("Load Login Scene")]
+    [SerializeField] Button loadLoginSceneButton;
 
     private bool isConnectionInProgress = false;
 
@@ -34,12 +35,14 @@ public class LoginSceneController : SceneVisor
 
     private void SetUpButtonEvent()
     {
-        loginButton.onClick.AddListener(() => {
+        //Signup
+        signupButton.onClick.AddListener(() => {
             OnLoginButtonClicked();
         });
-        loadSignupSceneButton.onClick.AddListener(() =>
+        //Login
+        loadLoginSceneButton.onClick.AddListener(() =>
         {
-            LoadSignupScene();
+            LoadLoginScene();
         });
     }
 
@@ -57,31 +60,31 @@ public class LoginSceneController : SceneVisor
     {
         isConnectionInProgress = true;
 
+        string username = usernameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        loginWebClient.SetData(email, password);
+        signupWebClient.SetData(username, email, password);
 
         ConnectionInProgressDisplayGameObject.SetActive(true);
         float conn_start = Time.time;
-        yield return StartCoroutine(loginWebClient.Send());
+        yield return StartCoroutine(signupWebClient.Send());
         float conn_end = Time.time;
         if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
         ConnectionInProgressDisplayGameObject.SetActive(false);
 
         //処理
-        if (loginWebClient.isSuccess==true && loginWebClient.isInProgress==false)
+        if (signupWebClient.isSuccess == true && signupWebClient.isInProgress == false)
         {
             //成功した時
-            //LoginWebClientはひとまずLoginResponseDataをdataに保存するとする 
-            LoginWebClient.LoginResponseData lrd = (LoginWebClient.LoginResponseData)loginWebClient.data;
-            Debug.Log("ParsedResponseData: \n"+lrd.ToString());
-            ConnectionSuccessDisplayText.text = loginWebClient.message; 
+            SignupWebClient.SignupResponseData lrd = (SignupWebClient.SignupResponseData)signupWebClient.data;
+            Debug.Log("ParsedResponseData: \n" + lrd.ToString());
+            ConnectionSuccessDisplayText.text = signupWebClient.message;
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionSuccessDisplayGameObject));
         }
         else
         {
             //失敗した時
-            ConnectionErrorDisplayText.text = loginWebClient.message;
+            ConnectionErrorDisplayText.text = signupWebClient.message;
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionErrorDisplayGameObject));
         }
 
@@ -90,7 +93,7 @@ public class LoginSceneController : SceneVisor
     }
 
     //Show (GameObject)gm for (float)duration seconds
-    private IEnumerator ShowForWhileCoroutine(float duration,GameObject gm)
+    private IEnumerator ShowForWhileCoroutine(float duration, GameObject gm)
     {
         gm.SetActive(true);
         yield return new WaitForSeconds(duration);
@@ -98,10 +101,10 @@ public class LoginSceneController : SceneVisor
         yield break;
     }
 
-    //SignupSceneへ移動
-    private void LoadSignupScene()
+    //LoginSceneへ移動
+    private void LoadLoginScene()
     {
         Debug.Log("<color=\"red\">シーンのロードにこのゲーム用のManagerではなくUniryEngine.SceneManagement.SceneManagerを使っています。要修正</color>");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Signup");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
     }
 }

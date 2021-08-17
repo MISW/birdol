@@ -5,37 +5,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class LoginWebClient: WebClient 
+public class SignupWebClient : WebClient
 {
-    [Header("Login Information")]
-    [SerializeField] protected LoginRequestData loginRequestData;
+    [Header("SignUp Information")]
+    [SerializeField] protected SignupRequestData signupRequestData;
 
     /// <summary>
-    /// Login Request Data: send to Server
+    /// Signup Request Data: send to Server
     /// </summary>
     [Serializable]
-    public struct LoginRequestData
+    public struct SignupRequestData
     {
+        [SerializeField] public string name;
         [SerializeField] public string email;
         [SerializeField] public string password;
 
         /// <summary>
         /// COnstructor
         /// </summary>
+        /// <param name="name"></param>
         /// <param name="email"></param>
         /// <param name="password"></param>
-        public LoginRequestData(string email,string password)
+        public SignupRequestData(string name, string email, string password)
         {
+            this.name = name;
             this.email = email;
             this.password = password;
         }
     }
 
     /// <summary>
-    /// Login Response Data: receive from Server
+    /// Signup Response Data: receive from Server
     /// </summary>
     [Serializable]
-    public struct LoginResponseData
+    public struct SignupResponseData
     {
         [SerializeField] public string error;
         [SerializeField] public string result;
@@ -50,59 +53,63 @@ public class LoginWebClient: WebClient
     }
 
     /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
+    /// Constructor:
     /// </summary>
     /// <param name="requestMethod"></param>
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient(ProtocolType protocol,HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
+    public SignupWebClient(ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
     {
     }
 
     /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
+    /// Constructor: 
     /// </summary>
-    /// <param name="loginRequestData"></param>
+    /// <param name="signupRequestData"></param>
     /// <param name="requestMethod"></param>
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient(LoginRequestData loginRequestData, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath): base(protocol,requestMethod,hostname, port,loginPath)
+    public SignupWebClient(SignupRequestData signupRequestData, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
     {
-        this.loginRequestData = loginRequestData;
+        this.signupRequestData = signupRequestData;
     }
 
     /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
+    /// Constructor: 
     /// </summary>
     /// <param name="requestMethod"></param>
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient( string email, string password,ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol,requestMethod, hostname, port, loginPath)
+    public SignupWebClient(string username, string email, string password, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
     {
-        SetData(email,password);
+        SetData(username, email, password);
     }
 
     /// <summary>
     /// Setdata 
     /// </summary>
+    /// <param name="username"></param>
     /// <param name="email"></param>
     /// <param name="password"></param>
-    public void SetData(string email, string password)
+    public void SetData(string username, string email, string password)
     {
-        this.loginRequestData = new LoginRequestData(email, password);
+        this.signupRequestData = new SignupRequestData(username, email, password);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="lrd"></param>
+    /// <param name="srd"></param>
     /// <returns>true if response data is correctry parsed</returns>
-    protected bool CheckResponseData(LoginResponseData lrd)
+    protected bool CheckResponseData(SignupResponseData srd)
     {
-        return !(string.IsNullOrEmpty(lrd.result) || string.IsNullOrEmpty(lrd.error) ) || !string.IsNullOrEmpty(lrd.access_token);
+        bool ok = true;
+        if (string.IsNullOrEmpty(srd.result)) ok = false;
+        else if (srd.result == "success" && string.IsNullOrEmpty(srd.access_token)) ok = false;
+        return ok;
     }
 
     /// <summary>
@@ -111,11 +118,17 @@ public class LoginWebClient: WebClient
     protected override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.loginRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.loginRequestData.email.Length< ConnectionModel.EMAIL_LENGTH_MIN)
+        if (this.signupRequestData.name.Length > ConnectionModel.USERNAME_LENGTH_MAX || this.signupRequestData.name.Length < ConnectionModel.USERNAME_LENGTH_MIN)
+        {
+            ok = false;
+            this.message = $"不適切なユーザ名です!\n{ConnectionModel.USERNAME_LENGTH_MIN}文字〜{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
+        }
+        else if (this.signupRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.signupRequestData.email.Length < ConnectionModel.EMAIL_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なメールアドレスです!\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
-        }else if (this.loginRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.loginRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
+        }
+        else if (this.signupRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.signupRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なパスワードです!\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
@@ -124,7 +137,7 @@ public class LoginWebClient: WebClient
         {
             try
             {
-                new MailAddress(this.loginRequestData.email);
+                new MailAddress(this.signupRequestData.email);
             }
             catch
             {
@@ -142,7 +155,7 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.signupRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
@@ -150,36 +163,36 @@ public class LoginWebClient: WebClient
 
 
     /// <summary>
-    /// HandleSuccessData: 通信に成功した時にLoginクライアントが行う処理
+    /// HandleSuccessData: 通信に成功した時にSignupクライアントが行う処理
     /// dataに値を保存 
     /// </summary>
     /// <param name="response">received data</param>
     /// <returns></returns>
     protected override void HandleSuccessData(string response)
     {
-        this.data = JsonUtility.FromJson<LoginResponseData>(response);
-        LoginResponseData lrd = (LoginResponseData)this.data;
-        if (CheckResponseData(lrd)!=true)
+        this.data = JsonUtility.FromJson<SignupResponseData>(response);
+        SignupResponseData srd = (SignupResponseData)this.data;
+        if (CheckResponseData(srd) != true)
         {
             this.message = "サーバーから不適切な値が送信されました。";
             this.isSuccess = false;
         }
         else
         {
-            if (lrd.result == "success")
+            if (srd.result == "success")
             {
-                this.message = "ログイン成功!!";
-                OnLoginSuccess(lrd.user_id,lrd.access_token);
+                this.message = "新規登録成功!!";
+                OnSignupSuccess(srd.user_id, srd.access_token);
             }
             else
             {
-                if (!string.IsNullOrEmpty(lrd.error)) this.message = lrd.error;
+                if (!string.IsNullOrEmpty(srd.error)) this.message = srd.error;
             }
         }
     }
 
     /// <summary>
-    /// HandleErrorData: 通信に失敗した時にLoginクライアントが行う処理
+    /// HandleErrorData: 通信に失敗した時にSignupクライアントが行う処理
     /// </summary>
     protected override void HandleErrorData(string error)
     {
@@ -188,22 +201,24 @@ public class LoginWebClient: WebClient
     }
 
     /// <summary>
-    /// HandleInProgressData: 通信に途中だった時にLoginクライアントが行う処理 
+    /// HandleInProgressData: 通信に途中だった時にSignupクライアントが行う処理 
     /// </summary>
     protected override void HandleInProgressData()
     {
-        this.message = "通信中..."; 
+        this.message = "通信中...";
         Debug.LogError("Unexpected UnityWebRequest Result");
     }
 
 
     /// <summary>
-    /// ログイン成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
+    /// Signup成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
     /// </summary>
     /// <param name="user_id"></param>
     /// <param name="access_token"></param>
-    private void OnLoginSuccess(int user_id, string access_token)
+    private void OnSignupSuccess(int user_id, string access_token)
     {
-        Debug.Log($"user_id: {user_id}, access_token: {access_token}\n<color=\"red\">TO DO: デバイスに保存する。</color>");
+        Debug.Log($"user_id: {user_id}, access_token: {access_token}\n");
+        PlayerPrefs.SetInt(ConnectionModel.PLAYERPREFS_USER_ID, user_id);
+        PlayerPrefs.SetString(ConnectionModel.PLAYERPREFS_ACCESS_TOKEN, access_token);
     }
 }

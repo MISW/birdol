@@ -106,14 +106,23 @@ public abstract class WebClient : MonoBehaviour
             yield return www.SendWebRequest();
 
             //show response 
-            Debug.Log($"Send data: {System.Text.Encoding.UTF8.GetString(www.uploadHandler.data)}\n To: {www.url}, Method: {www.method}");
+            Debug.Log($"Request data: {System.Text.Encoding.UTF8.GetString(www.uploadHandler.data)}\n To: {www.url}, Method: {www.method}");
             Debug.Log($"Response code: {www.responseCode}");
+            Debug.Log($"Response data: {www.downloadHandler.text}");
+            Debug.Log($"Connection Error: {www.error}");
 
             //success
-            if (www.result==UnityWebRequest.Result.Success)
+            if (www.result==UnityWebRequest.Result.Success )
             {
                 isSuccess = true;
                 this.message = "通信成功";
+                HandleSuccessData(www.downloadHandler.text);
+            }
+            //connection success, but failed to do some action 
+            else if (www.result==UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                isSuccess = true;
+                this.message = "不正なデータ";
                 HandleSuccessData(www.downloadHandler.text);
             }
             //in progress
@@ -121,7 +130,7 @@ public abstract class WebClient : MonoBehaviour
             {
                 HandleInProgressData();
             }
-            //error 
+            //connection error 
             else
             {
                 isSuccess = false;
