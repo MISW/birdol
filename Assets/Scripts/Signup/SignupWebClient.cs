@@ -152,6 +152,7 @@ public class SignupWebClient : WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
+        this.signupRequestData.password = UnityEngine.Hash128.Compute(this.signupRequestData.password+Common.salt).ToString();
         byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.signupRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();

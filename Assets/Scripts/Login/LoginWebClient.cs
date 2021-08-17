@@ -98,7 +98,7 @@ public class LoginWebClient: WebClient
     /// <returns>true if response data is correctry parsed</returns>
     protected bool CheckResponseData(LoginResponseData lrd)
     {
-        return !(string.IsNullOrEmpty(lrd.result) || string.IsNullOrEmpty(lrd.error) ) || !string.IsNullOrEmpty(lrd.access_token);
+        return !string.IsNullOrEmpty(lrd.result) || !string.IsNullOrEmpty(lrd.error) || !string.IsNullOrEmpty(lrd.access_token);
     }
 
     /// <summary>
@@ -138,6 +138,7 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
+        this.loginRequestData.password = UnityEngine.Hash128.Compute(this.loginRequestData.password + Common.salt).ToString();
         byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
