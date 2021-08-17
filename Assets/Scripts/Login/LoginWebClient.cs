@@ -50,13 +50,11 @@ public class LoginWebClient: WebClient
     }
 
     /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
+    /// Constructor:  
     /// </summary>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient(ProtocolType protocol,HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
+    public LoginWebClient(HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
     }
 
@@ -65,10 +63,8 @@ public class LoginWebClient: WebClient
     /// </summary>
     /// <param name="loginRequestData"></param>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient(LoginRequestData loginRequestData, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath): base(protocol,requestMethod,hostname, port,loginPath)
+    public LoginWebClient(LoginRequestData loginRequestData, HttpRequestMethod requestMethod, string loginPath): base(requestMethod, loginPath)
     {
         this.loginRequestData = loginRequestData;
     }
@@ -80,7 +76,7 @@ public class LoginWebClient: WebClient
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient( string email, string password,ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol,requestMethod, hostname, port, loginPath)
+    public LoginWebClient( string email, string password, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
         SetData(email,password);
     }

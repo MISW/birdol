@@ -6,30 +6,23 @@ using UnityEngine.Networking;
 
 public abstract class WebClient : MonoBehaviour
 {
-    [Header("Basic Information")]
+    /*
+    // Define in Common.cs 
     [SerializeField] protected  ProtocolType        protocol = ProtocolType.https;
     [SerializeField] protected  string              hostname            = "localhost";
     [SerializeField] protected  string              port                = "10043";
+    [SerializeField] protected bool certAllowAll = false;
+    */
+
+    [Header("Basic Information")]
     [SerializeField] protected  string              path                = "/";
     [SerializeField] protected  HttpRequestMethod   httpRequestMethod   = HttpRequestMethod.Get;
-
-    [Header("Certification for HTTPS")]
-    [SerializeField] protected bool certAllowAll = false;
-
 
     //store data read from response 
     public object data { get; protected set; }      //parsed data
     public string message { get; protected set; }   //message shown to users or developers 
     public bool isSuccess { get; protected set; }   //connection and data parse success 
     public bool isInProgress { get; private set; }  //connection in progress
-    
-
-    [Serializable]
-    public enum ProtocolType
-    {
-        http,
-        https,
-    }
 
     /// <summary>
     /// Http Request Method Type 
@@ -51,16 +44,10 @@ public abstract class WebClient : MonoBehaviour
     /// <summary>
     /// Constructor: requestMethod to $"(hostname}:{port}{path}"
     /// </summary>
-    /// <param name="protocol">http, https</param>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public WebClient(ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port,string path="/")
+    public WebClient(HttpRequestMethod requestMethod,string path="/")
     {
-        this.protocol = protocol;
-        this.hostname = hostname;
-        this.port = port;
         this.httpRequestMethod = requestMethod;
         this.path = path;
     }
@@ -87,13 +74,13 @@ public abstract class WebClient : MonoBehaviour
         }
 
         Refresh();
-        using (UnityWebRequest www = new UnityWebRequest($"{protocol.ToString()}://{hostname}:{port}{path}", this.httpRequestMethod.ToString()))
+        using (UnityWebRequest www = new UnityWebRequest($"{Common.protocol}://{Common.hostname}:{Common.port}{path}", this.httpRequestMethod.ToString()))
         {
             isInProgress = true;
 
             //Certification
             //Note that this force all true
-            if (certAllowAll)
+            if (Common.allowAllCertification)
             {
                 www.certificateHandler = new ForceAllCertificationHandler();
             }

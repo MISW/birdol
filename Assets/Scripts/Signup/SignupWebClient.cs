@@ -56,10 +56,8 @@ public class SignupWebClient : WebClient
     /// Constructor:
     /// </summary>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public SignupWebClient(ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
+    public SignupWebClient(HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
     }
 
@@ -68,22 +66,21 @@ public class SignupWebClient : WebClient
     /// </summary>
     /// <param name="signupRequestData"></param>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public SignupWebClient(SignupRequestData signupRequestData, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
+    public SignupWebClient(SignupRequestData signupRequestData, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
         this.signupRequestData = signupRequestData;
     }
 
     /// <summary>
-    /// Constructor: 
+    /// Constructor
     /// </summary>
+    /// <param name="username"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
     /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
-    /// <param name="path">default "/"</param>
-    public SignupWebClient(string username, string email, string password, ProtocolType protocol, HttpRequestMethod requestMethod, string hostname, string port, string loginPath) : base(protocol, requestMethod, hostname, port, loginPath)
+    /// <param name="loginPath"></param>
+    public SignupWebClient(string username, string email, string password, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
         SetData(username, email, password);
     }

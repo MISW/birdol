@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Common : MonoBehaviour
+public partial class Common : MonoBehaviour
 {
     public static CharacterModel[] characters;
 
@@ -13,6 +13,12 @@ public class Common : MonoBehaviour
         CommonCharacters result = JsonUtility.FromJson<CommonCharacters>(json);
         characters = result.characters;
     }
+
+    //通信関連
+    public const string protocol = "http"; //"http" や "https" など 
+    public const string hostname = "localhost";
+    public const string port = "80";
+    public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。
 
     void Start()
     {
