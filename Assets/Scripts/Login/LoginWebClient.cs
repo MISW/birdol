@@ -138,7 +138,16 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
-        this.loginRequestData.password = UnityEngine.Hash128.Compute(this.loginRequestData.password + Common.salt).ToString();
+        try
+        {
+            this.loginRequestData.password = Hash(this.loginRequestData.password);
+        }
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+            this.message = "このパスワードは使用できません。";
+            throw;
+        }
         byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();

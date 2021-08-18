@@ -85,8 +85,18 @@ public abstract class WebClient : MonoBehaviour
                 www.certificateHandler = new ForceAllCertificationHandler();
             }
 
-            //set up data sent to server 
-            HandleSetupWebRequestData(www);
+            //set up data sent to server
+            try
+            {
+                HandleSetupWebRequestData(www);
+            }
+            catch
+            {
+                this.isSuccess = false;
+                Debug.LogError("送信するリクエストデータの作成に失敗しました。");
+                yield break;
+            }
+            
 
             //send data to server, and wait for response
             //define uploadHandler and downloadHandler 
@@ -171,4 +181,18 @@ public abstract class WebClient : MonoBehaviour
     /// HandleInProgressData: define the way to handle when inprogress 
     /// </summary>
     protected abstract void HandleInProgressData();
+
+    /// <summary>
+    /// Hash string to string
+    /// </summary>
+    /// <param name="raw_text">like password</param>
+    protected string Hash(string raw_text)
+    {
+
+        byte[] raw_bytes = new System.Text.UTF8Encoding(false, true).GetBytes(raw_text + Common.salt);
+        byte[] hashed_bytes = new System.Security.Cryptography.SHA512Managed().ComputeHash(raw_bytes);
+        System.Text.StringBuilder hashed_text_builder = new System.Text.StringBuilder(hashed_bytes.Length);
+        for (int i = 0; i < hashed_bytes.Length; i++) hashed_text_builder.Append(hashed_bytes[i].ToString("x2"));
+        return hashed_text_builder.ToString();
+    }
 }
