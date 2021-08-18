@@ -112,23 +112,23 @@ public class SignupWebClient : WebClient
     /// <summary>
     /// </summary>
     /// <returns>if request data is appropriate or not</returns>
-    protected override bool CheckRequestData()
+    public override bool CheckRequestData()
     {
         bool ok = true;
         if (this.signupRequestData.name.Length > ConnectionModel.USERNAME_LENGTH_MAX || this.signupRequestData.name.Length < ConnectionModel.USERNAME_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なユーザ名です!\n{ConnectionModel.USERNAME_LENGTH_MIN}文字〜{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字〜{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
         }
         else if (this.signupRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.signupRequestData.email.Length < ConnectionModel.EMAIL_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです!\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
         }
         else if (this.signupRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.signupRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なパスワードです!\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
         else
         {
@@ -139,7 +139,7 @@ public class SignupWebClient : WebClient
             catch
             {
                 ok = false;
-                this.message = "不適切なメールアドレスです！\n間違っていないか確認してください。";
+                this.message = "不適切なメールアドレスです。\n間違っていないか確認してください。";
             }
         }
 
@@ -188,7 +188,7 @@ public class SignupWebClient : WebClient
         {
             if (srd.result == "success")
             {
-                this.message = "新規登録成功!!";
+                this.message = "アカウント新規登録に成功しました。";
                 OnSignupSuccess(srd.user_id, srd.access_token);
             }
             else
@@ -203,7 +203,7 @@ public class SignupWebClient : WebClient
     /// </summary>
     protected override void HandleErrorData(string error)
     {
-        this.message = $"通信失敗！\n{error}";
+        this.message = $"通信に失敗しました。";
         Debug.Log($"error: \n{error}");
     }
 

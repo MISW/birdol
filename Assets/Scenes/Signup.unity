@@ -1722,12 +1722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ce240183a03445ebbb8484d781b937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  protocol: 0
-  hostname: localhost
-  port: 80
   path: /api/v1/user
   httpRequestMethod: 2
-  certAllowAll: 1
   signupRequestData:
     name: 
     email: 

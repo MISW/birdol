@@ -61,6 +61,16 @@ public class LoginSceneController : SceneVisor
         string password = passwordInputField.text;
         loginWebClient.SetData(email, password);
 
+        //データチェックをサーバへ送信する前に行う。
+        if (loginWebClient.CheckRequestData() == false)
+        {
+            ConnectionErrorDisplayText.text = loginWebClient.message;
+            Debug.Log(loginWebClient.message);
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionErrorDisplayGameObject));
+            isConnectionInProgress = false;
+            yield break;
+        }
+
         ConnectionInProgressDisplayGameObject.SetActive(true);
         float conn_start = Time.time;
         yield return StartCoroutine(loginWebClient.Send());

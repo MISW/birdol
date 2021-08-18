@@ -104,17 +104,17 @@ public class LoginWebClient: WebClient
     /// <summary>
     /// </summary>
     /// <returns>if request data is appropriate or not</returns>
-    protected override bool CheckRequestData()
+    public override bool CheckRequestData()
     {
         bool ok = true;
         if (this.loginRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.loginRequestData.email.Length< ConnectionModel.EMAIL_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです!\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
         }else if (this.loginRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.loginRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なパスワードです!\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
         else
         {
@@ -125,7 +125,7 @@ public class LoginWebClient: WebClient
             catch
             {
                 ok = false;
-                this.message = "不適切なメールアドレスです！\n間違っていないか確認してください。";
+                this.message = "不適切なメールアドレスです。\n間違っていないか確認してください。";
             }
         }
 

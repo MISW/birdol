@@ -61,7 +61,7 @@ public abstract class WebClient : MonoBehaviour
         if (this.isInProgress)
         {
             this.isSuccess = false;
-            this.message = "Connection is in Progress...";
+            this.message = "通信中です。";
             Debug.Log("<color=\"red\">Previous WWW connection is in Progress...</color>");
             yield break;
         }
@@ -76,6 +76,7 @@ public abstract class WebClient : MonoBehaviour
         Refresh();
         using (UnityWebRequest www = new UnityWebRequest($"{Common.protocol}://{Common.hostname}:{Common.port}{path}", this.httpRequestMethod.ToString()))
         {
+            www.timeout = Common.timeout;
             isInProgress = true;
 
             //Certification
@@ -112,14 +113,14 @@ public abstract class WebClient : MonoBehaviour
             if (www.result==UnityWebRequest.Result.Success )
             {
                 isSuccess = true;
-                this.message = "通信成功";
+                this.message = "通信に成功しました。";
                 HandleSuccessData(www.downloadHandler.text);
             }
             //connection success, but failed to do some action 
             else if (www.result==UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
             {
                 isSuccess = true;
-                this.message = "不正なデータ";
+                this.message = "不正なデータです。";
                 HandleSuccessData(www.downloadHandler.text);
             }
             //in progress
@@ -131,7 +132,7 @@ public abstract class WebClient : MonoBehaviour
             else
             {
                 isSuccess = false;
-                this.message = "通信失敗: \n"+www.error;
+                this.message = "通信失敗に失敗しました。";
                 HandleErrorData(www.error);
             }
 
@@ -157,7 +158,7 @@ public abstract class WebClient : MonoBehaviour
     /// <summary>
     /// CheckRequestData Check Data before send data 
     /// </summary>
-    protected abstract bool CheckRequestData();
+    public abstract bool CheckRequestData();
 
     /// <summary>
     /// HandleSetupWebRequest: define web request  
