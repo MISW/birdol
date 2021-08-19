@@ -10,6 +10,8 @@ public class SignupWebClient : WebClient
     [Header("SignUp Information")]
     [SerializeField] protected SignupRequestData signupRequestData;
 
+    public bool isSignupSuccess { get; private set; } //ログインが成功したか否か。通信成功の後にチェックする。 
+
     /// <summary>
     /// Signup Request Data: send to Server
     /// </summary>
@@ -118,17 +120,17 @@ public class SignupWebClient : WebClient
         if (this.signupRequestData.name.Length > ConnectionModel.USERNAME_LENGTH_MAX || this.signupRequestData.name.Length < ConnectionModel.USERNAME_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字〜{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
         }
         else if (this.signupRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.signupRequestData.email.Length < ConnectionModel.EMAIL_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字から{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
         }
         else if (this.signupRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.signupRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
         else
         {
@@ -152,6 +154,7 @@ public class SignupWebClient : WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
+        isSignupSuccess = false;
         try
         {
             this.signupRequestData.password = Hash(this.signupRequestData.password);
@@ -224,8 +227,9 @@ public class SignupWebClient : WebClient
     /// <param name="access_token"></param>
     private void OnSignupSuccess(int user_id, string access_token)
     {
+        isSignupSuccess = true;
         Debug.Log($"user_id: {user_id}, access_token: {access_token}\n");
-        PlayerPrefs.SetInt(ConnectionModel.PLAYERPREFS_USER_ID, user_id);
-        PlayerPrefs.SetString(ConnectionModel.PLAYERPREFS_ACCESS_TOKEN, access_token);
+        PlayerPrefs.SetInt(Common.PLAYERPREFS_USER_ID, user_id);
+        PlayerPrefs.SetString(Common.PLAYERPREFS_ACCESS_TOKEN, access_token);
     }
 }
