@@ -9,19 +9,34 @@ using UnityEngine.UI;
 
 public class Drag : MonoBehaviour
 {
-    Vector3 beforePos;
-    float changeDis;
     public Text test;
     public GameObject Visual;
     public bool selected = false;
     public int id = 0;
+    int characterId;
     public string area = "";
     public string selectedSkill = "";
 
 
+    void setArea()
+    {
+        if (this.transform.position.x > Visual.GetComponent<Renderer>().bounds.size.x / 2)
+        {
+            area = "vocal";
+        }
+        else if (this.transform.position.x < -1 * Visual.GetComponent<Renderer>().bounds.size.x / 2)
+        {
+            area = "dance";
+        }
+        else
+        {
+            area = "visual";
+        }
+    }
+
     void Start()
     {
-        beforePos = this.transform.position;
+        setArea();
     }
     void OnMouseDrag()
     {
@@ -33,13 +48,13 @@ public class Drag : MonoBehaviour
                 if (obj == this) obj.GetComponent<Drag>().selected = true;
                 else obj.GetComponent<Drag>().selected = false;
             }
+            LiveController.selectedcharacter = id;
         }
         Debug.Log("Moving:"+id+",area:"+area);
         Vector3 objectPointInScreen
             = Camera.main.WorldToScreenPoint(this.transform.position);
         float kando = 1.0f;
        // if (changeDis>0.01) kando = 1.1f;//For Mobile
-        beforePos = this.transform.position;
         Vector3 mousePointInScreen
             = new Vector3(Input.mousePosition.x,
                           Input.mousePosition.y*kando,
@@ -52,18 +67,7 @@ public class Drag : MonoBehaviour
 
     void Update()
     {
-        if(this.transform.position.x > Visual.GetComponent<Renderer>().bounds.size.x / 2)
-        {
-            area = "vocal";
-        }
-        else if (this.transform.position.x <-1* Visual.GetComponent<Renderer>().bounds.size.x / 2)
-        {
-            area = "dance";
-        }
-        else
-        {
-            area = "visual";
-        }
+        setArea();
     }
 
 

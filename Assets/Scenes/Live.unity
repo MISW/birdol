@@ -1028,9 +1028,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 0.2}
   m_Children:
-  - {fileID: 1744841435}
-  - {fileID: 1501432404}
   - {fileID: 1794405733}
+  - {fileID: 1501432404}
+  - {fileID: 1744841435}
   - {fileID: 1175421890}
   - {fileID: 1434070228}
   - {fileID: 2005084270}
@@ -1390,6 +1390,7 @@ MonoBehaviour:
   selected: 0
   id: 0
   area: 
+  selectedSkill: 
 --- !u!1 &1418431180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,6 +1521,7 @@ MonoBehaviour:
   selected: 0
   id: 1
   area: 
+  selectedSkill: 
 --- !u!65 &1434070230
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1828,6 +1830,7 @@ MonoBehaviour:
   selected: 0
   id: 4
   area: 
+  selectedSkill: 
 --- !u!65 &1603817631
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1940,7 +1943,7 @@ Transform:
   m_LocalScale: {x: 0.05, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 641380398}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1744841436
 MeshCollider:
@@ -2037,7 +2040,7 @@ Transform:
   m_LocalScale: {x: 0.05, y: 1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 641380398}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1794405734
 MeshCollider:
@@ -2154,6 +2157,7 @@ MonoBehaviour:
   selected: 0
   id: 2
   area: 
+  selectedSkill: 
 --- !u!65 &2005084272
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2286,6 +2290,7 @@ MonoBehaviour:
   selected: 0
   id: 3
   area: 
+  selectedSkill: 
 --- !u!65 &2025211911
 BoxCollider:
   m_ObjectHideFlags: 0
