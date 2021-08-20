@@ -132,7 +132,7 @@ public abstract class WebClient : MonoBehaviour
             else
             {
                 isSuccess = false;
-                this.message = "通信失敗に失敗しました。";
+                this.message = "通信に失敗しました。";
                 HandleErrorData(www.error);
             }
 

@@ -215,7 +215,7 @@ public class SignupWebClient : WebClient
     /// </summary>
     protected override void HandleInProgressData()
     {
-        this.message = "通信中...";
+        this.message = "通信中です。";
         Debug.LogError("Unexpected UnityWebRequest Result");
     }
 

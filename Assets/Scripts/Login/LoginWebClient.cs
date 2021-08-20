@@ -177,7 +177,7 @@ public class LoginWebClient: WebClient
         {
             if (lrd.result == "success")
             {
-                this.message = "ログイン成功!!";
+                this.message = "ログインに成功しました。";
                 OnLoginSuccess(lrd.user_id,lrd.access_token);
             }
             else
@@ -192,7 +192,7 @@ public class LoginWebClient: WebClient
     /// </summary>
     protected override void HandleErrorData(string error)
     {
-        this.message = $"通信失敗！\n{error}";
+        this.message = $"通信に失敗しました。";
         Debug.Log($"error: \n{error}");
     }
 
@@ -201,7 +201,7 @@ public class LoginWebClient: WebClient
     /// </summary>
     protected override void HandleInProgressData()
     {
-        this.message = "通信中..."; 
+        this.message = "通信中です。"; 
         Debug.LogError("Unexpected UnityWebRequest Result");
     }
 
