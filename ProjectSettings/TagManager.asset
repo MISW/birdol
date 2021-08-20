@@ -8,6 +8,7 @@ TagManager:
   - BattleCharacter
   - Gacha
   - LiveCharacter
+  - HomeButtons
   layers:
   - Default
   - TransparentFX
