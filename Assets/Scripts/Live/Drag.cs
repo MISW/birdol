@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,6 +13,11 @@ public class Drag : MonoBehaviour
     float changeDis;
     public Text test;
     public GameObject Visual;
+    public bool selected = false;
+    public int id = 0;
+    public string area = "";
+    public string selectedSkill = "";
+
 
     void Start()
     {
@@ -18,6 +25,16 @@ public class Drag : MonoBehaviour
     }
     void OnMouseDrag()
     {
+        if (!selected)
+        {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
+            foreach(GameObject obj in objs)
+            {
+                if (obj == this) obj.GetComponent<Drag>().selected = true;
+                else obj.GetComponent<Drag>().selected = false;
+            }
+        }
+        Debug.Log("Moving:"+id+",area:"+area);
         Vector3 objectPointInScreen
             = Camera.main.WorldToScreenPoint(this.transform.position);
         float kando = 1.0f;
@@ -35,20 +52,17 @@ public class Drag : MonoBehaviour
 
     void Update()
     {
-        changeDis = Math.Abs(beforePos.z-this.transform.position.z);
-        beforePos = this.transform.position;
-        Debug.Log("x:"+this.transform.position.x+"Width:"+Visual.GetComponent<Renderer>().bounds.size.x/2);    
         if(this.transform.position.x > Visual.GetComponent<Renderer>().bounds.size.x / 2)
         {
-            test.text = "CurrentArea:Vocal";
+            area = "vocal";
         }
         else if (this.transform.position.x <-1* Visual.GetComponent<Renderer>().bounds.size.x / 2)
         {
-            test.text = "CurrentArea:Dance";
+            area = "dance";
         }
         else
         {
-            test.text = "CurrentArea:Visual";
+            area = "visual";
         }
     }
 
