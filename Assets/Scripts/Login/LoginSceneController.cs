@@ -91,7 +91,7 @@ public class LoginSceneController : SceneVisor
                 // Store UUID to PlayerPrefs
                 PlayerPrefs.SetString(Common.PLAYERPREFS_UUID, _uuid);
                 PlayerPrefs.Save();
-                
+
                 SuccessDisplayText.text = loginWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));
                 OnLoginSuccess();
@@ -137,6 +137,9 @@ public class LoginSceneController : SceneVisor
 
     }
 
+    /// <summary>
+    /// Generate UUID
+    /// </summary>
     private string GenerateGUID() {
         System.Guid guid = System.Guid.NewGuid();
         return guid.ToString();
