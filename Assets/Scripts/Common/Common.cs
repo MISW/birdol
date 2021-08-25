@@ -25,6 +25,7 @@ public partial class Common : MonoBehaviour
     //PlayerPrefsに保存
     public const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN";
     public const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";
+    public const string PLAYERPREFS_UUID = "PLAYERPREFS_UUID";
 
 
     void Start()
