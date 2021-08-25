@@ -17,10 +17,10 @@ public class SignupSceneController : SceneVisor
 
     [Header("Display")]
     [SerializeField] GameObject ConnectionInProgressDisplayGameObject;
-    [SerializeField] GameObject ConnectionSuccessDisplayGameObject;
-    [SerializeField] Text ConnectionSuccessDisplayText;
-    [SerializeField] GameObject ConnectionErrorDisplayGameObject;
-    [SerializeField] Text ConnectionErrorDisplayText;
+    [SerializeField] GameObject SuccessDisplayGameObject;
+    [SerializeField] Text SuccessDisplayText;
+    [SerializeField] GameObject ErrorDisplayGameObject;
+    [SerializeField] Text ErrorDisplayText;
 
     [Header("Load Login Scene")]
     [SerializeField] Button loadLoginSceneButton;
@@ -65,6 +65,16 @@ public class SignupSceneController : SceneVisor
         string password = passwordInputField.text;
         signupWebClient.SetData(username, email, password);
 
+        //データチェックをサーバへ送信する前に行う。
+        if (signupWebClient.CheckRequestData()==false)
+        {
+            ErrorDisplayText.text = signupWebClient.message;
+            Debug.Log(signupWebClient.message);
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            isConnectionInProgress = false;
+            yield break;
+        }
+
         ConnectionInProgressDisplayGameObject.SetActive(true);
         float conn_start = Time.time;
         yield return StartCoroutine(signupWebClient.Send());
@@ -78,14 +88,23 @@ public class SignupSceneController : SceneVisor
             //成功した時
             SignupWebClient.SignupResponseData lrd = (SignupWebClient.SignupResponseData)signupWebClient.data;
             Debug.Log("ParsedResponseData: \n" + lrd.ToString());
-            ConnectionSuccessDisplayText.text = signupWebClient.message;
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionSuccessDisplayGameObject));
+            if (signupWebClient.isSignupSuccess)
+            {
+                SuccessDisplayText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));
+                OnSignupSuccess();
+            }
+            else
+            {
+                ErrorDisplayText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            }
         }
         else
         {
             //失敗した時
-            ConnectionErrorDisplayText.text = signupWebClient.message;
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ConnectionErrorDisplayGameObject));
+            ErrorDisplayText.text = signupWebClient.message;
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
         }
 
         isConnectionInProgress = false;
@@ -106,5 +125,13 @@ public class SignupSceneController : SceneVisor
     {
         Debug.Log("<color=\"red\">シーンのロードにこのゲーム用のManagerではなくUniryEngine.SceneManagement.SceneManagerを使っています。要修正</color>");
         UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
+    }
+
+    /// <summary>
+    /// アカウント登録に成功したときの動作。例えば、Gameシーンへの遷移など。
+    /// </summary>
+    private void OnSignupSuccess()
+    {
+
     }
 }
