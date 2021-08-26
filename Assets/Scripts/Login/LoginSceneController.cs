@@ -59,7 +59,8 @@ public class LoginSceneController : SceneVisor
 
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        loginWebClient.SetData(email, password);
+        string _uuid = GenerateGUID();
+        loginWebClient.SetData(email, password, _uuid);
 
         //データチェックをサーバへ送信する前に行う。
         if (loginWebClient.CheckRequestData() == false)
@@ -87,6 +88,10 @@ public class LoginSceneController : SceneVisor
             Debug.Log("ParsedResponseData: \n"+lrd.ToString());
             if (loginWebClient.isLoginSuccess)
             {
+                // Store UUID to PlayerPrefs
+                PlayerPrefs.SetString(Common.PLAYERPREFS_UUID, _uuid);
+                PlayerPrefs.Save();
+
                 SuccessDisplayText.text = loginWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));
                 OnLoginSuccess();
@@ -130,5 +135,13 @@ public class LoginSceneController : SceneVisor
     private void OnLoginSuccess()
     {
 
+    }
+
+    /// <summary>
+    /// Generate UUID
+    /// </summary>
+    private string GenerateGUID() {
+        System.Guid guid = System.Guid.NewGuid();
+        return guid.ToString();
     }
 }
