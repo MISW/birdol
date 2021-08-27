@@ -7,10 +7,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Drag : MonoBehaviour
-{
+public class Drag : MonoBehaviour, IDragHandler,IBeginDragHandler { 
     public Text test;
-    public GameObject Visual;
+    public GameObject Middle;
     public bool selected = false;
     public int id = 0;
     int characterId;
@@ -20,49 +19,31 @@ public class Drag : MonoBehaviour
 
     void setArea()
     {
-        if (this.transform.position.x > Visual.GetComponent<Renderer>().bounds.size.x / 2)
+        RectTransform rt;
+        rt = transform.parent.gameObject.GetComponent<RectTransform>();
+        Image standing = transform.parent.gameObject.GetComponent<Image>();
+        if (rt.localPosition.x > 150)
         {
-            area = "vocal";
-        }
-        else if (this.transform.position.x < -1 * Visual.GetComponent<Renderer>().bounds.size.x / 2)
-        {
+            standing.color = new Color(151f / 255f, 187f / 255f, 223f / 255f);
             area = "dance";
+
+        }
+        else if (rt.localPosition.x < -150)
+        {
+            standing.color = new Color(246f / 255f, 158f / 255f, 216f / 255f);
+            area = "visual";
         }
         else
         {
-            area = "visual";
+            standing.color = new Color(198f / 255f, 190f / 255f, 86f / 255f);
+            area = "vocal";
         }
+       
     }
 
     void Start()
     {
         setArea();
-    }
-    void OnMouseDrag()
-    {
-        if (!selected)
-        {
-            GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
-            foreach(GameObject obj in objs)
-            {
-                if (obj == this) obj.GetComponent<Drag>().selected = true;
-                else obj.GetComponent<Drag>().selected = false;
-            }
-            LiveController.selectedcharacter = id;
-        }
-        Debug.Log("Moving:"+id+",area:"+area);
-        Vector3 objectPointInScreen
-            = Camera.main.WorldToScreenPoint(this.transform.position);
-        float kando = 1.0f;
-       // if (changeDis>0.01) kando = 1.1f;//For Mobile
-        Vector3 mousePointInScreen
-            = new Vector3(Input.mousePosition.x,
-                          Input.mousePosition.y*kando,
-                          objectPointInScreen.z);
-        Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
-        mousePointInWorld.y = this.transform.position.y;
-        this.transform.position = mousePointInWorld;
-        
     }
 
     void Update()
@@ -70,7 +51,17 @@ public class Drag : MonoBehaviour
         setArea();
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        // ドラッグ中は位置を更新する
+        Vector2 parenttransform = eventData.position;
+        parenttransform.y -= 150;
+        transform.parent.position = parenttransform; 
+        setArea();
+    }
 
-
-
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        LiveController.selectedcharacter = id;
+    }
 }
