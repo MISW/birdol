@@ -10,6 +10,8 @@ public class LoginWebClient: WebClient
     [Header("Login Information")]
     [SerializeField] protected LoginRequestData loginRequestData;
 
+    public bool isLoginSuccess { get; private set; } //ログインが成功したか否か。通信成功の後にチェックする。 
+
     /// <summary>
     /// Login Request Data: send to Server
     /// </summary>
@@ -104,17 +106,17 @@ public class LoginWebClient: WebClient
     /// <summary>
     /// </summary>
     /// <returns>if request data is appropriate or not</returns>
-    protected override bool CheckRequestData()
+    public override bool CheckRequestData()
     {
         bool ok = true;
         if (this.loginRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.loginRequestData.email.Length< ConnectionModel.EMAIL_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです!\n{ConnectionModel.EMAIL_LENGTH_MIN}文字〜{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字から{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
         }else if (this.loginRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.loginRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なパスワードです!\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字〜{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
         else
         {
@@ -125,7 +127,7 @@ public class LoginWebClient: WebClient
             catch
             {
                 ok = false;
-                this.message = "不適切なメールアドレスです！\n間違っていないか確認してください。";
+                this.message = "不適切なメールアドレスです。\n間違っていないか確認してください。";
             }
         }
 
@@ -138,6 +140,7 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
+        isLoginSuccess = false;
         try
         {
             this.loginRequestData.password = Hash(this.loginRequestData.password);
@@ -174,7 +177,7 @@ public class LoginWebClient: WebClient
         {
             if (lrd.result == "success")
             {
-                this.message = "ログイン成功!!";
+                this.message = "ログインに成功しました。";
                 OnLoginSuccess(lrd.user_id,lrd.access_token);
             }
             else
@@ -189,7 +192,7 @@ public class LoginWebClient: WebClient
     /// </summary>
     protected override void HandleErrorData(string error)
     {
-        this.message = $"通信失敗！\n{error}";
+        this.message = $"通信に失敗しました。";
         Debug.Log($"error: \n{error}");
     }
 
@@ -198,7 +201,7 @@ public class LoginWebClient: WebClient
     /// </summary>
     protected override void HandleInProgressData()
     {
-        this.message = "通信中..."; 
+        this.message = "通信中です。"; 
         Debug.LogError("Unexpected UnityWebRequest Result");
     }
 
@@ -210,6 +213,7 @@ public class LoginWebClient: WebClient
     /// <param name="access_token"></param>
     private void OnLoginSuccess(int user_id, string access_token)
     {
+        isLoginSuccess = true;
         Debug.Log($"user_id: {user_id}, access_token: {access_token}\n<color=\"red\">TO DO: デバイスに保存する。</color>");
     }
 }

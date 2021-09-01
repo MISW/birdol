@@ -10,7 +10,4 @@ public class ConnectionModel : MonoBehaviour
     public const int EMAIL_LENGTH_MAX = 300;
     public const int PASSWORD_LENGTH_MIN = 4;
     public const int PASSWORD_LENGTH_MAX = 300;
-
-    public const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN";
-    public const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";
 }
