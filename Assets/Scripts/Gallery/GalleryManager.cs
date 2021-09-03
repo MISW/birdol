@@ -11,6 +11,9 @@ public class GalleryManager : MonoBehaviour
     private bool[] isUnlocked = new bool[ARR_SIZE];
 
     private GameObject prefabRowNode;
+    [SerializeField]
+    private GameObject scrollView;
+    [SerializeField]
     private GameObject content;  // Scroll ViewのContent
 
     // キャラごとの説明文はどう保持する？
@@ -19,7 +22,9 @@ public class GalleryManager : MonoBehaviour
     void InitList()
     {
         prefabRowNode = (GameObject) Resources.Load("prefab/gallery/RowNode");
-        content = GameObject.Find("Content");
+        // content = GameObject.Find("Content");
+
+        
 
         // ceil(キャラの数/2)だけRowNodeをScroll ViewのContent配下に生成する
         // そのあとに画像と名前差し替え
