@@ -8,28 +8,42 @@ using UnityEngine.UI;
 
 public class RunGacha : MonoBehaviour
 {
-    //À‘••ûjA
-    List<CharacterModel> R3,R2,R1; //‘½ŸŒ³”z—ñ‚¾‚ÆƒGƒfƒBƒ^\‚Å‚¢‚¶‚ê‚È‚¢‚Ì‚ÅAƒŒƒA“x‚²‚Æ‚É”z—ñ‚ğì¬
-    float[] probVec = { 0.1f, 0.25f, 0.65f};
-    //À‘••ûjB
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jA
+    List<CharacterModel> R3, R2, R1; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½zï¿½ñ‚¾‚ÆƒGï¿½fï¿½Bï¿½^ï¿½\ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ì‚ÅAï¿½ï¿½ï¿½Aï¿½xï¿½ï¿½ï¿½Æ‚É”zï¿½ï¿½ï¿½ï¿½ì¬
+    float[] probVec = { 0.1f, 0.25f, 0.65f };
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jB
     //List<CharacterModel> Kuji = new List<CharacterModel>();
+    GameObject startButton, nextResultButton;
+    GameObject result10; //10é€£ã®çµæœã‚’å…¨éƒ¨è¡¨ç¤ºã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    public Image resultImage; //ç”»é¢ã„ã£ã±ã„ã«æ˜ ã‚‹ç«‹ã¡çµµ
+    int resultIndex; //çµæœã‚’0ã‹ã‚‰9ã¾ã§
+    int[] result = new int[10]; //çµæœ
 
+    void Awake()
+    {
+        startButton = GameObject.Find("Start");
+        nextResultButton = GameObject.Find("Next");
+        result10 = GameObject.Find("Panel");
+    }
 
     void Start()
     {
-        
+        startButton.SetActive(true);
+        nextResultButton.SetActive(false);
+        resultIndex = 0;
         R3 = new List<CharacterModel>();
         R2 = new List<CharacterModel>();
         R1 = new List<CharacterModel>();
         if (Common.characters == null) Common.initCharacters();//Test Only
-        for (int i=0;i<20;i++)
-        {   //À‘••ûjA
+        for (int i = 0; i < 20; i++)
+        {   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jA
             CharacterModel character = Common.characters[i];
-            if(character.rarity == 1)
+            if (character.rarity == 1)
             {
                 R1.Add(character);
-                
-            }else if (character.rarity == 2)
+
+            }
+            else if (character.rarity == 2)
             {
                 R2.Add(character);
 
@@ -38,7 +52,7 @@ public class RunGacha : MonoBehaviour
             {
                 R3.Add(character);
             }
-            //À‘••ûjB
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jB
             /*
             for (int j = 0; j < 5; j++)
             {
@@ -47,15 +61,15 @@ public class RunGacha : MonoBehaviour
 
         }
 
-       // Kuji = Kuji.OrderBy(a => Guid.NewGuid()).ToList();
+        // Kuji = Kuji.OrderBy(a => Guid.NewGuid()).ToList();
     }
 
-    
+
 
     public void onButtonPressed10()
     {
-        int resR = 3; //“–‘IƒŒƒA“x
-        int res; //“–‘IƒAƒCƒeƒ€”Ô†
+        int resR = 3; //ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Aï¿½x
+        int res; //ï¿½ï¿½ï¿½Iï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½Ôï¿½
         foreach (GameObject gachaobj in GameObject.FindGameObjectsWithTag("Gacha"))
         {
             CharacterModel gachacharacter;
@@ -66,7 +80,7 @@ public class RunGacha : MonoBehaviour
                 prob += probVec[j];
                 if (f <= prob)
                 {
-                    resR = j; //“–‘IƒŒƒA“x‚ğŒˆ’èi0‚ªÅ‚A4‚ªÅ’á‚Å‚ ‚é‚±‚Æ‚É’ˆÓj
+                    resR = j; //ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Aï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½i0ï¿½ï¿½ï¿½Åï¿½ï¿½A4ï¿½ï¿½ï¿½Å’ï¿½Å‚ï¿½ï¿½é‚±ï¿½Æ‚É’ï¿½ï¿½Ój
                     break;
                 }
             }
@@ -93,6 +107,10 @@ public class RunGacha : MonoBehaviour
                     gachacharacter = R1[res];
                     break;
             }
+
+            result[resultIndex] = gachacharacter.id;
+            resultIndex++;
+
             /*
             int index= UnityEngine.Random.Range(0, 100);
             gachacharacter = Kuji[index];
@@ -113,8 +131,32 @@ public class RunGacha : MonoBehaviour
                     gachaobj.GetComponentInChildren<Text>().color = Color.black;
                     break;
             }*/
-           gachaobj.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
+            gachaobj.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
         }
-        
+        result10.SetActive(false);
+
+
+        resultIndex = 0;
+        startButton.SetActive(false);
+        nextResultButton.SetActive(true);
+        NextResult();
+
+    }
+
+    public void NextResult()
+    {
+        Debug.Log("aaa");
+        if (resultIndex < 10)
+        {
+            resultImage.sprite = Resources.Load<Sprite>("Images/gacha/" + result[resultIndex]); //ç«‹ã¡çµµãŒã¾ã ãªã„ã®ã§ç¾æ™‚ç‚¹ã§ã¯ã‚¢ã‚¤ã‚³ãƒ³ã§ä»£ç”¨ã€‚ç«‹ã¡çµµãŒè¿½åŠ ã•ã‚Œæ¬¡ç¬¬ãã¡ã‚‰ã«å¤‰æ›´ã€‚    
+        }
+
+        resultIndex++;
+
+        if (resultIndex == 11)
+        {
+            nextResultButton.SetActive(false);
+            result10.SetActive(true);
+        }
     }
 }
