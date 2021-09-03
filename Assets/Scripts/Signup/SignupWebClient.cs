@@ -21,18 +21,21 @@ public class SignupWebClient : WebClient
         [SerializeField] public string name;
         [SerializeField] public string email;
         [SerializeField] public string password;
+        [SerializeField] public string device_id;
 
         /// <summary>
         /// COnstructor
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        public SignupRequestData(string name, string email, string password)
+        /// <param name="name">user name</param>
+        /// <param name="email">email address</param>
+        /// <param name="password">password</param>
+        /// <param name="device_id">Unique ID to determine device</param>
+        public SignupRequestData(string name, string email, string password, string device_id)
         {
             this.name = name;
             this.email = email;
             this.password = password;
+            this.device_id = device_id;
         }
     }
 
@@ -52,6 +55,7 @@ public class SignupWebClient : WebClient
     {
         [SerializeField] public string user_id;
         [SerializeField] public string access_token;
+        [SerializeField] public string device_id;
     }
 
     /// <summary>
@@ -80,11 +84,12 @@ public class SignupWebClient : WebClient
     /// <param name="username"></param>
     /// <param name="email"></param>
     /// <param name="password"></param>
+    /// <param name="device_id"></param>
     /// <param name="requestMethod"></param>
     /// <param name="loginPath"></param>
-    public SignupWebClient(string username, string email, string password, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public SignupWebClient(string username, string email, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
-        SetData(username, email, password);
+        SetData(username, email, password, device_id);
     }
 
     /// <summary>
@@ -93,9 +98,10 @@ public class SignupWebClient : WebClient
     /// <param name="username"></param>
     /// <param name="email"></param>
     /// <param name="password"></param>
-    public void SetData(string username, string email, string password)
+    /// <param name="device_id"></param>
+    public void SetData(string username, string email, string password, string device_id)
     {
-        this.signupRequestData = new SignupRequestData(username, email, password);
+        this.signupRequestData = new SignupRequestData(username, email, password, device_id);
     }
 
     /// <summary>

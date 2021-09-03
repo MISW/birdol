@@ -20,16 +20,19 @@ public class LoginWebClient: WebClient
     {
         [SerializeField] public string email;
         [SerializeField] public string password;
+        [SerializeField] public string device_id;
 
         /// <summary>
         /// COnstructor
         /// </summary>
         /// <param name="email"></param>
         /// <param name="password"></param>
-        public LoginRequestData(string email,string password)
+        /// <param name="device_id"></param>
+        public LoginRequestData(string email, string password, string device_id)
         {
             this.email = email;
             this.password = password;
+            this.device_id = device_id;
         }
     }
 
@@ -49,6 +52,7 @@ public class LoginWebClient: WebClient
     {
         [SerializeField] public string user_id;
         [SerializeField] public string access_token;
+        [SerializeField] public string device_id;
     }
 
     /// <summary>
@@ -78,9 +82,9 @@ public class LoginWebClient: WebClient
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient( string email, string password, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public LoginWebClient( string email, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
-        SetData(email,password);
+        SetData(email, password, device_id);
     }
 
     /// <summary>
@@ -88,9 +92,10 @@ public class LoginWebClient: WebClient
     /// </summary>
     /// <param name="email"></param>
     /// <param name="password"></param>
-    public void SetData(string email, string password)
+    /// <param name="device_id"></param>
+    public void SetData(string email, string password, string device_id)
     {
-        this.loginRequestData = new LoginRequestData(email, password);
+        this.loginRequestData = new LoginRequestData(email, password, device_id);
     }
 
     /// <summary>

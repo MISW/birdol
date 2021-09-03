@@ -63,7 +63,8 @@ public class SignupSceneController : SceneVisor
         string username = usernameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        signupWebClient.SetData(username, email, password);
+        string _uuid = GenerateGUID();
+        signupWebClient.SetData(username, email, password, _uuid);
 
         //データチェックをサーバへ送信する前に行う。
         if (signupWebClient.CheckRequestData()==false)
@@ -90,8 +91,12 @@ public class SignupSceneController : SceneVisor
             Debug.Log("ParsedResponseData: \n" + lrd.ToString());
             if (signupWebClient.isSignupSuccess)
             {
+                // Store UUID to PlayerPrefs
+                PlayerPrefs.SetString(Common.PLAYERPREFS_UUID, _uuid);
+                PlayerPrefs.Save();
+                
                 SuccessDisplayText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));                
                 OnSignupSuccess();
             }
             else
@@ -133,5 +138,13 @@ public class SignupSceneController : SceneVisor
     private void OnSignupSuccess()
     {
 
+    }
+
+    /// <summary>
+    /// Generate UUID
+    /// </summary>
+    private string GenerateGUID(){
+        System.Guid guid = System.Guid.NewGuid();
+        return guid.ToString();
     }
 }
