@@ -103,6 +103,8 @@ public class RunGacha : MonoBehaviour
 
     public void onButtonPressed10()
     {
+        result10.SetActive(false);
+
         int resR = 3; //���I���A�x
         int res; //���I�A�C�e���ԍ�
         foreach (GameObject gachaobj in gachaobjs/*GameObject.FindGameObjectsWithTag("Gacha")*/)
@@ -214,6 +216,7 @@ public class RunGacha : MonoBehaviour
             isResultShowing = false;
             resultImage.SetActive(false);
             result10.SetActive(true);
+            resultIndex = 0;
         }
     }
 }
