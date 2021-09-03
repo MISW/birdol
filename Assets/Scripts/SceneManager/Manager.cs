@@ -9,6 +9,7 @@ public class Manager : MonoBehaviour
     public static Manager manager;
     public GameObject loadingCanvas;
     public GameObject gif;
+
     private void Awake()
     {
         if (manager == null)
@@ -26,7 +27,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        test();
+        //test();
     }
 
     // Update is called once per frame
@@ -74,7 +75,7 @@ public class Manager : MonoBehaviour
     bool statequeueflag = false;
 
     SceneVisor Visor;
-  
+
     IEnumerator StateChange()
     {
 
@@ -112,7 +113,7 @@ public class Manager : MonoBehaviour
         gif.GetComponent<GifPlayer>().index = 0;
         gif.GetComponent<GifPlayer>().enabled = false;
         SceneVisor Visor2 = GotVisorOnScene();
-        
+
         if (Visor2 != null)
         {
             yield return StartCoroutine(Visor2.Init(Pre_GameState));
@@ -125,7 +126,7 @@ public class Manager : MonoBehaviour
         Now_GameState = Next_GameState;
         loadingCanvas.SetActive(false);
         print($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
-        
+
         yield break;
     }
     void Updater()
@@ -147,6 +148,11 @@ public class Manager : MonoBehaviour
     }
 
 }
+
+
+  
+
+
 
 //gamestate‚ÆSceneIndex‚ðˆê’v‚³‚¹‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
 public enum gamestate
