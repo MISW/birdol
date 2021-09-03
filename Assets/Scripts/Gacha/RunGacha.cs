@@ -13,24 +13,29 @@ public class RunGacha : MonoBehaviour
     float[] probVec = { 0.1f, 0.25f, 0.65f };
     //�������jB
     //List<CharacterModel> Kuji = new List<CharacterModel>();
-    GameObject startButton, nextResultButton;
     GameObject result10; //10連の結果を全部表示するオブジェクト
-    public Image resultImage; //画面いっぱいに映る立ち絵
+    GameObject resultImage; //画面いっぱいに映る立ち絵
+    GameObject[] gachaobjs = new GameObject[10];
+    public Text rarityNameLabel;
     int resultIndex; //結果を0から9まで
     int[] result = new int[10]; //結果
+    bool isResultShowing;
 
     void Awake()
     {
-        startButton = GameObject.Find("Start");
-        nextResultButton = GameObject.Find("Next");
         result10 = GameObject.Find("Panel");
+        resultImage = GameObject.Find("Image");
+        gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
     }
 
     void Start()
     {
-        startButton.SetActive(true);
-        nextResultButton.SetActive(false);
         resultIndex = 0;
+        result10.SetActive(false);
+        resultImage.SetActive(false);
+        isResultShowing = false;
+        rarityNameLabel.text = "";
+
         R3 = new List<CharacterModel>();
         R2 = new List<CharacterModel>();
         R1 = new List<CharacterModel>();
@@ -64,13 +69,43 @@ public class RunGacha : MonoBehaviour
         // Kuji = Kuji.OrderBy(a => Guid.NewGuid()).ToList();
     }
 
+    void Update()
+    {
+        /* if (Input.GetMouseButtonUp(0))
+         {
+             if (isResultShowing)
+             {
+                 NextResult();
+             }
+             else
+             {
+                 onButtonPressed10();
+             }
+         }*/
+
+        if (Input.touchCount == 1)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                if (isResultShowing)
+                {
+                    NextResult();
+                }
+                else
+                {
+                    onButtonPressed10();
+                }
+            }
+        }
+    }
+
 
 
     public void onButtonPressed10()
     {
         int resR = 3; //���I���A�x
         int res; //���I�A�C�e���ԍ�
-        foreach (GameObject gachaobj in GameObject.FindGameObjectsWithTag("Gacha"))
+        foreach (GameObject gachaobj in gachaobjs/*GameObject.FindGameObjectsWithTag("Gacha")*/)
         {
             CharacterModel gachacharacter;
             float f = UnityEngine.Random.Range(0, 1f);
@@ -133,29 +168,51 @@ public class RunGacha : MonoBehaviour
             }*/
             gachaobj.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
         }
-        result10.SetActive(false);
 
+        resultImage.SetActive(true);
 
         resultIndex = 0;
-        startButton.SetActive(false);
-        nextResultButton.SetActive(true);
         NextResult();
+        isResultShowing = true;
+
 
     }
 
     public void NextResult()
     {
-        Debug.Log("aaa");
         if (resultIndex < 10)
         {
-            resultImage.sprite = Resources.Load<Sprite>("Images/gacha/" + result[resultIndex]); //立ち絵がまだないので現時点ではアイコンで代用。立ち絵が追加され次第そちらに変更。    
+            CharacterModel naaa = Common.characters[result[resultIndex]];
+            resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + result[resultIndex]); //立ち絵がまだないので現時点ではアイコンで代用。立ち絵が追加され次第そちらに変更。
+            Debug.Log(naaa.name);
+            string rare;
+            switch (naaa.rarity)
+            {
+                case 3:
+                    rare = "SSR";
+                    rarityNameLabel.color = Color.red;
+                    break;
+
+                case 2:
+                    rare = "SR";
+                    rarityNameLabel.color = Color.yellow;
+                    break;
+
+                default:
+                    rare = "R";
+                    rarityNameLabel.color = Color.black;
+                    break;
+            }
+            rarityNameLabel.text = rare + "\n" + naaa.name;
         }
 
         resultIndex++;
 
         if (resultIndex == 11)
         {
-            nextResultButton.SetActive(false);
+            rarityNameLabel.text = "";
+            isResultShowing = false;
+            resultImage.SetActive(false);
             result10.SetActive(true);
         }
     }

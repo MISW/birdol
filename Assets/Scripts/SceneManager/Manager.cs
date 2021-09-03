@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
     public static Manager manager;
+    public GameObject loadingCanvas;
+    public GameObject gif;
 
     private void Awake()
     {
@@ -24,7 +27,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        test();
+        //test();
     }
 
     // Update is called once per frame
@@ -77,7 +80,9 @@ public class Manager : MonoBehaviour
     {
 
         SceneVisor Visor1 = GotVisorOnScene();
-
+        gif.GetComponent<GifPlayer>().enabled = false;
+        gif.GetComponent<GifPlayer>().enabled = true;
+        loadingCanvas.SetActive(true);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
 
@@ -102,12 +107,13 @@ public class Manager : MonoBehaviour
             SceneManager.UnloadSceneAsync((int)Pre_GameState);
 
         }
-
+        yield return new WaitForSeconds(2);
         async.allowSceneActivation = true;
         yield return new WaitUntil(() => SceneManager.GetSceneByBuildIndex((int)Next_GameState).isLoaded);
-
+        gif.GetComponent<GifPlayer>().index = 0;
+        gif.GetComponent<GifPlayer>().enabled = false;
         SceneVisor Visor2 = GotVisorOnScene();
-        
+
         if (Visor2 != null)
         {
             yield return StartCoroutine(Visor2.Init(Pre_GameState));
@@ -118,7 +124,7 @@ public class Manager : MonoBehaviour
         }
         Visor = Visor2;
         Now_GameState = Next_GameState;
-
+        loadingCanvas.SetActive(false);
         print($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
 
         yield break;
@@ -143,11 +149,17 @@ public class Manager : MonoBehaviour
 
 }
 
+
+  
+
+
+
 //gamestate‚ÆSceneIndex‚ðˆê’v‚³‚¹‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
 public enum gamestate
 {
     Undefined,
-    Title,
-    Menu,
-    Game,
+    Story,
+    Live
 }
+
+

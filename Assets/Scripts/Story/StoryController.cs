@@ -5,6 +5,7 @@ using System.Diagnostics.Tracing;
 using Unity.Profiling;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StoryController : MonoBehaviour
@@ -95,9 +96,12 @@ public class StoryController : MonoBehaviour
                 }
                 selectionDialog.SetActive(true);
             }
-            else
+            else if(curevent.command!=null)
             {
                 //その他
+                if (curevent.command == "live") {
+                    Manager.manager.StateQueue((int)gamestate.Live); 
+                }
             }
 
             if (currentEventId + 1 < stories[currentStoryId].events.Length)
