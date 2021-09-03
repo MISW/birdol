@@ -26,10 +26,7 @@
       {"characterId":20,"serifu":"これで良くない!?(便乗)"},
       {"characterId":0,"serifu":"!?!?!"},
       {"characterId":4,"serifu":"やべぇよ...やべぇよ..."},
-      {"choiceName":"どうする?","choices":[
-        {"targetStoryId":3,"choiceName":"違う店に行く"},
-        {"targetStoryId":4,"choiceName":"この店に入る"}
-      ]}
+      {"command":"live"}
     ]},
   {"id":3,
   "events":[
@@ -42,7 +39,7 @@
     "events":[
       {"characterId":20,"serifu":"おい兄ちゃん、金出せや"},
       {"characterId":0,"serifu":"うわぁぁぁぁぁぁ!"},
-      {"command":"battle"}
+      {"command":"live"}
     ]}
 ]
 }
