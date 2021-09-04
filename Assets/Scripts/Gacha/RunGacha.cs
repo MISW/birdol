@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class RunGacha : MonoBehaviour
 {
@@ -20,10 +21,12 @@ public class RunGacha : MonoBehaviour
     int resultIndex; //結果を0から9まで
     int[] result = new int[10]; //結果
     bool isResultShowing;
+    EventSystem es;
 
     void Awake()
     {
-        result10 = GameObject.Find("Panel");
+        es = EventSystem.current;
+        result10 = GameObject.Find("GachaResults");
         resultImage = GameObject.Find("Image");
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
     }
@@ -71,27 +74,15 @@ public class RunGacha : MonoBehaviour
 
     void Update()
     {
-        /* if (Input.GetMouseButtonUp(0))
-         {
-             if (isResultShowing)
-             {
-                 NextResult();
-             }
-             else
-             {
-                 onButtonPressed10();
-             }
-         }*/
-
         if (Input.touchCount == 1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            if (Input.GetTouch(0).phase == TouchPhase.Ended && !es.IsPointerOverGameObject())
             {
                 if (isResultShowing)
                 {
                     NextResult();
                 }
-                else
+                else if (!result10.activeSelf)
                 {
                     onButtonPressed10();
                 }
@@ -126,22 +117,22 @@ public class RunGacha : MonoBehaviour
                 case 0:
                     res = UnityEngine.Random.Range(0, R3.Count);
                     gachacharacter = R3[res];
-                    gachaobj.GetComponentInChildren<Text>().text = "SSR";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.red;
+                    /*   gachaobj.GetComponentInChildren<Text>().text = "SSR";
+                       gachaobj.GetComponentInChildren<Text>().color = Color.red;*/
                     break;
 
                 case 1:
                     res = UnityEngine.Random.Range(0, R2.Count);
                     gachacharacter = R2[res];
-                    gachaobj.GetComponentInChildren<Text>().text = "SR";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.yellow;
+                    /*   gachaobj.GetComponentInChildren<Text>().text = "SR";
+                       gachaobj.GetComponentInChildren<Text>().color = Color.yellow;*/
                     break;
 
                 default:
                     res = UnityEngine.Random.Range(0, R1.Count);
-                    gachaobj.GetComponentInChildren<Text>().text = "R";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.black;
                     gachacharacter = R1[res];
+                    /*   gachaobj.GetComponentInChildren<Text>().text = "R";
+                       gachaobj.GetComponentInChildren<Text>().color = Color.black;*/
                     break;
             }
 
@@ -151,24 +142,34 @@ public class RunGacha : MonoBehaviour
             /*
             int index= UnityEngine.Random.Range(0, 100);
             gachacharacter = Kuji[index];
+            */
             switch (gachacharacter.rarity)
             {
-                case 3:
-                    gachaobj.GetComponentInChildren<Text>().text = "SSR";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.red;
+                case 1:
+                    /*  gachaobj.GetComponentInChildren<Text>().text = "SSR";
+                      gachaobj.GetComponentInChildren<Text>().color = Color.red;*/
+                    gachaobj.transform.Find("Back").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Blue_Back");
+                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/R");
+                    gachaobj.transform.Find("Frame").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Blue_Edge");
                     break;
 
                 case 2:
-                    gachaobj.GetComponentInChildren<Text>().text = "SR";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.yellow;
+                    /*  gachaobj.GetComponentInChildren<Text>().text = "SR";
+                      gachaobj.GetComponentInChildren<Text>().color = Color.yellow;*/
+                    gachaobj.transform.Find("Back").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Pink_Back");
+                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/SR");
+                    gachaobj.transform.Find("Frame").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Pink_Edge");
                     break;
 
                 default:
-                    gachaobj.GetComponentInChildren<Text>().text = "R";
-                    gachaobj.GetComponentInChildren<Text>().color = Color.black;
+                    /*  gachaobj.GetComponentInChildren<Text>().text = "R";
+                      gachaobj.GetComponentInChildren<Text>().color = Color.black;*/
+                    gachaobj.transform.Find("Back").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Yellow_Back");
+                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/SSR");
+                    gachaobj.transform.Find("Frame").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Yellow_Edge");
                     break;
-            }*/
-            gachaobj.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
+            }
+            gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
         }
 
         resultImage.SetActive(true);
@@ -176,8 +177,6 @@ public class RunGacha : MonoBehaviour
         resultIndex = 0;
         NextResult();
         isResultShowing = true;
-
-
     }
 
     public void NextResult()
@@ -186,7 +185,7 @@ public class RunGacha : MonoBehaviour
         {
             CharacterModel naaa = Common.characters[result[resultIndex]];
             resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + result[resultIndex]); //立ち絵がまだないので現時点ではアイコンで代用。立ち絵が追加され次第そちらに変更。
-            Debug.Log(naaa.name);
+                                                                                                                      //   Debug.Log(naaa.name);
             string rare;
             switch (naaa.rarity)
             {
@@ -218,5 +217,11 @@ public class RunGacha : MonoBehaviour
             result10.SetActive(true);
             resultIndex = 0;
         }
+    }
+
+    public void Hikinaoshi(GameObject obj)
+    {
+        obj.SetActive(false);
+        resultIndex = 0;
     }
 }
