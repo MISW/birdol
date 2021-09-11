@@ -6,12 +6,23 @@ using UnityEngine.SceneManagement;
 public partial class Common : MonoBehaviour
 {
     public static CharacterModel[] characters;
+    public static ProgressModel[] progresses;
 
     public static void initCharacters()
     {
-        string json = Resources.Load<TextAsset>("common/characters").ToString();
-        CommonCharacters result = JsonUtility.FromJson<CommonCharacters>(json);
-        characters = result.characters;
+        string json = Resources.Load<TextAsset>("Common/characters").ToString();
+        characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
+    }
+
+    public static void initProgress()
+    {
+        string json = Resources.Load<TextAsset>("Live/testdata").ToString();
+        progresses = JsonUtility.FromJson<ProgressData>(json).progresses;
+    }
+
+    public static void syncProgress()
+    {
+
     }
 
     //通信関連

@@ -4,35 +4,50 @@
     "rarity":1,
 		"visual":2,
 		"vocal":3,
-		"dance":4
+		"dance":4,
+    "skillname":"ハーゲンダッツ",
+    "type":"multiply",
+    "affect":2
   },
   {"id":1,
     "name":"Myuu",
     "rarity":1,
 		"visual":2,
 		"vocal":3,
-		"dance":4
+		"dance":4,
+    "skillname":"台パン",
+    "type":"plus",
+    "affect":5
   },
   {"id":2,
     "name":"Futoren",
     "rarity":1,
 		"visual":2,
 		"vocal":3,
-		"dance":4
+		"dance":4,
+    "skillname":"アル中カラカラ",
+    "type":"plus",
+    "affect":4
   },
   {"id":3,
     "name":"Liberal",
     "rarity":1,
 		"visual":2,
 		"vocal":3,
-		"dance":4
+		"dance":4,
+    "skillname":"激辛ペヤング",
+    "type":"multiply",
+    "affect":1.5
   },
   {"id":4,
     "name":"SEED",
     "rarity":1,
 		"visual":2,
 		"vocal":3,
-		"dance":4
+		"dance":4,
+    "skillname":"タイキック",
+    "type":"multiply",
+    "affect":1.5
   },
   {"id":5,
     "name":"siumai",

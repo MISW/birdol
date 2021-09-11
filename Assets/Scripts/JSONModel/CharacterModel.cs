@@ -17,4 +17,7 @@ public class CharacterModel
 	public int visual;
 	public int vocal;
 	public int dance;
+	public string skillname;
+    public string type;
+    public float affect;
 }

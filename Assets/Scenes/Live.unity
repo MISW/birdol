@@ -274,6 +274,122 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177043713}
   m_CullTransparentMesh: 1
+--- !u!1 &261826502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 261826504}
+  - component: {fileID: 261826503}
+  m_Layer: 0
+  m_Name: LiveController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &261826503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261826502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d54045936646ce4e90fc0138e381d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startbutton: {fileID: 481610928}
+  light: {fileID: 1083501071}
+  testText: {fileID: 1116066258}
+  characters:
+  - characterId: 0
+    visual: 3
+    vocal: 3
+    dance: 4
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 10
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 0
+    passiveSkilltype: 1
+    passiveSkillScore: 1.1
+  - characterId: 2
+    visual: 4
+    vocal: 5
+    dance: 1
+    activeSkillLevel: 1
+    activeSkillType: 1
+    activeSkillScore: 1.3
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 0
+    passiveSkilltype: 1
+    passiveSkillScore: 1.2
+  - characterId: 3
+    visual: 5
+    vocal: 3
+    dance: 1
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 15
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 0
+    passiveSkilltype: 1
+    passiveSkillScore: 1.1
+  - characterId: 1
+    visual: 2
+    vocal: 3
+    dance: 3
+    activeSkillLevel: 1
+    activeSkillType: 1
+    activeSkillScore: 1.5
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 0
+    passiveSkilltype: 1
+    passiveSkillScore: 1.2
+  - characterId: 4
+    visual: 4
+    vocal: 2
+    dance: 5
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 7
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 0
+    passiveSkilltype: 1
+    passiveSkillScore: 1.1
+  ScoreBar: {fileID: 695212306}
+  max: 100
+  score: 0
+  remainingTurn: 5
+--- !u!4 &261826504
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261826502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &273972741
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,15 +438,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 273972741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fddc8dbd5b65c54282f56e168e3dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: 1418d1391ab83f849a7db5ee534d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1116066258}
-  Middle: {fileID: 1780780454}
-  selected: 0
+  completedActiveSkill: 0
+  executingSkill: 0
   id: 2
   area: 
-  selectedSkill: 
+  characterInf:
+    characterId: 0
+    visual: 0
+    vocal: 0
+    dance: 0
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 0
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 1
+    passiveSkilltype: 0
+    passiveSkillScore: 0
 --- !u!114 &273972744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,7 +493,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f6199dac7e8e226468b8ee5403aeafcc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6813cc1aaa861434c9fbcc7b49b0e16a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -447,7 +575,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &437290523
 PrefabInstance:
@@ -462,7 +590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2052648748023674206, guid: d65f06116bbf6304592fc5ef020446ac, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2052648748023674206, guid: d65f06116bbf6304592fc5ef020446ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -519,7 +647,7 @@ GameObject:
   - component: {fileID: 481610931}
   - component: {fileID: 481610930}
   m_Layer: 5
-  m_Name: Start
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,7 +666,7 @@ RectTransform:
   m_Children:
   - {fileID: 1634507518}
   m_Father: {fileID: 566249769}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -588,7 +716,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 481610931}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 261826503}
+        m_TargetAssemblyTypeName: LiveController, Assembly-CSharp
+        m_MethodName: onStartButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &481610931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,7 +890,6 @@ GameObject:
   - component: {fileID: 566249768}
   - component: {fileID: 566249767}
   - component: {fileID: 566249766}
-  - component: {fileID: 566249770}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -833,33 +972,18 @@ RectTransform:
   - {fileID: 1809988980}
   - {fileID: 910696904}
   - {fileID: 1116066257}
-  - {fileID: 1780780455}
   - {fileID: 1417409374}
   - {fileID: 695212307}
   - {fileID: 481610929}
   - {fileID: 677791506}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &566249770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566249765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d54045936646ce4e90fc0138e381d95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startbutton: {fileID: 481610928}
-  light: {fileID: 1083501071}
 --- !u!1 &677791505
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +1014,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 566249769}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -948,7 +1072,7 @@ GameObject:
   - component: {fileID: 695212309}
   - component: {fileID: 695212308}
   m_Layer: 5
-  m_Name: Scrollbar
+  m_Name: ScoreBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,7 +1092,7 @@ RectTransform:
   - {fileID: 530871418}
   - {fileID: 177043714}
   m_Father: {fileID: 566249769}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1353,7 +1477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5411765, g: 0.5444456, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1362,16 +1486,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
-    m_FontStyle: 0
+    m_FontSize: 60
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 5
-    m_MaxSize: 50
+    m_MinSize: 0
+    m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Score:'
 --- !u!222 &1116066259
@@ -1589,15 +1713,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1348985503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fddc8dbd5b65c54282f56e168e3dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: 1418d1391ab83f849a7db5ee534d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1116066258}
-  Middle: {fileID: 1780780454}
-  selected: 0
+  completedActiveSkill: 0
+  executingSkill: 0
   id: 3
   area: 
-  selectedSkill: 
+  characterInf:
+    characterId: 0
+    visual: 0
+    vocal: 0
+    dance: 0
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 0
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 1
+    passiveSkilltype: 0
+    passiveSkillScore: 0
 --- !u!114 &1348985506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,7 +1768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7dc06b99376b44d429845eb836b7102e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6813cc1aaa861434c9fbcc7b49b0e16a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1686,7 +1822,7 @@ RectTransform:
   - {fileID: 2049251915}
   - {fileID: 1083501074}
   m_Father: {fileID: 566249769}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -1860,15 +1996,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1663839368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fddc8dbd5b65c54282f56e168e3dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: 1418d1391ab83f849a7db5ee534d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1116066258}
-  Middle: {fileID: 1780780454}
-  selected: 0
+  completedActiveSkill: 0
+  executingSkill: 0
   id: 1
   area: 
-  selectedSkill: 
+  characterInf:
+    characterId: 0
+    visual: 0
+    vocal: 0
+    dance: 0
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 0
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 1
+    passiveSkilltype: 0
+    passiveSkillScore: 0
 --- !u!114 &1663839371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1903,7 +2051,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0bbdda82023215f4286bd18746d59de3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6813cc1aaa861434c9fbcc7b49b0e16a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1920,81 +2068,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663839368}
-  m_CullTransparentMesh: 1
---- !u!1 &1780780454
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1780780455}
-  - component: {fileID: 1780780457}
-  - component: {fileID: 1780780456}
-  m_Layer: 5
-  m_Name: Middle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1780780455
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780780454}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 566249769}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -400}
-  m_SizeDelta: {x: -480, y: 934.473}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1780780456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780780454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.9811321, g: 0.94857043, b: 0, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1780780457
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780780454}
   m_CullTransparentMesh: 1
 --- !u!1 &1809988979
 GameObject:
@@ -2210,15 +2283,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1946364629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fddc8dbd5b65c54282f56e168e3dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: 1418d1391ab83f849a7db5ee534d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1116066258}
-  Middle: {fileID: 1780780454}
-  selected: 0
+  completedActiveSkill: 0
+  executingSkill: 0
   id: 4
   area: 
-  selectedSkill: 
+  characterInf:
+    characterId: 0
+    visual: 0
+    vocal: 0
+    dance: 0
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 0
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 1
+    passiveSkilltype: 0
+    passiveSkillScore: 0
 --- !u!114 &1946364632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,7 +2338,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 26876afff34e92b46b5131c3f4addb40, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6813cc1aaa861434c9fbcc7b49b0e16a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2319,15 +2404,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2018934935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fddc8dbd5b65c54282f56e168e3dd46, type: 3}
+  m_Script: {fileID: 11500000, guid: 1418d1391ab83f849a7db5ee534d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1116066258}
-  Middle: {fileID: 1780780454}
-  selected: 0
+  completedActiveSkill: 0
+  executingSkill: 0
   id: 0
   area: 
-  selectedSkill: 
+  characterInf:
+    characterId: 0
+    visual: 0
+    vocal: 0
+    dance: 0
+    activeSkillLevel: 1
+    activeSkillType: 0
+    activeSkillScore: 0
+    mainStoryId: 0
+    subStoryId: 0
+    supportCharacterId: 0
+    passiveSkillLevel: 1
+    passiveSkilltype: 0
+    passiveSkillScore: 0
 --- !u!114 &2018934938
 MonoBehaviour:
   m_ObjectHideFlags: 0
