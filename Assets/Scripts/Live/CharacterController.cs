@@ -12,6 +12,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     public bool executingSkill = false;
     public int id;
     public string area = "";
+    public Text name;
     public ProgressModel characterInf;
     
 
@@ -83,13 +84,16 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills)
+        /*
+        if (!LiveController.executingSkills&&eventData.position.y<=840)
         {// ドラッグ中は位置を更新する
-            Vector2 parenttransform = eventData.position;
-            parenttransform.y -= 150;
-            transform.parent.position = parenttransform;
-            setArea();
-        }
+            
+        }*/
+
+        Vector2 parenttransform = eventData.position;
+        parenttransform.y -= 150;
+        transform.parent.position = parenttransform;
+        setArea();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
