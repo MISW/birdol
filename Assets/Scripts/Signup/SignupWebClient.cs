@@ -1,5 +1,4 @@
 using System;
-using System.Net.Mail;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +18,6 @@ public class SignupWebClient : WebClient
     public struct SignupRequestData
     {
         [SerializeField] public string name;
-        [SerializeField] public string email;
         [SerializeField] public string password;
         [SerializeField] public string device_id;
 
@@ -27,13 +25,11 @@ public class SignupWebClient : WebClient
         /// COnstructor
         /// </summary>
         /// <param name="name">user name</param>
-        /// <param name="email">email address</param>
         /// <param name="password">password</param>
         /// <param name="device_id">Unique ID to determine device</param>
-        public SignupRequestData(string name, string email, string password, string device_id)
+        public SignupRequestData(string name, string password, string device_id)
         {
             this.name = name;
-            this.email = email;
             this.password = password;
             this.device_id = device_id;
         }
@@ -47,13 +43,14 @@ public class SignupWebClient : WebClient
     {
         [SerializeField] public string error;
         [SerializeField] public string result;
-        [SerializeField] public int user_id;
+        [SerializeField] public uint user_id;
         [SerializeField] public string access_token;
+        [SerializeField] public string account_id;
     }
     [Serializable]
     public class Auth
     {
-        [SerializeField] public string user_id;
+        [SerializeField] public uint user_id;
         [SerializeField] public string access_token;
         [SerializeField] public string device_id;
     }
@@ -82,26 +79,24 @@ public class SignupWebClient : WebClient
     /// Constructor
     /// </summary>
     /// <param name="username"></param>
-    /// <param name="email"></param>
     /// <param name="password"></param>
     /// <param name="device_id"></param>
     /// <param name="requestMethod"></param>
     /// <param name="loginPath"></param>
-    public SignupWebClient(string username, string email, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public SignupWebClient(string username, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
-        SetData(username, email, password, device_id);
+        SetData(username, password, device_id);
     }
 
     /// <summary>
     /// Setdata 
     /// </summary>
     /// <param name="username"></param>
-    /// <param name="email"></param>
     /// <param name="password"></param>
     /// <param name="device_id"></param>
-    public void SetData(string username, string email, string password, string device_id)
+    public void SetData(string username, string password, string device_id)
     {
-        this.signupRequestData = new SignupRequestData(username, email, password, device_id);
+        this.signupRequestData = new SignupRequestData(username, password, device_id);
     }
 
     /// <summary>
@@ -113,7 +108,7 @@ public class SignupWebClient : WebClient
     {
         bool ok = true;
         if (string.IsNullOrEmpty(srd.result)) ok = false;
-        else if (srd.result == "success" && string.IsNullOrEmpty(srd.access_token)) ok = false;
+        else if (srd.result == "success" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id))) ok = false;
         return ok;
     }
 
@@ -128,28 +123,18 @@ public class SignupWebClient : WebClient
             ok = false;
             this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
         }
-        else if (this.signupRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.signupRequestData.email.Length < ConnectionModel.EMAIL_LENGTH_MIN)
+        /*
+        else if (this.signupRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.signupRequestData.account_id.Length < ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字から{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なidです。\n{ConnectionModel.ACCOUNT_ID_LENGTH_MIN}文字から{ConnectionModel.ACCOUNT_ID_LENGTH_MAX}文字で入力してください。";
         }
         else if (this.signupRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.signupRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
-        else
-        {
-            try
-            {
-                new MailAddress(this.signupRequestData.email);
-            }
-            catch
-            {
-                ok = false;
-                this.message = "不適切なメールアドレスです。\n間違っていないか確認してください。";
-            }
-        }
+        */
 
         return ok;
     }
@@ -198,7 +183,7 @@ public class SignupWebClient : WebClient
             if (srd.result == "success")
             {
                 this.message = "アカウント新規登録に成功しました。";
-                OnSignupSuccess(srd.user_id, srd.access_token);
+                OnSignupSuccess(srd.user_id, srd.access_token, srd.account_id);
             }
             else
             {
@@ -231,11 +216,13 @@ public class SignupWebClient : WebClient
     /// </summary>
     /// <param name="user_id"></param>
     /// <param name="access_token"></param>
-    private void OnSignupSuccess(int user_id, string access_token)
+    /// <param name="account_id"></param>
+    private void OnSignupSuccess(uint user_id, string access_token, string account_id)
     {
         isSignupSuccess = true;
-        Debug.Log($"user_id: {user_id}, access_token: {access_token}\n");
-        PlayerPrefs.SetInt(Common.PLAYERPREFS_USER_ID, user_id);
-        PlayerPrefs.SetString(Common.PLAYERPREFS_ACCESS_TOKEN, access_token);
+        Debug.Log($"PlayerPrefs Saved\nuser_id: {user_id}, access_token: {access_token}, default_account_id: {account_id}");
+        Common.UserID = user_id;
+        Common.AccessToken = access_token;
+        Common.DefaultAccountID = account_id;
     }
 }

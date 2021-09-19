@@ -11,25 +11,23 @@ public class SignupSceneController : SceneVisor
 
     [Header("Input")]
     [SerializeField] InputField usernameInputField;
-    [SerializeField] InputField emailInputField;
-    [SerializeField] InputField passwordInputField;
     [SerializeField] Button signupButton;
 
     [Header("Display")]
-    [SerializeField] GameObject ConnectionInProgressDisplayGameObject;
-    [SerializeField] GameObject SuccessDisplayGameObject;
-    [SerializeField] Text SuccessDisplayText;
-    [SerializeField] GameObject ErrorDisplayGameObject;
-    [SerializeField] Text ErrorDisplayText;
-
-    [Header("Load Login Scene")]
-    [SerializeField] Button loadLoginSceneButton;
+    [SerializeField] GameObject AlertUI;
+    [SerializeField] Text AlertText;
 
     private bool isConnectionInProgress = false;
 
 
     private void Start()
     {
+        /*TODO; here or elsewhere
+        ①TokenAuthorize to update session: if success, jumpt to game. 
+        ②AccountLogin to update accessToken: if success, try ① once. 
+        ③If Failed ① or ②, the user is new to this game. The user need to signup! 
+        */
+
         SetUpButtonEvent();
     }
 
@@ -39,10 +37,10 @@ public class SignupSceneController : SceneVisor
         signupButton.onClick.AddListener(() => {
             OnLoginButtonClicked();
         });
-        //Login
-        loadLoginSceneButton.onClick.AddListener(() =>
+        //username 中の文字としてふさわしくなさそうなものを削除する。 
+        usernameInputField.onEndEdit.AddListener((s) =>
         {
-            LoadLoginScene();
+            usernameInputField.text = System.Text.RegularExpressions.Regex.Replace(usernameInputField.text, @"\n|\r|\s|\t|\v", string.Empty); 
         });
     }
 
@@ -59,29 +57,28 @@ public class SignupSceneController : SceneVisor
     private IEnumerator Login()
     {
         isConnectionInProgress = true;
-
         string username = usernameInputField.text;
-        string email = emailInputField.text;
-        string password = passwordInputField.text;
+        string password = Common.GenerateRondomString(64);
         string _uuid = GenerateGUID();
-        signupWebClient.SetData(username, email, password, _uuid);
+        signupWebClient.SetData(username, password, _uuid);
 
         //データチェックをサーバへ送信する前に行う。
         if (signupWebClient.CheckRequestData()==false)
         {
-            ErrorDisplayText.text = signupWebClient.message;
+            AlertText.text = signupWebClient.message;
             Debug.Log(signupWebClient.message);
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
         }
 
-        ConnectionInProgressDisplayGameObject.SetActive(true);
+        AlertUI.SetActive(true);
+        AlertText.text = "通信中..."; 
         float conn_start = Time.time;
         yield return StartCoroutine(signupWebClient.Send());
         float conn_end = Time.time;
         if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
-        ConnectionInProgressDisplayGameObject.SetActive(false);
+        AlertUI.SetActive(false);
 
         //処理
         if (signupWebClient.isSuccess == true && signupWebClient.isInProgress == false)
@@ -91,25 +88,25 @@ public class SignupSceneController : SceneVisor
             Debug.Log("ParsedResponseData: \n" + lrd.ToString());
             if (signupWebClient.isSignupSuccess)
             {
-                // Store UUID to PlayerPrefs
-                PlayerPrefs.SetString(Common.PLAYERPREFS_UUID, _uuid);
-                PlayerPrefs.Save();
+                Common.DefaultPassword = password;
+                Common.Uuid = _uuid;
+                Debug.Log($"Playerprefs Saved.\nPassword: {password}, UUID: {_uuid}");
                 
-                SuccessDisplayText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));                
+                AlertText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));                
                 OnSignupSuccess();
             }
             else
             {
-                ErrorDisplayText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+                AlertText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             }
         }
         else
         {
             //失敗した時
-            ErrorDisplayText.text = signupWebClient.message;
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            AlertText.text = $"<color=\"red\">{signupWebClient.message}</color>";
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
         }
 
         isConnectionInProgress = false;
@@ -123,13 +120,6 @@ public class SignupSceneController : SceneVisor
         yield return new WaitForSeconds(duration);
         gm.SetActive(false);
         yield break;
-    }
-
-    //LoginSceneへ移動
-    private void LoadLoginScene()
-    {
-        Debug.Log("<color=\"red\">シーンのロードにこのゲーム用のManagerではなくUniryEngine.SceneManagement.SceneManagerを使っています。要修正</color>");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
     }
 
     /// <summary>

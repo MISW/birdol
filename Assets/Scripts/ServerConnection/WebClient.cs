@@ -109,32 +109,42 @@ public abstract class WebClient : MonoBehaviour
             Debug.Log($"Response data: {www.downloadHandler.text}");
             Debug.Log($"Connection Error: {www.error}");
 
-            //success
-            if (www.result==UnityWebRequest.Result.Success )
+            try
             {
-                isSuccess = true;
-                this.message = "通信に成功しました。";
-                HandleSuccessData(www.downloadHandler.text);
+                //success
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    isSuccess = true;
+                    this.message = "通信に成功しました。";
+                    HandleSuccessData(www.downloadHandler.text);
+                }
+                //connection success, but failed to do some action 
+                else if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
+                {
+                    isSuccess = true;
+                    this.message = "不正なデータです。";
+                    HandleSuccessData(www.downloadHandler.text);
+                }
+                //in progress
+                else if (www.result == UnityWebRequest.Result.InProgress)
+                {
+                    HandleInProgressData();
+                }
+                //connection error 
+                else
+                {
+                    isSuccess = false;
+                    this.message = "通信に失敗しました。";
+                    HandleErrorData(www.error);
+                }
             }
-            //connection success, but failed to do some action 
-            else if (www.result==UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
+            catch(Exception e)
             {
-                isSuccess = true;
-                this.message = "不正なデータです。";
-                HandleSuccessData(www.downloadHandler.text);
-            }
-            //in progress
-            else if (www.result==UnityWebRequest.Result.InProgress)
-            {
-                HandleInProgressData();
-            }
-            //connection error 
-            else
-            {
+                Debug.LogError(e);
                 isSuccess = false;
-                this.message = "通信に失敗しました。";
-                HandleErrorData(www.error);
+                this.message = "エラーが生じました。";
             }
+            
 
             isInProgress = false;
             Debug.Log(this.message);

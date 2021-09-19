@@ -18,19 +18,19 @@ public class LoginWebClient: WebClient
     [Serializable]
     public struct LoginRequestData
     {
-        [SerializeField] public string email;
+        [SerializeField] public string account_id;
         [SerializeField] public string password;
         [SerializeField] public string device_id;
 
         /// <summary>
         /// COnstructor
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="account_id"></param>
         /// <param name="password"></param>
         /// <param name="device_id"></param>
-        public LoginRequestData(string email, string password, string device_id)
+        public LoginRequestData(string account_id, string password, string device_id)
         {
-            this.email = email;
+            this.account_id = account_id;
             this.password = password;
             this.device_id = device_id;
         }
@@ -44,15 +44,8 @@ public class LoginWebClient: WebClient
     {
         [SerializeField] public string error;
         [SerializeField] public string result;
-        [SerializeField] public int user_id;
+        [SerializeField] public uint user_id;
         [SerializeField] public string access_token;
-    }
-    [Serializable]
-    public class Auth
-    {
-        [SerializeField] public string user_id;
-        [SerializeField] public string access_token;
-        [SerializeField] public string device_id;
     }
 
     /// <summary>
@@ -82,20 +75,20 @@ public class LoginWebClient: WebClient
     /// <param name="hostname"></param>
     /// <param name="port"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient( string email, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public LoginWebClient( string id, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
     {
-        SetData(email, password, device_id);
+        SetData(id, password, device_id);
     }
 
     /// <summary>
     /// Setdata 
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="id"></param>
     /// <param name="password"></param>
     /// <param name="device_id"></param>
-    public void SetData(string email, string password, string device_id)
+    public void SetData(string id, string password, string device_id)
     {
-        this.loginRequestData = new LoginRequestData(email, password, device_id);
+        this.loginRequestData = new LoginRequestData(id, password, device_id);
     }
 
     /// <summary>
@@ -114,28 +107,15 @@ public class LoginWebClient: WebClient
     public override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.loginRequestData.email.Length > ConnectionModel.EMAIL_LENGTH_MAX || this.loginRequestData.email.Length< ConnectionModel.EMAIL_LENGTH_MIN)
+        if (this.loginRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.loginRequestData.account_id.Length< ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なメールアドレスです。\n{ConnectionModel.EMAIL_LENGTH_MIN}文字から{ConnectionModel.EMAIL_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なidです。\n{ConnectionModel.ACCOUNT_ID_LENGTH_MIN}文字から{ConnectionModel.ACCOUNT_ID_LENGTH_MAX}文字で入力してください。";
         }else if (this.loginRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.loginRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
         }
-        else
-        {
-            try
-            {
-                new MailAddress(this.loginRequestData.email);
-            }
-            catch
-            {
-                ok = false;
-                this.message = "不適切なメールアドレスです。\n間違っていないか確認してください。";
-            }
-        }
-
         return ok;
     }
 
@@ -182,7 +162,7 @@ public class LoginWebClient: WebClient
         {
             if (lrd.result == "success")
             {
-                this.message = "ログインに成功しました。";
+                this.message = "アカウント連携に成功しました。";
                 OnLoginSuccess(lrd.user_id,lrd.access_token);
             }
             else
@@ -216,9 +196,10 @@ public class LoginWebClient: WebClient
     /// </summary>
     /// <param name="user_id"></param>
     /// <param name="access_token"></param>
-    private void OnLoginSuccess(int user_id, string access_token)
+    private void OnLoginSuccess(uint user_id, string access_token)
     {
         isLoginSuccess = true;
-        Debug.Log($"user_id: {user_id}, access_token: {access_token}\n<color=\"red\">TO DO: デバイスに保存する。</color>");
+        Common.UserID = user_id;
+        Common.AccessToken = access_token;
     }
 }
