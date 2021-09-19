@@ -169,6 +169,9 @@ public class RunGacha : MonoBehaviour
                     gachaobj.transform.Find("Frame").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Frame_Yellow_Edge");
                     break;
             }
+
+
+
             gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + gachacharacter.id);
         }
 
@@ -186,6 +189,10 @@ public class RunGacha : MonoBehaviour
             CharacterModel naaa = Common.characters[result[resultIndex]];
             resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/" + result[resultIndex]); //立ち絵がまだないので現時点ではアイコンで代用。立ち絵が追加され次第そちらに変更。
                                                                                                                       //   Debug.Log(naaa.name);
+            Debug.Log(naaa.visual);
+            Debug.Log(naaa.vocal);
+            Debug.Log(naaa.dance);
+            
             string rare;
             switch (naaa.rarity)
             {
