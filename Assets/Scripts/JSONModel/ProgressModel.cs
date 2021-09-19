@@ -19,6 +19,7 @@ public class ProgressModel
 {
 	//メインキャラクター
 	public int characterId;
+	public string characterName;
 	public float visual;
 	public float vocal;
 	public float dance;
@@ -26,7 +27,6 @@ public class ProgressModel
 	public SkillType activeSkillType;
 	public float activeSkillScore;
 	public int mainStoryId;
-	public int subStoryId;
 	//サポートキャラクター
 	public int supportCharacterId;
 	public int passiveSkillLevel = 1;
