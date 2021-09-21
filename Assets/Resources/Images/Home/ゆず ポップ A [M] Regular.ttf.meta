@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: cf45fd32db3985f4c8c0ac3da52a0d79
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Yuzu Pop A [M] Regular
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a341f15e62518304388a3f6b5671671d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
