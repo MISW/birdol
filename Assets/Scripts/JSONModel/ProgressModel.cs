@@ -23,6 +23,7 @@ public class ProgressModel
 	public float visual;
 	public float vocal;
 	public float dance;
+	public int bestskill; //(0:vocal 1:visual 2: dance)
 	public int activeSkillLevel = 1;
 	public SkillType activeSkillType;
 	public float activeSkillScore;
