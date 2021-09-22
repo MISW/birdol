@@ -13,6 +13,8 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     public int id;
     public string area = "";
     public Text name;
+    public GameObject light;
+    public GameObject listchild;
     public ProgressModel characterInf;
     
 
@@ -25,6 +27,12 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         newcolor.g -= (80f / 255f);
         newcolor.b -= (80f / 255f);
         image.color = newcolor;
+        Image imagelistchild = listchild.transform.GetChild(0).gameObject.GetComponent<Image>();
+        Color newlccolor = image.color;
+        newlccolor.r -= (80f / 255f);
+        newlccolor.g -= (80f / 255f);
+        newlccolor.b -= (80f / 255f);
+        imagelistchild.color = newcolor;
     }
 
     public void setWhite()
@@ -34,8 +42,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         Image standing = transform.parent.gameObject.GetComponent<Image>();
         standing.color = new Color(255f, 255f, 255f);
         
-
-
     }
     public void setArea()
     {
@@ -44,24 +50,28 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         Image standing = transform.parent.gameObject.GetComponent<Image>();
         if (executingSkill)
         {
-            setWhite();
+            //setWhite();
             return;
         }
-        if (rt.localPosition.x > 150)
+        if (rt.localPosition.x > 140)
         {
-            standing.color = new Color(151f / 255f, 187f / 255f, 223f / 255f);
+            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_da");
             area = "dance";
+            if(listchild!=null)listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
 
         }
-        else if (rt.localPosition.x < -150)
+        else if (rt.localPosition.x < -140)
         {
-            standing.color = new Color(246f / 255f, 158f / 255f, 216f / 255f);
-            area = "visual";
+            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vo");
+            area = "vocal";
+            if (listchild != null) listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+
         }
         else
         {
-            standing.color = new Color(198f / 255f, 190f / 255f, 86f / 255f);
-            area = "vocal";
+            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vi");
+            area = "visual";
+            if (listchild != null) listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
         }
        
     }
@@ -74,6 +84,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     void Start()
     {
         setArea();
+        light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
     }
 
 
@@ -94,6 +105,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         parenttransform.y -= 150;
         transform.parent.position = parenttransform;
         setArea();
+        Debug.Log(114514);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -103,6 +115,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(!LiveController.executingSkills)LiveController.selectedcharacter = id;
+        if(!LiveController.executingSkills) LiveController.selectedcharacter = id;
     }
 }
