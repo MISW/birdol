@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIchanger : MonoBehaviour{
     public GameObject Score_Text; //スコアテキストのUI指定
     public int Score_num; //スコアに表示する値(6桁以下の整数)
+    public int characterId;
     public GameObject Judge_Image; //判定用画像のUI指定
     public GameObject Chara_Image; //立ち絵画像のUI指定
     public Sprite[] Judge_Sprites; //判定用の画像の配列
@@ -20,7 +21,8 @@ public class UIchanger : MonoBehaviour{
     void Start(){ //Start時にUIを全て変更
         Score_Text.GetComponent<Text>().text = Score_num.ToString("000,000");
         Judge_Image.GetComponent<Image>().sprite = Judge_Sprites[Judge_Image_num];
-        Chara_Image.GetComponent<Image>().sprite = Chara_Sprites[Chara_Image_num];
+        //Chara_Image.GetComponent<Image>().sprite = Chara_Sprites[Chara_Image_num];
+        Chara_Image.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Chara_Image_num);
         Achievement_Image.GetComponent<Image>().fillAmount = Achievement_num;
         Achievement_Text.GetComponent<Text>().text = Achievement_num.ToString("P0");
     }

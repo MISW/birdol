@@ -10,8 +10,9 @@ public class LiveController : MonoBehaviour
 {
     public GameObject startbutton;
     public GameObject Background;
+    public GameObject ResultUI;
     public GameObject sailium;
-    public GameObject light;
+    public GameObject backlight;
     public Text testText;
     int dance = 0;
     int visual = 0;
@@ -25,6 +26,9 @@ public class LiveController : MonoBehaviour
     public float score = 0;
     public int remainingTurn = 5;
     float showspeed = 0.01f;
+
+    float maxscore = 0;
+    int maxindex = 0;
 
     public static bool executingSkills = false;
     void checkPos()
@@ -43,18 +47,18 @@ public class LiveController : MonoBehaviour
             if (area == "dance") dance++;
             else if (area == "visual") visual++;
             else if (area == "vocal") vocal++;
-            objs[i].transform.parent.gameObject.transform.SetSiblingIndex(i);
             depth++;
             if (objs[i].GetComponent<CharacterController>().id == selectedcharacter)
             {
-                Vector2 position = new Vector2(0,300);
-                light.transform.parent = objs[i].transform;
-                light.transform.localPosition = position;
-                light.transform.SetSiblingIndex(i);
+                objs[i].GetComponent<CharacterController>().light.SetActive(true);
                 active = objs[i].GetComponent<CharacterController>().completedActiveSkill;
             }
+            else
+            {
+                objs[i].GetComponent<CharacterController>().light.SetActive(false);
+            }
+            objs[i].transform.parent.gameObject.transform.SetSiblingIndex(i);
         }
-        //Debug.Log("Dance:"+dance+ " Visual:" + visual+" Vocal:"+vocal);
         if ((dance <= 2 && visual <= 2 && vocal <= 2)&&!active)
         {
             startbutton.SetActive(true);
@@ -80,38 +84,53 @@ public class LiveController : MonoBehaviour
             objs[i].GetComponent<CharacterController>().characterInf = characters[i];
             objs[i].GetComponent<CharacterController>().name.text = characters[i].characterName;
             objs[i].GetComponent<CharacterController>().initImage();
-            listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characters[i].characterId);
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characters[i].characterId);
             listchilds[i].transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = ((int)characters[i].visual).ToString();
             listchilds[i].transform.GetChild(2).GetChild(1).gameObject.GetComponent<Text>().text = ((int)characters[i].vocal).ToString();
             listchilds[i].transform.GetChild(2).GetChild(2).gameObject.GetComponent<Text>().text = ((int)characters[i].dance).ToString();
+            if (characters[i].bestskill == 0) listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (characters[i].bestskill == 1) listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            else listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+            objs[i].GetComponent<CharacterController>().listchild = listchilds[i];
+
         }
-        for (int y = -250; y < 50; y += 60)
+        float baseheight = Screen.height + 220f;
+        int xins = 90;
+        float scale = 1.0f;
+        int layer = 0;
+        for (int y = 60; y < 480; y += 80)
         {
-            for (int x = -200; x < 200; x += 40)
+            for (int x = -270; x <= 270; x += xins)
             {
                 GameObject instance = Instantiate(sailium, Background.transform);
+                instance.transform.parent = Background.transform;
                 instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(x,y);
+                instance.GetComponent<Sailium>().layer = layer;
+                instance.transform.localScale *= scale;
                 sailiumcollections.Add(instance);
             }
+            layer++;
+            xins -= 10;
+            scale -= 0.1f;
         }
-        
-        
-
-
-
+        backlight.transform.SetSiblingIndex(114514);
     }
 
     private IEnumerator updateScoreBar(float oldScore, float newScore)
     {
         System.Random random = new System.Random();
+        float kb = (float)max / 60.0f;
+        float k = 0;
         while (oldScore < newScore)
         {
             oldScore++;
-            if ((int)oldScore % 2 == 0)
+            k++;
+            if (k>=kb&& sailiumcollections.Count>0)
             {
                 GameObject gameObject = sailiumcollections.ElementAt(random.Next(sailiumcollections.Count));
-                gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/sailium");
+                gameObject.GetComponent<Sailium>().enableSailium();
                 sailiumcollections.Remove(gameObject);
+                k = 0;
             }
             ScoreBar.GetComponent<Scrollbar>().size = oldScore / max;
             yield return new WaitForSeconds(showspeed);
@@ -122,33 +141,38 @@ public class LiveController : MonoBehaviour
     {
         characterObj.executingSkill = true;
         float newscore = score;
-        //ÉpÉâÉÅÅ[É^ÉXÉRÉA
+        //ÔøΩpÔøΩÔøΩÔøΩÔøΩÔøΩ[ÔøΩ^ÔøΩXÔøΩRÔøΩA
         float parascore;
         ProgressModel characterInf = characterObj.characterInf;
         if (characterObj.area == "visual") parascore = characterInf.visual;
         else if (characterObj.area == "vocal") parascore = characterInf.vocal;
         else parascore = characterInf.dance;
-        //ÉAÉNÉeÉBÉuÉXÉLÉã
+        //ÔøΩAÔøΩNÔøΩeÔøΩBÔøΩuÔøΩXÔøΩLÔøΩÔøΩ
         if (selected)
         {
             if (characterInf.activeSkillType == SkillType.Plus)
             {
-                score += (characterInf.activeSkillScore * characterInf.activeSkillLevel);
+                parascore += (characterInf.activeSkillScore * characterInf.activeSkillLevel);
             }
             else
             {
                 parascore *= (characterInf.activeSkillScore * characterInf.activeSkillLevel);
             }
             CharacterModel upperInfo = Common.characters[characterInf.characterId];
-            testText.text = upperInfo.name + " ÇÃ " + upperInfo.skillname;
-            listchilds[index].transform.GetChild(0).gameObject.SetActive(true);
+            testText.text = upperInfo.name + " „ÅÆ " + upperInfo.skillname;
+            //listchilds[index].transform.GetChild(0).gameObject.SetActive(true);
         }
-        //ÉpÉbÉVÉuÉXÉLÉã(å„Ç≈é¿ëï)
+        //„Çπ„Ç≥„Ç¢„ÅÆÊõ¥Êñ∞
+        characterObj.score += parascore;
+        if (characterObj.score > maxscore)
+        {
+            maxscore = characterObj.score;
+            maxindex = index;
+        }
         newscore += parascore;
-        Debug.Log("ID:"+characterObj.id+"Old:" + score + " New:" + newscore + "Active:" + selected);
         yield return updateScoreBar(score, newscore);
         score = newscore;
-        yield return new WaitForSeconds(1.0f);
+        //yield return new WaitForSeconds(1.0f);
         characterObj.executingSkill = false;
     }
 
@@ -164,15 +188,27 @@ public class LiveController : MonoBehaviour
         objs[selectedcharacter].GetComponent<CharacterController>().finishSkill();
         if (remainingTurn > 0)
         {
-            testText.text = "écÇËÉ^Å[Éìêî:"+remainingTurn;
+            testText.text = "ÊÆã„Çä„Çø„Éº„É≥Êï∞:"+remainingTurn;
             executingSkills = false;
         }else if (score >= max)
         {
-            testText.text = "Mission Complete!";
+            //testText.text = "Mission Complete!";
+            var resultchanger = ResultUI.GetComponent<UIchanger>();
+            resultchanger.Judge_Image_num = 0;
+            resultchanger.Chara_Image_num = GameObject.FindGameObjectsWithTag("LiveCharacter")[maxindex].GetComponent<CharacterController>().characterInf.characterId;
+            resultchanger.Score_num = (int)score;
+            resultchanger.Achievement_num = score / max;
+            ResultUI.SetActive(true);
         }
         else
         {
-            testText.text = "Mission Failed!";
+            //testText.text = "Mission Failed!";
+            var resultchanger = ResultUI.GetComponent<UIchanger>();
+            resultchanger.Judge_Image_num = 1;
+            resultchanger.Chara_Image_num = GameObject.FindGameObjectsWithTag("LiveCharacter")[maxindex].GetComponent<CharacterController>().characterInf.characterId;
+            resultchanger.Score_num = (int)score;
+            resultchanger.Achievement_num = score / max;
+            ResultUI.SetActive(true);
         }
     }
 
@@ -187,9 +223,8 @@ public class LiveController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         if (Common.characters == null) Common.initCharacters();//Test Only
-        testText.text = "écÇËÉ^Å[Éìêî:" + 5;
+        testText.text = "ÊÆã„Çä„Çø„Éº„É≥Êï∞:" + 5;
         initLiveStage();
-        light.SetActive(true);
         checkPos();
     }
 
