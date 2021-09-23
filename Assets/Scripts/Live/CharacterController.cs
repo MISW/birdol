@@ -44,6 +44,26 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         standing.color = new Color(255f, 255f, 255f);
         
     }
+
+    public void setParamsFont()
+    {
+        Text para = listchild.transform.GetChild(2).gameObject.GetComponent<Text>();
+        if (area == "visual")
+        {
+            para.text = ((int)characterInf.Visual).ToString();
+            para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
+        }
+        else if(area == "vocal")
+        {
+            para.text = ((int)characterInf.Vocal).ToString();
+            para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
+        }
+        else
+        {
+            para.text = ((int)characterInf.Dance).ToString();
+            para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
+        }
+    }
     public void setArea()
     {
         RectTransform rt;
@@ -71,12 +91,14 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vi");
             area = "visual";
         }
-       
+        setParamsFont();
+
+
     }
 
     public void initImage()
     {
-        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.characterId);
+        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     void Start()
@@ -93,7 +115,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log(eventData.position.y);
         if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;

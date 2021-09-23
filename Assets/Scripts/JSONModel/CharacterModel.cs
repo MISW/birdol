@@ -20,5 +20,11 @@ public class CharacterModel
 	public int visual;
 	public int dance;
 	public string skillname;
-    
+    public string activetype;
+	public string activeparams;
+	public float activeskillscore;
+	public string passivetype;
+	public string passiveparams;
+	public float passiveskillscore;
+	public float passiveprobability;
 }
