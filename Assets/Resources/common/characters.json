@@ -97,7 +97,7 @@
   "activeparams":"visual&dance",
   "activeskillscore":0.5,
   "passivetype":"streetgroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -131,7 +131,7 @@
   "activeparams":"visual",
   "activeskillscore":0.5,
   "passivetype":"streetgroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -148,7 +148,7 @@
   "activeparams":"のdance",
   "activeskillscore":0.5,
   "passivetype":"watergroup",
-  "passiveparams":"vocal＆dance",
+  "passiveparams":"vocal&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -216,7 +216,7 @@
   "activeparams":"visual&dance",
   "activeskillscore":2.0,
   "passivetype":"watergroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -233,7 +233,7 @@
   "activeparams":"visual&dance",
   "activeskillscore":1.0,
   "passivetype":"watergroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -250,7 +250,7 @@
   "activeparams":"vocal&visual",
   "activeskillscore":1.5,
   "passivetype":"mountaingroup",
-  "passiveparams":"vocal＆visual",
+  "passiveparams":"vocal&visual",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -301,7 +301,7 @@
   "activeparams":"vocal&visual",
   "activeskillscore":2.0,
   "passivetype":"mountaingroup",
-  "passiveparams":"vocal＆visual",
+  "passiveparams":"vocal&visual",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -352,7 +352,7 @@
   "activeparams":"visual&dance",
   "activeskillscore":1.0,
   "passivetype":"mountaingroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -437,7 +437,7 @@
   "activeparams":"all",
   "activeskillscore":1.0,
   "passivetype":"snowgroup",
-  "passiveparams":"vocal＆visual",
+  "passiveparams":"vocal&visual",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },
@@ -471,7 +471,7 @@
   "activeparams":"visual&dance",
   "activeskillscore":2.0,
   "passivetype":"snowgroup",
-  "passiveparams":"visual＆dance",
+  "passiveparams":"visual&dance",
   "passiveskillscore":1.5,
   "passiveprobability":0.1
  },

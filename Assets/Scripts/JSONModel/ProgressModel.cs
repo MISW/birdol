@@ -17,21 +17,27 @@ public enum SkillType
 [System.Serializable]
 public class ProgressModel
 {
+	public int id;
 	//メインキャラクター
-	public int characterId;
-	public string characterName;
-	public float visual;
-	public float vocal;
-	public float dance;
-	public string group;
-	public int bestskill; //(0:vocal 1:visual 2: dance)
-	public int activeSkillLevel = 1;
-	public SkillType activeSkillType;
-	public float activeSkillScore;
-	public int mainStoryId;
+	public int MainCharacterId;
+	public string Name;
+	public float Visual;
+	public float Vocal;
+	public float Dance;
+	public string Group;
+	public string BestSkill; //(0:vocal 1:visual 2: dance)
+	public int ActiveSkillLevel = 1;
+	public string ActiveSkillName;
+	public string ActiveSkillType;
+	public string ActiveSkillParams;
+	public float ActiveSkillScore;
+	public int MainStoryId;
 	//サポートキャラクター
-	public int supportCharacterId;
-	public int passiveSkillLevel = 1;
-	public string passiveSkilltype;
-	public float passiveSkillScore;
+	public int SupportCharacterId;
+	public string SupportSkillName;
+	public int PassiveSkillLevel = 1;
+	public string PassiveSkillType;
+	public string PassiveSkillParams;
+	public float PassiveSkillScore;
+	public float PassiveSkillProbability;
 }
