@@ -549,7 +549,7 @@ MonoBehaviour:
   - 36
   - 39
   - 50
-  maxStatus: 50
+  maxStatus: 100
   star:
   - {fileID: 21300000, guid: 546dd0baf56482440b149da11459dc99, type: 3}
   - {fileID: 21300000, guid: f08dd85dbe97b7e4e95ea709519e2a26, type: 3}
@@ -562,8 +562,8 @@ MonoBehaviour:
   - characterId: 1
     characterName: 
     visual: 0
-    vocal: 4
-    dance: 8
+    vocal: 7
+    dance: 14
     bestskill: 0
     activeSkillLevel: 1
     activeSkillType: 0
@@ -575,9 +575,9 @@ MonoBehaviour:
     passiveSkillScore: 0
   - characterId: 2
     characterName: 
-    visual: 12
-    vocal: 16
-    dance: 20
+    visual: 21
+    vocal: 28
+    dance: 35
     bestskill: 0
     activeSkillLevel: 1
     activeSkillType: 0
@@ -589,9 +589,9 @@ MonoBehaviour:
     passiveSkillScore: 0
   - characterId: 3
     characterName: 
-    visual: 24
-    vocal: 28
-    dance: 32
+    visual: 42
+    vocal: 49
+    dance: 56
     bestskill: 0
     activeSkillLevel: 1
     activeSkillType: 0
@@ -603,9 +603,9 @@ MonoBehaviour:
     passiveSkillScore: 0
   - characterId: 4
     characterName: 
-    visual: 36
-    vocal: 42
-    dance: 40
+    visual: 63
+    vocal: 70
+    dance: 77
     bestskill: 0
     activeSkillLevel: 1
     activeSkillType: 0
@@ -617,9 +617,9 @@ MonoBehaviour:
     passiveSkillScore: 0
   - characterId: 5
     characterName: 
-    visual: 42
-    vocal: 46
-    dance: 50
+    visual: 84
+    vocal: 91
+    dance: 100
     bestskill: 0
     activeSkillLevel: 1
     activeSkillType: 0

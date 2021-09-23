@@ -70,6 +70,10 @@ public class Ending : MonoBehaviour
         currentCharacterVisual = (int)Mathf.Min(Characters[i].visual,maxStatus);
         currentCharacterDance = (int)Mathf.Min(Characters[i].dance,maxStatus);
 
+        currentCharacterVocal = (int)(((float)currentCharacterVocal / (float)maxStatus) * 50.0f);
+        currentCharacterVisual = (int)(((float)currentCharacterVisual / (float)maxStatus) * 50.0f);
+        currentCharacterDance = (int)(((float)currentCharacterDance / (float)maxStatus) * 50.0f);
+
         SetSongStar(currentCharacterVocal);
         SetVisualStar(currentCharacterVisual);
         SetDanceStar(currentCharacterDance);
@@ -86,7 +90,7 @@ public class Ending : MonoBehaviour
         {
             VocalStarImage[i].sprite = star[5];
         }
-        if(status != maxStatus) VocalStarImage[status / 5].sprite = star[status % 5];
+        if(status != 50) VocalStarImage[status / 5].sprite = star[status % 5];
         for(int i=status / 5 + 1;i<maxStar;i++)
         {
             VocalStarImage[i].sprite = star[0];
@@ -103,7 +107,7 @@ public class Ending : MonoBehaviour
         {
             VisualStarImage[i].sprite = star[5];
         }
-        if (status != maxStatus) VisualStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50) VisualStarImage[status / 5].sprite = star[status % 5];
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
             VisualStarImage[i].sprite = star[0];
@@ -120,7 +124,7 @@ public class Ending : MonoBehaviour
         {
             DanceStarImage[i].sprite = star[5];
         }
-        if (status != maxStatus) DanceStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50) DanceStarImage[status / 5].sprite = star[status % 5];
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
             DanceStarImage[i].sprite = star[0];
