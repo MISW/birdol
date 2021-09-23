@@ -14,9 +14,9 @@ public class RunGacha : MonoBehaviour
     float[] probVec = { 0.1f, 0.25f, 0.65f };
     //�������jB
     //List<CharacterModel> Kuji = new List<CharacterModel>();
-    GameObject result10; //10連の結果を全部表示するオブジェクト
-    GameObject resultImage; //画面いっぱいに映る立ち絵
+    GameObject result10, resultImage;
     GameObject[] gachaobjs = new GameObject[10];
+    CanvasScaler cs;
     int resultIndex; //結果を0から9まで
     int[] result = new int[10]; //結果
     bool isResultShowing;
@@ -26,6 +26,10 @@ public class RunGacha : MonoBehaviour
         result10 = GameObject.Find("GachaResults");
         resultImage = GameObject.Find("Image");
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
+
+        cs = GameObject.Find("Canvas").GetComponent<CanvasScaler>();
+
+        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
     }
 
     void Start()
@@ -39,7 +43,7 @@ public class RunGacha : MonoBehaviour
         R2 = new List<CharacterModel>();
         R1 = new List<CharacterModel>();
         if (Common.characters == null) Common.initCharacters();//Test Only
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 32; i++)
         {   //�������jA
             CharacterModel character = Common.characters[i];
             if (character.rarity == 1)
@@ -92,6 +96,8 @@ public class RunGacha : MonoBehaviour
     {
         result10.SetActive(false);
 
+        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
+
         int resR = 3; //���I���A�x
         int res; //���I�A�C�e���ԍ�
         foreach (GameObject gachaobj in gachaobjs/*GameObject.FindGameObjectsWithTag("Gacha")*/)
@@ -104,7 +110,7 @@ public class RunGacha : MonoBehaviour
                 prob += probVec[j];
                 if (f <= prob)
                 {
-                    resR = j; 
+                    resR = j;
                     break;
                 }
             }
@@ -171,33 +177,35 @@ public class RunGacha : MonoBehaviour
         if (resultIndex < 10)
         {
             CharacterModel naaa = Common.characters[result[resultIndex]];
-            resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]); 
-            
-        /*    string rare;
-            switch (naaa.rarity)
-            {
-                case 3:
-                    rare = "SSR";
-                    rarityNameLabel.color = Color.red;
-                    break;
+            resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
 
-                case 2:
-                    rare = "SR";
-                    rarityNameLabel.color = Color.yellow;
-                    break;
+            /*    string rare;
+                switch (naaa.rarity)
+                {
+                    case 3:
+                        rare = "SSR";
+                        rarityNameLabel.color = Color.red;
+                        break;
 
-                default:
-                    rare = "R";
-                    rarityNameLabel.color = Color.black;
-                    break;
-            }
-            rarityNameLabel.text = rare + "\n" + naaa.name;*/
+                    case 2:
+                        rare = "SR";
+                        rarityNameLabel.color = Color.yellow;
+                        break;
+
+                    default:
+                        rare = "R";
+                        rarityNameLabel.color = Color.black;
+                        break;
+                }
+                rarityNameLabel.text = rare + "\n" + naaa.name;*/
         }
 
         resultIndex++;
 
         if (resultIndex == 11)
         {
+            cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+
             isResultShowing = false;
             resultImage.SetActive(false);
             result10.SetActive(true);
