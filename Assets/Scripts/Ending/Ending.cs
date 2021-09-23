@@ -6,30 +6,32 @@ using UnityEngine.UI;
 public class Ending : MonoBehaviour
 {
     #region//public変数
+    [Header("Characterのプレハブ")] public GameObject character;
+    public GameObject canvas;
     [Header("各キャラクターのステータス")] public float[] characterStatus = new float[15];
     [Header("キャラクターのステータスの最大値")]public float maxStatus; //ステータス上限値
     [Header("星のSprite")]public Sprite[] star = new Sprite[6];
     [Header("星の数")]public int maxStar; //星の数
+    public ProgressModel[] Characters = new ProgressModel[5];
     #endregion
 
     #region//private変数
-    private int currentCharacterNumber = 1;
-    private int currentCharacterSong = 0;
+    private int currentCharacterNumber = 0;
+    private int currentCharacterVocal = 0;
     private int currentCharacterVisual = 0;
     private int currentCharacterDance = 0;
-    private GameObject currentCharacter = null;
-    private Image currentCharacterImage = null;
     private GameObject Star = null;
-    private List<Image> SongStarImage = new List<Image>();
+    private List<Image> VocalStarImage = new List<Image>();
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
+    private List<GameObject> CharacterList = new List<GameObject>();
     #endregion
 
     void Start()
     {
         FindStar();
-        ChangeCurrentCharacterImage(1);
-        ChangeCurrentCharacterStars(1);
+        SetCharacter();
+        ChangeCurrentCharacterStars(0);
     }
 
     /// <summary>
@@ -41,7 +43,7 @@ public class Ending : MonoBehaviour
         //Debug.Log(i);
         if(currentCharacterNumber != i)
         {
-            currentCharacterImage.enabled = false;
+            CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
             currentCharacterNumber = i;
@@ -54,9 +56,7 @@ public class Ending : MonoBehaviour
     /// <param name="i"></param>
     private void ChangeCurrentCharacterImage(int i)
     {
-        currentCharacter = GameObject.Find("Character" + i);
-        currentCharacterImage = currentCharacter.GetComponent<Image>();
-        currentCharacterImage.enabled = true;
+        CharacterList[i].GetComponent<Image>().enabled = true;
     }
 
     /// <summary>
@@ -66,11 +66,11 @@ public class Ending : MonoBehaviour
     private void ChangeCurrentCharacterStars(int i)
     {
         //各キャラクターのステータスを読み込み、ステータスの最大値を超えていた場合はその値をステータスの最大値に変更
-        currentCharacterSong = (int)Mathf.Min(characterStatus[(i - 1) * 3],maxStatus);
-        currentCharacterVisual = (int)Mathf.Min(characterStatus[(i - 1) * 3 + 1],maxStatus);
-        currentCharacterDance = (int)Mathf.Min(characterStatus[(i - 1) * 3 + 2],maxStatus);
+        currentCharacterVocal = (int)Mathf.Min(Characters[i].vocal,maxStatus);
+        currentCharacterVisual = (int)Mathf.Min(Characters[i].visual,maxStatus);
+        currentCharacterDance = (int)Mathf.Min(Characters[i].dance,maxStatus);
 
-        SetSongStar(currentCharacterSong);
+        SetSongStar(currentCharacterVocal);
         SetVisualStar(currentCharacterVisual);
         SetDanceStar(currentCharacterDance);
 
@@ -84,12 +84,12 @@ public class Ending : MonoBehaviour
     {
         for(int i=0;i<status/5;i++)
         {
-            SongStarImage[i].sprite = star[5];
+            VocalStarImage[i].sprite = star[5];
         }
-        if(status != maxStatus) SongStarImage[status / 5].sprite = star[status % 5];
+        if(status != maxStatus) VocalStarImage[status / 5].sprite = star[status % 5];
         for(int i=status / 5 + 1;i<maxStar;i++)
         {
-            SongStarImage[i].sprite = star[0];
+            VocalStarImage[i].sprite = star[0];
         }
     }
 
@@ -134,12 +134,26 @@ public class Ending : MonoBehaviour
     {
         for(int i=1;i<=maxStar;i++)
         {
-            Star = GameObject.Find("SongStar" + i);
-            SongStarImage.Add(Star.GetComponent<Image>());
+            Star = GameObject.Find("VocalStar" + i);
+            VocalStarImage.Add(Star.GetComponent<Image>());
             Star = GameObject.Find("VisualStar" + i);
             VisualStarImage.Add(Star.GetComponent<Image>());
             Star = GameObject.Find("DanceStar" + i);
             DanceStarImage.Add(Star.GetComponent<Image>());
+        }
+    }
+
+    private void SetCharacter()
+    {
+        var parent = canvas.transform;
+        for(int i=0;i<5;i++)
+        {
+            GameObject C = Instantiate(character, parent);
+            CharacterList.Add(C);
+            CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].characterId);
+            CharacterList[i].GetComponent<Image>().enabled = false;
+            if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
     }
 }
