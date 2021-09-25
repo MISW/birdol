@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,19 +19,19 @@ public class SignupWebClient : WebClient
     public struct SignupRequestData
     {
         [SerializeField] public string name;
-        [SerializeField] public string password;
+        [SerializeField] public string public_key;
         [SerializeField] public string device_id;
 
         /// <summary>
         /// COnstructor
         /// </summary>
         /// <param name="name">user name</param>
-        /// <param name="password">password</param>
+        /// <param name="public_key">public_key</param>
         /// <param name="device_id">Unique ID to determine device</param>
-        public SignupRequestData(string name, string password, string device_id)
+        public SignupRequestData(string name, string public_key, string device_id)
         {
             this.name = name;
-            this.password = password;
+            this.public_key = public_key;
             this.device_id = device_id;
         }
     }
@@ -45,14 +46,8 @@ public class SignupWebClient : WebClient
         [SerializeField] public string result;
         [SerializeField] public uint user_id;
         [SerializeField] public string access_token;
+        [SerializeField] public string refresh_token;
         [SerializeField] public string account_id;
-    }
-    [Serializable]
-    public class Auth
-    {
-        [SerializeField] public uint user_id;
-        [SerializeField] public string access_token;
-        [SerializeField] public string device_id;
     }
 
     /// <summary>
@@ -60,43 +55,19 @@ public class SignupWebClient : WebClient
     /// </summary>
     /// <param name="requestMethod"></param>
     /// <param name="path">default "/"</param>
-    public SignupWebClient(HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public SignupWebClient(HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
     {
-    }
-
-    /// <summary>
-    /// Constructor: 
-    /// </summary>
-    /// <param name="signupRequestData"></param>
-    /// <param name="requestMethod"></param>
-    /// <param name="path">default "/"</param>
-    public SignupWebClient(SignupRequestData signupRequestData, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
-    {
-        this.signupRequestData = signupRequestData;
-    }
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="username"></param>
-    /// <param name="password"></param>
-    /// <param name="device_id"></param>
-    /// <param name="requestMethod"></param>
-    /// <param name="loginPath"></param>
-    public SignupWebClient(string username, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
-    {
-        SetData(username, password, device_id);
     }
 
     /// <summary>
     /// Setdata 
     /// </summary>
     /// <param name="username"></param>
-    /// <param name="password"></param>
+    /// <param name="public_key"></param>
     /// <param name="device_id"></param>
-    public void SetData(string username, string password, string device_id)
+    public void SetData(string username, string public_key, string device_id)
     {
-        this.signupRequestData = new SignupRequestData(username, password, device_id);
+        this.signupRequestData = new SignupRequestData(username, public_key, device_id );
     }
 
     /// <summary>
@@ -108,7 +79,7 @@ public class SignupWebClient : WebClient
     {
         bool ok = true;
         if (string.IsNullOrEmpty(srd.result)) ok = false;
-        else if (srd.result == "success" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id))) ok = false;
+        else if (srd.result == "success" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id) || !string.IsNullOrEmpty(srd.refresh_token))) ok = false;
         return ok;
     }
 
@@ -123,18 +94,6 @@ public class SignupWebClient : WebClient
             ok = false;
             this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
         }
-        /*
-        else if (this.signupRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.signupRequestData.account_id.Length < ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
-        {
-            ok = false;
-            this.message = $"不適切なidです。\n{ConnectionModel.ACCOUNT_ID_LENGTH_MIN}文字から{ConnectionModel.ACCOUNT_ID_LENGTH_MAX}文字で入力してください。";
-        }
-        else if (this.signupRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.signupRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
-        {
-            ok = false;
-            this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
-        }
-        */
 
         return ok;
     }
@@ -146,20 +105,13 @@ public class SignupWebClient : WebClient
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
         isSignupSuccess = false;
-        try
-        {
-            this.signupRequestData.password = Hash(this.signupRequestData.password);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-            this.message = "このパスワードは使用できません。";
-            throw;
-        }
+
         byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.signupRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
+
+        GameWebClient.SetAuthenticationHeader(www);
     }
 
 
@@ -180,10 +132,10 @@ public class SignupWebClient : WebClient
         }
         else
         {
-            if (srd.result == "success")
+            if (srd.result == "ok")
             {
                 this.message = "アカウント新規登録に成功しました。";
-                OnSignupSuccess(srd.user_id, srd.access_token, srd.account_id);
+                OnSignupSuccess(srd);
             }
             else
             {
@@ -214,15 +166,14 @@ public class SignupWebClient : WebClient
     /// <summary>
     /// Signup成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
     /// </summary>
-    /// <param name="user_id"></param>
-    /// <param name="access_token"></param>
-    /// <param name="account_id"></param>
-    private void OnSignupSuccess(uint user_id, string access_token, string account_id)
+    /// <param name="srd">Signup Response Data</param>
+    private void OnSignupSuccess(SignupResponseData srd)
     {
         isSignupSuccess = true;
-        Debug.Log($"PlayerPrefs Saved\nuser_id: {user_id}, access_token: {access_token}, default_account_id: {account_id}");
-        Common.UserID = user_id;
-        Common.AccessToken = access_token;
-        Common.DefaultAccountID = account_id;
+        Debug.Log($"PlayerPrefs Saved\nuser_id: {srd.user_id}, access_token: {srd.access_token}, refresh_token: {srd.refresh_token}, default_account_id: {srd.account_id}");
+        Common.UserID = srd.user_id;
+        Common.AccessToken = srd.access_token;
+        Common.RefreshToken = srd.refresh_token;
+        Common.DefaultAccountID = srd.account_id;
     }
 }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(SignupWebClient))]
 public class SignupSceneController : SceneVisor
 {
     [Header("SignUp Web Client")]
-    [SerializeField] private SignupWebClient signupWebClient;
+    private SignupWebClient signupWebClient;
 
     [Header("Input")]
     [SerializeField] InputField usernameInputField;
@@ -28,6 +27,8 @@ public class SignupSceneController : SceneVisor
         ③If Failed ① or ②, the user is new to this game. The user need to signup! 
         */
 
+        this.signupWebClient = new SignupWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/user");
+
         SetUpButtonEvent();
     }
 
@@ -35,7 +36,7 @@ public class SignupSceneController : SceneVisor
     {
         //Signup
         signupButton.onClick.AddListener(() => {
-            OnLoginButtonClicked();
+            OnSignupButtonClicked();
         });
         //username 中の文字としてふさわしくなさそうなものを削除する。 
         usernameInputField.onEndEdit.AddListener((s) =>
@@ -44,23 +45,23 @@ public class SignupSceneController : SceneVisor
         });
     }
 
-    private void OnLoginButtonClicked()
+    private void OnSignupButtonClicked()
     {
         if (isConnectionInProgress) return;
-        StartCoroutine(Login());
+        StartCoroutine(Signup());
     }
 
     /// <summary>
-    /// Login Request 
+    /// Signup Request 
     /// </summary>
     /// <returns></returns>
-    private IEnumerator Login()
+    private IEnumerator Signup()
     {
         isConnectionInProgress = true;
         string username = usernameInputField.text;
-        string password = Common.GenerateRondomString(64);
+        Common.RsaKeyPair = Common.CreateRsaKeyPair();
         string _uuid = GenerateGUID();
-        signupWebClient.SetData(username, password, _uuid);
+        signupWebClient.SetData(username, Common.RsaKeyPair.publicKey, _uuid);
 
         //データチェックをサーバへ送信する前に行う。
         if (signupWebClient.CheckRequestData()==false)
@@ -84,13 +85,12 @@ public class SignupSceneController : SceneVisor
         if (signupWebClient.isSuccess == true && signupWebClient.isInProgress == false)
         {
             //成功した時
-            SignupWebClient.SignupResponseData lrd = (SignupWebClient.SignupResponseData)signupWebClient.data;
-            Debug.Log("ParsedResponseData: \n" + lrd.ToString());
+            SignupWebClient.SignupResponseData srd = (SignupWebClient.SignupResponseData)signupWebClient.data;
+            Debug.Log("ParsedResponseData: \n" + srd.ToString());
             if (signupWebClient.isSignupSuccess)
             {
-                Common.DefaultPassword = password;
                 Common.Uuid = _uuid;
-                Debug.Log($"Playerprefs Saved.\nPassword: {password}, UUID: {_uuid}");
+                Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
                 
                 AlertText.text = signupWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));                

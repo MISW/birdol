@@ -5,22 +5,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class LoginWebClient: WebClient 
+//Login as Link Account
+public class LinkAccountWebClient: WebClient 
 {
-    [Header("Login Information")]
-    [SerializeField] protected LoginRequestData loginRequestData;
+    [Header("LinkAccount Information")]
+    [SerializeField] protected LinkAccountRequestData linkAccountRequestData;
 
-    public bool isLoginSuccess { get; private set; } //ログインが成功したか否か。通信成功の後にチェックする。 
+    public bool isLinkAccountSuccess { get; private set; } //アカウントのデータ連携が成功したか否か。通信成功の後にチェックする。 
+    public string privateKey;
 
     /// <summary>
-    /// Login Request Data: send to Server
+    /// LinkAccount Request Data: send to Server
     /// </summary>
     [Serializable]
-    public struct LoginRequestData
+    public struct LinkAccountRequestData
     {
         [SerializeField] public string account_id;
         [SerializeField] public string password;
         [SerializeField] public string device_id;
+        [SerializeField] public string public_key;
 
         /// <summary>
         /// COnstructor
@@ -28,24 +31,27 @@ public class LoginWebClient: WebClient
         /// <param name="account_id"></param>
         /// <param name="password"></param>
         /// <param name="device_id"></param>
-        public LoginRequestData(string account_id, string password, string device_id)
+        /// <param name="public_key"></param>
+        public LinkAccountRequestData(string account_id, string password, string device_id, string public_key)
         {
             this.account_id = account_id;
             this.password = password;
             this.device_id = device_id;
+            this.public_key = public_key;
         }
     }
 
     /// <summary>
-    /// Login Response Data: receive from Server
+    /// LinkAccount Response Data: receive from Server
     /// </summary>
     [Serializable]
-    public struct LoginResponseData
+    public struct LinkAccountResponseData
     {
         [SerializeField] public string error;
         [SerializeField] public string result;
         [SerializeField] public uint user_id;
         [SerializeField] public string access_token;
+        [SerializeField] public string refresh_token;
     }
 
     /// <summary>
@@ -53,31 +59,8 @@ public class LoginWebClient: WebClient
     /// </summary>
     /// <param name="requestMethod"></param>
     /// <param name="path">default "/"</param>
-    public LoginWebClient(HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
+    public LinkAccountWebClient(HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
     {
-    }
-
-    /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
-    /// </summary>
-    /// <param name="loginRequestData"></param>
-    /// <param name="requestMethod"></param>
-    /// <param name="path">default "/"</param>
-    public LoginWebClient(LoginRequestData loginRequestData, HttpRequestMethod requestMethod, string loginPath): base(requestMethod, loginPath)
-    {
-        this.loginRequestData = loginRequestData;
-    }
-
-    /// <summary>
-    /// Constructor: requestMethod to $"(hostname}:{port}{loginPath}" with loginRequestData 
-    /// </summary>
-    /// <param name="requestMethod"></param>
-    /// <param name="hostname"></param>
-    /// <param name="port"></param>
-    /// <param name="path">default "/"</param>
-    public LoginWebClient( string id, string password, string device_id, HttpRequestMethod requestMethod, string loginPath) : base(requestMethod, loginPath)
-    {
-        SetData(id, password, device_id);
     }
 
     /// <summary>
@@ -86,9 +69,12 @@ public class LoginWebClient: WebClient
     /// <param name="id"></param>
     /// <param name="password"></param>
     /// <param name="device_id"></param>
-    public void SetData(string id, string password, string device_id)
+    /// <param name="publicKey"></param>
+    /// <param name="privateKey"></param>
+    public void SetData(string id, string password, string device_id, string publicKey, string privateKey)
     {
-        this.loginRequestData = new LoginRequestData(id, password, device_id);
+        this.linkAccountRequestData = new LinkAccountRequestData(id, password, device_id, publicKey);
+        this.privateKey = privateKey;
     }
 
     /// <summary>
@@ -96,9 +82,9 @@ public class LoginWebClient: WebClient
     /// </summary>
     /// <param name="lrd"></param>
     /// <returns>true if response data is correctry parsed</returns>
-    protected bool CheckResponseData(LoginResponseData lrd)
+    protected bool CheckResponseData(LinkAccountResponseData lrd)
     {
-        return !string.IsNullOrEmpty(lrd.result) || !string.IsNullOrEmpty(lrd.error) || !string.IsNullOrEmpty(lrd.access_token);
+        return !string.IsNullOrEmpty(lrd.result) || !string.IsNullOrEmpty(lrd.error) || !string.IsNullOrEmpty(lrd.access_token) || !string.IsNullOrEmpty(lrd.refresh_token);
     }
 
     /// <summary>
@@ -107,14 +93,19 @@ public class LoginWebClient: WebClient
     public override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.loginRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.loginRequestData.account_id.Length< ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
+        if (this.linkAccountRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.linkAccountRequestData.account_id.Length< ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なidです。\n{ConnectionModel.ACCOUNT_ID_LENGTH_MIN}文字から{ConnectionModel.ACCOUNT_ID_LENGTH_MAX}文字で入力してください。";
-        }else if (this.loginRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.loginRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
+        }else if (this.linkAccountRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.linkAccountRequestData.password.Length< ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
+        }else if (string.IsNullOrEmpty(this.privateKey))
+        {
+            ok = false;
+            this.message = "エラー";
+            Debug.LogError("privateKeyがセットされていません。");
         }
         return ok;
     }
@@ -125,10 +116,10 @@ public class LoginWebClient: WebClient
     /// <returns></returns>
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
-        isLoginSuccess = false;
+        isLinkAccountSuccess = false;
         try
         {
-            this.loginRequestData.password = Hash(this.loginRequestData.password);
+            this.linkAccountRequestData.password = Hash512(this.linkAccountRequestData.password);
         }
         catch(Exception e)
         {
@@ -136,23 +127,25 @@ public class LoginWebClient: WebClient
             this.message = "このパスワードは使用できません。";
             throw;
         }
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.linkAccountRequestData) + "}");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
+
+        GameWebClient.SetAuthenticationHeader(www, Common.AccessToken, Common.Uuid, privateKey);
     }
 
 
     /// <summary>
-    /// HandleSuccessData: 通信に成功した時にLoginクライアントが行う処理
+    /// HandleSuccessData: 通信に成功した時にクライアントが行う処理
     /// dataに値を保存 
     /// </summary>
     /// <param name="response">received data</param>
     /// <returns></returns>
     protected override void HandleSuccessData(string response)
     {
-        this.data = JsonUtility.FromJson<LoginResponseData>(response);
-        LoginResponseData lrd = (LoginResponseData)this.data;
+        this.data = JsonUtility.FromJson<LinkAccountResponseData>(response);
+        LinkAccountResponseData lrd = (LinkAccountResponseData)this.data;
         if (CheckResponseData(lrd)!=true)
         {
             this.message = "サーバーから不適切な値が送信されました。";
@@ -163,7 +156,7 @@ public class LoginWebClient: WebClient
             if (lrd.result == "success")
             {
                 this.message = "アカウント連携に成功しました。";
-                OnLoginSuccess(lrd.user_id,lrd.access_token);
+                OnLinkAccountSuccess(lrd);
             }
             else
             {
@@ -173,7 +166,7 @@ public class LoginWebClient: WebClient
     }
 
     /// <summary>
-    /// HandleErrorData: 通信に失敗した時にLoginクライアントが行う処理
+    /// HandleErrorData: 通信に失敗した時にクライアントが行う処理
     /// </summary>
     protected override void HandleErrorData(string error)
     {
@@ -182,7 +175,7 @@ public class LoginWebClient: WebClient
     }
 
     /// <summary>
-    /// HandleInProgressData: 通信に途中だった時にLoginクライアントが行う処理 
+    /// HandleInProgressData: 通信の途中だった時にクライアントが行う処理 
     /// </summary>
     protected override void HandleInProgressData()
     {
@@ -194,12 +187,12 @@ public class LoginWebClient: WebClient
     /// <summary>
     /// ログイン成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
     /// </summary>
-    /// <param name="user_id"></param>
-    /// <param name="access_token"></param>
-    private void OnLoginSuccess(uint user_id, string access_token)
+    /// <param name="lrd">LinkAccount Response Data</param>
+    private void OnLinkAccountSuccess(LinkAccountResponseData lrd)
     {
-        isLoginSuccess = true;
-        Common.UserID = user_id;
-        Common.AccessToken = access_token;
+        isLinkAccountSuccess = true;
+        Common.UserID = lrd.user_id;
+        Common.AccessToken = lrd.access_token;
+        Common.RefreshToken = lrd.refresh_token;
     }
 }

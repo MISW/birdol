@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 16322408}
   - component: {fileID: 16322407}
   m_Layer: 5
-  m_Name: AccountSetButton
+  m_Name: SetAccountLinkButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,8 +207,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1190300736}
-        m_TargetAssemblyTypeName: AccountEditPrefabController, Assembly-CSharp
-        m_MethodName: OnAccountEditButtonClicked
+        m_TargetAssemblyTypeName: SetAccountLinkPrefabController, Assembly-CSharp
+        m_MethodName: OnSetAccountLinkButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117504229}
   m_Layer: 5
-  m_Name: SendAccountEdit
+  m_Name: SendSetAccountLink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1133,10 +1133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 478204784}
   - component: {fileID: 478204786}
-  - component: {fileID: 478204787}
   - component: {fileID: 478204788}
   m_Layer: 5
-  m_Name: AccountLogin
+  m_Name: LinkAccount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1170,24 +1169,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 478204783}
   m_CullTransparentMesh: 1
---- !u!114 &478204787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478204783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2330303ae471645dc85e8e5b0c26022d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: /api/v1/user/account
-  httpRequestMethod: 1
-  loginRequestData:
-    account_id: 
-    password: pass
-    device_id: 
 --- !u!114 &478204788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,10 +1178,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 478204783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24f70ad055b7d4cb2820af829cab6279, type: 3}
+  m_Script: {fileID: 11500000, guid: 4df343f122a234b7b920fc33b43ea9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginWebClient: {fileID: 478204787}
   idInputField: {fileID: 1992480723}
   passwordInputField: {fileID: 1551267436}
   AlertUI: {fileID: 1310127460}
@@ -1219,7 +1199,7 @@ GameObject:
   - component: {fileID: 488094086}
   - component: {fileID: 488094085}
   m_Layer: 5
-  m_Name: LoginButton
+  m_Name: LinkAccountButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1290,8 +1270,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 478204788}
-        m_TargetAssemblyTypeName: AccountLoginPrefabController, Assembly-CSharp
-        m_MethodName: OnLoginButtonClicked
+        m_TargetAssemblyTypeName: LinkAccountPrefabController, Assembly-CSharp
+        m_MethodName: OnLinkAccountButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2828,9 +2808,8 @@ GameObject:
   - component: {fileID: 1190300735}
   - component: {fileID: 1190300738}
   - component: {fileID: 1190300736}
-  - component: {fileID: 1190300737}
   m_Layer: 5
-  m_Name: AccountEdit
+  m_Name: SetAccountLink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2865,33 +2844,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190300734}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7a779a2e130b4987a736994ead643e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fd3b165f548694ab1acd5415027e072c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accountEditWebClient: {fileID: 1190300737}
   idInputField: {fileID: 1418635583}
   passwordInputField: {fileID: 1277143633}
   AlertUI: {fileID: 851476644}
   AlertText: {fileID: 557112948}
   DisplayRootUI: {fileID: 1232063993}
---- !u!114 &1190300737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190300734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e57aa01c280a54434899f9d6172f64ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: /api/v1/user/account
-  httpRequestMethod: 2
-  accountEditRequestData:
-    account_id: 
-    password: 
-    device_id: 
 --- !u!222 &1190300738
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3861,7 +3821,7 @@ MonoBehaviour:
   m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
   m_ShouldActivateOnSelect: 1
 --- !u!224 &1418635584
 RectTransform:
@@ -3897,7 +3857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4940,7 +4900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1620850435}
   m_Layer: 5
-  m_Name: SendLogin
+  m_Name: SendLinkAccount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5921,7 +5881,7 @@ GameObject:
   - component: {fileID: 1904583246}
   - component: {fileID: 1904583245}
   m_Layer: 5
-  m_Name: AccountForm
+  m_Name: SetAccountLinkForm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6384,7 +6344,7 @@ GameObject:
   - component: {fileID: 2057813910}
   - component: {fileID: 2057813909}
   m_Layer: 5
-  m_Name: LoginForm
+  m_Name: LinkAccountForm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

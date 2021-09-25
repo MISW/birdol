@@ -1,7 +1,8 @@
-using System.Collections;
+using System;
+using System.Text;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public partial class Common : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public partial class Common : MonoBehaviour
     }
 
     //通信関連
+    public const string api_version = "v1"; //"v1" or "v2" 
     public const string protocol = "http"; //"http" や "https" など 
     public const string hostname = "localhost";
     public const string port = "80";
@@ -34,7 +36,8 @@ public partial class Common : MonoBehaviour
     public const string salt = "Ll7Iy0r9zWslDniwgUXeS0KM9xke4zeg"; //固定ソルト
 
     //PlayerPrefsに保存
-    private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";
+    //ユーザID
+    private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";  
     private static uint userID=0;
     public static uint UserID
     {
@@ -56,7 +59,8 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    private const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN";
+    //アクセストークン 
+    private const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN"; 
     private static string accessToken;
     public static string AccessToken
     {
@@ -78,6 +82,30 @@ public partial class Common : MonoBehaviour
             }
         }
     }
+    //リフレッシュトークン 
+    private const string PLAYERPREFS_REFRESH_TOKEN = "PLAYERPREFS_REFRESH_TOKEN"; 
+    private static string refreshToken;
+    public static string RefreshToken
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                refreshToken = PlayerPrefs.GetString(PLAYERPREFS_REFRESH_TOKEN);
+            }
+            return refreshToken;
+        }
+        set
+        {
+            if (refreshToken != value)
+            {
+                refreshToken = value;
+                PlayerPrefs.SetString(PLAYERPREFS_REFRESH_TOKEN, refreshToken);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+    //デバイスID 
     private const string PLAYERPREFS_UUID = "PLAYERPREFS_UUID";
     private static string uuid;
     public static string Uuid
@@ -100,7 +128,8 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    private const string PLAYERPREFS_SESSION_ID = "PLAYERPREFS_SESSION_ID";
+    //セッションID 
+    private const string PLAYERPREFS_SESSION_ID = "PLAYERPREFS_SESSION_ID"; 
     private static string sessionID;
     public static string SessionID
     {
@@ -141,26 +170,49 @@ public partial class Common : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
-    //Signup時に自動で生成されるパスワード。手動で設定するパスワードをデバイスに保存することは現在想定していない。
-    private const string PLAYERPREFS_DEFAULT_PASSWORD = "PLAYERPREFS_DEFAULT_PASSWORD";
-    private static string defaultPassword;
-    public static string DefaultPassword 
-    { 
+
+    //RSA Key Pair: 公開鍵と秘密鍵
+    private const string PLAYERPREFS_RSA_PUBLIC_KEY = "PLAYERPREFS_RSA_PUBLIC_KEY";
+    private const string PLAYERPREFS_RSA_PRIVATE_KEY = "PLAYERPREFS_RSA_PRIVATE_KEY";
+    private static (string privateKey, string publicKey) rsaKeyPair; //(privateKey: 秘密鍵, publicKey: 公開鍵)
+    public static (string privateKey, string publicKey) RsaKeyPair
+    {
         get
         {
-            if (string.IsNullOrEmpty(defaultPassword))
+            if (string.IsNullOrEmpty(rsaKeyPair.privateKey) && string.IsNullOrEmpty(rsaKeyPair.publicKey))
             {
-                
-                    defaultPassword = PlayerPrefs.GetString(PLAYERPREFS_DEFAULT_PASSWORD);
+                rsaKeyPair.privateKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PRIVATE_KEY);
+                rsaKeyPair.publicKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PUBLIC_KEY);
             }
-            return defaultPassword;
+            return rsaKeyPair;
         }
         set
         {
-            defaultPassword = value;
-            PlayerPrefs.SetString(PLAYERPREFS_DEFAULT_PASSWORD, defaultPassword);
+            rsaKeyPair = value;
+            PlayerPrefs.SetString(PLAYERPREFS_RSA_PRIVATE_KEY, rsaKeyPair.privateKey);
+            PlayerPrefs.SetString(PLAYERPREFS_RSA_PUBLIC_KEY, rsaKeyPair.publicKey);
             PlayerPrefs.Save();
         }
+    }
+
+    /// <summary>
+    /// RSA 秘密鍵 公開鍵 生成 
+    /// </summary>
+    public static (string privateKey, string publicKey) CreateRsaKeyPair()
+    {
+        int size = 1024;
+        RSACryptoServiceProvider csp = new RSACryptoServiceProvider(size, new CspParameters { /*KeyContainerName= "test"*/ });
+
+        string publicKey = csp.ToXmlString(false);
+        string privateKey = csp.ToXmlString(true);
+        publicKey = StrToBase64Str(publicKey);
+        privateKey= StrToBase64Str(privateKey);
+        (string privateKey, string publicKey) keyPair = (privateKey: privateKey, publicKey: publicKey);
+
+        Debug.Log($"private_key: { StrFromBase64Str(keyPair.privateKey) }");
+        Debug.Log($"public_key: { StrFromBase64Str(keyPair.publicKey) }");
+
+        return keyPair;
     }
 
     /// <summary> ランダム文字列の生成 </summary>
@@ -172,9 +224,36 @@ public partial class Common : MonoBehaviour
         string t = "";
         for(int i = 0; i < len; i++)
         {
-            t += characters[Random.Range(0, characters.Length)];
+            t += characters[UnityEngine.Random.Range(0, characters.Length)];
         }
         return t;
+    }
+
+    public static string StrToBase64Str(string text)
+    {
+        string str = "";
+        try
+        {
+            str = Convert.ToBase64String(Encoding.UTF8.GetBytes(text));
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        return str;
+    }
+    public static string StrFromBase64Str(string text)
+    {
+        string str = "";
+        try
+        {
+            str = Encoding.UTF8.GetString( Convert.FromBase64String(text) );
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+        return str;
     }
 
     void Start()

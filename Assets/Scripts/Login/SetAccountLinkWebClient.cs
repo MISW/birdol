@@ -5,54 +5,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class AccountEditWebClient : WebClient
+public class SetAccountLinkWebClient : GameWebClient
 {
     [Header("Request Data Information")]
-    [SerializeField] protected AccountEditRequestData accountEditRequestData;
+    [SerializeField] protected SetAccountLinkRequestData setAccountLinkRequestData;
 
-    public bool isEditSuccess { get; private set; } = false;
+    public bool isSetAccountLinkSuccess { get; private set; } = false;
 
-    private void Start()
-    {
-        base.path = $"/api/v1/user/account/{Common.UserID}";
-    }
 
     /// <summary>
-    /// Request Data: send to Server
+    /// Request Data: send to Server, アカウント連携(パスワード設定) 
     /// </summary>
     [Serializable]
-    public struct AccountEditRequestData
+    public struct SetAccountLinkRequestData
     {
-        [SerializeField] public string account_id;
         [SerializeField] public string password;
-        [SerializeField] public string device_id;
 
         /// <summary>
         /// COnstructor
         /// </summary>
-        /// <param name="account_id"></param>
         /// <param name="password"></param>
-        /// <param name="device_id"></param>
-        public AccountEditRequestData(string account_id, string password, string device_id)
+        public SetAccountLinkRequestData(string password)
         {
-            this.account_id = account_id;
             this.password = password;
-            this.device_id = device_id;
         }
-    }
-    [Serializable]
-    public struct Auth
-    {
-        [SerializeField] public uint user_id;
-        [SerializeField] public string session_id;
-        [SerializeField] public string device_id;
     }
 
     /// <summary>
     /// Account Edit Response Data: receive from Server
     /// </summary>
     [Serializable]
-    public struct AccountEditResponseData
+    public struct SetAccountLinkResponseData
     {
         [SerializeField] public string error;
         [SerializeField] public string result;
@@ -63,7 +46,7 @@ public class AccountEditWebClient : WebClient
     /// </summary>
     /// <param name="requestMethod"></param>
     /// <param name="path">default "/"</param>
-    public AccountEditWebClient(HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
+    public SetAccountLinkWebClient(HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
     {
     }
 
@@ -73,20 +56,18 @@ public class AccountEditWebClient : WebClient
     /// <param name="aerd"></param>
     /// <param name="requestMethod"></param>
     /// <param name="path">default "/"</param>
-    public AccountEditWebClient(AccountEditRequestData aerd, HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
+    public SetAccountLinkWebClient(SetAccountLinkRequestData aerd, HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
     {
-        this.accountEditRequestData = aerd;
+        this.setAccountLinkRequestData = aerd;
     }
 
     /// <summary>
     /// Setdata 
     /// </summary>
-    /// <param name="account_id"></param>
     /// <param name="password"></param>
-    /// <param name="device_id"></param>
-    public void SetData(string account_id, string password, string device_id)
+    public void SetData(string password)
     {
-        this.accountEditRequestData = new AccountEditRequestData(account_id, password, device_id);
+        this.setAccountLinkRequestData = new SetAccountLinkRequestData(password);
     }
 
     /// <summary>
@@ -94,7 +75,7 @@ public class AccountEditWebClient : WebClient
     /// </summary>
     /// <param name="aerd"></param>
     /// <returns>true if response data is correctry parsed</returns>
-    protected bool CheckResponseData(AccountEditResponseData aerd)
+    protected bool CheckResponseData(SetAccountLinkResponseData aerd)
     {
         return ( !string.IsNullOrEmpty(aerd.result) || !string.IsNullOrEmpty(aerd.error) );
     }
@@ -105,12 +86,7 @@ public class AccountEditWebClient : WebClient
     public override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.accountEditRequestData.account_id.Length > ConnectionModel.ACCOUNT_ID_LENGTH_MAX || this.accountEditRequestData.account_id.Length < ConnectionModel.ACCOUNT_ID_LENGTH_MIN)
-        {
-            ok = false;
-            this.message = $"不適切なidです。\n{ConnectionModel.ACCOUNT_ID_LENGTH_MIN}文字から{ConnectionModel.ACCOUNT_ID_LENGTH_MAX}文字で入力してください。";
-        }
-        else if (this.accountEditRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.accountEditRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
+        if (this.setAccountLinkRequestData.password.Length > ConnectionModel.PASSWORD_LENGTH_MAX || this.setAccountLinkRequestData.password.Length < ConnectionModel.PASSWORD_LENGTH_MIN)
         {
             ok = false;
             this.message = $"不適切なパスワードです。\n{ConnectionModel.PASSWORD_LENGTH_MIN}文字から{ConnectionModel.PASSWORD_LENGTH_MAX}文字で入力してください。";
@@ -122,12 +98,12 @@ public class AccountEditWebClient : WebClient
     /// Setup Web Request Data 
     /// </summary>
     /// <returns></returns>
-    protected override void HandleSetupWebRequestData(UnityWebRequest www)
+    protected override void HandleGameSetupWebRequestData(UnityWebRequest www)
     {
-        isEditSuccess = false;
+        isSetAccountLinkSuccess = false;
         try
         {
-            this.accountEditRequestData.password = Hash(this.accountEditRequestData.password);
+            this.setAccountLinkRequestData.password = Hash512(this.setAccountLinkRequestData.password);
         }
         catch (Exception e)
         {
@@ -135,7 +111,7 @@ public class AccountEditWebClient : WebClient
             this.message = "このパスワードは使用できません。";
             throw;
         }
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.accountEditRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.setAccountLinkRequestData));
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
@@ -148,10 +124,10 @@ public class AccountEditWebClient : WebClient
     /// </summary>
     /// <param name="response">received data</param>
     /// <returns></returns>
-    protected override void HandleSuccessData(string response)
+    protected override void HandleGameSuccessData(string response)
     {
-        this.data = JsonUtility.FromJson<AccountEditResponseData>(response);
-        AccountEditResponseData aerd = (AccountEditResponseData)this.data;
+        this.data = JsonUtility.FromJson<SetAccountLinkResponseData>(response);
+        SetAccountLinkResponseData aerd = (SetAccountLinkResponseData)this.data;
         if (CheckResponseData(aerd) != true)
         {
             this.message = "サーバーから不適切な値が送信されました。";
@@ -194,8 +170,8 @@ public class AccountEditWebClient : WebClient
     /// </summary>
     /// <param name="user_id"></param>
     /// <param name="access_token"></param>
-    private void OnAccountEditSuccess()
+    private void OnSetAccountLinkSuccess()
     {
-        isEditSuccess = true;
+        isSetAccountLinkSuccess = true;
     }
 }

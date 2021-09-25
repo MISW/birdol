@@ -91,10 +91,12 @@ public abstract class WebClient : MonoBehaviour
             {
                 HandleSetupWebRequestData(www);
             }
-            catch
+            catch(Exception e)
             {
                 this.isSuccess = false;
-                Debug.LogError("送信するリクエストデータの作成に失敗しました。");
+                this.isInProgress = false;
+                this.message = "<color=\"red\">エラーが生じました。</color>";
+                Debug.LogError($"送信するリクエストデータの作成に失敗しました。 {e}");
                 yield break;
             }
             
@@ -122,12 +124,13 @@ public abstract class WebClient : MonoBehaviour
                 else if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
                 {
                     isSuccess = true;
-                    this.message = "不正なデータです。";
+                    this.message = "通信に失敗しました。";
                     HandleSuccessData(www.downloadHandler.text);
                 }
                 //in progress
                 else if (www.result == UnityWebRequest.Result.InProgress)
                 {
+                    this.message = "通信中です...";
                     HandleInProgressData();
                 }
                 //connection error 
@@ -142,7 +145,6 @@ public abstract class WebClient : MonoBehaviour
             {
                 Debug.LogError(e);
                 isSuccess = false;
-                this.message = "エラーが生じました。";
             }
             
 
@@ -157,7 +159,7 @@ public abstract class WebClient : MonoBehaviour
     /// <summary>
     /// Refresh before start new connection 
     /// </summary>
-    private void Refresh()
+    protected void Refresh()
     {
         this.data = null;
         this.message = null;
@@ -194,14 +196,28 @@ public abstract class WebClient : MonoBehaviour
     protected abstract void HandleInProgressData();
 
     /// <summary>
-    /// Hash string to string
+    /// Hash string to string: SHA512 
     /// </summary>
     /// <param name="raw_text">like password</param>
-    protected string Hash(string raw_text)
+    protected static string Hash512(string raw_text)
     {
 
         byte[] raw_bytes = new System.Text.UTF8Encoding(false, true).GetBytes(raw_text + Common.salt);
         byte[] hashed_bytes = new System.Security.Cryptography.SHA512Managed().ComputeHash(raw_bytes);
+        System.Text.StringBuilder hashed_text_builder = new System.Text.StringBuilder(hashed_bytes.Length);
+        for (int i = 0; i < hashed_bytes.Length; i++) hashed_text_builder.Append(hashed_bytes[i].ToString("x2"));
+        return hashed_text_builder.ToString();
+    }
+
+    /// <summary>
+    /// Hash string to string: SHA256 
+    /// </summary>
+    /// <param name="raw_text"></param>
+    /// <returns></returns>
+    protected static string Hash256(string raw_text)
+    {
+        byte[] raw_bytes = new System.Text.UTF8Encoding(false, true).GetBytes(raw_text + Common.salt);
+        byte[] hashed_bytes = new System.Security.Cryptography.SHA256Managed().ComputeHash(raw_bytes);
         System.Text.StringBuilder hashed_text_builder = new System.Text.StringBuilder(hashed_bytes.Length);
         for (int i = 0; i < hashed_bytes.Length; i++) hashed_text_builder.Append(hashed_bytes[i].ToString("x2"));
         return hashed_text_builder.ToString();

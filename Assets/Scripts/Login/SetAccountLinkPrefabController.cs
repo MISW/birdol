@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AccountEditPrefabController : MonoBehaviour
+/// <summary>
+/// データ連携のためにパスワードを保存するためのUI
+/// </summary>
+public class SetAccountLinkPrefabController : MonoBehaviour
 {
     [Header("Web Client")]
-    [SerializeField] private AccountEditWebClient accountEditWebClient;
+    private SetAccountLinkWebClient setAccountLinkWebClient;
 
     [Header("Account Info Input")]
     [SerializeField] InputField idInputField;
@@ -21,29 +24,34 @@ public class AccountEditPrefabController : MonoBehaviour
 
     private bool isConnectionInProgress = false;
 
-    public void OnAccountEditButtonClicked()
+    private void Start()
+    {
+        idInputField.text = Common.DefaultAccountID;
+        this.setAccountLinkWebClient = new SetAccountLinkWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/auth");
+    }
+
+    public void OnSetAccountLinkButtonClicked()
     {
         if (isConnectionInProgress) return;
-        StartCoroutine(AccountEdit());
+        StartCoroutine(SetAccountLink());
     }
 
     /// <summary>
-    /// Account Edit Request. This info is used to login later.  
+    /// Account Edit Request. This info is used to linkAccount later.  
     /// </summary>
     /// <returns></returns>
-    private IEnumerator AccountEdit()
+    private IEnumerator SetAccountLink()
     {
         isConnectionInProgress = true;
 
-        string id = idInputField.text;
         string password = passwordInputField.text;
-        accountEditWebClient.SetData(id, password, Common.Uuid);
+        setAccountLinkWebClient.SetData(password);
 
         //データチェックをサーバへ送信する前に行う。
-        if (accountEditWebClient.CheckRequestData() == false)
+        if (setAccountLinkWebClient.CheckRequestData() == false)
         {
-            AlertText.text = accountEditWebClient.message;
-            Debug.Log(accountEditWebClient.message);
+            AlertText.text = setAccountLinkWebClient.message;
+            Debug.Log(setAccountLinkWebClient.message);
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
@@ -52,33 +60,33 @@ public class AccountEditPrefabController : MonoBehaviour
         AlertUI.SetActive(true);
         AlertText.text = "通信中...";
         float conn_start = Time.time;
-        yield return StartCoroutine(accountEditWebClient.Send());
+        yield return StartCoroutine(setAccountLinkWebClient.Send());
         float conn_end = Time.time;
         if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
         AlertUI.SetActive(false);
 
         //処理
-        if (accountEditWebClient.isSuccess == true && accountEditWebClient.isInProgress == false)
+        if (setAccountLinkWebClient.isSuccess == true && setAccountLinkWebClient.isInProgress == false)
         {
             //通信に成功した時
-            AccountEditWebClient.AccountEditResponseData aerd = (AccountEditWebClient.AccountEditResponseData)accountEditWebClient.data;
+            SetAccountLinkWebClient.SetAccountLinkResponseData aerd = (SetAccountLinkWebClient.SetAccountLinkResponseData)setAccountLinkWebClient.data;
             Debug.Log("ParsedResponseData: \n" + aerd.ToString());
-            if (accountEditWebClient.isEditSuccess)
+            if (setAccountLinkWebClient.isSetAccountLinkSuccess)
             {
-                AlertText.text = accountEditWebClient.message;
+                AlertText.text = setAccountLinkWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-                OnAccountEditSuccess();
+                OnSetAccountSuccess();
             }
             else
             {
-                AlertText.text = $"<color=\"black\">{accountEditWebClient.message}</color>";
+                AlertText.text = $"<color=\"black\">{setAccountLinkWebClient.message}</color>";
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             }
         }
         else
         {
             //失敗した時
-            AlertText.text = $"<color=\"red\">{accountEditWebClient.message}</color>";
+            AlertText.text = $"<color=\"red\">{setAccountLinkWebClient.message}</color>";
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
         }
 
@@ -96,9 +104,9 @@ public class AccountEditPrefabController : MonoBehaviour
     }
 
     /// <summary>
-    /// ログイン成功したときの動作。例えば、Gameシーンへの遷移など。
+    /// データ連携用パスワード設定に成功したときの処理 
     /// </summary>
-    private void OnAccountEditSuccess()
+    private void OnSetAccountSuccess()
     {
 
     }

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AccountLoginPrefabController : MonoBehaviour 
+/// <summary>
+/// アカウント連携 
+/// </summary>
+public class LinkAccountPrefabController : MonoBehaviour 
 {
     [Header("Web Client")]
-    [SerializeField] private LoginWebClient loginWebClient;
+    private LinkAccountWebClient linkAccountWebClient;
 
-    [Header("Login Input")]
+    [Header("LinkAccount Input")]
     [SerializeField] InputField idInputField;
     [SerializeField] InputField passwordInputField;
 
@@ -21,30 +24,36 @@ public class AccountLoginPrefabController : MonoBehaviour
 
     private bool isConnectionInProgress = false;
 
-    public void OnLoginButtonClicked()
+    private void Start()
+    {
+        this.linkAccountWebClient = new LinkAccountWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/user");
+    }
+
+    public void OnLinkAccountButtonClicked()
     {
         if (isConnectionInProgress) return;
-        StartCoroutine(Login());
+        StartCoroutine(LinkAccount());
     }
 
     /// <summary>
-    /// Login Request 
+    /// LinkAccount Request 
     /// </summary>
     /// <returns></returns>
-    private IEnumerator Login()
+    private IEnumerator LinkAccount()
     {
         isConnectionInProgress = true;
 
         string id = idInputField.text;
         string password = passwordInputField.text;
         string _uuid = GenerateGUID();
-        loginWebClient.SetData(id, password, _uuid);
+        (string privateKey, string publicKey) rsaKeyPair = Common.CreateRsaKeyPair();
+        linkAccountWebClient.SetData(id, password, _uuid, rsaKeyPair.publicKey, rsaKeyPair.privateKey);
 
         //データチェックをサーバへ送信する前に行う。
-        if (loginWebClient.CheckRequestData() == false)
+        if (linkAccountWebClient.CheckRequestData() == false)
         {
-            AlertText.text = loginWebClient.message;
-            Debug.Log(loginWebClient.message);
+            AlertText.text = linkAccountWebClient.message;
+            Debug.Log(linkAccountWebClient.message);
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
@@ -53,36 +62,35 @@ public class AccountLoginPrefabController : MonoBehaviour
         AlertUI.SetActive(true);
         AlertText.text = "通信中...";
         float conn_start = Time.time;
-        yield return StartCoroutine(loginWebClient.Send());
+        yield return StartCoroutine(linkAccountWebClient.Send());
         float conn_end = Time.time;
         if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
         AlertUI.SetActive(false);
 
         //処理
-        if (loginWebClient.isSuccess==true && loginWebClient.isInProgress==false)
+        if (linkAccountWebClient.isSuccess==true && linkAccountWebClient.isInProgress==false)
         {
-            //通信に成功した時
-            //LoginWebClientはひとまずLoginResponseDataをdataに保存するとする 
-            LoginWebClient.LoginResponseData lrd = (LoginWebClient.LoginResponseData)loginWebClient.data;
+            //通信に成功した時 
+            LinkAccountWebClient.LinkAccountResponseData lrd = (LinkAccountWebClient.LinkAccountResponseData)linkAccountWebClient.data;
             Debug.Log("ParsedResponseData: \n"+lrd.ToString());
-            if (loginWebClient.isLoginSuccess)
+            if (linkAccountWebClient.isLinkAccountSuccess)
             {
                 Common.Uuid = _uuid;
-
-                AlertText.text = loginWebClient.message;
+                Common.RsaKeyPair = rsaKeyPair;
+                AlertText.text = linkAccountWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-                OnLoginSuccess();
+                OnLinkAccountSuccess();
             }
             else
             {
-                AlertText.text = $"{loginWebClient.message}";
+                AlertText.text = $"{linkAccountWebClient.message}";
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             }
         }
         else
         {
             //失敗した時
-            AlertText.text = $"<color=\"red\">{loginWebClient.message}</color>";
+            AlertText.text = $"<color=\"red\">{linkAccountWebClient.message}</color>";
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
         }
 
@@ -102,7 +110,7 @@ public class AccountLoginPrefabController : MonoBehaviour
     /// <summary>
     /// ログイン成功したときの動作。例えば、Gameシーンへの遷移など。
     /// </summary>
-    private void OnLoginSuccess()
+    private void OnLinkAccountSuccess()
     {
 
     }
