@@ -9,6 +9,8 @@ TagManager:
   - Gacha
   - LiveCharacter
   - HomeButtons
+  - CharacterList
+  - ChildListText
   layers:
   - Default
   - TransparentFX

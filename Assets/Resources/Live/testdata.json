@@ -1,0 +1,32 @@
+ { "progresses":[
+  {"characterId":0,
+    "visual":2,
+		"vocal":3,
+		"dance":4,
+    "skilllevel":2
+  },
+  {"characterId":1,
+    "visual":1,
+		"vocal":5,
+		"dance":2,
+    "skilllevel":1
+  },
+  {"characterId":4,
+    "visual":3,
+		"vocal":3,
+		"dance":4,
+    "skilllevel":2
+  },
+  {"characterId":3,
+    "visual":3,
+		"vocal":5,
+		"dance":1,
+    "skilllevel":1
+  },
+  {"characterId":2,
+    "visual":1,
+		"vocal":2,
+		"dance":4,
+    "skilllevel":2
+  }
+]}
