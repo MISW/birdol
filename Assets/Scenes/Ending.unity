@@ -532,7 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 2415465453640339529, guid: 1594262e32ac20c40bbe231dca194e27, type: 3}
-  canvas: {fileID: 221143727}
+  canvas: {fileID: 234751954}
   characterStatus:
   - 0
   - 3
@@ -562,9 +562,9 @@ MonoBehaviour:
   - id: 0
     MainCharacterId: 1
     Name: 
-    Visual: 0
-    Vocal: 0
-    Dance: 0
+    Visual: 22
+    Vocal: 11
+    Dance: 33
     Group: 
     BestSkill: 
     ActiveSkillLevel: 1
@@ -583,9 +583,9 @@ MonoBehaviour:
   - id: 0
     MainCharacterId: 2
     Name: 
-    Visual: 0
-    Vocal: 0
-    Dance: 0
+    Visual: 55
+    Vocal: 44
+    Dance: 22
     Group: 
     BestSkill: 
     ActiveSkillLevel: 1
@@ -604,9 +604,9 @@ MonoBehaviour:
   - id: 0
     MainCharacterId: 3
     Name: 
-    Visual: 0
-    Vocal: 0
-    Dance: 0
+    Visual: 33
+    Vocal: 66
+    Dance: 22
     Group: 
     BestSkill: 
     ActiveSkillLevel: 1
@@ -625,9 +625,9 @@ MonoBehaviour:
   - id: 0
     MainCharacterId: 4
     Name: 
-    Visual: 0
-    Vocal: 0
-    Dance: 0
+    Visual: 11
+    Vocal: 44
+    Dance: 33
     Group: 
     BestSkill: 
     ActiveSkillLevel: 1
@@ -646,9 +646,9 @@ MonoBehaviour:
   - id: 0
     MainCharacterId: 5
     Name: 
-    Visual: 0
-    Vocal: 0
-    Dance: 0
+    Visual: 11
+    Vocal: 22
+    Dance: 33
     Group: 
     BestSkill: 
     ActiveSkillLevel: 1
