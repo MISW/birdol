@@ -7,10 +7,12 @@ using UnityEngine.Networking;
 
 public class SignupWebClient : WebClient
 {
+    private string privateKey;
+
     [Header("SignUp Information")]
     [SerializeField] protected SignupRequestData signupRequestData;
 
-    public bool isSignupSuccess { get; private set; } //ログインが成功したか否か。通信成功の後にチェックする。 
+    public bool isSignupSuccess { get; private set; } //アカウント作成が成功したか否か。通信成功の後にチェックする。 
 
     /// <summary>
     /// Signup Request Data: send to Server
@@ -65,9 +67,11 @@ public class SignupWebClient : WebClient
     /// <param name="username"></param>
     /// <param name="public_key"></param>
     /// <param name="device_id"></param>
-    public void SetData(string username, string public_key, string device_id)
+    /// <param name="private_key"></param>
+    public void SetData(string username, string public_key, string device_id, string private_key)
     {
         this.signupRequestData = new SignupRequestData(username, public_key, device_id );
+        this.privateKey = private_key;
     }
 
     /// <summary>
@@ -79,7 +83,7 @@ public class SignupWebClient : WebClient
     {
         bool ok = true;
         if (string.IsNullOrEmpty(srd.result)) ok = false;
-        else if (srd.result == "success" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id) || !string.IsNullOrEmpty(srd.refresh_token))) ok = false;
+        else if (srd.result == "ok" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id) || string.IsNullOrEmpty(srd.refresh_token))) ok = false;
         return ok;
     }
 
@@ -93,6 +97,12 @@ public class SignupWebClient : WebClient
         {
             ok = false;
             this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
+        }
+        else if (string.IsNullOrEmpty(this.privateKey))
+        {
+            ok = false;
+            this.message = "エラー";
+            Debug.LogError("privateKeyがセットされていません。");
         }
 
         return ok;
@@ -111,7 +121,7 @@ public class SignupWebClient : WebClient
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
 
-        GameWebClient.SetAuthenticationHeader(www);
+        GameWebClient.SetAuthenticationHeader(www, Common.AccessToken, Common.Uuid, privateKey);
     }
 
 

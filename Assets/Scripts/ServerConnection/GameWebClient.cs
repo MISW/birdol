@@ -1,9 +1,14 @@
 using System;
 using System.Text;
+using System.Collections;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// トークンが期限切れの場合、自動的にリフレッシュトークンによるトークン更新を行う。
+/// 認証用のヘッダを付加する。
+/// </summary>
 public abstract class GameWebClient : WebClient
 {
     protected bool TryRefreshToken = true; //トークンのリフレッシュ要求をするか否か: Trueの場合一度だけ要求を行う。
@@ -26,22 +31,29 @@ public abstract class GameWebClient : WebClient
     /// <param name="response"></param>
     protected override void HandleSuccessData(string response)
     {
+        Debug.Log($"TEST: {response}");
         Response r = JsonUtility.FromJson<Response>(response);
-        if(r.result=="failed" && r.error == "invalid_token" && TryRefreshToken==true)
+        if (r.result == "failed" && r.error == "invalid_token" && TryRefreshToken == true)
         {
             //トークンのリフレッシュ要求を行う。
             RefreshTokenWebClient refreshTokenWebClient = new RefreshTokenWebClient(HttpRequestMethod.Get, $"/api/{Common.api_version}/auth/refresh?refresh_token={Common.RefreshToken}");
-            refreshTokenWebClient.Send();
-            
+            StartCoroutine(refreshTokenWebClient.Send());
+
+            //同期的に終了待ち
+            while (refreshTokenWebClient.isInProgress)
+            {
+                continue;
+            }
+
             if (refreshTokenWebClient.IsRefreshSuccess) //アクセストークンのリフレッシュ成功。中断されたデータを再送する。
             {
-                TryRefreshToken=false;
+                TryRefreshToken = false;
                 base.Refresh();
                 base.Send();
             }
-            else //アクセストークンのリフレッシュ失敗。ログイン(orアカウント作成)が必要 
+            else //アクセストークンのリフレッシュ失敗。アカウント作成(orアカウント連携)が必要 
             {
-                Debug.Log("アクセストークンのリフレッシュに失敗したため、ログイン(orアカウント作成)が必要。Signupシーンへ飛ばすと良さそう。");
+                //TODO: タイトルシーンへ遷移 
             }
             return;
         }
@@ -91,7 +103,6 @@ public abstract class GameWebClient : WebClient
     public static void SetAuthenticationHeader(UnityWebRequest www, string accessToken, string uuid, string privateKey)
     {
         string timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        Debug.Log($"TIMESTAMP: {timeStamp}");
 
         string body = Encoding.UTF8.GetString(www.uploadHandler.data);
         string signature = CalcSignature(timeStamp, body, privateKey);
@@ -119,7 +130,7 @@ public abstract class GameWebClient : WebClient
         try
         {
             string signature_raw = $"{Common.api_version}:{timestamp}:{body}";
-            Debug.Log($"Signature_raw: {signature_raw} ");
+            //Debug.Log($"Signature_raw: {signature_raw} ");
 
             RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
             csp.FromXmlString( Common.StrFromBase64Str(privateKey) );

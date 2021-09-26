@@ -108,11 +108,11 @@ public class LinkAccountPrefabController : MonoBehaviour
     }
 
     /// <summary>
-    /// ログイン成功したときの動作。例えば、Gameシーンへの遷移など。
+    /// アカウント連携に成功したときの動作。例えば、Gameシーンへの遷移など。
     /// </summary>
     private void OnLinkAccountSuccess()
     {
-
+        //TODO Menuシーンへ遷移 
     }
 
     /// <summary>

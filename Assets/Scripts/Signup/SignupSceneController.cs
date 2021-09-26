@@ -21,12 +21,6 @@ public class SignupSceneController : SceneVisor
 
     private void Start()
     {
-        /*TODO; here or elsewhere
-        ①TokenAuthorize to update session: if success, jumpt to game. 
-        ②AccountLogin to update accessToken: if success, try ① once. 
-        ③If Failed ① or ②, the user is new to this game. The user need to signup! 
-        */
-
         this.signupWebClient = new SignupWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/user");
 
         SetUpButtonEvent();
@@ -59,9 +53,9 @@ public class SignupSceneController : SceneVisor
     {
         isConnectionInProgress = true;
         string username = usernameInputField.text;
-        Common.RsaKeyPair = Common.CreateRsaKeyPair();
+        (string privateKey, string publicKey) rsaKeyPair = Common.CreateRsaKeyPair();
         string _uuid = GenerateGUID();
-        signupWebClient.SetData(username, Common.RsaKeyPair.publicKey, _uuid);
+        signupWebClient.SetData(username, rsaKeyPair.publicKey, _uuid, rsaKeyPair.privateKey);
 
         //データチェックをサーバへ送信する前に行う。
         if (signupWebClient.CheckRequestData()==false)
@@ -90,6 +84,7 @@ public class SignupSceneController : SceneVisor
             if (signupWebClient.isSignupSuccess)
             {
                 Common.Uuid = _uuid;
+                Common.RsaKeyPair = rsaKeyPair;
                 Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
                 
                 AlertText.text = signupWebClient.message;
@@ -123,11 +118,11 @@ public class SignupSceneController : SceneVisor
     }
 
     /// <summary>
-    /// アカウント登録に成功したときの動作。例えば、Gameシーンへの遷移など。
+    /// アカウント登録に成功したときの動作。
     /// </summary>
     private void OnSignupSuccess()
     {
-
+        //TODO Menuシーンへ遷移
     }
 
     /// <summary>

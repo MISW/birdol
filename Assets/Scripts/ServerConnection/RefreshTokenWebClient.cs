@@ -26,20 +26,19 @@ public class RefreshTokenWebClient : WebClient
     protected override void HandleSuccessData(string response)
     {
         RefreshTokenResponse r = JsonUtility.FromJson<RefreshTokenResponse>(response);
-        if (r.result == "success")
+        base.data = r;
+        if (r.result == "ok")
         {
             IsRefreshSuccess = true;
             Common.AccessToken = r.token;
             Common.RefreshToken = r.refresh_token;
             Common.SessionID = r.session_id;
-            this.message = "成功";
+            this.message = "成功しました。";
             Debug.Log($"RefreshTokenに成功しました。 AccessToken: {r.token}, RefreshToken: {r.refresh_token}, SessionID: {r.session_id}");
         }
         else
         {
-            Common.AccessToken = null;
-            Common.RefreshToken = null;
-            Debug.LogError($"Failed to refresh Access Token, {r.error}");
+            Debug.Log($"アクセストークンのリフレッシュに失敗したため、アカウント作成(orアカウント連携)が必要です。 {r.error}");
             this.message = r.error;
         }
     }
@@ -58,11 +57,13 @@ public class RefreshTokenWebClient : WebClient
 
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
+        www.uploadHandler = (UploadHandler)new UploadHandlerRaw(new byte[] { });
+        www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         GameWebClient.SetAuthenticationHeader(www);
     }
 
     public override bool CheckRequestData()
     {
-        throw new System.NotImplementedException();
+        return true;
     }
 }

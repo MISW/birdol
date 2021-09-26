@@ -135,7 +135,7 @@ public class SetAccountLinkWebClient : GameWebClient
         }
         else
         {
-            if (aerd.result == "success")
+            if (aerd.result == "ok")
             {
                 this.message = "成功しました。";
             }

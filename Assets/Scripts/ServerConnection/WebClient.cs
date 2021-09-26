@@ -109,7 +109,7 @@ public abstract class WebClient : MonoBehaviour
             Debug.Log($"Request data: {System.Text.Encoding.UTF8.GetString(www.uploadHandler.data)}\n To: {www.url}, Method: {www.method}");
             Debug.Log($"Response code: {www.responseCode}");
             Debug.Log($"Response data: {www.downloadHandler.text}");
-            Debug.Log($"Connection Error: {www.error}");
+            if(www.error!=null) Debug.LogError($"Connection Error: {www.error}");
 
             try
             {

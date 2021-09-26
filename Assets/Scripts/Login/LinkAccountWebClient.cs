@@ -153,7 +153,7 @@ public class LinkAccountWebClient: WebClient
         }
         else
         {
-            if (lrd.result == "success")
+            if (lrd.result == "ok")
             {
                 this.message = "アカウント連携に成功しました。";
                 OnLinkAccountSuccess(lrd);
@@ -185,7 +185,7 @@ public class LinkAccountWebClient: WebClient
 
 
     /// <summary>
-    /// ログイン成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
+    /// アカウント連携に成功した時の動作。クライアント側としてデバイスへのデータ保存などを行う。
     /// </summary>
     /// <param name="lrd">LinkAccount Response Data</param>
     private void OnLinkAccountSuccess(LinkAccountResponseData lrd)
