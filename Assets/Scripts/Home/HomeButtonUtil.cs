@@ -50,12 +50,14 @@ public class HomeButtonUtil : MonoBehaviour
     public void onButtonPressedGallery()
     {
         Debug.Log("Pushed Gallery");
+        Manager.manager.StateQueue((int)gamestate.Gallery);
 
     }
 
     public void onButtonPressedIkusei()
     {
         Debug.Log("Pushed Ikusei");
+        Manager.manager.StateQueue((int)gamestate.Story);
 
     }
 

@@ -8,6 +8,7 @@ public partial class Common : MonoBehaviour
 {
     public static CharacterModel[] characters;
     public static ProgressModel[] progresses;
+    public static string storyid = "opening";
 
     public static void initCharacters()
     {
