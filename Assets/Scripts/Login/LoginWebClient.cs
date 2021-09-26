@@ -156,7 +156,7 @@ public class LoginWebClient: WebClient
             this.message = "このパスワードは使用できません。";
             throw;
         }
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.loginRequestData));
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
