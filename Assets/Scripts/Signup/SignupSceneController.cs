@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(SignupWebClient))]
 public class SignupSceneController : SceneVisor
 {
     [Header("SignUp Web Client")]
-    [SerializeField] private SignupWebClient signupWebClient;
+    private SignupWebClient signupWebClient;
 
     [Header("Input")]
     [SerializeField] InputField usernameInputField;
-    [SerializeField] InputField emailInputField;
-    [SerializeField] InputField passwordInputField;
     [SerializeField] Button signupButton;
 
     [Header("Display")]
-    [SerializeField] GameObject ConnectionInProgressDisplayGameObject;
-    [SerializeField] GameObject SuccessDisplayGameObject;
-    [SerializeField] Text SuccessDisplayText;
-    [SerializeField] GameObject ErrorDisplayGameObject;
-    [SerializeField] Text ErrorDisplayText;
-
-    [Header("Load Login Scene")]
-    [SerializeField] Button loadLoginSceneButton;
+    [SerializeField] GameObject AlertUI;
+    [SerializeField] Text AlertText;
 
     private bool isConnectionInProgress = false;
 
 
     private void Start()
     {
+        this.signupWebClient = new SignupWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/user");
+
         SetUpButtonEvent();
     }
 
@@ -37,79 +30,78 @@ public class SignupSceneController : SceneVisor
     {
         //Signup
         signupButton.onClick.AddListener(() => {
-            OnLoginButtonClicked();
+            OnSignupButtonClicked();
         });
-        //Login
-        loadLoginSceneButton.onClick.AddListener(() =>
+        //username 中の文字としてふさわしくなさそうなものを削除する。 
+        usernameInputField.onEndEdit.AddListener((s) =>
         {
-            LoadLoginScene();
+            usernameInputField.text = System.Text.RegularExpressions.Regex.Replace(usernameInputField.text, @"\n|\r|\s|\t|\v", string.Empty); 
         });
     }
 
-    private void OnLoginButtonClicked()
+    private void OnSignupButtonClicked()
     {
         if (isConnectionInProgress) return;
-        StartCoroutine(Login());
+        StartCoroutine(Signup());
     }
 
     /// <summary>
-    /// Login Request 
+    /// Signup Request 
     /// </summary>
     /// <returns></returns>
-    private IEnumerator Login()
+    private IEnumerator Signup()
     {
         isConnectionInProgress = true;
-
         string username = usernameInputField.text;
-        string email = emailInputField.text;
-        string password = passwordInputField.text;
+        (string privateKey, string publicKey) rsaKeyPair = Common.CreateRsaKeyPair();
         string _uuid = GenerateGUID();
-        signupWebClient.SetData(username, email, password, _uuid);
+        signupWebClient.SetData(username, rsaKeyPair.publicKey, _uuid, rsaKeyPair.privateKey);
 
         //データチェックをサーバへ送信する前に行う。
         if (signupWebClient.CheckRequestData()==false)
         {
-            ErrorDisplayText.text = signupWebClient.message;
+            AlertText.text = signupWebClient.message;
             Debug.Log(signupWebClient.message);
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
         }
 
-        ConnectionInProgressDisplayGameObject.SetActive(true);
+        AlertUI.SetActive(true);
+        AlertText.text = "通信中..."; 
         float conn_start = Time.time;
         yield return StartCoroutine(signupWebClient.Send());
         float conn_end = Time.time;
         if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
-        ConnectionInProgressDisplayGameObject.SetActive(false);
+        AlertUI.SetActive(false);
 
         //処理
         if (signupWebClient.isSuccess == true && signupWebClient.isInProgress == false)
         {
             //成功した時
-            SignupWebClient.SignupResponseData lrd = (SignupWebClient.SignupResponseData)signupWebClient.data;
-            Debug.Log("ParsedResponseData: \n" + lrd.ToString());
+            SignupWebClient.SignupResponseData srd = (SignupWebClient.SignupResponseData)signupWebClient.data;
+            Debug.Log("ParsedResponseData: \n" + srd.ToString());
             if (signupWebClient.isSignupSuccess)
             {
-                // Store UUID to PlayerPrefs
-                PlayerPrefs.SetString(Common.PLAYERPREFS_UUID, _uuid);
-                PlayerPrefs.Save();
+                Common.Uuid = _uuid;
+                Common.RsaKeyPair = rsaKeyPair;
+                Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
                 
-                SuccessDisplayText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, SuccessDisplayGameObject));                
+                AlertText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));                
                 OnSignupSuccess();
             }
             else
             {
-                ErrorDisplayText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+                AlertText.text = signupWebClient.message;
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             }
         }
         else
         {
             //失敗した時
-            ErrorDisplayText.text = signupWebClient.message;
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, ErrorDisplayGameObject));
+            AlertText.text = $"<color=\"red\">{signupWebClient.message}</color>";
+            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
         }
 
         isConnectionInProgress = false;
@@ -125,19 +117,12 @@ public class SignupSceneController : SceneVisor
         yield break;
     }
 
-    //LoginSceneへ移動
-    private void LoadLoginScene()
-    {
-        Debug.Log("<color=\"red\">シーンのロードにこのゲーム用のManagerではなくUniryEngine.SceneManagement.SceneManagerを使っています。要修正</color>");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
-    }
-
     /// <summary>
-    /// アカウント登録に成功したときの動作。例えば、Gameシーンへの遷移など。
+    /// アカウント登録に成功したときの動作。
     /// </summary>
     private void OnSignupSuccess()
     {
-
+        //TODO Menuシーンへ遷移
     }
 
     /// <summary>
