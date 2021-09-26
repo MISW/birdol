@@ -9,14 +9,15 @@ using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
     public bool completedActiveSkill = false;
+    public bool completedPassiveSkill = false;
     public bool executingSkill = false;
     public int id;
+    public float score = 0;
     public string area = "";
     public Text name;
     public GameObject light;
     public GameObject listchild;
     public ProgressModel characterInf;
-    
 
     public void finishSkill()
     {
@@ -43,6 +44,26 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         standing.color = new Color(255f, 255f, 255f);
         
     }
+
+    public void setParamsFont()
+    {
+        Text para = listchild.transform.GetChild(2).gameObject.GetComponent<Text>();
+        if (area == "visual")
+        {
+            para.text = ((int)characterInf.Visual).ToString();
+            para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
+        }
+        else if(area == "vocal")
+        {
+            para.text = ((int)characterInf.Vocal).ToString();
+            para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
+        }
+        else
+        {
+            para.text = ((int)characterInf.Dance).ToString();
+            para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
+        }
+    }
     public void setArea()
     {
         RectTransform rt;
@@ -53,32 +74,31 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             //setWhite();
             return;
         }
-        if (rt.localPosition.x > 140)
+        if (rt.localPosition.x > 100)
         {
             standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_da");
             area = "dance";
-            if(listchild!=null)listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
-
+            
         }
-        else if (rt.localPosition.x < -140)
+        else if (rt.localPosition.x < -100)
         {
             standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vo");
             area = "vocal";
-            if (listchild != null) listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-
+            
         }
         else
         {
             standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vi");
             area = "visual";
-            if (listchild != null) listchild.transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
         }
-       
+        setParamsFont();
+
+
     }
 
     public void initImage()
     {
-        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.characterId);
+        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     void Start()
@@ -95,17 +115,13 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        /*
-        if (!LiveController.executingSkills&&eventData.position.y<=840)
+        if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
-            
-        }*/
-
-        Vector2 parenttransform = eventData.position;
-        parenttransform.y -= 150;
-        transform.parent.position = parenttransform;
-        setArea();
-        Debug.Log(114514);
+            Vector2 parenttransform = eventData.position;
+            parenttransform.y -= 150;
+            transform.parent.position = parenttransform;
+            setArea();
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)

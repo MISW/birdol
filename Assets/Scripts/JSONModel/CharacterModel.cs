@@ -13,11 +13,18 @@ public class CharacterModel
 {
 	public int id;
 	public string name;
+	public string group;
 	public int rarity;
-	public int visual;
+	public string bestskill;
 	public int vocal;
+	public int visual;
 	public int dance;
 	public string skillname;
-    public string type;
-    public float affect;
+    public string activetype;
+	public string activeparams;
+	public float activeskillscore;
+	public string passivetype;
+	public string passiveparams;
+	public float passiveskillscore;
+	public float passiveprobability;
 }
