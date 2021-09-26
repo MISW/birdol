@@ -162,7 +162,7 @@ public class RunGacha : MonoBehaviour
 
 
 
-            gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/Icon/" + gachacharacter.id);
+            gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + gachacharacter.id);
         }
 
         resultImage.SetActive(true);
