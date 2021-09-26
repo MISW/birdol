@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 /* 
 Todo:
-キャラごとの説明文はどう保持するか
-戻るボタンなくね？　下にスペースを作る
+キャラごとの説明文はどう保持するか（～目～科など）
+戻るボタンの配置　どこ
  */
 
 public class GalleryManager : MonoBehaviour
@@ -62,40 +62,9 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
-    private CharacterModel GetCharacterFromId(int id) {
-        foreach (var c in characters) {
-            if (id == c.id) return c;
-        }
-        return null;
-    }
-
-    private const string galleryPathBase = "Images/gallery/";
-    private const string noImagePath = galleryPathBase + "face/noimage";  // face未実装キャラクター用
-    private const string lockedPath = galleryPathBase + "face/locked";  // 未解禁キャラクター用
     private void SetCharacterData(GameObject node, int id) {
-        GameObject faceObject = node.transform.Find("Panel/Face").gameObject;
-        GameObject nameObject = node.transform.Find("Panel/Text").gameObject;
-
-        CharacterModel model = GetCharacterFromId(id);
-
-        Image faceImage = faceObject.GetComponent<Image>();
-        Sprite faceSprite = Resources.Load<Sprite>("Images/gallery/face/" + id);
-        Sprite lockedSprite = Resources.Load<Sprite>(lockedPath);
-
-        Text nameText = nameObject.GetComponent<Text>();
-
-        if (faceSprite == null) {
-            faceSprite = Resources.Load<Sprite>(noImagePath);
-        }
-
-        if (!isUnlocked[id]) {
-            faceImage.sprite = lockedSprite;
-            nameText.text = "???";
-        }
-        else {
-            faceImage.sprite = faceSprite;
-            nameText.text = model.name;
-        }
+        CharaNodeManager nodeManager = node.GetComponent<CharaNodeManager>();
+        nodeManager.SetCharacter(this.characters[id]);
     }
 
     // Start is called before the first frame update
@@ -108,5 +77,9 @@ public class GalleryManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public bool GetIsUnlocked(int id) {
+        return this.isUnlocked[id];
     }
 }
