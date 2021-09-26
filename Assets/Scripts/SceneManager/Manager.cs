@@ -78,11 +78,10 @@ public class Manager : MonoBehaviour
 
     IEnumerator StateChange()
     {
-
         SceneVisor Visor1 = GotVisorOnScene();
-        gif.GetComponent<GifPlayer>().enabled = false;
-        gif.GetComponent<GifPlayer>().enabled = true;
         loadingCanvas.SetActive(true);
+        gif.GetComponent<GifPlayer>().index = 0;
+        gif.GetComponent<GifPlayer>().StartGif();
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
 
@@ -111,7 +110,6 @@ public class Manager : MonoBehaviour
         async.allowSceneActivation = true;
         yield return new WaitUntil(() => SceneManager.GetSceneByBuildIndex((int)Next_GameState).isLoaded);
         gif.GetComponent<GifPlayer>().index = 0;
-        gif.GetComponent<GifPlayer>().enabled = false;
         SceneVisor Visor2 = GotVisorOnScene();
 
         if (Visor2 != null)
@@ -125,6 +123,8 @@ public class Manager : MonoBehaviour
         Visor = Visor2;
         Now_GameState = Next_GameState;
         loadingCanvas.SetActive(false);
+        gif.GetComponent<GifPlayer>().StopGif();
+        
         print($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
 
         yield break;
@@ -158,8 +158,18 @@ public class Manager : MonoBehaviour
 public enum gamestate
 {
     Undefined,
-    Story,
-    Live
+    Title,
+    Signup,
+    Home,
+    Turtorial,
+    Gacha,
+    Live,
+    Lesson,
+    Ending,
+    Gallery,
+    Login,
+    Result,
+    Story
 }
 
 
