@@ -66,9 +66,9 @@ public class Ending : MonoBehaviour
     private void ChangeCurrentCharacterStars(int i)
     {
         //各キャラクターのステータスを読み込み、ステータスの最大値を超えていた場合はその値をステータスの最大値に変更
-        currentCharacterVocal = (int)Mathf.Min(Characters[i].vocal,maxStatus);
-        currentCharacterVisual = (int)Mathf.Min(Characters[i].visual,maxStatus);
-        currentCharacterDance = (int)Mathf.Min(Characters[i].dance,maxStatus);
+        currentCharacterVocal = (int)Mathf.Min(Characters[i].Vocal,maxStatus);
+        currentCharacterVisual = (int)Mathf.Min(Characters[i].Visual,maxStatus);
+        currentCharacterDance = (int)Mathf.Min(Characters[i].Dance,maxStatus);
 
         currentCharacterVocal = (int)(((float)currentCharacterVocal / (float)maxStatus) * 50.0f);
         currentCharacterVisual = (int)(((float)currentCharacterVisual / (float)maxStatus) * 50.0f);
@@ -155,7 +155,7 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].characterId);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].MainCharacterId);
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }

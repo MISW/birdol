@@ -559,76 +559,111 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3805780712f157543a213e4e39b9a904, type: 3}
   maxStar: 10
   Characters:
-  - characterId: 1
-    characterName: 
-    visual: 0
-    vocal: 7
-    dance: 14
-    bestskill: 0
-    activeSkillLevel: 1
-    activeSkillType: 0
-    activeSkillScore: 0
-    mainStoryId: 0
-    supportCharacterId: 0
-    passiveSkillLevel: 1
-    passiveSkilltype: 0
-    passiveSkillScore: 0
-  - characterId: 2
-    characterName: 
-    visual: 21
-    vocal: 28
-    dance: 35
-    bestskill: 0
-    activeSkillLevel: 1
-    activeSkillType: 0
-    activeSkillScore: 0
-    mainStoryId: 0
-    supportCharacterId: 0
-    passiveSkillLevel: 1
-    passiveSkilltype: 0
-    passiveSkillScore: 0
-  - characterId: 3
-    characterName: 
-    visual: 42
-    vocal: 49
-    dance: 56
-    bestskill: 0
-    activeSkillLevel: 1
-    activeSkillType: 0
-    activeSkillScore: 0
-    mainStoryId: 0
-    supportCharacterId: 0
-    passiveSkillLevel: 1
-    passiveSkilltype: 0
-    passiveSkillScore: 0
-  - characterId: 4
-    characterName: 
-    visual: 63
-    vocal: 70
-    dance: 77
-    bestskill: 0
-    activeSkillLevel: 1
-    activeSkillType: 0
-    activeSkillScore: 0
-    mainStoryId: 0
-    supportCharacterId: 0
-    passiveSkillLevel: 1
-    passiveSkilltype: 0
-    passiveSkillScore: 0
-  - characterId: 5
-    characterName: 
-    visual: 84
-    vocal: 91
-    dance: 100
-    bestskill: 0
-    activeSkillLevel: 1
-    activeSkillType: 0
-    activeSkillScore: 0
-    mainStoryId: 0
-    supportCharacterId: 0
-    passiveSkillLevel: 1
-    passiveSkilltype: 0
-    passiveSkillScore: 0
+  - id: 0
+    MainCharacterId: 1
+    Name: 
+    Visual: 22
+    Vocal: 11
+    Dance: 33
+    Group: 
+    BestSkill: 
+    ActiveSkillLevel: 1
+    ActiveSkillName: 
+    ActiveSkillType: 
+    ActiveSkillParams: 
+    ActiveSkillScore: 0
+    MainStoryId: 0
+    SupportCharacterId: 0
+    SupportSkillName: 
+    PassiveSkillLevel: 1
+    PassiveSkillType: 
+    PassiveSkillParams: 
+    PassiveSkillScore: 0
+    PassiveSkillProbability: 0
+  - id: 0
+    MainCharacterId: 2
+    Name: 
+    Visual: 55
+    Vocal: 44
+    Dance: 22
+    Group: 
+    BestSkill: 
+    ActiveSkillLevel: 1
+    ActiveSkillName: 
+    ActiveSkillType: 
+    ActiveSkillParams: 
+    ActiveSkillScore: 0
+    MainStoryId: 0
+    SupportCharacterId: 0
+    SupportSkillName: 
+    PassiveSkillLevel: 1
+    PassiveSkillType: 
+    PassiveSkillParams: 
+    PassiveSkillScore: 0
+    PassiveSkillProbability: 0
+  - id: 0
+    MainCharacterId: 3
+    Name: 
+    Visual: 33
+    Vocal: 66
+    Dance: 22
+    Group: 
+    BestSkill: 
+    ActiveSkillLevel: 1
+    ActiveSkillName: 
+    ActiveSkillType: 
+    ActiveSkillParams: 
+    ActiveSkillScore: 0
+    MainStoryId: 0
+    SupportCharacterId: 0
+    SupportSkillName: 
+    PassiveSkillLevel: 1
+    PassiveSkillType: 
+    PassiveSkillParams: 
+    PassiveSkillScore: 0
+    PassiveSkillProbability: 0
+  - id: 0
+    MainCharacterId: 4
+    Name: 
+    Visual: 11
+    Vocal: 44
+    Dance: 33
+    Group: 
+    BestSkill: 
+    ActiveSkillLevel: 1
+    ActiveSkillName: 
+    ActiveSkillType: 
+    ActiveSkillParams: 
+    ActiveSkillScore: 0
+    MainStoryId: 0
+    SupportCharacterId: 0
+    SupportSkillName: 
+    PassiveSkillLevel: 1
+    PassiveSkillType: 
+    PassiveSkillParams: 
+    PassiveSkillScore: 0
+    PassiveSkillProbability: 0
+  - id: 0
+    MainCharacterId: 5
+    Name: 
+    Visual: 11
+    Vocal: 22
+    Dance: 33
+    Group: 
+    BestSkill: 
+    ActiveSkillLevel: 1
+    ActiveSkillName: 
+    ActiveSkillType: 
+    ActiveSkillParams: 
+    ActiveSkillScore: 0
+    MainStoryId: 0
+    SupportCharacterId: 0
+    SupportSkillName: 
+    PassiveSkillLevel: 1
+    PassiveSkillType: 
+    PassiveSkillParams: 
+    PassiveSkillScore: 0
+    PassiveSkillProbability: 0
 --- !u!4 &187151337
 Transform:
   m_ObjectHideFlags: 0
