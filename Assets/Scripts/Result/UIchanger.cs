@@ -17,7 +17,6 @@ public class UIchanger : MonoBehaviour{
     public GameObject Achievement_Text; //到達度テキストのUI指定
     public float Achievement_num; //到達度(0~1)
 
-
     void Start(){ //Start時にUIを全て変更
         Score_Text.GetComponent<Text>().text = Score_num.ToString("000,000");
         Judge_Image.GetComponent<Image>().sprite = Judge_Sprites[Judge_Image_num];
