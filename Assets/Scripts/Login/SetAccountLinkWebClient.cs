@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// アカウントのデータ連携を行うためにパスワードを設定する。アカウント連携が完了すると、パスワードの再設定が必要となる。
+/// </summary>
 public class SetAccountLinkWebClient : GameWebClient
 {
     [Header("Request Data Information")]
@@ -22,7 +25,7 @@ public class SetAccountLinkWebClient : GameWebClient
         [SerializeField] public string password;
 
         /// <summary>
-        /// COnstructor
+        /// Constructor
         /// </summary>
         /// <param name="password"></param>
         public SetAccountLinkRequestData(string password)
@@ -135,13 +138,13 @@ public class SetAccountLinkWebClient : GameWebClient
         }
         else
         {
-            if (aerd.result == "ok")
+            if (aerd.result == ConnectionModel.Response.ResultOK)
             {
                 this.message = "成功しました。";
             }
             else
             {
-                if (!string.IsNullOrEmpty(aerd.error)) this.message = aerd.error;
+                this.message = ConnectionModel.ErrorMessage(aerd.error);
             }
         }
     }

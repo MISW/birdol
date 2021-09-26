@@ -83,7 +83,7 @@ public class SignupWebClient : WebClient
     {
         bool ok = true;
         if (string.IsNullOrEmpty(srd.result)) ok = false;
-        else if (srd.result == "ok" && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id) || string.IsNullOrEmpty(srd.refresh_token))) ok = false;
+        else if (srd.result == ConnectionModel.Response.ResultOK && (string.IsNullOrEmpty(srd.access_token) || string.IsNullOrEmpty(srd.account_id) || string.IsNullOrEmpty(srd.refresh_token))) ok = false;
         return ok;
     }
 
@@ -142,14 +142,14 @@ public class SignupWebClient : WebClient
         }
         else
         {
-            if (srd.result == "ok")
+            if (srd.result == ConnectionModel.Response.ResultOK)
             {
                 this.message = "アカウント新規登録に成功しました。";
                 OnSignupSuccess(srd);
             }
             else
             {
-                if (!string.IsNullOrEmpty(srd.error)) this.message = srd.error;
+                this.message = ConnectionModel.ErrorMessage(srd.error);
             }
         }
     }

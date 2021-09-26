@@ -14,7 +14,7 @@ public class TokenAuthorizeWebClient : GameWebClient
     [Serializable]
     public struct TokenAuthorizeResponse
     {
-        [SerializeField] public string result; //"ok" or "failed"
+        [SerializeField] public string result; 
         [SerializeField] public string error;
         [SerializeField] public string session_id;
     }
@@ -41,7 +41,7 @@ public class TokenAuthorizeWebClient : GameWebClient
     {
         TokenAuthorizeResponse r = JsonUtility.FromJson<TokenAuthorizeResponse>(response);
         base.data = r;
-        if (r.result == "ok")
+        if (r.result == ConnectionModel.Response.ResultOK)
         {
             IsAuthorizeSuccess = true;
             Common.SessionID = r.session_id;
@@ -51,7 +51,7 @@ public class TokenAuthorizeWebClient : GameWebClient
         else
         {
             IsAuthorizeSuccess = false;
-            this.message = r.error;
+            this.message = ConnectionModel.ErrorMessage(r.error);
         }
 
     }

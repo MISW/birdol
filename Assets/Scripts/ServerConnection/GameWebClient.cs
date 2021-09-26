@@ -33,7 +33,7 @@ public abstract class GameWebClient : WebClient
     {
         Debug.Log($"TEST: {response}");
         Response r = JsonUtility.FromJson<Response>(response);
-        if (r.result == "failed" && r.error == "invalid_token" && TryRefreshToken == true)
+        if (r.result == ConnectionModel.Response.ResultFail && r.error == ConnectionModel.Response.ErrInvalidToken && TryRefreshToken == true)
         {
             //トークンのリフレッシュ要求を行う。
             RefreshTokenWebClient refreshTokenWebClient = new RefreshTokenWebClient(HttpRequestMethod.Get, $"/api/{Common.api_version}/auth/refresh?refresh_token={Common.RefreshToken}");

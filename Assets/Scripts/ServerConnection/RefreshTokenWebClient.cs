@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// リフレッシュトークンを用いて期限切れのアクセストークンを再取得する。
+/// </summary>
 public class RefreshTokenWebClient : WebClient
 {
     public bool IsRefreshSuccess = false;
@@ -27,7 +30,7 @@ public class RefreshTokenWebClient : WebClient
     {
         RefreshTokenResponse r = JsonUtility.FromJson<RefreshTokenResponse>(response);
         base.data = r;
-        if (r.result == "ok")
+        if (r.result == ConnectionModel.Response.ResultRefreshSuccess)
         {
             IsRefreshSuccess = true;
             Common.AccessToken = r.token;
@@ -38,8 +41,8 @@ public class RefreshTokenWebClient : WebClient
         }
         else
         {
+            this.message = ConnectionModel.ErrorMessage(r.error);
             Debug.Log($"アクセストークンのリフレッシュに失敗したため、アカウント作成(orアカウント連携)が必要です。 {r.error}");
-            this.message = r.error;
         }
     }
 

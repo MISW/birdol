@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-//Login as Link Account
+/// <summary>
+/// アカウントの連携を行う。ユーザIDとパスワードを必要する。
+/// </summary>
 public class LinkAccountWebClient: WebClient 
 {
     [Header("LinkAccount Information")]
@@ -153,14 +155,14 @@ public class LinkAccountWebClient: WebClient
         }
         else
         {
-            if (lrd.result == "ok")
+            if (lrd.result == ConnectionModel.Response.ResultOK)
             {
                 this.message = "アカウント連携に成功しました。";
                 OnLinkAccountSuccess(lrd);
             }
             else
             {
-                if (!string.IsNullOrEmpty(lrd.error)) this.message = lrd.error;
+                this.message = ConnectionModel.ErrorMessage(lrd.error);
             }
         }
     }
