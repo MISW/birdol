@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -27,7 +28,8 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //test();
+        init();
+        Common.loadingCanvas = loadingCanvas;
     }
 
     // Update is called once per frame
@@ -41,9 +43,9 @@ public class Manager : MonoBehaviour
     }
 
     [ContextMenu("test")]
-    void test()
+    void init()
     {
-        StateQueue((int)forTest);
+        StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;
 
@@ -79,9 +81,9 @@ public class Manager : MonoBehaviour
     IEnumerator StateChange()
     {
         SceneVisor Visor1 = GotVisorOnScene();
-        loadingCanvas.SetActive(true);
         gif.GetComponent<GifPlayer>().index = 0;
         gif.GetComponent<GifPlayer>().StartGif();
+        if(SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
 
@@ -89,7 +91,7 @@ public class Manager : MonoBehaviour
 
         Pre_GameState = Now_GameState;
         Now_GameState = gamestate.Undefined;
-        print("Transitionc");
+        Debug.Log("Transitionc");
 
         if (Visor1 != null)
         {
@@ -97,21 +99,21 @@ public class Manager : MonoBehaviour
         }
         else
         {
-            print("Visor null");
+            Debug.Log("Visor null");
         }
 
         if (Pre_GameState != 0)
         {
-            print("unload");
-            SceneManager.UnloadSceneAsync((int)Pre_GameState);
+            Debug.Log("unload");
+           // SceneManager.UnloadSceneAsync((int)Pre_GameState);
 
         }
         yield return new WaitForSeconds(2);
         async.allowSceneActivation = true;
+        loadingCanvas.SetActive(false);
         yield return new WaitUntil(() => SceneManager.GetSceneByBuildIndex((int)Next_GameState).isLoaded);
         gif.GetComponent<GifPlayer>().index = 0;
         SceneVisor Visor2 = GotVisorOnScene();
-
         if (Visor2 != null)
         {
             yield return StartCoroutine(Visor2.Init(Pre_GameState));
@@ -122,10 +124,9 @@ public class Manager : MonoBehaviour
         }
         Visor = Visor2;
         Now_GameState = Next_GameState;
-        loadingCanvas.SetActive(false);
         gif.GetComponent<GifPlayer>().StopGif();
-        
-        print($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
+
+        Debug.Log($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
 
         yield break;
     }
@@ -150,7 +151,7 @@ public class Manager : MonoBehaviour
 }
 
 
-  
+
 
 
 
@@ -169,7 +170,8 @@ public enum gamestate
     Gallery,
     Login,
     Result,
-    Story
+    Story,
+    GachaUnit
 }
 
 

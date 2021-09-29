@@ -14,7 +14,7 @@ public class SceneVisor : MonoBehaviour
 
     public virtual void Updater()
     {
-        print($"{this.gameObject.scene.name}:Updater");
+        //print($"{this.gameObject.scene.name}:Updater");
     }
 
     public virtual IEnumerator Finalizer(gamestate after)

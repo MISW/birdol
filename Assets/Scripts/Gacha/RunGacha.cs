@@ -218,4 +218,24 @@ public class RunGacha : MonoBehaviour
         obj.SetActive(false);
         resultIndex = 0;
     }
+
+    public void GotoGachaUnit()
+    {
+        Common.loadingCanvas.SetActive(true);
+        GachaUnitManager.initid = result;
+        //ここで殿堂入りバードル一覧を取得するAPIを呼び出す
+        for (int i = 0; i < 4; i++)
+        {
+            DendouModel dendouModel = new DendouModel();
+            dendouModel.MainCharacterId = i;
+            dendouModel.SupportCharacterId = i;
+            dendouModel.Name = Common.characters[i].name;
+            dendouModel.Vocal = Common.characters[i].vocal;
+            dendouModel.Visual = Common.characters[i].visual;
+            dendouModel.Dance = Common.characters[i].dance;
+            GachaUnitManager.teachers.Add(dendouModel);
+        }
+        //↑Temporary Code
+        Manager.manager.StateQueue((int)gamestate.GachaUnit);
+    }
 }
