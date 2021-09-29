@@ -11,6 +11,9 @@ TagManager:
   - HomeButtons
   - CharacterList
   - ChildListText
+  - GachaUnitPair
+  - GachaUnitIcons
+  - GachaUnitTeachers
   layers:
   - Default
   - TransparentFX
