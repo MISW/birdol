@@ -13,10 +13,21 @@ public class GifPlayer : MonoBehaviour {
     public string path;
 
     private Image image;
+    IEnumerator coroutine;
 
     void Start() {
+        //StartGif();
+    }
+
+    public void StartGif()
+    {
         image = GetComponent<Image>();
-        IEnumerator coroutine = updateImg();
+        coroutine = updateImg();
+        StartCoroutine(coroutine);
+    }
+
+    public void StopGif()
+    {
         StartCoroutine(coroutine);
     }
 
@@ -28,7 +39,7 @@ public class GifPlayer : MonoBehaviour {
             image.sprite = Resources.Load<Sprite>(path + index);
             if (index < size) index++;
             else index = 0;
-            Debug.Log("current:"+index);
+            //Debug.Log("current:"+index);
             yield return new WaitForSeconds(speed);
         }
     }
