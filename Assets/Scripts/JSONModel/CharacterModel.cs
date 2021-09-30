@@ -23,8 +23,10 @@ public class CharacterModel
     public string activetype;
 	public string activeparams;
 	public float activeskillscore;
+	public string activedescription;
 	public string passivetype;
 	public string passiveparams;
 	public float passiveskillscore;
+	public string passivedescription;
 	public float passiveprobability;
 }
