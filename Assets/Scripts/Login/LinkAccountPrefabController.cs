@@ -76,6 +76,7 @@ public class LinkAccountPrefabController : MonoBehaviour
             Debug.Log("ParsedResponseData: \n"+lrd.ToString());
             if (linkAccountWebClient.isLinkAccountSuccess)
             {
+                Common.DefaultAccountID = id;
                 Common.Uuid = _uuid;
                 Common.RsaKeyPair = rsaKeyPair;
                 AlertText.text = linkAccountWebClient.message;
@@ -113,7 +114,11 @@ public class LinkAccountPrefabController : MonoBehaviour
     /// </summary>
     private void OnLinkAccountSuccess()
     {
-        //TODO Menuシーンへ遷移 
+        //TODO here or elsewhere: ガチャを回す必要があるかの判断をし、回す必要があればガチャシーンへ遷移する。
+        //TODO here maybe: アカウント連携したとして、ローカルのデータをリモートのデータと同期する。
+        //Homeシーンへ遷移
+        Common.loadingCanvas.SetActive(true);
+        Manager.manager.StateQueue((int)gamestate.Home);
     }
 
     /// <summary>
