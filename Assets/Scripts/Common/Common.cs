@@ -175,17 +175,17 @@ public partial class Common : MonoBehaviour
     }
 
     //RSA Key Pair: 公開鍵と秘密鍵
-    private const string PLAYERPREFS_RSA_PUBLIC_KEY = "PLAYERPREFS_RSA_PUBLIC_KEY";
+    //private const string PLAYERPREFS_RSA_PUBLIC_KEY = "PLAYERPREFS_RSA_PUBLIC_KEY";  PrivateKeyにPublicKeyも含まれているため保存する必要ない
     private const string PLAYERPREFS_RSA_PRIVATE_KEY = "PLAYERPREFS_RSA_PRIVATE_KEY";
     private static (string privateKey, string publicKey) rsaKeyPair; //(privateKey: 秘密鍵, publicKey: 公開鍵)
     public static (string privateKey, string publicKey) RsaKeyPair
     {
         get
         {
-            if (string.IsNullOrEmpty(rsaKeyPair.privateKey) && string.IsNullOrEmpty(rsaKeyPair.publicKey))
+            if (string.IsNullOrEmpty(rsaKeyPair.privateKey) )
             {
                 rsaKeyPair.privateKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PRIVATE_KEY);
-                rsaKeyPair.publicKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PUBLIC_KEY);
+                //rsaKeyPair.publicKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PUBLIC_KEY);
             }
             return rsaKeyPair;
         }
@@ -193,7 +193,7 @@ public partial class Common : MonoBehaviour
         {
             rsaKeyPair = value;
             PlayerPrefs.SetString(PLAYERPREFS_RSA_PRIVATE_KEY, rsaKeyPair.privateKey);
-            PlayerPrefs.SetString(PLAYERPREFS_RSA_PUBLIC_KEY, rsaKeyPair.publicKey);
+            //PlayerPrefs.SetString(PLAYERPREFS_RSA_PUBLIC_KEY, rsaKeyPair.publicKey);
             PlayerPrefs.Save();
         }
     }
