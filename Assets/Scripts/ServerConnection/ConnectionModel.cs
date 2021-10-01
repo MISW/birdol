@@ -8,11 +8,38 @@ using UnityEngine;
 public class ConnectionModel : MonoBehaviour
 {
     public const int USERNAME_LENGTH_MIN = 1;
-    public const int USERNAME_LENGTH_MAX = 8;
+    public const int USERNAME_LENGTH_MAX = 16; //全角は2文字分
     public const int ACCOUNT_ID_LENGTH_MIN = 1;
     public const int ACCOUNT_ID_LENGTH_MAX = 256;
     public const int PASSWORD_LENGTH_MIN = 6;
     public const int PASSWORD_LENGTH_MAX = 256;
+
+	/// <summary>
+    /// 全角を2文字分として文字が何文字か数える
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+	public static int CountHalfWidthCharLength(string text)
+	{
+		int len =text.Length;
+		foreach (char c in text)
+        {
+			if (!CheckHalfWidthChar(c)) len++;
+		}
+		return len;
+		
+    }
+	/// <summary>
+    /// 半角文字か否か
+    /// 半角文字は、ひとまず「英数字(ASCII)」「半角カタカナ」「半角ハングル文字」「その他記号」としており、他は全角扱いにしている。
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns>trueの場合、半角文字</returns>
+	private static bool CheckHalfWidthChar(char c)
+    {
+		if (new System.Text.RegularExpressions.Regex(@"[(\u0020-\u007E)|(\uFF61-\uFF9F)|(\uFFE8-\uFFEE)]").IsMatch((c.ToString()))) return true; //半角文字
+		else return false;	//全角文字
+    }
 
 	/// <summary>
     /// サーバからレスポンスとして帰ってくる文字列 
