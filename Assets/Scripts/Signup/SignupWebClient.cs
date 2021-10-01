@@ -94,18 +94,7 @@ public class SignupWebClient : WebClient
     {
         bool ok = true;
 
-        int nameLength;
-        try
-        {
-            nameLength = ConnectionModel.CountHalfWidthCharLength(this.signupRequestData.name);
-        }catch(Exception e)
-        {
-            nameLength = 0;
-            this.message = "使用できない文字が含まれています。";
-            Debug.LogError(e);
-            return false;
-        }
-
+        int nameLength = ConnectionModel.CountHalfWidthCharLength(this.signupRequestData.name);
         if (nameLength > ConnectionModel.USERNAME_LENGTH_MAX || nameLength < ConnectionModel.USERNAME_LENGTH_MIN)
         {
             ok = false;

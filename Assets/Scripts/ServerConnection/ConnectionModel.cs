@@ -27,8 +27,8 @@ public class ConnectionModel : MonoBehaviour
 			if (!CheckHalfWidthChar(c)) len++;
 		}
 		return len;
-		
     }
+
 	/// <summary>
     /// 半角文字か否か
     /// 半角文字は、ひとまず「英数字(ASCII)」「半角カタカナ」「半角ハングル文字」「その他記号」としており、他は全角扱いにしている。
