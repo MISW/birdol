@@ -155,7 +155,7 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].MainCharacterId);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
