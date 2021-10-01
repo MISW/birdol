@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class TokenAuthorizePrefabController : MonoBehaviour
 {
+#if false
     private void Awake()
     {
         if (string.IsNullOrEmpty(Common.AccessToken)) //ログインを試みるためのアクセストークンが保存されていない
@@ -27,7 +28,7 @@ public class TokenAuthorizePrefabController : MonoBehaviour
         yield return StartCoroutine(webClient.Send());
         if (webClient.IsAuthorizeSuccess)
         {
-            //TODO: Menuシーンへ遷移 
+            //Homeシーンへ遷移 
         }
         else
         {
@@ -36,4 +37,5 @@ public class TokenAuthorizePrefabController : MonoBehaviour
         }
         yield break;
     }
+#endif
 }

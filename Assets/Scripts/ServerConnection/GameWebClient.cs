@@ -53,7 +53,10 @@ public abstract class GameWebClient : WebClient
             }
             else //アクセストークンのリフレッシュ失敗。アカウント作成(orアカウント連携)が必要 
             {
-                //TODO: タイトルシーンへ遷移 
+                //タイトルシーンへ遷移
+                Debug.LogError("認証に失敗したため、タイトルシーンに遷移しました。");
+                Common.loadingCanvas.SetActive(true);
+                Manager.manager.StateQueue((int)gamestate.Title);
             }
             return;
         }

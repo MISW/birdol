@@ -129,7 +129,7 @@ public class LinkAccountWebClient: WebClient
             this.message = "このパスワードは使用できません。";
             throw;
         }
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.linkAccountRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes( JsonUtility.ToJson(this.linkAccountRequestData) );
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");

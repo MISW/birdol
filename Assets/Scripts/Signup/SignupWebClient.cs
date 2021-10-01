@@ -93,10 +93,12 @@ public class SignupWebClient : WebClient
     public override bool CheckRequestData()
     {
         bool ok = true;
-        if (this.signupRequestData.name.Length > ConnectionModel.USERNAME_LENGTH_MAX || this.signupRequestData.name.Length < ConnectionModel.USERNAME_LENGTH_MIN)
+
+        int nameLength = ConnectionModel.CountHalfWidthCharLength(this.signupRequestData.name);
+        if (nameLength > ConnectionModel.USERNAME_LENGTH_MAX || nameLength < ConnectionModel.USERNAME_LENGTH_MIN)
         {
             ok = false;
-            this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。";
+            this.message = $"不適切なユーザ名です。\n{ConnectionModel.USERNAME_LENGTH_MIN}文字から{ConnectionModel.USERNAME_LENGTH_MAX}文字で入力してください。なお、全角文字は2文字分として数えられます。\n現在文字数; <color=\"red\">{nameLength}</color>";
         }
         else if (string.IsNullOrEmpty(this.privateKey))
         {
@@ -116,7 +118,7 @@ public class SignupWebClient : WebClient
     {
         isSignupSuccess = false;
 
-        byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.signupRequestData) + "}");
+        byte[] postData = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(this.signupRequestData) );
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
