@@ -25,11 +25,14 @@ public class Ending : MonoBehaviour
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
     private List<GameObject> CharacterList = new List<GameObject>();
+    private List<GameObject> CharacterButtonList = new List<GameObject>();
     #endregion
 
     void Start()
     {
         FindStar();
+        FindButton();
+        CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
     }
@@ -44,6 +47,8 @@ public class Ending : MonoBehaviour
         if(currentCharacterNumber != i)
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
+            CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
             currentCharacterNumber = i;
@@ -144,6 +149,14 @@ public class Ending : MonoBehaviour
             VisualStarImage.Add(Star.GetComponent<Image>());
             Star = GameObject.Find("DanceStar" + i);
             DanceStarImage.Add(Star.GetComponent<Image>());
+        }
+    }
+
+    private void FindButton()
+    {
+        for(int i=1;i<=5;i++)
+        {
+            CharacterButtonList.Add(GameObject.Find("CharacterButton" + i));
         }
     }
 

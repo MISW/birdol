@@ -3669,7 +3669,7 @@ GameObject:
   - component: {fileID: 1469931955}
   - component: {fileID: 1469931954}
   m_Layer: 5
-  m_Name: CharecterButton4
+  m_Name: CharacterButton4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
