@@ -25,11 +25,14 @@ public class Ending : MonoBehaviour
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
     private List<GameObject> CharacterList = new List<GameObject>();
+    private List<GameObject> CharacterButtonList = new List<GameObject>();
     #endregion
 
     void Start()
     {
         FindStar();
+        FindButton();
+        CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
     }
@@ -44,6 +47,8 @@ public class Ending : MonoBehaviour
         if(currentCharacterNumber != i)
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
+            CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
             currentCharacterNumber = i;
@@ -147,6 +152,14 @@ public class Ending : MonoBehaviour
         }
     }
 
+    private void FindButton()
+    {
+        for(int i=1;i<=5;i++)
+        {
+            CharacterButtonList.Add(GameObject.Find("CharacterButton" + i));
+        }
+    }
+
     private void SetCharacter()
     {
         var parent = canvas.transform;
@@ -155,7 +168,7 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].MainCharacterId);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
