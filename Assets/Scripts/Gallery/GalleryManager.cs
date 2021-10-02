@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 /* 
 Todo:
-キャラごとの説明文はどう保持するか（～目～科など）
+キャラごとの説明文はどう保持するか（～目～科など）: 仮でJSON
 戻るボタンの配置　どこ
  */
 
 public class GalleryManager : MonoBehaviour
 {
-    private const int ARR_SIZE = 16;
+    private const int ARR_SIZE = 30;
     // 図鑑に表示されるバードルのリスト
     private CharacterModel[] characters = new CharacterModel[ARR_SIZE];
     private bool[] isUnlocked = new bool[ARR_SIZE];
@@ -30,10 +30,8 @@ public class GalleryManager : MonoBehaviour
             tmp.name = "No Name";
 
             characters[i] = tmp;
+            this.isUnlocked[i] = true;
         }
-        characters[0].name = "シジュウカラ";
-        isUnlocked[0] = true;
-        isUnlocked[1] = true;
 
         rowNodeOriginal.SetActive(true);
         GameObject content = rowNodeOriginal.transform.parent.gameObject;

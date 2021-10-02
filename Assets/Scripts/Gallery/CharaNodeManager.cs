@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CharaNodeManager : MonoBehaviour
 {
     private CharacterModel character = null;
+    private bool isUnlocked = false;
 
     private GameObject galleryManager;
     private GalleryManager man;
@@ -40,8 +41,7 @@ public class CharaNodeManager : MonoBehaviour
     public void OnClick() {
         Debug.Log("clicked " + this.character.id);
 
-        overlay.SetActive(true);
-        overlayManager.OpenOverlay(this.character);
+        if (this.isUnlocked) overlayManager.OpenOverlay(this.character);
     }
 
     // setterにキャラアイコン変更の処理を付けている
@@ -54,12 +54,13 @@ public class CharaNodeManager : MonoBehaviour
         GameObject nameObject = this.transform.Find("Panel/Text").gameObject;
 
         Image faceImage = faceObject.GetComponent<Image>();
-        Sprite faceSprite = Resources.Load<Sprite>("Images/gallery/face/" + model.id);
+        Sprite faceSprite = Resources.Load<Sprite>("Images/charactericon/" + model.id);
         Sprite lockedSprite = Resources.Load<Sprite>(lockedPath);
 
         Text nameText = nameObject.GetComponent<Text>();
 
-        if (!man.GetIsUnlocked(model.id)) {
+        this.isUnlocked = man.GetIsUnlocked(model.id);
+        if (!this.isUnlocked) {
             faceImage.sprite = lockedSprite;
             nameText.text = "???";
         }
