@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Home.unity
     guid: 0dfa4297e79cf1a49b63a596eccf3fa7
   - enabled: 1
-    path: Assets/Scenes/Turtorial.unity
+    path: Assets/Scenes/CompletedCharacters.unity
     guid: 5a401a52e344a484eb8a5d869c22dc04
   - enabled: 1
     path: Assets/Scenes/Gacha.unity

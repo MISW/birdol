@@ -223,6 +223,7 @@ public class RunGacha : MonoBehaviour
     {
         Common.loadingCanvas.SetActive(true);
         GachaUnitManager.initid = result;
+        GachaUnitManager.teachers.Clear();
         //ここで殿堂入りバードル一覧を取得するAPIを呼び出す
         for (int i = 0; i < 4; i++)
         {
