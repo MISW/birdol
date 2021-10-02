@@ -7,6 +7,7 @@ using UnityEngine;
 public partial class Common : MonoBehaviour
 {
     public static CharacterModel[] characters;
+    public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses;
     public static DendouModel teacher;
     public static string storyid = "opening";
@@ -16,6 +17,10 @@ public partial class Common : MonoBehaviour
     {
         string json = Resources.Load<TextAsset>("Common/characters").ToString();
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
+        for (int i=0;i<34;i++)
+        {
+            standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
+        }
     }
 
     public static void initProgress()

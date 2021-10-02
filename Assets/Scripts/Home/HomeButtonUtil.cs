@@ -50,13 +50,23 @@ public class HomeButtonUtil : MonoBehaviour
     public void onButtonPressedGallery()
     {
         Debug.Log("Pushed Gallery");
+        Common.loadingCanvas.SetActive(true);
         Manager.manager.StateQueue((int)gamestate.Gallery);
+
+    }
+
+    public void onButtonPressedDendou()
+    {
+        Debug.Log("Pushed Gallery");
+        Common.loadingCanvas.SetActive(true);
+        Manager.manager.StateQueue((int)gamestate.CompletedCharacters);
 
     }
 
     public void onButtonPressedIkusei()
     {
         Debug.Log("Pushed Ikusei");
+        Common.loadingCanvas.SetActive(true);
         Manager.manager.StateQueue((int)gamestate.Story);
 
     }
