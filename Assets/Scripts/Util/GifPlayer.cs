@@ -28,7 +28,7 @@ public class GifPlayer : MonoBehaviour {
 
     public void StopGif()
     {
-        StartCoroutine(coroutine);
+        StopCoroutine(coroutine);
     }
 
     private IEnumerator updateImg()

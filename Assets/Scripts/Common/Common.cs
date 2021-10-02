@@ -17,7 +17,7 @@ public partial class Common : MonoBehaviour
     {
         string json = Resources.Load<TextAsset>("Common/characters").ToString();
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
-        for (int i=0;i<34;i++)
+        for (int i=0;i<32;i++)
         {
             standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
         }

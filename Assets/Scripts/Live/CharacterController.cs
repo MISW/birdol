@@ -18,6 +18,12 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     public GameObject light;
     public GameObject listchild;
     public ProgressModel characterInf;
+    public List<Sprite> gifsprite = new List<Sprite>();
+    IEnumerator coroutine;
+
+    public Image backframe;
+    public Text SkillName;
+    public Text SkillDescription;
 
     public void finishSkill()
     {
@@ -47,19 +53,23 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void setParamsFont()
     {
-        Text para = listchild.transform.GetChild(2).gameObject.GetComponent<Text>();
+        Image frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
+        Text para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
         if (area == "visual")
         {
+            frame.sprite = Resources.Load<Sprite>("Images/Live/box_vi");
             para.text = ((int)characterInf.Visual).ToString();
             para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
         }
         else if(area == "vocal")
         {
+            frame.sprite = Resources.Load<Sprite>("Images/Live/box_vo");
             para.text = ((int)characterInf.Vocal).ToString();
             para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
         }
         else
         {
+            frame.sprite = Resources.Load<Sprite>("Images/Live/box_da");
             para.text = ((int)characterInf.Dance).ToString();
             para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
@@ -96,9 +106,28 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     }
 
+    private IEnumerator updateImg()
+    {
+        int index = 1;
+        while (true)
+        {
+            gameObject.GetComponent<Image>().sprite = gifsprite[index];
+            if (index < 5) index++;
+            else index = 1;
+            //Debug.Log("current:"+index);
+            yield return new WaitForSeconds(0.08f);
+        }
+    }
+
+    public void stopGif()
+    {
+        StopCoroutine(coroutine);
+    }
     public void initImage()
     {
-        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
+        coroutine = updateImg();
+        StartCoroutine(coroutine);
+        //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     void Start()
@@ -124,13 +153,26 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         }
     }
 
+    public void SelectMe()
+    {
+        if (!LiveController.executingSkills)
+        {
+            LiveController.selectedcharacter = id;
+            if (characterInf.BestSkill == "visual") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_vi");
+            else if (characterInf.BestSkill == "vocal") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_vo");
+            else if (characterInf.BestSkill == "dance") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_da");
+            SkillDescription.text = characterInf.ActiveSkillDescription;
+            SkillName.text = characterInf.ActiveSkillName;
+        }
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills) LiveController.selectedcharacter = id;
+        SelectMe();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(!LiveController.executingSkills) LiveController.selectedcharacter = id;
+        SelectMe();
     }
 }
