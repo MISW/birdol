@@ -26,8 +26,7 @@ public class LiveController : MonoBehaviour
     public float max = 100;
     public float score = 0;
     public int remainingTurn = 5;
-    float showspeed = 0.01f;
-
+    WaitForSeconds wait = new WaitForSeconds(0.01f);
     float maxscore = 0;
     int maxindex = 0;
 
@@ -116,10 +115,10 @@ public class LiveController : MonoBehaviour
 
         }
         float baseheight = Screen.height + 220f;
-        int xins = 90;
+        int xins = 100;
         float scale = 1.0f;
         int layer = 0;
-        for (int y = 60; y < 480; y += 80)
+        for (int y = 80; y < 520; y += 100)
         {
             for (int x = -270; x <= 270; x += xins)
             {
@@ -154,7 +153,7 @@ public class LiveController : MonoBehaviour
                 k = 0;
             }
             Achievement.fillAmount = oldScore / max;
-            yield return new WaitForSeconds(showspeed);
+            yield return null;
         }
         if (newScore / max >= 1.0f && !Achieved.active)
         {

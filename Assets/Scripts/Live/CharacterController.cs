@@ -25,6 +25,11 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     public Text SkillName;
     public Text SkillDescription;
 
+    public Sprite[] foot;
+    public Sprite[] box1;
+    public Sprite[] box2;
+
+
     public void finishSkill()
     {
         completedActiveSkill = true;
@@ -51,25 +56,26 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         
     }
 
+    //0:Visual 1:Vocal 2:Dance
     public void setParamsFont()
     {
         Image frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
         Text para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
         if (area == "visual")
         {
-            frame.sprite = Resources.Load<Sprite>("Images/Live/box_vi");
+            frame.sprite = box1[0];
             para.text = ((int)characterInf.Visual).ToString();
             para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
         }
         else if(area == "vocal")
         {
-            frame.sprite = Resources.Load<Sprite>("Images/Live/box_vo");
+            frame.sprite = box1[1];
             para.text = ((int)characterInf.Vocal).ToString();
             para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
         }
         else
         {
-            frame.sprite = Resources.Load<Sprite>("Images/Live/box_da");
+            frame.sprite = box1[2];
             para.text = ((int)characterInf.Dance).ToString();
             para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
@@ -84,21 +90,22 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             //setWhite();
             return;
         }
+        
         if (rt.localPosition.x > 100)
         {
-            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_da");
+            standing.sprite = foot[2];
             area = "dance";
             
         }
         else if (rt.localPosition.x < -100)
         {
-            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vo");
+            standing.sprite = foot[1];
             area = "vocal";
             
         }
         else
         {
-            standing.sprite = Resources.Load<Sprite>("Images/Live/footlight_vi");
+            standing.sprite = foot[0];
             area = "visual";
         }
         setParamsFont();
@@ -132,6 +139,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     void Start()
     {
+        Application.targetFrameRate = 60;
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
     }
@@ -158,9 +166,9 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         if (!LiveController.executingSkills)
         {
             LiveController.selectedcharacter = id;
-            if (characterInf.BestSkill == "visual") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_vi");
-            else if (characterInf.BestSkill == "vocal") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_vo");
-            else if (characterInf.BestSkill == "dance") backframe.sprite = Resources.Load<Sprite>("Images/Live/box2_da");
+            if (characterInf.BestSkill == "visual") backframe.sprite = box2[0];
+            else if (characterInf.BestSkill == "vocal") backframe.sprite = box2[1];
+            else if (characterInf.BestSkill == "dance") backframe.sprite = box2[2];
             SkillDescription.text = characterInf.ActiveSkillDescription;
             SkillName.text = characterInf.ActiveSkillName;
         }
