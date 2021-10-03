@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
     [ContextMenu("test")]
     void init()
     {
-        StateQueue((int)gamestate.Home);
+        StateQueue((int)gamestate.Story);
     }
     [SerializeField] gamestate forTest;
 

@@ -147,6 +147,8 @@ public class LessonController : MonoBehaviour
         else
         {
             //Change Scene
+            Common.loadingCanvas.SetActive(true);
+            Manager.manager.StateQueue((int)gamestate.Story);
         }
     }
 
