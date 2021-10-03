@@ -25,6 +25,7 @@ public class HomeButtonUtil : MonoBehaviour
     public Image CharacterImageSplite;
     public CharacterModel charactermodel;
     public DialogText DialogTextData;
+    public int tempteacherid;
 
 
     private void Start()

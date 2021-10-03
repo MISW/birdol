@@ -7,78 +7,54 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
+public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
     public bool completedActiveSkill = false;
     public bool completedPassiveSkill = false;
     public bool executingSkill = false;
     public int id;
-    public float score = 0;
     public string area = "";
     public Text name;
-    public GameObject light;
     public GameObject listchild;
-    public ProgressModel characterInf;
     public List<Sprite> gifsprite = new List<Sprite>();
     IEnumerator coroutine;
 
     public Image backframe;
-    public Text SkillName;
-    public Text SkillDescription;
 
     public Sprite[] foot;
-    public Sprite[] box1;
-    public Sprite[] box2;
+    public int maxStar = 10;
+    public float maxStatus = 100f;
 
+    private List<Image> StarImages = new List<Image>();
+    public Sprite[] star = new Sprite[6];
 
-    public void finishSkill()
+    public void SetupStar()
     {
-        completedActiveSkill = true;
-        Image image = gameObject.GetComponent<Image>();
-        Color newcolor = image.color;
-        newcolor.r -= (80f / 255f);
-        newcolor.g -= (80f / 255f);
-        newcolor.b -= (80f / 255f);
-        image.color = newcolor;
-        Image imagelistchild = listchild.transform.GetChild(0).gameObject.GetComponent<Image>();
-        Color newlccolor = image.color;
-        newlccolor.r -= (80f / 255f);
-        newlccolor.g -= (80f / 255f);
-        newlccolor.b -= (80f / 255f);
-        imagelistchild.color = newcolor;
+        for (int i = 0; i < maxStar; i++)
+        {
+            GameObject Star = GameObject.Find(id+"Star-" + i);
+            StarImages.Add(Star.GetComponent<Image>());
+        }
     }
 
-    public void setWhite()
-    {
-        RectTransform rt;
-        rt = transform.parent.gameObject.GetComponent<RectTransform>();
-        Image standing = transform.parent.gameObject.GetComponent<Image>();
-        standing.color = new Color(255f, 255f, 255f);
-        
-    }
+
 
     //0:Visual 1:Vocal 2:Dance
-    public void setParamsFont()
+    public void setParams()
     {
-        Image frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
-        Text para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
-        if (area == "visual")
+        int currentParams = 0;
+        if (area == "visual") currentParams = (int)(((float)Common.progresses[id].Visual / (float)maxStatus) * 50.0f);
+        else if (area == "vocal") currentParams = (int)(((float)Common.progresses[id].Vocal / (float)maxStatus) * 50.0f);
+        else if (area == "dance") currentParams = (int)(((float)Common.progresses[id].Dance / (float)maxStatus) * 50.0f);
+        for (int i = 0; i < currentParams / 5; i++)
         {
-            frame.sprite = box1[0];
-            para.text = ((int)characterInf.Visual).ToString();
-            para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
+            StarImages[i].sprite = star[5];
         }
-        else if(area == "vocal")
+        if (currentParams != 50) StarImages[currentParams / 5].sprite = star[currentParams % 5];
+        for (int i = currentParams / 5 + 1; i < maxStar; i++)
         {
-            frame.sprite = box1[1];
-            para.text = ((int)characterInf.Vocal).ToString();
-            para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
+            StarImages[i].sprite = star[0];
         }
-        else
-        {
-            frame.sprite = box1[2];
-            para.text = ((int)characterInf.Dance).ToString();
-            para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
-        }
+
     }
     public void setArea()
     {
@@ -90,27 +66,27 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             //setWhite();
             return;
         }
-        
+        string oldarea = area;
+        string newarea;
         if (rt.localPosition.x > 100)
         {
             standing.sprite = foot[2];
-            area = "dance";
+            newarea = "dance";
             
         }
         else if (rt.localPosition.x < -100)
         {
             standing.sprite = foot[1];
-            area = "vocal";
+            newarea = "vocal";
             
         }
         else
         {
             standing.sprite = foot[0];
-            area = "visual";
+            newarea = "visual";
         }
-        setParamsFont();
-
-
+        area = newarea;
+        if(oldarea!=newarea&&StarImages.Count>0)setParams();
     }
 
     private IEnumerator updateImg()
@@ -142,7 +118,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     {
         Application.targetFrameRate = 60;
         setArea();
-        light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
     }
 
 
@@ -167,11 +142,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         if (!LiveController.executingSkills)
         {
             LiveController.selectedcharacter = id;
-            if (characterInf.BestSkill == "visual") backframe.sprite = box2[0];
-            else if (characterInf.BestSkill == "vocal") backframe.sprite = box2[1];
-            else if (characterInf.BestSkill == "dance") backframe.sprite = box2[2];
-            SkillDescription.text = characterInf.ActiveSkillDescription;
-            SkillName.text = characterInf.ActiveSkillName;
         }
     }
 

@@ -101,7 +101,7 @@ public class LiveController : MonoBehaviour
             objk.name.text = characters[i].Name;
             for (int j=0;j<6;j++)
             {
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/4/ch-"+j));
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
