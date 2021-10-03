@@ -22,6 +22,8 @@ public class StoryController : MonoBehaviour
     public Text serifu;
     public Text selectionName;
     public Image characterImage;
+    public Image leftImage;
+    public Image rightImage;
     public GameObject selectionDialog;
     public GameObject firstSelection;
     float showspeed = 0.05f;
@@ -29,6 +31,9 @@ public class StoryController : MonoBehaviour
     bool showingseifu = false;
     IEnumerator coroutine;
     Queue<GameObject> selectionqueue = new Queue<GameObject>();
+
+    private Color normal = new Color(1f,1f,1f);
+    private Color dark = new Color(0.5f, 0.5f, 0.5f);
     void Start()
     {
         if (Common.characters == null) Common.initCharacters();//Test Only
@@ -45,27 +50,29 @@ public class StoryController : MonoBehaviour
         if (Common.storyid == "opening")
         {
             Common.storyid = "0";
-            SceneManager.UnloadSceneAsync((int)gamestate.Story);
+            Common.loadingCanvas.SetActive(true);
             Manager.manager.StateQueue((int)gamestate.Story);
         }else if (Common.storyid == "0")
         {
             Common.storyid = "1a";
-            SceneManager.UnloadSceneAsync((int)gamestate.Story);
+            Common.loadingCanvas.SetActive(true);
             Manager.manager.StateQueue((int)gamestate.Story);
         }
         else if (Common.storyid == "8c")
         {
             Common.storyid = "ending";
-            SceneManager.UnloadSceneAsync((int)gamestate.Story);
+            Common.loadingCanvas.SetActive(true);
             Manager.manager.StateQueue((int)gamestate.Story);
         }
         else if (Common.storyid == "ending")
         {
+            Common.loadingCanvas.SetActive(true);
             Manager.manager.StateQueue((int)gamestate.Ending);
         }
         else if (Common.storyid.EndsWith("a"))
         {
             //To Lesson
+            Common.loadingCanvas.SetActive(true);
             Common.storyid = Common.storyid.Replace("a","b");
             Manager.manager.StateQueue((int)gamestate.Lesson);
         }
@@ -73,13 +80,13 @@ public class StoryController : MonoBehaviour
         {
             //To Live
             Common.storyid = Common.storyid.Replace("b", "c");
-            Manager.manager.StateQueue((int)gamestate.Lesson);
+            Manager.manager.StateQueue((int)gamestate.Live);
         }
         else if (Common.storyid.EndsWith("c"))
         {
             //To Live
             Common.storyid = (Int32.Parse(Common.storyid.Replace("c", ""))+1)+"a";
-            Manager.manager.StateQueue((int)gamestate.Lesson);
+            Manager.manager.StateQueue((int)gamestate.Story);
         }
     }
 
@@ -96,16 +103,55 @@ public class StoryController : MonoBehaviour
             String data = datas[currentline];
             Debug.Log("Data:" + data);
             currentline++;
-            if (data.StartsWith("#"))
+            if (data.StartsWith("##"))
             {
-                String name = data.Substring(1);
-                String filename="";
+                String name = data.Substring(2);
+                String filename = "";
+                String dir = "l";
                 if (data.Contains("("))
                 {
                     name = name.Substring(0, name.IndexOf("("));
-                    filename = data.Substring(data.IndexOf("(")+1).Replace(")","");
+                    String[] arr = data.Substring(data.IndexOf("(") + 1).Replace(")", "").Split(',');
+                    filename = arr[0];
+                    dir = arr[1];
                 }
-                characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                if(dir=="l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                characterName.text = name;
+                UpdateDialog();
+            }
+            else if (data.StartsWith("#"))
+            {
+                String name = data.Substring(1);
+                String filename = "";
+                if (data.Contains("("))
+                {
+                    name = name.Substring(0, name.IndexOf("("));
+                    filename = data.Substring(data.IndexOf("(") + 1).Replace(")", "");
+                    if (characterImage.enabled)
+                    {
+                        characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                    }
+                    else
+                    {
+                        if (filename == "l")
+                        {
+                            leftImage.color = normal;
+                            rightImage.color = dark;
+                        }
+                        else
+                        {
+                            leftImage.color = dark;
+                            rightImage.color = normal;
+                        }
+                    }
+                    
+                    
+                }
+                else
+                {
+                    characterImage.sprite = null;
+                }
                 characterName.text = name;
                 UpdateDialog();
             }
@@ -161,12 +207,23 @@ public class StoryController : MonoBehaviour
                         UpdateDialog();
                     });
                     selcount++;
+                }else if (data.StartsWith("/2‘Ìon"))
+                {
+                    characterImage.enabled = false;
+                    leftImage.enabled = true;
+                    rightImage.enabled = true;
+                }
+                else if (data.StartsWith("/2‘Ìoff"))
+                {
+                    characterImage.enabled = true;
+                    leftImage.enabled = false;
+                    rightImage.enabled = false;
                 }
                 UpdateDialog();
             }
             else if (data.Length > 0)
             {
-                curserifu = data;
+                curserifu = data.Replace("[mom]",Common.mom).Replace("[player]",Common.playerName);
                 coroutine = ShowSerifu();
                 StartCoroutine(coroutine);
             }
