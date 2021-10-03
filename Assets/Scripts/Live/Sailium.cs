@@ -10,6 +10,7 @@ public class Sailium : MonoBehaviour
     // Start is called before the first frame update
     List<String> keys = new List<string>() { "blue", "pink", "yellow" };
     public static Dictionary<String, Sprite> map = new Dictionary<String, Sprite>();
+    WaitForSeconds wait = new WaitForSeconds(0.001f);
 
     void Start()
     {
@@ -40,7 +41,7 @@ public class Sailium : MonoBehaviour
             color.a = (i/255f);
             Debug.Log("A:"+color.a);
             GetComponent<Image>().color = color;
-            yield return new WaitForSeconds(0.001f);
+            yield return wait;
         }
         
     }
@@ -55,8 +56,7 @@ public class Sailium : MonoBehaviour
             if (Math.Abs(plus) == 5.5f) adding = !adding;
             plus += (adding ? 0.25f : -0.25f);
             rect.transform.Rotate(new Vector3(0,0,plus));
-            
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
         }
     }
 }

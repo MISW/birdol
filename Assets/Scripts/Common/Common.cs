@@ -8,7 +8,7 @@ public partial class Common : MonoBehaviour
 {
     public static CharacterModel[] characters;
     public static Sprite[] standImages = new Sprite[34];
-    public static ProgressModel[] progresses;
+    public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
     public static string storyid = "opening";
     public static GameObject loadingCanvas;
