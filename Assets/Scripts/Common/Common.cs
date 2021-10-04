@@ -10,7 +10,7 @@ public partial class Common : MonoBehaviour
     public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
-    public static string storyid = "1b";
+    public static string storyid = "opening";
     public static GameObject loadingCanvas;
     public static string playerName = "岩間好一";
     public static string mom = "ママ";
