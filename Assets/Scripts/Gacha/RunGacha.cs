@@ -225,18 +225,10 @@ public class RunGacha : MonoBehaviour
         GachaUnitManager.initid = result;
         GachaUnitManager.teachers.Clear();
         //ここで殿堂入りバードル一覧を取得するAPIを呼び出す
-        for (int i = 0; i < 4; i++)
-        {
-            DendouModel dendouModel = new DendouModel();
-            dendouModel.MainCharacterId = i;
-            dendouModel.SupportCharacterId = i;
-            dendouModel.Name = Common.characters[i].name;
-            dendouModel.Vocal = Common.characters[i].vocal;
-            dendouModel.Visual = Common.characters[i].visual;
-            dendouModel.Dance = Common.characters[i].dance;
-            GachaUnitManager.teachers.Add(dendouModel);
-        }
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "gachaunit";
+        StartCoroutine(getCompletedWebClient.Send());
         //↑Temporary Code
-        Manager.manager.StateQueue((int)gamestate.GachaUnit);
+        
     }
 }

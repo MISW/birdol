@@ -10,7 +10,8 @@ public partial class Common : MonoBehaviour
     public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
-    public static string storyid = "opening";
+    public static string mainstoryid ;
+    public static int progressId;
     public static GameObject loadingCanvas;
     public static string playerName = "岩間好一";
     public static string mom = "ママ";
@@ -37,7 +38,7 @@ public partial class Common : MonoBehaviour
     }
 
     //通信関連
-    public const string api_version = "v1"; //"v1" or "v2" 
+    public const string api_version = "v2"; //"v1" or "v2" 
     public const string protocol = "http"; //"http" や "https" など 
     public const string hostname = "localhost";
     public const string port = "80";

@@ -28,7 +28,7 @@ public class CompletedController : MonoBehaviour
     {
         int index = button.transform.GetSiblingIndex() + button.transform.parent.GetSiblingIndex() * 5;
         DendouModel character = CompletedCharacters[index];
-        StandImage.sprite = Common.standImages[index];
+        StandImage.sprite = Common.standImages[character.MainCharacterId];
         TeamName.text = character.Name;
         ActiveSkillLevel.text = "Lv." + character.ActiveSkillLevel;
         PassiveSkillLevel.text = "Lv." + character.PassiveSkillLevel;
@@ -142,17 +142,10 @@ public class CompletedController : MonoBehaviour
         if(Common.characters==null)Common.initCharacters();
         int index = 0;
         GameObject horizontal = HorizontalChild;
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < CompletedCharacters.Count; i++)
         {
             if(index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
-            DendouModel dendouModel = new DendouModel();
-            dendouModel.MainCharacterId = i;
-            dendouModel.SupportCharacterId = i;
-            dendouModel.Name = Common.characters[i].name;
-            dendouModel.Vocal = Common.characters[i].vocal;
-            dendouModel.Visual = Common.characters[i].visual;
-            dendouModel.Dance = Common.characters[i].dance;
-            CompletedCharacters.Add(dendouModel);
+            DendouModel dendouModel = CompletedCharacters[i];
             horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
             if (index == 4)index = 0;
             else index++;

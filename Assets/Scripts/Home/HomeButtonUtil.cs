@@ -60,15 +60,34 @@ public class HomeButtonUtil : MonoBehaviour
     {
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.CompletedCharacters);
+        CompletedController.CompletedCharacters.Clear();
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "completed";
+        StartCoroutine(getCompletedWebClient.Send());
+
 
     }
+
+    private IEnumerator SyncCharacters()
+    {
+        yield break;
+    }
+
+   
 
     public void onButtonPressedIkusei()
     {
         Debug.Log("Pushed Ikusei");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Story);
+        if (Common.mainstoryid == null)
+        {
+            Manager.manager.StateQueue((int)gamestate.Gacha);
+        }
+        else
+        {
+            Manager.manager.StateQueue((int)gamestate.Story);
+        }
+       // 
 
     }
 

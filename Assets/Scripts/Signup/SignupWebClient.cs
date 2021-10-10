@@ -23,7 +23,7 @@ public class SignupWebClient : WebClient
         [SerializeField] public string name;
         [SerializeField] public string public_key;
         [SerializeField] public string device_id;
-
+        [SerializeField] public DendouModel[] completed_progresses;
         /// <summary>
         /// COnstructor
         /// </summary>
@@ -35,6 +35,18 @@ public class SignupWebClient : WebClient
             this.name = name;
             this.public_key = public_key;
             this.device_id = device_id;
+            completed_progresses = new DendouModel[4];
+            for (int i = 0; i < 4; i++)
+            {
+                DendouModel dendouModel = new DendouModel();
+                dendouModel.MainCharacterId = i;
+                dendouModel.SupportCharacterId = i;
+                dendouModel.Name = Common.characters[i].name;
+                dendouModel.Vocal = Common.characters[i].vocal;
+                dendouModel.Visual = Common.characters[i].visual;
+                dendouModel.Dance = Common.characters[i].dance;
+                completed_progresses[i] = dendouModel;
+            }
         }
     }
 
@@ -50,6 +62,7 @@ public class SignupWebClient : WebClient
         [SerializeField] public string access_token;
         [SerializeField] public string refresh_token;
         [SerializeField] public string account_id;
+        [SerializeField] public string session_id;
     }
 
     /// <summary>
