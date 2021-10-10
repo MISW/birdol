@@ -10,7 +10,7 @@ public class Ending : MonoBehaviour
     public GameObject canvas;
     [Header("各キャラクターのステータス")] public float[] characterStatus = new float[15];
     [Header("キャラクターのステータスの最大値")]public float maxStatus; //ステータス上限値
-    [Header("星のSprite")]public Sprite[] star = new Sprite[6];
+    [Header("星のSprite")]public Sprite[] star = new Sprite[5];
     [Header("星の数")]public int maxStar; //星の数
     public ProgressModel[] Characters = new ProgressModel[5];
     #endregion
@@ -93,12 +93,24 @@ public class Ending : MonoBehaviour
     {
         for(int i=0;i<status/5;i++)
         {
-            VocalStarImage[i].sprite = star[5];
+            VocalStarImage[i].enabled = true;
+            VocalStarImage[i].sprite = star[4];
         }
-        if(status != 50) VocalStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status / 5 == 0)
+            {
+                VocalStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VocalStarImage[status / 5].enabled = true;
+                VocalStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for(int i=status / 5 + 1;i<maxStar;i++)
         {
-            VocalStarImage[i].sprite = star[0];
+            VocalStarImage[i].enabled = false;
         }
     }
 
@@ -110,12 +122,24 @@ public class Ending : MonoBehaviour
     {
         for (int i = 0; i < status / 5; i++)
         {
-            VisualStarImage[i].sprite = star[5];
+            VisualStarImage[i].enabled = true;
+            VisualStarImage[i].sprite = star[4];
         }
-        if (status != 50) VisualStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status / 5 == 0)
+            {
+                VisualStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VisualStarImage[status / 5].enabled = true;
+                VisualStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            VisualStarImage[i].sprite = star[0];
+            VisualStarImage[i].enabled = false;
         }
     }
 
@@ -127,12 +151,24 @@ public class Ending : MonoBehaviour
     {
         for (int i = 0; i < status / 5; i++)
         {
-            DanceStarImage[i].sprite = star[5];
+            DanceStarImage[i].enabled = true;
+            DanceStarImage[i].sprite = star[4];
         }
-        if (status != 50) DanceStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status / 5 == 0)
+            {
+                DanceStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                DanceStarImage[status / 5].enabled = true;
+                DanceStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            DanceStarImage[i].sprite = star[0];
+            DanceStarImage[i].enabled = false;
         }
     }
 
