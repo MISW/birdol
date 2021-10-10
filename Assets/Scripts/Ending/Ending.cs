@@ -11,6 +11,8 @@ public class Ending : MonoBehaviour
     [Header("各キャラクターのステータス")] public float[] characterStatus = new float[15];
     [Header("キャラクターのステータスの最大値")]public float maxStatus; //ステータス上限値
     [Header("星のSprite")]public Sprite[] star = new Sprite[5];
+    [Header("アクティブスキルゲージのSprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
+    [Header("パッシブスキルゲージのSprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
     [Header("星の数")]public int maxStar; //星の数
     public ProgressModel[] Characters = new ProgressModel[5];
     #endregion
@@ -21,6 +23,8 @@ public class Ending : MonoBehaviour
     private int currentCharacterVisual = 0;
     private int currentCharacterDance = 0;
     private GameObject Star = null;
+    private Image activeSkillGaugeImage = null;
+    private Image passiveSkillGaugeImage = null;
     private List<Image> VocalStarImage = new List<Image>();
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
@@ -32,9 +36,11 @@ public class Ending : MonoBehaviour
     {
         FindStar();
         FindButton();
+        FindGauge();
         CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
+        ChangeCurrentCharacterSKillGauge(0);
     }
 
     /// <summary>
@@ -51,6 +57,7 @@ public class Ending : MonoBehaviour
             CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
+            ChangeCurrentCharacterSKillGauge(i);
             currentCharacterNumber = i;
         }
     }
@@ -86,11 +93,22 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
+    /// i番目のキャラクターのステータスに合わせてスキルゲージを変更
+    /// </summary>
+    /// <param name="i"></param>
+    private void ChangeCurrentCharacterSKillGauge(int i)
+    {
+        activeSkillGaugeImage.sprite = activeSkillGaugeSprites[Characters[i].ActiveSkillLevel];
+        passiveSkillGaugeImage.sprite = passiveSkillGaugeSprites[Characters[i].PassiveSkillLevel];
+    }
+
+    /// <summary>
     /// 各SongStarのSpriteを与えられたstatusに合わせて変更
     /// </summary>
     /// <param name="status"></param>
     private void SetSongStar(int status)
     {
+        //Debug.Log("Vocal" + status);
         for(int i=0;i<status/5;i++)
         {
             VocalStarImage[i].enabled = true;
@@ -98,7 +116,7 @@ public class Ending : MonoBehaviour
         }
         if (status != 50)
         {
-            if (status / 5 == 0)
+            if (status % 5 == 0)
             {
                 VocalStarImage[status / 5].enabled = false;
             }
@@ -120,6 +138,7 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetVisualStar(int status)
     {
+        //Debug.Log("Visual" + status);
         for (int i = 0; i < status / 5; i++)
         {
             VisualStarImage[i].enabled = true;
@@ -127,7 +146,7 @@ public class Ending : MonoBehaviour
         }
         if (status != 50)
         {
-            if (status / 5 == 0)
+            if (status % 5 == 0)
             {
                 VisualStarImage[status / 5].enabled = false;
             }
@@ -149,6 +168,7 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetDanceStar(int status)
     {
+        //Debug.Log("Dance" + status);
         for (int i = 0; i < status / 5; i++)
         {
             DanceStarImage[i].enabled = true;
@@ -156,7 +176,7 @@ public class Ending : MonoBehaviour
         }
         if (status != 50)
         {
-            if (status / 5 == 0)
+            if (status % 5 == 0)
             {
                 DanceStarImage[status / 5].enabled = false;
             }
@@ -188,6 +208,9 @@ public class Ending : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 各Buttonを捕まえる
+    /// </summary>
     private void FindButton()
     {
         for(int i=1;i<=5;i++)
@@ -196,6 +219,18 @@ public class Ending : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 各Gaugeを捕まえる
+    /// </summary>
+    private void FindGauge()
+    {
+        activeSkillGaugeImage = GameObject.Find("ActiveSkillGauge").GetComponent<Image>();
+        passiveSkillGaugeImage = GameObject.Find("PassiveSkillGauge").GetComponent<Image>();
+    }
+
+    /// <summary>
+    /// それぞれのキャラクター画像をMainCharacterIDから取得
+    /// </summary>
     private void SetCharacter()
     {
         var parent = canvas.transform;
