@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 // 各キャラクターをクリックしたときの詳細画面を管理
 public class OverlayManager : MonoBehaviour
@@ -11,11 +12,18 @@ public class OverlayManager : MonoBehaviour
     [SerializeField]
     private GameObject characterNameObject;
 
+    [SerializeField]
+    private GameObject galleryManager;
+    private GalleryManager man;
+
+    [SerializeField]
+    private GameObject orderNameObject;
+    [SerializeField]
+    private GameObject familyNameObject;
+    [SerializeField]
+    private GameObject descObject;
+
     private const int IMAGE_HEIGHT = 1200;
-
-    void Awake() {
-
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +44,11 @@ public class OverlayManager : MonoBehaviour
     public void OpenOverlay(CharacterModel model) {
         // オーバーレイを開いたときに発火
         // 渡されたキャラクターのデータに書き換える
+
+        // inactive状態だとStartが呼ばれない（っぽい）ので初期化しておく
+        // しないとNullReferenceになる
+        if (man == null) man = galleryManager.GetComponent<GalleryManager>();
+
         Image im = standImageObject.GetComponent<Image>();
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 
@@ -50,9 +63,15 @@ public class OverlayManager : MonoBehaviour
             RectTransform rectTransform = standImageObject.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(r * IMAGE_HEIGHT, IMAGE_HEIGHT);
 
+            // キャラによってサイズが違うのでスケール変えたりしようかな…？
         }
 
         // 名前書き換え
+        var data = man.GetLine(model.id);
+        characterNameObject.GetComponent<Text>().text = data[GalleryManager.NAME_INDEX];
+        orderNameObject.GetComponent<Text>().text = data[GalleryManager.ORDER_INDEX];
+        familyNameObject.GetComponent<Text>().text = data[GalleryManager.FAMILY_INDEX];
+        descObject.GetComponent<Text>().text = data[GalleryManager.DESC_INDEX];
 
         this.gameObject.SetActive(true);
     }

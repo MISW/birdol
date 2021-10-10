@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 /* 
 Todo:
-キャラごとの説明文はどう保持するか（～目～科など）: 仮でJSON
 戻るボタンの配置　どこ
  */
 
@@ -19,6 +19,25 @@ public class GalleryManager : MonoBehaviour
     [SerializeField]
     private GameObject rowNodeOriginal;
 
+    private TextAsset infoCSV;
+    private List<string[]> csvDatas = new List<string[]>();
+
+    // CSV
+    public const int NAME_INDEX = 1;
+    public const int ORDER_INDEX = 2;
+    public const int FAMILY_INDEX = 3;
+    public const int DESC_INDEX = 6;
+
+    private void LoadCSV() {
+        infoCSV = Resources.Load<TextAsset>("GalleryData/info");
+        StringReader reader = new StringReader(infoCSV.text);
+
+        while (reader.Peek() != -1) {
+            string line = reader.ReadLine();  // 一行ずつ読み込み
+            csvDatas.Add(line.Split(','));
+        }
+    }
+
     // 図鑑の初期化
     private void InitList()
     {
@@ -27,7 +46,7 @@ public class GalleryManager : MonoBehaviour
         {
             var tmp = new CharacterModel();
             tmp.id = i;
-            tmp.name = "No Name";
+            tmp.name = GetLine(i)[NAME_INDEX];
 
             characters[i] = tmp;
             this.isUnlocked[i] = true;
@@ -68,6 +87,7 @@ public class GalleryManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LoadCSV();
         InitList();
     }
 
@@ -79,5 +99,9 @@ public class GalleryManager : MonoBehaviour
 
     public bool GetIsUnlocked(int id) {
         return this.isUnlocked[id];
+    }
+
+    public string[] GetLine(int id) {
+        return this.csvDatas[id+1];
     }
 }
