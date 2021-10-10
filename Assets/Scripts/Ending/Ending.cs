@@ -38,6 +38,7 @@ public class Ending : MonoBehaviour
         FindButton();
         FindGauge();
         CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+        CharacterButtonList[0].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
         ChangeCurrentCharacterSKillGauge(0);
@@ -54,7 +55,9 @@ public class Ending : MonoBehaviour
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
             CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            CharacterButtonList[currentCharacterNumber].GetComponent<Image>().color = new Color(110.0f/255.0f, 110.0f / 255.0f, 110.0f / 255.0f, 1.0f);
             CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+            CharacterButtonList[i].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
             ChangeCurrentCharacterSKillGauge(i);
