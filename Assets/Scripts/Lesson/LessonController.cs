@@ -66,21 +66,9 @@ public class LessonController : MonoBehaviour
         {
             CharacterModel mainCharacter = Common.characters[characters[i].MainCharacterId];
             CharacterModel subCharacter = Common.characters[characters[i].SupportCharacterId];
-            characters[i].ActiveSkillName = mainCharacter.skillname;
-            characters[i].ActiveSkillParams = mainCharacter.activeparams;
-            characters[i].ActiveSkillScore = mainCharacter.activeskillscore;
-            characters[i].ActiveSkillType = mainCharacter.activetype;
-            characters[i].ActiveSkillDescription = mainCharacter.activedescription;
-            characters[i].BestSkill = mainCharacter.bestskill;
-            characters[i].SupportSkillName = subCharacter.skillname;
-            characters[i].PassiveSkillParams = subCharacter.passiveparams;
-            characters[i].PassiveSkillScore = subCharacter.passiveskillscore;
-            characters[i].PassiveSkillType = subCharacter.passivetype;
-            characters[i].PassiveSkillDescription = subCharacter.passivedescription;
-            Common.progresses[i] = characters[i];
             LessonCharacterController objk = objs[i].GetComponent<LessonCharacterController>();
             objk.id = i;
-            objk.name.text = characters[i].Name;
+            objk.name.text = Common.progresses[i].Name;
             for (int j=0;j<6;j++)
             {
                 objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
@@ -126,7 +114,10 @@ public class LessonController : MonoBehaviour
         if (characterObj.area == "visual") Common.progresses[index].Visual+=score;
         else if (characterObj.area == "vocal") Common.progresses[index].Vocal += score;
         else Common.progresses[index].Dance += score;
-        yield return null;
+
+        UpdateCharacterWebClient webClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
+        webClient.SetData();
+        yield return webClient.Send();
         characterObj.setParams();
         characterObj.executingSkill = false;
     }

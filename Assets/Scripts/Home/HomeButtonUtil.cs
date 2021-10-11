@@ -52,7 +52,9 @@ public class HomeButtonUtil : MonoBehaviour
     {
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Gallery);
+
+        GetGalleryWebClient webClient= new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
+        StartCoroutine(webClient.Send());
 
     }
 
@@ -85,9 +87,9 @@ public class HomeButtonUtil : MonoBehaviour
         }
         else
         {
-            Manager.manager.StateQueue((int)gamestate.Story);
+            GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
+            StartCoroutine(webClient.Send());
         }
-       // 
 
     }
 
@@ -110,6 +112,10 @@ public class HomeButtonUtil : MonoBehaviour
     public void onButtonPressedBack()
     {
         Debug.Log("Pushed Back");
+        /*
+        FinishProgressWebClient webClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+        webClient.SetData();
+        StartCoroutine(webClient.Send());*/
 
     }
 

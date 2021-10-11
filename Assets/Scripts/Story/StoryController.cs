@@ -48,53 +48,48 @@ public class StoryController : MonoBehaviour
     public void EndStory()
     {
         int sceneid = -1;
+        Common.loadingCanvas.SetActive(true);
         if (Common.mainstoryid == "opening")
         {
             Common.mainstoryid = "0";
             Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
-            Manager.manager.StateQueue((int)gamestate.Story);
-        }else if (Common.mainstoryid == "0")
+        }
+        else if (Common.mainstoryid == "0")
         {
             Common.mainstoryid = "1a";
             Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
-            Manager.manager.StateQueue((int)gamestate.Story);
         }
         else if (Common.mainstoryid == "8c")
         {
             Common.mainstoryid = "ending";
             Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
-            Manager.manager.StateQueue((int)gamestate.Story);
         }
         else if (Common.mainstoryid == "ending")
         {
             Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Ending;
-            Manager.manager.StateQueue((int)gamestate.Ending);
         }
         else if (Common.mainstoryid.EndsWith("a"))
         {
             //To Lesson
             Common.loadingCanvas.SetActive(true);
-            Common.mainstoryid = Common.mainstoryid.Replace("a","b");
+            Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
             sceneid = (int)gamestate.Lesson;
-            Manager.manager.StateQueue((int)gamestate.Lesson);
         }
         else if (Common.mainstoryid.EndsWith("b"))
         {
             //To Live
             Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
             sceneid = (int)gamestate.Lesson;
-            Manager.manager.StateQueue((int)gamestate.Live);
         }
         else if (Common.mainstoryid.EndsWith("c"))
         {
             //To Live
-            Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", ""))+1)+"a";
+            Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
             sceneid = (int)gamestate.Story;
-            Manager.manager.StateQueue((int)gamestate.Story);
         }
         Debug.Log(Common.progressId);
         UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
