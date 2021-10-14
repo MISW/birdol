@@ -8,9 +8,6 @@ public class CharaNodeManager : MonoBehaviour
     private CharacterModel character = null;
     private bool isUnlocked = false;
 
-    private GameObject galleryManager;
-    private GalleryManager man;
-
     private GameObject overlay;
     private OverlayManager overlayManager;
 
@@ -27,9 +24,6 @@ public class CharaNodeManager : MonoBehaviour
     }
 
     void Awake() {
-        galleryManager = GameObject.Find("GalleryManager");
-        man = galleryManager.GetComponent<GalleryManager>();
-
         // GameObject.FindだとinactiveなGameObjectを探せないのでこうなっている
         var tmp = GameObject.Find("Canvas");
         overlay = tmp.transform.Find("Overlay").gameObject;
@@ -39,7 +33,7 @@ public class CharaNodeManager : MonoBehaviour
     // キャラをタップしたときの処理
     // オーバーレイ画面を開く
     public void OnClick() {
-        Debug.Log("clicked " + this.character.id);
+        // Debug.Log("clicked " + this.character.id);
 
         if (this.isUnlocked) overlayManager.OpenOverlay(this.character);
     }
@@ -59,7 +53,7 @@ public class CharaNodeManager : MonoBehaviour
 
         Text nameText = nameObject.GetComponent<Text>();
 
-        this.isUnlocked = man.GetIsUnlocked(model.id);
+        this.isUnlocked = GalleryManager.GetIsUnlocked(model.id);
         if (!this.isUnlocked) {
             faceImage.sprite = lockedSprite;
             nameText.text = "???";

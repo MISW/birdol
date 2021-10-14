@@ -4,30 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
-/* 
-Todo:
-戻るボタンの配置　どこ
- */
-
+/// <summary>
+/// Galleryシーンを管理するクラス
+/// </summary>
 public class GalleryManager : MonoBehaviour
 {
-    private const int ARR_SIZE = 30;
-    // 図鑑に表示されるバードルのリスト
-    private CharacterModel[] characters = new CharacterModel[ARR_SIZE];
-    private bool[] isUnlocked = new bool[ARR_SIZE];
+    private const int ARR_SIZE = 32;
+
+    /// <summary>
+    /// 図鑑に表示されるバードルのリスト setter/getter有
+    /// </summary>
+    private static CharacterModel[] characters = new CharacterModel[ARR_SIZE];
+    /// <summary>
+    /// キャラの解禁済みフラグ setter/getter有
+    /// </summary>
+    private static bool[] isUnlocked = new bool[ARR_SIZE];
 
     [SerializeField]
     private GameObject rowNodeOriginal;
 
+    // キャラごとの説明文など
     private TextAsset infoCSV;
-    private List<string[]> csvDatas = new List<string[]>();
+    private static List<string[]> csvDatas = new List<string[]>();
 
-    // CSV
+    // CSVにアクセスするとき用
     public const int NAME_INDEX = 1;
     public const int ORDER_INDEX = 2;
     public const int FAMILY_INDEX = 3;
     public const int DESC_INDEX = 6;
 
+    /// <summary>
+    /// 図鑑データを読み込む
+    /// </summary>
     private void LoadCSV() {
         infoCSV = Resources.Load<TextAsset>("GalleryData/info");
         StringReader reader = new StringReader(infoCSV.text);
@@ -38,7 +46,9 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
-    // 図鑑の初期化
+    /// <summary>
+    /// 図鑑の初期化処理
+    /// </summary>
     private void InitList()
     {
         // 仮データ用意
@@ -49,7 +59,7 @@ public class GalleryManager : MonoBehaviour
             tmp.name = GetLine(i)[NAME_INDEX];
 
             characters[i] = tmp;
-            this.isUnlocked[i] = true;
+            isUnlocked[i] = true;
         }
 
         rowNodeOriginal.SetActive(true);
@@ -61,8 +71,7 @@ public class GalleryManager : MonoBehaviour
         for (int i = 0; i < Nodes-1; i++)
         {
             GameObject row = Instantiate(rowNodeOriginal);
-            row.transform.parent = rowNodeOriginal.transform.parent;
-            row.transform.localScale = rowNodeOriginal.transform.localScale;
+            row.transform.SetParent(content.transform, false);
         }
 
         // 顔アイコンと名前を各Nodeにセット
@@ -79,9 +88,14 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Nodeにキャラクターのデータをセットする
+    /// </summary>
+    /// <param name="node">操作したいCharaNode</param>
+    /// <param name="id">NodeにセットしたいキャラクターのID</param>
     private void SetCharacterData(GameObject node, int id) {
         CharaNodeManager nodeManager = node.GetComponent<CharaNodeManager>();
-        nodeManager.SetCharacter(this.characters[id]);
+        nodeManager.SetCharacter(characters[id]);
     }
 
     // Start is called before the first frame update
@@ -97,11 +111,38 @@ public class GalleryManager : MonoBehaviour
         
     }
 
-    public bool GetIsUnlocked(int id) {
-        return this.isUnlocked[id];
+    /// <summary>
+    /// キャラクターのIdからCharacterModelを取得する
+    /// </summary>
+    public static CharacterModel GetCharacter(int id) {
+        return characters[id];
     }
 
-    public string[] GetLine(int id) {
-        return this.csvDatas[id+1];
+    /// <summary>
+    /// 指定したIdにCharacterModelを設定する
+    /// </summary>
+    public static void SetCharacter(int id, CharacterModel model) {
+        characters[id] = model;
+    }
+
+    /// <summary>
+    /// キャラクターのIdから解禁状況を取得する
+    /// </summary>
+    public static bool GetIsUnlocked(int id) {
+        return isUnlocked[id];
+    }
+
+    /// <summary>
+    /// 指定したIdのキャラクターの解禁状況を設定する
+    /// </summary>
+    public static void SetIsUnlocked(int id, bool value) {
+        isUnlocked[id] = value;
+    }
+
+    /// <summary>
+    /// 指定したIdのキャラクターの図鑑データを取得する
+    /// </summary>
+    public static string[] GetLine(int id) {
+        return csvDatas[id+1];
     }
 }
