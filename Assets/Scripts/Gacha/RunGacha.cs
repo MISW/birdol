@@ -20,12 +20,19 @@ public class RunGacha : MonoBehaviour
     int resultIndex; //結果を0から9まで
     int[] result = new int[10]; //結果
     bool isResultShowing;
+    Text nameLabel;
+    Image rareImg, nameBox;
 
     void Awake()
     {
         result10 = GameObject.Find("GachaResults");
         resultImage = GameObject.Find("Image");
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
+        nameLabel = GameObject.Find("NameLabel").GetComponent<Text>();
+        rareImg = GameObject.Find("Rare").GetComponent<Image>();
+        nameBox = GameObject.Find("NameBox").GetComponent<Image>();
+        rareImg.color = new Color(255, 255, 255, 0);
+        nameBox.color = new Color(255, 255, 255, 0);
 
         cs = GameObject.Find("Canvas").GetComponent<CanvasScaler>();
 
@@ -38,6 +45,8 @@ public class RunGacha : MonoBehaviour
         result10.SetActive(false);
         resultImage.SetActive(false);
         isResultShowing = false;
+        nameLabel.text = "";
+
 
         R3 = new List<CharacterModel>();
         R2 = new List<CharacterModel>();
@@ -179,25 +188,26 @@ public class RunGacha : MonoBehaviour
             CharacterModel naaa = Common.characters[result[resultIndex]];
             resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
 
-            /*    string rare;
-                switch (naaa.rarity)
-                {
-                    case 3:
-                        rare = "SSR";
-                        rarityNameLabel.color = Color.red;
-                        break;
+            nameLabel.text = naaa.name;
+            nameBox.color = new Color(255, 255, 255, 255);
 
-                    case 2:
-                        rare = "SR";
-                        rarityNameLabel.color = Color.yellow;
-                        break;
 
-                    default:
-                        rare = "R";
-                        rarityNameLabel.color = Color.black;
-                        break;
-                }
-                rarityNameLabel.text = rare + "\n" + naaa.name;*/
+            switch (naaa.rarity)
+            {
+                case 3:
+                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/SSR");
+                    break;
+
+                case 2:
+                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/SR");
+                    break;
+
+                default:
+                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/R");
+                    break;
+            }
+            rareImg.color = new Color(255, 255, 255, 255);
+
         }
 
         resultIndex++;
@@ -206,6 +216,9 @@ public class RunGacha : MonoBehaviour
         {
             cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 
+            rareImg.color = new Color(255, 255, 255, 0);
+            nameBox.color = new Color(255, 255, 255, 0);
+            nameLabel.text = "";
             isResultShowing = false;
             resultImage.SetActive(false);
             result10.SetActive(true);
