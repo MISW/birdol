@@ -10,7 +10,9 @@ public class Ending : MonoBehaviour
     public GameObject canvas;
     [Header("各キャラクターのステータス")] public float[] characterStatus = new float[15];
     [Header("キャラクターのステータスの最大値")]public float maxStatus; //ステータス上限値
-    [Header("星のSprite")]public Sprite[] star = new Sprite[6];
+    [Header("星のSprite")]public Sprite[] star = new Sprite[5];
+    [Header("アクティブスキルゲージのSprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
+    [Header("パッシブスキルゲージのSprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
     [Header("星の数")]public int maxStar; //星の数
     public ProgressModel[] Characters = new ProgressModel[5];
     #endregion
@@ -21,17 +23,25 @@ public class Ending : MonoBehaviour
     private int currentCharacterVisual = 0;
     private int currentCharacterDance = 0;
     private GameObject Star = null;
+    private Image activeSkillGaugeImage = null;
+    private Image passiveSkillGaugeImage = null;
     private List<Image> VocalStarImage = new List<Image>();
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
     private List<GameObject> CharacterList = new List<GameObject>();
+    private List<GameObject> CharacterButtonList = new List<GameObject>();
     #endregion
 
     void Start()
     {
         FindStar();
+        FindButton();
+        FindGauge();
+        CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+        CharacterButtonList[0].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
+        ChangeCurrentCharacterSKillGauge(0);
     }
 
     /// <summary>
@@ -44,8 +54,13 @@ public class Ending : MonoBehaviour
         if(currentCharacterNumber != i)
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
+            CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            CharacterButtonList[currentCharacterNumber].GetComponent<Image>().color = new Color(110.0f/255.0f, 110.0f / 255.0f, 110.0f / 255.0f, 1.0f);
+            CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+            CharacterButtonList[i].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
+            ChangeCurrentCharacterSKillGauge(i);
             currentCharacterNumber = i;
         }
     }
@@ -81,19 +96,42 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
+    /// i番目のキャラクターのステータスに合わせてスキルゲージを変更
+    /// </summary>
+    /// <param name="i"></param>
+    private void ChangeCurrentCharacterSKillGauge(int i)
+    {
+        activeSkillGaugeImage.sprite = activeSkillGaugeSprites[Characters[i].ActiveSkillLevel];
+        passiveSkillGaugeImage.sprite = passiveSkillGaugeSprites[Characters[i].PassiveSkillLevel];
+    }
+
+    /// <summary>
     /// 各SongStarのSpriteを与えられたstatusに合わせて変更
     /// </summary>
     /// <param name="status"></param>
     private void SetSongStar(int status)
     {
+        //Debug.Log("Vocal" + status);
         for(int i=0;i<status/5;i++)
         {
-            VocalStarImage[i].sprite = star[5];
+            VocalStarImage[i].enabled = true;
+            VocalStarImage[i].sprite = star[4];
         }
-        if(status != 50) VocalStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                VocalStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VocalStarImage[status / 5].enabled = true;
+                VocalStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for(int i=status / 5 + 1;i<maxStar;i++)
         {
-            VocalStarImage[i].sprite = star[0];
+            VocalStarImage[i].enabled = false;
         }
     }
 
@@ -103,14 +141,27 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetVisualStar(int status)
     {
+        //Debug.Log("Visual" + status);
         for (int i = 0; i < status / 5; i++)
         {
-            VisualStarImage[i].sprite = star[5];
+            VisualStarImage[i].enabled = true;
+            VisualStarImage[i].sprite = star[4];
         }
-        if (status != 50) VisualStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                VisualStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VisualStarImage[status / 5].enabled = true;
+                VisualStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            VisualStarImage[i].sprite = star[0];
+            VisualStarImage[i].enabled = false;
         }
     }
 
@@ -120,14 +171,27 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetDanceStar(int status)
     {
+        //Debug.Log("Dance" + status);
         for (int i = 0; i < status / 5; i++)
         {
-            DanceStarImage[i].sprite = star[5];
+            DanceStarImage[i].enabled = true;
+            DanceStarImage[i].sprite = star[4];
         }
-        if (status != 50) DanceStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                DanceStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                DanceStarImage[status / 5].enabled = true;
+                DanceStarImage[status / 5].sprite = star[(status % 5)-1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            DanceStarImage[i].sprite = star[0];
+            DanceStarImage[i].enabled = false;
         }
     }
 
@@ -147,6 +211,29 @@ public class Ending : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 各Buttonを捕まえる
+    /// </summary>
+    private void FindButton()
+    {
+        for(int i=1;i<=5;i++)
+        {
+            CharacterButtonList.Add(GameObject.Find("CharacterButton" + i));
+        }
+    }
+
+    /// <summary>
+    /// 各Gaugeを捕まえる
+    /// </summary>
+    private void FindGauge()
+    {
+        activeSkillGaugeImage = GameObject.Find("ActiveSkillGauge").GetComponent<Image>();
+        passiveSkillGaugeImage = GameObject.Find("PassiveSkillGauge").GetComponent<Image>();
+    }
+
+    /// <summary>
+    /// それぞれのキャラクター画像をMainCharacterIDから取得
+    /// </summary>
     private void SetCharacter()
     {
         var parent = canvas.transform;
@@ -155,7 +242,7 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/ending/" + Characters[i].MainCharacterId);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }

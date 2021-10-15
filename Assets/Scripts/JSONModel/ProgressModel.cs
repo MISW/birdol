@@ -27,17 +27,20 @@ public class ProgressModel
 	public string Group;
 	public string BestSkill; //(0:vocal 1:visual 2: dance)
 	public int ActiveSkillLevel = 1;
+
 	public string ActiveSkillName;
 	public string ActiveSkillType;
 	public string ActiveSkillParams;
+	public string ActiveSkillDescription;
 	public float ActiveSkillScore;
-	public int MainStoryId;
 	//サポートキャラクター
 	public int SupportCharacterId;
+
 	public string SupportSkillName;
 	public int PassiveSkillLevel = 1;
 	public string PassiveSkillType;
 	public string PassiveSkillParams;
+	public string PassiveSkillDescription;
 	public float PassiveSkillScore;
 	public float PassiveSkillProbability;
 }

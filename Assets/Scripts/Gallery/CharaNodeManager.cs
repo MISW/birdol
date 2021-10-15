@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class CharaNodeManager : MonoBehaviour
 {
     private CharacterModel character = null;
-
-    private GameObject galleryManager;
-    private GalleryManager man;
+    private bool isUnlocked = false;
 
     private GameObject overlay;
     private OverlayManager overlayManager;
@@ -26,9 +24,6 @@ public class CharaNodeManager : MonoBehaviour
     }
 
     void Awake() {
-        galleryManager = GameObject.Find("GalleryManager");
-        man = galleryManager.GetComponent<GalleryManager>();
-
         // GameObject.FindだとinactiveなGameObjectを探せないのでこうなっている
         var tmp = GameObject.Find("Canvas");
         overlay = tmp.transform.Find("Overlay").gameObject;
@@ -38,10 +33,9 @@ public class CharaNodeManager : MonoBehaviour
     // キャラをタップしたときの処理
     // オーバーレイ画面を開く
     public void OnClick() {
-        Debug.Log("clicked " + this.character.id);
+        // Debug.Log("clicked " + this.character.id);
 
-        overlay.SetActive(true);
-        overlayManager.OpenOverlay(this.character);
+        if (this.isUnlocked) overlayManager.OpenOverlay(this.character);
     }
 
     // setterにキャラアイコン変更の処理を付けている
@@ -54,12 +48,13 @@ public class CharaNodeManager : MonoBehaviour
         GameObject nameObject = this.transform.Find("Panel/Text").gameObject;
 
         Image faceImage = faceObject.GetComponent<Image>();
-        Sprite faceSprite = Resources.Load<Sprite>("Images/gallery/face/" + model.id);
+        Sprite faceSprite = Resources.Load<Sprite>("Images/charactericon/" + model.id);
         Sprite lockedSprite = Resources.Load<Sprite>(lockedPath);
 
         Text nameText = nameObject.GetComponent<Text>();
 
-        if (!man.GetIsUnlocked(model.id)) {
+        this.isUnlocked = GalleryManager.GetIsUnlocked(model.id);
+        if (!this.isUnlocked) {
             faceImage.sprite = lockedSprite;
             nameText.text = "???";
         }

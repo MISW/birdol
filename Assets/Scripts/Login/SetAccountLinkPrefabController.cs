@@ -22,6 +22,7 @@ public class SetAccountLinkPrefabController : MonoBehaviour
     [Header("UI")]
     [SerializeField] GameObject DisplayRootUI;
 
+    private bool isAnimating = false;
     private bool isConnectionInProgress = false;
 
     private void Start()
@@ -113,11 +114,14 @@ public class SetAccountLinkPrefabController : MonoBehaviour
 
     public void Open()
     {
+        if (isAnimating) return;
         StopCoroutine(this.CloseCoroutine(this.DisplayRootUI));
         StartCoroutine(OpenCoroutine(this.DisplayRootUI));
     }
     private IEnumerator OpenCoroutine(GameObject obj)
     {
+        if (isAnimating) yield break;
+        isAnimating = true;
         Vector3 scale = obj.transform.localScale;
         Vector3 scaleAdd = obj.transform.localScale / 10.0f;
         obj.transform.localScale = Vector3.zero;
@@ -128,16 +132,20 @@ public class SetAccountLinkPrefabController : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         obj.transform.localScale = scale;
+        isAnimating = false;
         yield break;
     }
 
     public void Close()
     {
+        if (isAnimating) return;
         StopCoroutine(CloseCoroutine(this.DisplayRootUI));
         StartCoroutine(CloseCoroutine(this.DisplayRootUI));
     }
     private IEnumerator CloseCoroutine(GameObject obj)
     {
+        if (isAnimating) yield break;
+        isAnimating = true;
         Vector3 scale = obj.transform.localScale;
         for (int i = 0; i < 5; i++)
         {
@@ -152,6 +160,7 @@ public class SetAccountLinkPrefabController : MonoBehaviour
         }
         obj.SetActive(false);
         obj.transform.localScale = scale;
+        isAnimating = false;
         yield break;
     }
 }

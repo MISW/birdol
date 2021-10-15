@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
     [ContextMenu("test")]
     void init()
     {
-        StateQueue((int)gamestate.Title);
+        StateQueue((int)gamestate.Story);
     }
     [SerializeField] gamestate forTest;
 
@@ -162,7 +162,7 @@ public enum gamestate
     Title,
     Signup,
     Home,
-    Turtorial,
+    CompletedCharacters,
     Gacha,
     Live,
     Lesson,

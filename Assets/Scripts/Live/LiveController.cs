@@ -13,7 +13,6 @@ public class LiveController : MonoBehaviour
     public GameObject ResultUI;
     public GameObject sailium;
     public GameObject backlight;
-    public Text testText;
     int dance = 0;
     int visual = 0;
     int vocal = 0;
@@ -21,16 +20,18 @@ public class LiveController : MonoBehaviour
     public ProgressModel[] characters;
 
     HashSet<GameObject> sailiumcollections = new HashSet<GameObject>();
-    public GameObject ScoreBar;
+    public Image Achievement;
+    public GameObject Achieved;
+    public Text RemainingText;
     public float max = 100;
     public float score = 0;
     public int remainingTurn = 5;
-    float showspeed = 0.01f;
-
+    WaitForSeconds wait = new WaitForSeconds(0.01f);
     float maxscore = 0;
     int maxindex = 0;
 
     public static bool executingSkills = false;
+
     void checkPos()
     {
         dance = 0;
@@ -78,26 +79,46 @@ public class LiveController : MonoBehaviour
         selectedcharacter = 0;
         GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
         listchilds = GameObject.FindGameObjectsWithTag("CharacterList");
+        if (Common.characters == null) Common.initCharacters();//Delete On Pro
         for (int i = 0; i < 5; i++)
         {
+            CharacterModel mainCharacter = Common.characters[characters[i].MainCharacterId];
+            CharacterModel subCharacter = Common.characters[characters[i].SupportCharacterId];
+            characters[i].ActiveSkillName = mainCharacter.skillname;
+            characters[i].ActiveSkillParams = mainCharacter.activeparams;
+            characters[i].ActiveSkillScore = mainCharacter.activeskillscore;
+            characters[i].ActiveSkillType = mainCharacter.activetype;
+            characters[i].ActiveSkillDescription = mainCharacter.activedescription;
+            characters[i].BestSkill = mainCharacter.bestskill;
+            characters[i].SupportSkillName = subCharacter.skillname;
+            characters[i].PassiveSkillParams = subCharacter.passiveparams;
+            characters[i].PassiveSkillScore = subCharacter.passiveskillscore;
+            characters[i].PassiveSkillType = subCharacter.passivetype;
+            characters[i].PassiveSkillDescription = subCharacter.passivedescription;
             CharacterController objk = objs[i].GetComponent<CharacterController>();
             objk.id = i;
             objk.characterInf = characters[i];
             objk.name.text = characters[i].Name;
+            for (int j=0;j<6;j++)
+            {
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
+            }
             objk.initImage();
-            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characters[i].MainCharacterId);
+            if (i == 0) objk.SelectMe();
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
             if (characters[i].BestSkill == "vocal") listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
             else if (characters[i].BestSkill == "visual") listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
             objs[i].GetComponent<CharacterController>().listchild = listchilds[i];
             objk.setParamsFont();
+            
 
         }
         float baseheight = Screen.height + 220f;
-        int xins = 90;
+        int xins = 100;
         float scale = 1.0f;
         int layer = 0;
-        for (int y = 60; y < 480; y += 80)
+        for (int y = 80; y < 520; y += 100)
         {
             for (int x = -270; x <= 270; x += xins)
             {
@@ -131,8 +152,12 @@ public class LiveController : MonoBehaviour
                 sailiumcollections.Remove(gameObject);
                 k = 0;
             }
-            ScoreBar.GetComponent<Scrollbar>().size = oldScore / max;
-            yield return new WaitForSeconds(showspeed);
+            Achievement.fillAmount = oldScore / max;
+            yield return null;
+        }
+        if (newScore / max >= 1.0f && !Achieved.active)
+        {
+            Achieved.SetActive(true);
         }
     }
 
@@ -148,16 +173,16 @@ public class LiveController : MonoBehaviour
         {
             if (characterInf.ActiveSkillParams.Contains("visual"))
             {
-                activescore += (targetInf.Visual * characterInf.ActiveSkillScore);
+                activescore += (targetInf.Visual * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
 
             }
             if (characterInf.ActiveSkillParams.Contains("vocal"))
             {
-                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore);
+                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
             }
             if (characterInf.ActiveSkillParams.Contains("dance"))
             {
-                activescore += (targetInf.Dance * characterInf.ActiveSkillScore);
+                activescore += (targetInf.Dance * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
             }
         }
         return activescore;
@@ -205,15 +230,15 @@ public class LiveController : MonoBehaviour
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Visual *= characterInf.PassiveSkillScore;
+                objinf.Visual *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
             }
             if (characterInf.PassiveSkillParams.Contains("vocal") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Vocal *= characterInf.PassiveSkillScore;
+                objinf.Vocal *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
             }
             if (characterInf.PassiveSkillParams.Contains("dance") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Dance *= characterInf.PassiveSkillScore;
+                objinf.Dance *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
             }
             objcc.setParamsFont();
         }
@@ -224,7 +249,6 @@ public class LiveController : MonoBehaviour
     {
         characterObj.executingSkill = true;
         float newscore = score;
-        //�p�����[�^�X�R�A
         //パッシブスキルの発動
         ProgressModel characterInf = characterObj.characterInf;
         if (RandomArray.Probability(characterInf.PassiveSkillProbability*100.0f))
@@ -245,7 +269,7 @@ public class LiveController : MonoBehaviour
         if (selected)
         {
             activeskillscore = execActiveSkill(characterObj);
-            testText.text = characterInf.Name + " の " + characterInf.ActiveSkillName;
+            //testText.text = characterInf.Name + " の " + characterInf.ActiveSkillName;
             //listchilds[index].transform.GetChild(0).gameObject.SetActive(true);
         }
         //スコアの更新
@@ -265,7 +289,6 @@ public class LiveController : MonoBehaviour
     private IEnumerator execSkills()
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
-        testText.text = "Running...";
         for (int i = 0; i < 5; i++)
         {
             yield return execSkillofOnePerson(objs[i].GetComponent<CharacterController>(),i,i==selectedcharacter);
@@ -274,7 +297,7 @@ public class LiveController : MonoBehaviour
         objs[selectedcharacter].GetComponent<CharacterController>().finishSkill();
         if (remainingTurn > 0)
         {
-            testText.text = "残りターン数:"+remainingTurn;
+            RemainingText.text = remainingTurn.ToString();
             executingSkills = false;
         }else if (score >= max)
         {
@@ -309,7 +332,6 @@ public class LiveController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         if (Common.characters == null) Common.initCharacters();//Test Only
-        testText.text = "残りターン数:" + 5;
         initLiveStage();
         checkPos();
     }

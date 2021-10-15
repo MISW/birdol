@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// アカウント新規作成、またはアカウント連携(ログイン)を行う。アカウント連携用パスワード設定は行えない。
+/// アクセストークンの認証(セッション更新)は既にしてあり、認証失敗したということを前提に考えている。
+/// </summary>
 public class SignupSceneController : SceneVisor
 {
     [Header("SignUp Web Client")]
@@ -122,7 +126,9 @@ public class SignupSceneController : SceneVisor
     /// </summary>
     private void OnSignupSuccess()
     {
-        //TODO Menuシーンへ遷移
+        //Gachaシーンへ遷移 (アカウント作成=ガチャ必要なので)
+        Common.loadingCanvas.SetActive(true);
+        Manager.manager.StateQueue((int)gamestate.Gacha);
     }
 
     /// <summary>
