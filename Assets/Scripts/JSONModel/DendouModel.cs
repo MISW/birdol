@@ -27,3 +27,4 @@ public class DendouModel
 	public string PassiveSkillType;
 	public float PassiveSkillScore;
 }
+

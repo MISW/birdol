@@ -10,7 +10,9 @@ public partial class Common : MonoBehaviour
     public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
-    public static string storyid = "1b";
+    public static string mainstoryid ;
+    public static int lessonCount= 5;
+    public static int progressId;
     public static GameObject loadingCanvas;
     public static string playerName = "岩間好一";
     public static string mom = "ママ";
@@ -37,10 +39,10 @@ public partial class Common : MonoBehaviour
     }
 
     //通信関連
-    public const string api_version = "v1"; //"v1" or "v2" 
-    public const string protocol = "http"; //"http" や "https" など 
-    public const string hostname = "localhost";
-    public const string port = "80";
+    public const string api_version = "v2"; //"v1" or "v2" 
+    public const string protocol = "https"; //"http" や "https" など 
+    public const string hostname = "birdol.herokuapp.com";
+    public const string port = "443";
     public const int timeout = 4; //通信タイムアウトの秒数 
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。
     public const string salt = "Ll7Iy0r9zWslDniwgUXeS0KM9xke4zeg"; //固定ソルト
@@ -211,7 +213,7 @@ public partial class Common : MonoBehaviour
     public static (string privateKey, string publicKey) CreateRsaKeyPair()
     {
         int size = 1024;
-        RSACryptoServiceProvider csp = new RSACryptoServiceProvider(size, new CspParameters { /*KeyContainerName= "test"*/ });
+        RSACryptoServiceProvider csp = new RSACryptoServiceProvider(size);
 
         string publicKey = csp.ToXmlString(false);
         string privateKey = csp.ToXmlString(true);

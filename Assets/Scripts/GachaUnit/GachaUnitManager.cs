@@ -22,7 +22,7 @@ public class GachaUnitManager : MonoBehaviour
     public GameObject teacherFirst;
     public GameObject errorDialog;
 
-    GameObject[] pairLists;
+    public GameObject[] pairLists;
 
     public static int[] initid;
     public static List<DendouModel> teachers = new List<DendouModel>();
@@ -30,7 +30,7 @@ public class GachaUnitManager : MonoBehaviour
     public CharacterModel[] characters=new CharacterModel[10];
     UnitInf[] unitInf = new UnitInf[5];
     bool[] selected = new bool[10];
-    GameObject[] charcterIcons;
+    public GameObject[] charcterIcons;
     List<GameObject> teacherObjects=new List<GameObject>();
 
     string currentdialog = "";
@@ -42,8 +42,6 @@ public class GachaUnitManager : MonoBehaviour
     void Start()
     {
         mainPage.transform.SetSiblingIndex(2);
-        pairLists = GameObject.FindGameObjectsWithTag("GachaUnitPair");
-        charcterIcons = GameObject.FindGameObjectsWithTag("GachaUnitIcons");
         for (int i=0;i<5;i++)
         {
             unitInf[i] = new UnitInf();
@@ -320,12 +318,12 @@ public class GachaUnitManager : MonoBehaviour
         errorDialog.SetActive(false);
     }
 
-       public void StartIkusei()
-       {
+    public void StartIkusei()
+    {
         Common.progresses = new ProgressModel[5];
         for (int i = 0; i < 5; i++)
         {
-            if (unitInf[i].mainselected==-1)
+            if (unitInf[i].mainselected == -1)
             {
                 StartCoroutine(showError("メインキャラクターが設定されていないユニットがあります!"));
                 return;
@@ -341,7 +339,7 @@ public class GachaUnitManager : MonoBehaviour
                 return;
             }
             float sp = 0.5f;
-            Common.progresses[i] = new ProgressModel(); 
+            Common.progresses[i] = new ProgressModel();
             Common.progresses[i].MainCharacterId = characters[unitInf[i].mainselected].id;
             Common.progresses[i].Name = unitInf[i].unitname;
             Common.progresses[i].Vocal = characters[unitInf[i].mainselected].vocal + characters[unitInf[i].subselected].vocal * sp;
@@ -360,12 +358,10 @@ public class GachaUnitManager : MonoBehaviour
             StartCoroutine(showError("先生バードルが設定されていません!"));
             return;
         }
+        Common.teacher = teachers[currentteacher];
         Common.loadingCanvas.SetActive(true);
-        /*
-         * APIに育成情報をPOSTする
-         * 
-         */
-        Manager.manager.StateQueue((int)gamestate.Story);
+        CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
+        webClient.SetData(Common.progresses,new DendouModel[]{Common.teacher});
+        StartCoroutine(webClient.Send());
     }
-
-}
+   }

@@ -37,7 +37,7 @@ public class StoryController : MonoBehaviour
     void Start()
     {
         if (Common.characters == null) Common.initCharacters();//Test Only
-        datas = Resources.Load<TextAsset>("story/"+Common.storyid).ToString().Split(
+        datas = Resources.Load<TextAsset>("story/"+Common.mainstoryid).ToString().Split(
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
         );
@@ -47,48 +47,56 @@ public class StoryController : MonoBehaviour
 
     public void EndStory()
     {
-        if (Common.storyid == "opening")
+        int sceneid = -1;
+        Common.loadingCanvas.SetActive(true);
+        if (Common.mainstoryid == "opening")
         {
-            Common.storyid = "0";
-            Common.loadingCanvas.SetActive(true);
-            Manager.manager.StateQueue((int)gamestate.Story);
-        }else if (Common.storyid == "0")
-        {
-            Common.storyid = "1a";
-            Common.loadingCanvas.SetActive(true);
-            Manager.manager.StateQueue((int)gamestate.Story);
+            Common.mainstoryid = "0";
+            sceneid = (int)gamestate.Story;
         }
-        else if (Common.storyid == "8c")
+        else if (Common.mainstoryid == "0")
         {
-            Common.storyid = "ending";
-            Common.loadingCanvas.SetActive(true);
-            Manager.manager.StateQueue((int)gamestate.Story);
+            Common.mainstoryid = "1a";
+            sceneid = (int)gamestate.Story;
         }
-        else if (Common.storyid == "ending")
+        else if (Common.mainstoryid == "8c")
         {
-            Common.loadingCanvas.SetActive(true);
-            Manager.manager.StateQueue((int)gamestate.Ending);
+            Common.mainstoryid = "ending";
+            sceneid = (int)gamestate.Story;
         }
-        else if (Common.storyid.EndsWith("a"))
+        else if (Common.mainstoryid == "ending")
+        {
+            sceneid = (int)gamestate.Ending;
+            FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+            finishiClient.sceneid = (int)gamestate.Ending;
+            finishiClient.SetData();
+            StartCoroutine(finishiClient.Send());
+            return;
+        }
+        else if (Common.mainstoryid.EndsWith("a"))
         {
             //To Lesson
-            Common.loadingCanvas.SetActive(true);
-            Common.storyid = Common.storyid.Replace("a","b");
-            Manager.manager.StateQueue((int)gamestate.Lesson);
+            sceneid = (int)gamestate.Lesson;
         }
-        else if (Common.storyid.EndsWith("b"))
+        else if (Common.mainstoryid.EndsWith("b"))
         {
             //To Live
-            Common.storyid = Common.storyid.Replace("b", "c");
-            Manager.manager.StateQueue((int)gamestate.Live);
+            sceneid = (int)gamestate.Live;
         }
-        else if (Common.storyid.EndsWith("c"))
+        else if (Common.mainstoryid.EndsWith("c"))
         {
             //To Live
-            Common.storyid = (Int32.Parse(Common.storyid.Replace("c", ""))+1)+"a";
-            Manager.manager.StateQueue((int)gamestate.Story);
+            Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
+            sceneid = (int)gamestate.Story;
         }
+        Debug.Log(Common.progressId);
+        UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
+        Common.lessonCount = 5;
+        webClient.SetData(Common.mainstoryid,Common.lessonCount);
+        webClient.sceneid = sceneid;
+        StartCoroutine(webClient.Send());
     }
+
 
     public void UpdateDialog()
     {

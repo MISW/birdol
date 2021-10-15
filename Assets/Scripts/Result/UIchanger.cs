@@ -26,7 +26,25 @@ public class UIchanger : MonoBehaviour{
         Achievement_Text.GetComponent<Text>().text = Achievement_num.ToString("P0");
     }
 
-    void Update(){
-        
+    public void onClick(){
+        Common.loadingCanvas.SetActive(true);
+        if (Judge_Image_num==0)
+        {   //Success
+            Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
+            UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
+            Common.lessonCount = 5;
+            webClient.SetData(Common.mainstoryid, Common.lessonCount);
+            webClient.sceneid = (int)gamestate.Story;
+            StartCoroutine(webClient.Send());
+        }
+        else
+        {
+            //Failed
+            FinishProgressWebClient webClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+            webClient.SetData();
+            StartCoroutine(webClient.Send());
+        }
     }
+
+   
 }

@@ -5,20 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class PressedAction : MonoBehaviour
 {
+
+    
+    IEnumerator LoginAndSync()
+    {
+        TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
+        yield return tokenAuthorizeWebClient.Send();
+        if (Common.SessionID != null)
+        {
+            GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
+            yield return getStoryWebClient.Send();
+        }
+        
+    }
+
     public void OnClick() {
         //ここを変える
+        Common.loadingCanvas.SetActive(true);
         if (Common.UserID == 0)
         {
-            Common.loadingCanvas.SetActive(true);
-
             Manager.manager.StateQueue((int)gamestate.Signup); //アカウント新規登録(またはアカウント連携)を行うSignupシーンへ遷移する
         }
         else
         {
-            /*
-             *進行中のストーリーがあればホームに遷移し、なければガチャに遷移する、進捗が(ここはv2の保存用APIの改修が終わってからのほうがよさそう?) 
-             */
-            Debug.LogError("開発中(未実装)です。PlayerPrefsデータを初期化してください。 Click \"Edit>Clear All PlayerPrefs\" in Unity.");
+            StartCoroutine(LoginAndSync());
         }
 
 #if false

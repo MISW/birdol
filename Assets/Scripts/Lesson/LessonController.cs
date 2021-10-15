@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,11 +17,12 @@ public class LessonController : MonoBehaviour
     int vocal = 0;
     public static int selectedcharacter;
     public ProgressModel[] characters;
-    public int remainingTurn = 5;
     public Text remainingText;
     WaitForSeconds wait = new WaitForSeconds(0.01f);
     public static bool executingSkills = false;
     TeacherController teacher;
+    public GameObject[] LiveCharacter = new GameObject[6];
+    public GameObject[] CharacterList = new GameObject[5];
 
     void checkPos()
     {
@@ -28,7 +30,8 @@ public class LessonController : MonoBehaviour
         visual = 0;
         vocal = 0;
         bool active = false;
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
+        GameObject[] objs= new GameObject[6];
+        for (int i = 0; i < 6; i++) objs[i] = LiveCharacter[i];
         Array.Sort(objs, delegate (GameObject a1, GameObject a2) { return -1*a1.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y
             .CompareTo(a2.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y); });
         int depth = 0;
@@ -59,28 +62,17 @@ public class LessonController : MonoBehaviour
     {
         executingSkills = false;
         selectedcharacter = 0;
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
-        listchilds = GameObject.FindGameObjectsWithTag("CharacterList");
+        remainingText.text = Common.lessonCount.ToString();
+        GameObject[] objs = LiveCharacter;
+        listchilds = CharacterList;
         if (Common.characters == null) Common.initCharacters();//Delete On Pro
         for (int i = 0; i < 5; i++)
         {
             CharacterModel mainCharacter = Common.characters[characters[i].MainCharacterId];
             CharacterModel subCharacter = Common.characters[characters[i].SupportCharacterId];
-            characters[i].ActiveSkillName = mainCharacter.skillname;
-            characters[i].ActiveSkillParams = mainCharacter.activeparams;
-            characters[i].ActiveSkillScore = mainCharacter.activeskillscore;
-            characters[i].ActiveSkillType = mainCharacter.activetype;
-            characters[i].ActiveSkillDescription = mainCharacter.activedescription;
-            characters[i].BestSkill = mainCharacter.bestskill;
-            characters[i].SupportSkillName = subCharacter.skillname;
-            characters[i].PassiveSkillParams = subCharacter.passiveparams;
-            characters[i].PassiveSkillScore = subCharacter.passiveskillscore;
-            characters[i].PassiveSkillType = subCharacter.passivetype;
-            characters[i].PassiveSkillDescription = subCharacter.passivedescription;
-            Common.progresses[i] = characters[i];
             LessonCharacterController objk = objs[i].GetComponent<LessonCharacterController>();
             objk.id = i;
-            objk.name.text = characters[i].Name;
+            objk.name.text = Common.progresses[i].Name;
             for (int j=0;j<6;j++)
             {
                 objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
@@ -88,11 +80,10 @@ public class LessonController : MonoBehaviour
             objk.initImage();
             if (i == 0) objk.SelectMe();
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
-            if (characters[i].BestSkill == "vocal") listchilds[i].transform.parent.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-            else if (characters[i].BestSkill == "visual") listchilds[i].transform.parent.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
-            else listchilds[i].transform.parent.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
-            objs[i].GetComponent<LessonCharacterController>().listchild = listchilds[i];
-            objk.SetupStar();
+            if (characters[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (characters[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            else listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+            objk.para = listchilds[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
             objk.setParams();
         }
         //For Test
@@ -126,29 +117,38 @@ public class LessonController : MonoBehaviour
         if (characterObj.area == "visual") Common.progresses[index].Visual+=score;
         else if (characterObj.area == "vocal") Common.progresses[index].Vocal += score;
         else Common.progresses[index].Dance += score;
-        yield return null;
         characterObj.setParams();
         characterObj.executingSkill = false;
+        yield return null;
     }
 
     private IEnumerator execSkills()
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("LiveCharacter");
+        GameObject[] objs = LiveCharacter;
         for (int i = 0; i < 5; i++)
         {
             yield return execSkillofOnePerson(objs[i].GetComponent<LessonCharacterController>(),i);
         }
-        remainingTurn--;
-        remainingText.text = remainingTurn.ToString();
-        if (remainingTurn > 0)
+        Common.lessonCount--;
+        remainingText.text = Common.lessonCount.ToString();
+        UpdateCharacterWebClient characterWebClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
+        characterWebClient.SetData();
+        UpdateMainStoryWebClient storyWebClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
+        yield return characterWebClient.Send();
+        if (Common.lessonCount > 0)
         {
             executingSkills = false;
+            storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
+            yield return storyWebClient.Send();
         }
         else
         {
             //Change Scene
             Common.loadingCanvas.SetActive(true);
-            Manager.manager.StateQueue((int)gamestate.Story);
+            Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
+            storyWebClient.SetData(Common.mainstoryid, 5);
+            storyWebClient.sceneid = (int)gamestate.Story;
+            yield return storyWebClient.Send();
         }
     }
 

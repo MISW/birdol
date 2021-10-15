@@ -1421,7 +1421,7 @@ GameObject:
   - component: {fileID: 168742529}
   - component: {fileID: 168742528}
   m_Layer: 5
-  m_Name: TeacherPair
+  m_Name: CharacterPair-5
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2309,7 +2309,7 @@ GameObject:
   - component: {fileID: 317957094}
   - component: {fileID: 317957093}
   m_Layer: 5
-  m_Name: CharacterButton
+  m_Name: CharacterButton (0)
   m_TagString: GachaUnitIcons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7308,7 +7308,7 @@ GameObject:
   - component: {fileID: 873864333}
   - component: {fileID: 873864332}
   m_Layer: 5
-  m_Name: CharacterPair (2)
+  m_Name: CharacterPair-2
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9585,7 +9585,7 @@ GameObject:
   - component: {fileID: 1102599764}
   - component: {fileID: 1102599763}
   m_Layer: 5
-  m_Name: CharacterPair (4)
+  m_Name: CharacterPair-4
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12289,7 +12289,7 @@ GameObject:
   - component: {fileID: 1370636988}
   - component: {fileID: 1370636989}
   m_Layer: 5
-  m_Name: CharacterPair
+  m_Name: CharacterPair-0
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14297,7 +14297,6 @@ GameObject:
   - component: {fileID: 1592377198}
   - component: {fileID: 1592377201}
   - component: {fileID: 1592377200}
-  - component: {fileID: 1592377199}
   m_Layer: 5
   m_Name: Supprt
   m_TagString: Untagged
@@ -14324,50 +14323,6 @@ RectTransform:
   m_AnchoredPosition: {x: 180, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1592377199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592377197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1592377200}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1592377200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14382,7 +14337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16468,7 +16423,7 @@ GameObject:
   - component: {fileID: 1742637659}
   - component: {fileID: 1742637658}
   m_Layer: 5
-  m_Name: CharacterPair (1)
+  m_Name: CharacterPair-1
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16835,7 +16790,6 @@ GameObject:
   - component: {fileID: 1772207355}
   - component: {fileID: 1772207358}
   - component: {fileID: 1772207357}
-  - component: {fileID: 1772207356}
   m_Layer: 5
   m_Name: Main
   m_TagString: Untagged
@@ -16862,50 +16816,6 @@ RectTransform:
   m_AnchoredPosition: {x: 60, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1772207356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772207354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 1772207357}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1772207357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16920,7 +16830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17764,7 +17674,7 @@ GameObject:
   - component: {fileID: 1873259881}
   - component: {fileID: 1873259880}
   m_Layer: 5
-  m_Name: CharacterPair (3)
+  m_Name: CharacterPair-3
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17899,6 +17809,13 @@ MonoBehaviour:
   teacherTeamName: {fileID: 1702338513}
   teacherFirst: {fileID: 464951898}
   errorDialog: {fileID: 923718770}
+  pairLists:
+  - {fileID: 1370636984}
+  - {fileID: 1742637656}
+  - {fileID: 873864330}
+  - {fileID: 1873259878}
+  - {fileID: 1102599761}
+  - {fileID: 168742526}
   characters:
   - id: 0
     name: 
@@ -18080,6 +17997,17 @@ MonoBehaviour:
     passiveskillscore: 0
     passivedescription: 
     passiveprobability: 0
+  charcterIcons:
+  - {fileID: 317957091}
+  - {fileID: 1890723897}
+  - {fileID: 1630908410}
+  - {fileID: 829701469}
+  - {fileID: 1524492700}
+  - {fileID: 1500918001}
+  - {fileID: 473788214}
+  - {fileID: 1405640037}
+  - {fileID: 189096876}
+  - {fileID: 1623275056}
 --- !u!4 &1889965507
 Transform:
   m_ObjectHideFlags: 0

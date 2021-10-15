@@ -15,7 +15,7 @@ public class CompletedController : MonoBehaviour
     public Text ActiveSkillLevel;
     public Text PassiveSkillLevel;
     public Image StandImage;
-    public Sprite[] star = new Sprite[6];
+    public Sprite[] star = new Sprite[5];
 
     private List<Image> VocalStarImage = new List<Image>();
     private List<Image> VisualStarImage = new List<Image>();
@@ -28,7 +28,7 @@ public class CompletedController : MonoBehaviour
     {
         int index = button.transform.GetSiblingIndex() + button.transform.parent.GetSiblingIndex() * 5;
         DendouModel character = CompletedCharacters[index];
-        StandImage.sprite = Common.standImages[index];
+        StandImage.sprite = Common.standImages[character.MainCharacterId];
         TeamName.text = character.Name;
         ActiveSkillLevel.text = "Lv." + character.ActiveSkillLevel;
         PassiveSkillLevel.text = "Lv." + character.PassiveSkillLevel;
@@ -69,12 +69,24 @@ public class CompletedController : MonoBehaviour
     {
         for (int i = 0; i < status / 5; i++)
         {
-            VocalStarImage[i].sprite = star[5];
+            VocalStarImage[i].enabled = true;
+            VocalStarImage[i].sprite = star[4];
         }
-        if (status != 50) VocalStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                VocalStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VocalStarImage[status / 5].enabled = true;
+                VocalStarImage[status / 5].sprite = star[(status % 5) - 1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            VocalStarImage[i].sprite = star[0];
+            VocalStarImage[i].enabled = false;
         }
     }
 
@@ -86,12 +98,24 @@ public class CompletedController : MonoBehaviour
     {
         for (int i = 0; i < status / 5; i++)
         {
-            VisualStarImage[i].sprite = star[5];
+            VisualStarImage[i].enabled = true;
+            VisualStarImage[i].sprite = star[4];
         }
-        if (status != 50) VisualStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                VisualStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                VisualStarImage[status / 5].enabled = true;
+                VisualStarImage[status / 5].sprite = star[(status % 5) - 1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            VisualStarImage[i].sprite = star[0];
+            VisualStarImage[i].enabled = false;
         }
     }
 
@@ -103,12 +127,24 @@ public class CompletedController : MonoBehaviour
     {
         for (int i = 0; i < status / 5; i++)
         {
-            DanceStarImage[i].sprite = star[5];
+            DanceStarImage[i].enabled = true;
+            DanceStarImage[i].sprite = star[4];
         }
-        if (status != 50) DanceStarImage[status / 5].sprite = star[status % 5];
+        if (status != 50)
+        {
+            if (status % 5 == 0)
+            {
+                DanceStarImage[status / 5].enabled = false;
+            }
+            else
+            {
+                DanceStarImage[status / 5].enabled = true;
+                DanceStarImage[status / 5].sprite = star[(status % 5) - 1];
+            }
+        }
         for (int i = status / 5 + 1; i < maxStar; i++)
         {
-            DanceStarImage[i].sprite = star[0];
+            DanceStarImage[i].enabled = false;
         }
     }
 
@@ -142,17 +178,10 @@ public class CompletedController : MonoBehaviour
         if(Common.characters==null)Common.initCharacters();
         int index = 0;
         GameObject horizontal = HorizontalChild;
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < CompletedCharacters.Count; i++)
         {
             if(index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
-            DendouModel dendouModel = new DendouModel();
-            dendouModel.MainCharacterId = i;
-            dendouModel.SupportCharacterId = i;
-            dendouModel.Name = Common.characters[i].name;
-            dendouModel.Vocal = Common.characters[i].vocal;
-            dendouModel.Visual = Common.characters[i].visual;
-            dendouModel.Dance = Common.characters[i].dance;
-            CompletedCharacters.Add(dendouModel);
+            DendouModel dendouModel = CompletedCharacters[i];
             horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
             if (index == 4)index = 0;
             else index++;

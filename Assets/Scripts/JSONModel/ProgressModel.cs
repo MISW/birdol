@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,23 +25,25 @@ public class ProgressModel
 	public float Visual;
 	public float Vocal;
 	public float Dance;
-	public string Group;
-	public string BestSkill; //(0:vocal 1:visual 2: dance)
 	public int ActiveSkillLevel = 1;
-
-	public string ActiveSkillName;
-	public string ActiveSkillType;
-	public string ActiveSkillParams;
-	public string ActiveSkillDescription;
-	public float ActiveSkillScore;
+	
 	//サポートキャラクター
 	public int SupportCharacterId;
-
-	public string SupportSkillName;
 	public int PassiveSkillLevel = 1;
-	public string PassiveSkillType;
-	public string PassiveSkillParams;
-	public string PassiveSkillDescription;
-	public float PassiveSkillScore;
-	public float PassiveSkillProbability;
+
+	[NonSerialized] public string Group;
+	[NonSerialized] public string BestSkill; //(0:vocal 1:visual 2: dance)
+
+	[NonSerialized] public string ActiveSkillName;
+	[NonSerialized] public string ActiveSkillType;
+	[NonSerialized] public string ActiveSkillParams;
+	[NonSerialized] public string ActiveSkillDescription;
+	[NonSerialized] public float ActiveSkillScore;
+
+	[NonSerialized] public string SupportSkillName;
+	[NonSerialized] public string PassiveSkillType;
+	[NonSerialized] public string PassiveSkillParams;
+	[NonSerialized] public string PassiveSkillDescription;
+	[NonSerialized] public float PassiveSkillScore;
+	[NonSerialized] public float PassiveSkillProbability;
 }

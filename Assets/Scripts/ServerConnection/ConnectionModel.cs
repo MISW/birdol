@@ -48,6 +48,7 @@ public class ConnectionModel : MonoBehaviour
     {
 		// result strings
 		public const string ResultOK = "ok";
+		public const string ResultSuccess = "success";
 		public const string ResultFail = "failed";
 		public const string ResultNeedTokenRefresh = "need_refresh";
 		public const string ResultRefreshSuccess = "refreshed";

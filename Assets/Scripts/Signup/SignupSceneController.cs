@@ -121,14 +121,25 @@ public class SignupSceneController : SceneVisor
         yield break;
     }
 
+    IEnumerator Login()
+    {
+        TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
+        yield return tokenAuthorizeWebClient.Send();
+        if (Common.SessionID != null)
+        {
+            Manager.manager.StateQueue((int)gamestate.Home);
+        }
+
+    }
+
     /// <summary>
     /// アカウント登録に成功したときの動作。
     /// </summary>
     private void OnSignupSuccess()
     {
-        //Gachaシーンへ遷移 (アカウント作成=ガチャ必要なので)
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Gacha);
+        TokenAuthorizeWebClient webClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
+        StartCoroutine(Login());
     }
 
     /// <summary>
