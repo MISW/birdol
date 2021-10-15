@@ -112,11 +112,6 @@ public class HomeButtonUtil : MonoBehaviour
     public void onButtonPressedBack()
     {
         Debug.Log("Pushed Back");
-        /*
-        FinishProgressWebClient webClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
-        webClient.SetData();
-        StartCoroutine(webClient.Send());*/
-
     }
 
     public void onButtonPressedOption()

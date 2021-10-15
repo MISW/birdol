@@ -12,7 +12,7 @@ public class FinishProgressWebClient : GameWebClient
 {
     [Header("Request Data Information")]
     [SerializeField] protected FinishProgressRequestData updateCharacterRequestData;
-
+    public int sceneid;
 
     [Serializable]
     public struct FinishProgressRequestData
@@ -57,9 +57,9 @@ public class FinishProgressWebClient : GameWebClient
     protected override void HandleGameSuccessData(string response)
     {
          FinishProgressResponseData r = JsonUtility.FromJson<FinishProgressResponseData>(response);
-        if (r.result == ConnectionModel.Response.ResultSuccess)
+        if (r.result == ConnectionModel.Response.ResultOK)
         {
-            Debug.Log("Success");
+            Manager.manager.StateQueue(sceneid);
         }
     }
 }

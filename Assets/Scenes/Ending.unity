@@ -728,110 +728,45 @@ MonoBehaviour:
     Visual: 99
     Vocal: 98
     Dance: 100
-    Group: 
-    BestSkill: 
     ActiveSkillLevel: 1
-    ActiveSkillName: 
-    ActiveSkillType: 
-    ActiveSkillParams: 
-    ActiveSkillDescription: 
-    ActiveSkillScore: 0
     SupportCharacterId: 0
-    SupportSkillName: 
     PassiveSkillLevel: 1
-    PassiveSkillType: 
-    PassiveSkillParams: 
-    PassiveSkillDescription: 
-    PassiveSkillScore: 0
-    PassiveSkillProbability: 0
   - id: 0
     MainCharacterId: 3
     Name: 
     Visual: 11
     Vocal: 22
     Dance: 33
-    Group: 
-    BestSkill: 
     ActiveSkillLevel: 2
-    ActiveSkillName: 
-    ActiveSkillType: 
-    ActiveSkillParams: 
-    ActiveSkillDescription: 
-    ActiveSkillScore: 0
     SupportCharacterId: 0
-    SupportSkillName: 
     PassiveSkillLevel: 2
-    PassiveSkillType: 
-    PassiveSkillParams: 
-    PassiveSkillDescription: 
-    PassiveSkillScore: 0
-    PassiveSkillProbability: 0
   - id: 0
     MainCharacterId: 5
     Name: 
     Visual: 33
     Vocal: 66
     Dance: 22
-    Group: 
-    BestSkill: 
     ActiveSkillLevel: 3
-    ActiveSkillName: 
-    ActiveSkillType: 
-    ActiveSkillParams: 
-    ActiveSkillDescription: 
-    ActiveSkillScore: 0
     SupportCharacterId: 0
-    SupportSkillName: 
     PassiveSkillLevel: 3
-    PassiveSkillType: 
-    PassiveSkillParams: 
-    PassiveSkillDescription: 
-    PassiveSkillScore: 0
-    PassiveSkillProbability: 0
   - id: 0
     MainCharacterId: 12
     Name: 
     Visual: 11
     Vocal: 44
     Dance: 33
-    Group: 
-    BestSkill: 
     ActiveSkillLevel: 4
-    ActiveSkillName: 
-    ActiveSkillType: 
-    ActiveSkillParams: 
-    ActiveSkillDescription: 
-    ActiveSkillScore: 0
     SupportCharacterId: 0
-    SupportSkillName: 
     PassiveSkillLevel: 4
-    PassiveSkillType: 
-    PassiveSkillParams: 
-    PassiveSkillDescription: 
-    PassiveSkillScore: 0
-    PassiveSkillProbability: 0
   - id: 0
     MainCharacterId: 16
     Name: 
     Visual: 11
     Vocal: 22
     Dance: 33
-    Group: 
-    BestSkill: 
     ActiveSkillLevel: 5
-    ActiveSkillName: 
-    ActiveSkillType: 
-    ActiveSkillParams: 
-    ActiveSkillDescription: 
-    ActiveSkillScore: 0
     SupportCharacterId: 0
-    SupportSkillName: 
     PassiveSkillLevel: 5
-    PassiveSkillType: 
-    PassiveSkillParams: 
-    PassiveSkillDescription: 
-    PassiveSkillScore: 0
-    PassiveSkillProbability: 0
 --- !u!4 &187151337
 Transform:
   m_ObjectHideFlags: 0
@@ -3333,7 +3268,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1407442484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 187151336}
+        m_TargetAssemblyTypeName: Ending, Assembly-CSharp
+        m_MethodName: ResetStory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1407442484
 MonoBehaviour:
   m_ObjectHideFlags: 0

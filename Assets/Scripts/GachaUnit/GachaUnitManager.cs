@@ -22,7 +22,7 @@ public class GachaUnitManager : MonoBehaviour
     public GameObject teacherFirst;
     public GameObject errorDialog;
 
-    GameObject[] pairLists;
+    public GameObject[] pairLists;
 
     public static int[] initid;
     public static List<DendouModel> teachers = new List<DendouModel>();
@@ -30,7 +30,7 @@ public class GachaUnitManager : MonoBehaviour
     public CharacterModel[] characters=new CharacterModel[10];
     UnitInf[] unitInf = new UnitInf[5];
     bool[] selected = new bool[10];
-    GameObject[] charcterIcons;
+    public GameObject[] charcterIcons;
     List<GameObject> teacherObjects=new List<GameObject>();
 
     string currentdialog = "";
@@ -42,8 +42,6 @@ public class GachaUnitManager : MonoBehaviour
     void Start()
     {
         mainPage.transform.SetSiblingIndex(2);
-        pairLists = GameObject.FindGameObjectsWithTag("GachaUnitPair");
-        charcterIcons = GameObject.FindGameObjectsWithTag("GachaUnitIcons");
         for (int i=0;i<5;i++)
         {
             unitInf[i] = new UnitInf();

@@ -81,9 +81,9 @@ public class Ending : MonoBehaviour
     private void ChangeCurrentCharacterStars(int i)
     {
         //各キャラクターのステータスを読み込み、ステータスの最大値を超えていた場合はその値をステータスの最大値に変更
-        currentCharacterVocal = (int)Mathf.Min(Characters[i].Vocal,maxStatus);
-        currentCharacterVisual = (int)Mathf.Min(Characters[i].Visual,maxStatus);
-        currentCharacterDance = (int)Mathf.Min(Characters[i].Dance,maxStatus);
+        currentCharacterVocal = (int)Mathf.Min(Common.progresses[i].Vocal,maxStatus);
+        currentCharacterVisual = (int)Mathf.Min(Common.progresses[i].Visual,maxStatus);
+        currentCharacterDance = (int)Mathf.Min(Common.progresses[i].Dance,maxStatus);
 
         currentCharacterVocal = (int)(((float)currentCharacterVocal / (float)maxStatus) * 50.0f);
         currentCharacterVisual = (int)(((float)currentCharacterVisual / (float)maxStatus) * 50.0f);
@@ -101,8 +101,8 @@ public class Ending : MonoBehaviour
     /// <param name="i"></param>
     private void ChangeCurrentCharacterSKillGauge(int i)
     {
-        activeSkillGaugeImage.sprite = activeSkillGaugeSprites[Characters[i].ActiveSkillLevel];
-        passiveSkillGaugeImage.sprite = passiveSkillGaugeSprites[Characters[i].PassiveSkillLevel];
+        activeSkillGaugeImage.sprite = activeSkillGaugeSprites[Common.progresses[i].ActiveSkillLevel];
+        passiveSkillGaugeImage.sprite = passiveSkillGaugeSprites[Common.progresses[i].PassiveSkillLevel];
     }
 
     /// <summary>
@@ -242,9 +242,17 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Common.progresses[i].MainCharacterId);
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
+    }
+
+    public void ResetStory()
+    {
+        Common.loadingCanvas.SetActive(true);
+        Common.mainstoryid = null;
+        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
+        StartCoroutine(getStoryWebClient.Send());
     }
 }

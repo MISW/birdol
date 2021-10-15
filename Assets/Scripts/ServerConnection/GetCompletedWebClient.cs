@@ -30,7 +30,7 @@ public class GetCompletedWebClient : GameWebClient
     {
         GetCompletedResponse r = JsonUtility.FromJson<GetCompletedResponse>(response);
         base.data = r;
-        if (r.result == ConnectionModel.Response.ResultSuccess)
+        if (r.characters.Length >= 4)
         {
             if (target == "gachaunit")
             {

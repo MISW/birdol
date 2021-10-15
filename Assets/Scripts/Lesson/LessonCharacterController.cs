@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,38 +22,34 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
     public Image backframe;
 
     public Sprite[] foot;
-    public int maxStar = 10;
     public float maxStatus = 100f;
 
-    private List<Image> StarImages = new List<Image>();
-    public Sprite[] star = new Sprite[6];
-
-    public void SetupStar()
-    {
-        for (int i = 0; i < maxStar; i++)
-        {
-            GameObject Star = GameObject.Find(id+"Star-" + i);
-            StarImages.Add(Star.GetComponent<Image>());
-        }
-    }
-
+    public TextMeshProUGUI para;
 
 
     //0:Visual 1:Vocal 2:Dance
     public void setParams()
     {
-        int currentParams = 0;
-        if (area == "visual") currentParams = (int)(((float)Common.progresses[id].Visual / (float)maxStatus) * 50.0f);
-        else if (area == "vocal") currentParams = (int)(((float)Common.progresses[id].Vocal / (float)maxStatus) * 50.0f);
-        else if (area == "dance") currentParams = (int)(((float)Common.progresses[id].Dance / (float)maxStatus) * 50.0f);
-        for (int i = 0; i < currentParams / 5; i++)
+        if (area == "visual")
         {
-            StarImages[i].sprite = star[5];
+            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Visual);
+            int dot = paranum.IndexOf(".");
+            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
         }
-        if (currentParams != 50) StarImages[currentParams / 5].sprite = star[currentParams % 5];
-        for (int i = currentParams / 5 + 1; i < maxStar; i++)
+        else if (area == "vocal")
         {
-            StarImages[i].sprite = star[0];
+            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Vocal);
+            int dot = paranum.IndexOf(".");
+            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
+        }
+        else
+        {
+            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Dance);
+            int dot = paranum.IndexOf(".");
+            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
 
     }
@@ -86,7 +83,7 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
             newarea = "visual";
         }
         area = newarea;
-        if(oldarea!=newarea&&StarImages.Count>0)setParams();
+        if(oldarea!=newarea)setParams();
     }
 
     private IEnumerator updateImg()
@@ -117,13 +114,12 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
     void Start()
     {
         Application.targetFrameRate = 60;
-        setArea();
     }
 
 
     void Update()
     {
-        setArea();
+        if(para!=null)setArea();
     }
 
     public void OnDrag(PointerEventData eventData)

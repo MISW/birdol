@@ -28,7 +28,7 @@ public class GetCharacterWebClient : GameWebClient
     {
         GetCharacterResponse r = JsonUtility.FromJson<GetCharacterResponse>(response);
         base.data = r;
-        if (r.result == ConnectionModel.Response.ResultSuccess)
+        if (r.character_progresses.Length == 5 && r.teachers.Length == 1)
         {
             for (int i=0;i < 5;i++)
             {
@@ -36,7 +36,14 @@ public class GetCharacterWebClient : GameWebClient
                 Debug.Log(Common.progresses[i].id+":"+ Common.progresses[i].Name);
             }
             Common.teacher = r.teachers[0].character;
-            Manager.manager.StateQueue((int)gamestate.Story);
+            if (Common.lessonCount!=5)
+            {
+                Manager.manager.StateQueue((int)gamestate.Lesson);
+            }
+            else
+            {
+                Manager.manager.StateQueue((int)gamestate.Story);
+            }
         }
         else
         {

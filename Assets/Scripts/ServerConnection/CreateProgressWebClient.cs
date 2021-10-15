@@ -71,8 +71,22 @@ public class CreateProgressWebClient : GameWebClient
 
     protected override void HandleGameSuccessData(string response)
     {
-        CreateProgressResponseData result = JsonUtility.FromJson<CreateProgressResponseData>(response);
-        GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
-        StartCoroutine(webClient.Send());
+        CreateProgressResponseData r = JsonUtility.FromJson<CreateProgressResponseData>(response);
+        if(r.characters.Length == 5 && r.teachers.Length == 1)
+        {
+            for (int i=0;i<5;i++)
+            {
+                Common.progresses[i].id = r.characters[i].character_id;
+                Debug.Log("NewId:"+ Common.progresses[i].id);
+            }
+            Common.teacher.id = r.teachers[0].teacher_id;
+            Common.mainstoryid = "opening";
+            Debug.Log("TeacherId:" + Common.teacher.id);
+            Manager.manager.StateQueue((int)gamestate.Story);
+        }
+        else
+        {
+            Debug.Log("Connection Error Occured.");
+        }
     }
 }

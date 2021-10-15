@@ -1421,7 +1421,7 @@ GameObject:
   - component: {fileID: 168742529}
   - component: {fileID: 168742528}
   m_Layer: 5
-  m_Name: TeacherPair
+  m_Name: CharacterPair-5
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2309,7 +2309,7 @@ GameObject:
   - component: {fileID: 317957094}
   - component: {fileID: 317957093}
   m_Layer: 5
-  m_Name: CharacterButton
+  m_Name: CharacterButton (0)
   m_TagString: GachaUnitIcons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7308,7 +7308,7 @@ GameObject:
   - component: {fileID: 873864333}
   - component: {fileID: 873864332}
   m_Layer: 5
-  m_Name: CharacterPair (2)
+  m_Name: CharacterPair-2
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7780,8 +7780,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1077460742}
   m_HandleRect: {fileID: 1077460741}
   m_Direction: 2
-  m_Value: 1.0000004
-  m_Size: 0.8110106
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 6
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9585,7 +9585,7 @@ GameObject:
   - component: {fileID: 1102599764}
   - component: {fileID: 1102599763}
   m_Layer: 5
-  m_Name: CharacterPair (4)
+  m_Name: CharacterPair-4
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12289,7 +12289,7 @@ GameObject:
   - component: {fileID: 1370636988}
   - component: {fileID: 1370636989}
   m_Layer: 5
-  m_Name: CharacterPair
+  m_Name: CharacterPair-0
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16286,8 +16286,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1396483961}
   m_HandleRect: {fileID: 1396483960}
   m_Direction: 2
-  m_Value: 0.9999997
-  m_Size: 0.727219
+  m_Value: 0.9999869
+  m_Size: 0.98809034
   m_NumberOfSteps: 6
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16423,7 +16423,7 @@ GameObject:
   - component: {fileID: 1742637659}
   - component: {fileID: 1742637658}
   m_Layer: 5
-  m_Name: CharacterPair (1)
+  m_Name: CharacterPair-1
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17674,7 +17674,7 @@ GameObject:
   - component: {fileID: 1873259881}
   - component: {fileID: 1873259880}
   m_Layer: 5
-  m_Name: CharacterPair (3)
+  m_Name: CharacterPair-3
   m_TagString: GachaUnitPair
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17809,6 +17809,13 @@ MonoBehaviour:
   teacherTeamName: {fileID: 1702338513}
   teacherFirst: {fileID: 464951898}
   errorDialog: {fileID: 923718770}
+  pairLists:
+  - {fileID: 1370636984}
+  - {fileID: 1742637656}
+  - {fileID: 873864330}
+  - {fileID: 1873259878}
+  - {fileID: 1102599761}
+  - {fileID: 168742526}
   characters:
   - id: 0
     name: 
@@ -17990,6 +17997,17 @@ MonoBehaviour:
     passiveskillscore: 0
     passivedescription: 
     passiveprobability: 0
+  charcterIcons:
+  - {fileID: 317957091}
+  - {fileID: 1890723897}
+  - {fileID: 1630908410}
+  - {fileID: 829701469}
+  - {fileID: 1524492700}
+  - {fileID: 1500918001}
+  - {fileID: 473788214}
+  - {fileID: 1405640037}
+  - {fileID: 189096876}
+  - {fileID: 1623275056}
 --- !u!4 &1889965507
 Transform:
   m_ObjectHideFlags: 0

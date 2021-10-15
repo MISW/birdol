@@ -52,38 +52,36 @@ public class StoryController : MonoBehaviour
         if (Common.mainstoryid == "opening")
         {
             Common.mainstoryid = "0";
-            Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
         }
         else if (Common.mainstoryid == "0")
         {
             Common.mainstoryid = "1a";
-            Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
         }
         else if (Common.mainstoryid == "8c")
         {
             Common.mainstoryid = "ending";
-            Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Story;
         }
         else if (Common.mainstoryid == "ending")
         {
-            Common.loadingCanvas.SetActive(true);
             sceneid = (int)gamestate.Ending;
+            FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+            finishiClient.sceneid = (int)gamestate.Ending;
+            finishiClient.SetData();
+            StartCoroutine(finishiClient.Send());
+            return;
         }
         else if (Common.mainstoryid.EndsWith("a"))
         {
             //To Lesson
-            Common.loadingCanvas.SetActive(true);
-            Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
             sceneid = (int)gamestate.Lesson;
         }
         else if (Common.mainstoryid.EndsWith("b"))
         {
             //To Live
-            Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
-            sceneid = (int)gamestate.Lesson;
+            sceneid = (int)gamestate.Live;
         }
         else if (Common.mainstoryid.EndsWith("c"))
         {
@@ -93,7 +91,8 @@ public class StoryController : MonoBehaviour
         }
         Debug.Log(Common.progressId);
         UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
-        webClient.SetData(Common.mainstoryid);
+        Common.lessonCount = 5;
+        webClient.SetData(Common.mainstoryid,Common.lessonCount);
         webClient.sceneid = sceneid;
         StartCoroutine(webClient.Send());
     }

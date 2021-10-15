@@ -21,11 +21,13 @@ public class UpdateMainStoryWebClient : GameWebClient
     {
         [SerializeField] public string session_id;
         [SerializeField] public string main_story_id ;
-        public UpdateMainStoryRequestData(string main_story_id)
+        [SerializeField] public int lesson_count;
+        public UpdateMainStoryRequestData(string main_story_id,int lesson_count)
         {
             
             this.session_id = Common.SessionID;
             this.main_story_id = main_story_id;
+            this.lesson_count = lesson_count;
         }
     }
 
@@ -36,9 +38,9 @@ public class UpdateMainStoryWebClient : GameWebClient
         [SerializeField] public string result;
     }
 
-    public void SetData(string main_story_id)
+    public void SetData(string main_story_id, int lesson_count)
     {
-        this.updateMainStoryRequestData = new UpdateMainStoryRequestData(main_story_id);
+        this.updateMainStoryRequestData = new UpdateMainStoryRequestData(main_story_id,lesson_count);
     }
 
 
@@ -62,7 +64,7 @@ public class UpdateMainStoryWebClient : GameWebClient
     protected override void HandleGameSuccessData(string response)
     {
         UpdateMainStoryResponseData r= JsonUtility.FromJson<UpdateMainStoryResponseData>(response);
-        if (r.result == ConnectionModel.Response.ResultSuccess)
+        if (r.result == ConnectionModel.Response.ResultOK&&sceneid!=0)
         {
             Manager.manager.StateQueue(sceneid);
         }

@@ -15,6 +15,7 @@ public class GetStoryWebClient : GameWebClient
         [SerializeField] public string error;
         [SerializeField] public int id;
         [SerializeField] public string main_story_id;
+        [SerializeField] public int lesson_count;
     }
 
     public GetStoryWebClient(HttpRequestMethod requestMethod, string path) : base(requestMethod, path)
@@ -30,13 +31,14 @@ public class GetStoryWebClient : GameWebClient
     {
         GetStoryResponse r = JsonUtility.FromJson<GetStoryResponse>(response);
         base.data = r;
-        if (r.result == ConnectionModel.Response.ResultSuccess)
+        if (r.result == ConnectionModel.Response.ResultOK)
         {
             Common.progressId = r.id;
             Common.mainstoryid = r.main_story_id;
+            Common.lessonCount = r.lesson_count;
             Manager.manager.StateQueue((int)gamestate.Home);
         }
-        else if(r.error == "äYìñÇ∑ÇÈêiíªÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒ")
+        else if(r.error == "data_not_found")
         {
             Manager.manager.StateQueue((int)gamestate.Home);
         }
