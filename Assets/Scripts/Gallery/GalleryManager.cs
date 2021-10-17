@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
+/**
+To-do:
+素材がResourcesに実装されたらBgをbackground2に変える
+「さくいん」テキストをアイコンに差し替え
+**/
+
 /// <summary>
 /// Galleryシーンを管理するクラス
 /// </summary>
@@ -32,6 +38,7 @@ public class GalleryManager : MonoBehaviour
     public const int ORDER_INDEX = 2;
     public const int FAMILY_INDEX = 3;
     public const int DESC_INDEX = 6;
+    public const int CLASS_INDEX = 7;
 
     /// <summary>
     /// 図鑑データを読み込む
@@ -58,6 +65,7 @@ public class GalleryManager : MonoBehaviour
             tmp.id = i;
             tmp.name = GetLine(i)[NAME_INDEX];
 
+            // isUnlocked[i] = true;
             characters[i] = tmp;
         }
 

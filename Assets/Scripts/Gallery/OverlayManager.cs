@@ -20,6 +20,8 @@ public class OverlayManager : MonoBehaviour
     private GameObject familyNameObject;
     [SerializeField]
     private GameObject descObject;
+    [SerializeField]
+    private GameObject groupNameObject;
 
     private const int IMAGE_HEIGHT = 1200;
     private const int IMAGE_HEIGHT_MIN = 600;
@@ -137,8 +139,10 @@ public class OverlayManager : MonoBehaviour
         orderNameObject.GetComponent<Text>().text = data[GalleryManager.ORDER_INDEX];
         familyNameObject.GetComponent<Text>().text = data[GalleryManager.FAMILY_INDEX];
 
-        string raw = data[GalleryManager.DESC_INDEX];
+        string groupStr = data[GalleryManager.CLASS_INDEX];
+        groupNameObject.GetComponent<Text>().text = "【" + groupStr + "】";
 
+        string raw = data[GalleryManager.DESC_INDEX];
         descObject.GetComponent<Text>().text = raw;
 
         this.gameObject.SetActive(true);
