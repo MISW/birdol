@@ -1,0 +1,329 @@
+{
+    "Characters": [
+        {
+            "id": "0",
+            "name": "スズメ",
+            "text": [
+                "チュンチュン"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "-30"
+        },
+        {
+            "id": "1",
+            "name": "ハシボソガラス",
+            "text": [
+                "ガーガーガー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "-100"
+        },
+        {
+            "id": "2",
+            "name": "ムクドリ",
+            "text": [
+                "ギャー",
+                "ギュ",
+                "キュル"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-20",
+            "charaposy": "0"
+        },
+        {
+            "id": "3",
+            "name": "キジバト",
+            "text": [
+                "ギャーデーデー ポッポー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "-175"
+        },
+        {
+            "id": "4",
+            "name": "シジュウカラ",
+            "text": [
+                "ツツピーツツピー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "-50"
+        },
+        {
+            "id": "5",
+            "name": "エナガ",
+            "text": [
+                "ジぃふんだぁ、ジぃふんだぁ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "200"
+        },
+        {
+            "id": "6",
+            "name": "ツバメ",
+            "text": [
+                "ツチくってムシくってしぶい"
+            ],
+            "charascale": "0",
+            "charaposx": "0",
+            "charaposy": "0"
+        },
+        {
+            "id": "7",
+            "name": "オナガ",
+            "text": [
+                "ゲェーイゲイゲイゲイ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "0",
+            "charaposy": "-170"
+        },
+        {
+            "id": "8",
+            "name": "ハクセキレイ",
+            "text": [
+                "チチン チチン"
+            ],
+            "charascale": "0.5",
+            "charaposx": "40",
+            "charaposy": "-260"
+        },
+        {
+            "id": "9",
+            "name": "オオバン",
+            "text": [
+                "キュイッ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "30",
+            "charaposy": "-240"
+        },
+        {
+            "id": "10",
+            "name": "ウミネコ",
+            "text": [
+                "ニャー ニャー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-20",
+            "charaposy": "-30"
+        },
+        {
+            "id": "11",
+            "name": "カワセミ",
+            "text": [
+                "ピィッ ピッピー"
+            ],
+            "charascale": "0.6f",
+            "charaposx": "-50",
+            "charaposy": "-50"
+        },
+        {
+            "id": "12",
+            "name": "トキ",
+            "text": [
+                "カーウ カーウ"
+            ],
+            "charascale": "0.45f",
+            "charaposx": "20",
+            "charaposy": "-220"
+        },
+        {
+            "id": "13",
+            "name": "オオハクチョウ",
+            "text": [
+                "コオー コオー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-30",
+            "charaposy": "-120"
+        },
+        {
+            "id": "14",
+            "name": "ベニマシコ",
+            "text": [
+                "フィッ フッ",
+                "ピッホー"
+            ],
+            "charascale": "0.55f",
+            "charaposx": "70",
+            "charaposy": "-60"
+        },
+        {
+            "id": "15",
+            "name": "キビタキ",
+            "text": [
+                "オーシツクツク",
+                "チョットコーイ"
+            ],
+            "charascale": "0.55f",
+            "charaposx": "0",
+            "charaposy": "-100"
+        },
+        {
+            "id": "16",
+            "name": "オオルリ",
+            "text": [
+                "ピールーリー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "0",
+            "charaposy": "-250"
+        },
+        {
+            "id": "17",
+            "name": "コルリ",
+            "text": [
+                "ピールリピールリ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "0",
+            "charaposy": "-180"
+        },
+        {
+            "id": "18",
+            "name": "ルリビタキ",
+            "text": [
+                "ぼくルリビタキだよ"
+            ],
+            "charascale": "0.55f",
+            "charaposx": "0",
+            "charaposy": "-30"
+        },
+        {
+            "id": "19",
+            "name": "コノハズク",
+            "text": [
+                "ブッポーソー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-20",
+            "charaposy": "-100"
+        },
+        {
+            "id": "20",
+            "name": "ブッポウソウ",
+            "text": [
+                "ゲッ ゲッ ゲッ"
+            ],
+            "charascale": "0.45f",
+            "charaposx": "0",
+            "charaposy": "-200"
+        },
+        {
+            "id": "21",
+            "name": "オオタカ",
+            "text": [
+                "カァッ カッカッカッ"
+            ],
+            "charascale": "0.45f",
+            "charaposx": "-30",
+            "charaposy": "-200"
+        },
+        {
+            "id": "22",
+            "name": "ハヤブサ",
+            "text": [
+                "キィーキィーキィー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "20",
+            "charaposy": "-180"
+        },
+        {
+            "id": "23",
+            "name": "ハッカチョウ",
+            "text": [
+                "キュッキュッ キュルキュル"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "0",
+            "charaposy": "0"
+        },
+        {
+            "id": "24",
+            "name": "ウグイス",
+            "text": [
+                "ホーホケキョ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-70",
+            "charaposy": "-110"
+        },
+        {
+            "id": "25",
+            "name": "ジョウビタキ",
+            "text": [
+                "ヒィッヒィッ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "53",
+            "charaposy": "-100"
+        },
+        {
+            "id": "26",
+            "name": "モズ",
+            "text": [
+                "キイー キイキイキイ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "20",
+            "charaposy": "0"
+        },
+        {
+            "id": "27",
+            "name": "シマエナガ",
+            "text": [
+                "チーチーチー"
+            ],
+            "charascale": "0.6f",
+            "charaposx": "0",
+            "charaposy": "0"
+        },
+        {
+            "id": "28",
+            "name": "シロフクロウ",
+            "text": [
+                "ホー ホー"
+            ],
+            "charascale": "0.45f",
+            "charaposx": "-30",
+            "charaposy": "-30"
+        },
+        {
+            "id": "29",
+            "name": "オオワシ",
+            "text": [
+                "グワグワ",
+                "カッカッ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-30",
+            "charaposy": "-240"
+        },
+        {
+            "id": "30",
+            "name": "アカショウビン",
+            "text": [
+                "キョロロロ キョロロロ"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "0",
+            "charaposy": "-30"
+        },
+        {
+            "id": "31",
+            "name": "ニワトリ",
+            "text": [
+                "コケコッコー"
+            ],
+            "charascale": "0.5f",
+            "charaposx": "-40",
+            "charaposy": "-90"
+        }
+    ]
+}
