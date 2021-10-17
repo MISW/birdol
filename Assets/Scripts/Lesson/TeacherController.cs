@@ -48,21 +48,18 @@ public class TeacherController : MonoBehaviour
             Vector2 pos = new Vector2();
             pos.x = Random.Range(102, 125);
             pos.y = Random.Range(-350, 0);
-            standing.sprite = foot[2];
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "vocal")
         {
             Vector2 pos = new Vector2();
             pos.x = Random.Range(-125, -102);
             pos.y = Random.Range(-350, 0);
-            standing.sprite = foot[1];
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "visual")
         {
             Vector2 pos = new Vector2();
             pos.x = Random.Range(-100, 100);
             pos.y = Random.Range(-250, 0);
-            standing.sprite = foot[0];
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }
     }
