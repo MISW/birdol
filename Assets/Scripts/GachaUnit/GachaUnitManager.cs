@@ -48,9 +48,6 @@ public class GachaUnitManager : MonoBehaviour
         }
         for (int i = 0; i < 10; i++) {
             characters[i] = Common.characters[initid[i]];
-            characters[i].visual *= 10;
-            characters[i].vocal *= 10;
-            characters[i].dance *= 10;
             charcterIcons[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].id);
         }
         bool teacherinited = false;
