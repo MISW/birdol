@@ -48,6 +48,9 @@ public class GachaUnitManager : MonoBehaviour
         }
         for (int i = 0; i < 10; i++) {
             characters[i] = Common.characters[initid[i]];
+            characters[i].visual *= 10;
+            characters[i].vocal *= 10;
+            characters[i].dance *= 10;
             charcterIcons[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].id);
         }
         bool teacherinited = false;
@@ -232,12 +235,9 @@ public class GachaUnitManager : MonoBehaviour
             selected[currentcharacter] = true;
             float sp = 0.5f;
             pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[currentcharacter].id);
-            string newvocal = string.Format("{0:F1}", (float)characters[currentcharacter].vocal * sp);
-            string newvisual = string.Format("{0:F1}", (float)characters[currentcharacter].visual * sp);
-            string newdance = string.Format("{0:F1}", (float)characters[currentcharacter].dance * sp);
-            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = $"<size=30>{newvocal.Substring(0,1)}</size><size=20>{newvocal.Substring(1)}</size>";
-            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = $"<size=30>{newvisual.Substring(0, 1)}</size><size=20>{newvisual.Substring(1)}</size>";
-            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = $"<size=30>{newdance.Substring(0, 1)}</size><size=20>{newdance.Substring(1)}</size>";
+            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].vocal * sp).ToString();
+            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].visual * sp).ToString();
+            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].dance * sp).ToString();
         }
         SetCharacterProfile(-1);
         characterTeamName.GetComponent<InputField>().interactable = false;
