@@ -83,7 +83,7 @@ public class Manager : MonoBehaviour
         SceneVisor Visor1 = GotVisorOnScene();
         gif.GetComponent<GifPlayer>().index = 0;
         gif.GetComponent<GifPlayer>().StartGif();
-        if(SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
+        if (SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
 

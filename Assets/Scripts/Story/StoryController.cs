@@ -231,7 +231,7 @@ public class StoryController : MonoBehaviour
             }
             else if (data.Length > 0)
             {
-                curserifu = data.Replace("[mom]",Common.mom).Replace("[player]",Common.playerName);
+                curserifu = data.Replace("[mom]",Common.mom).Replace("[player]",Common.PlayerName);
                 coroutine = ShowSerifu();
                 StartCoroutine(coroutine);
             }

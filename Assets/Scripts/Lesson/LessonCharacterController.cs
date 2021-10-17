@@ -20,37 +20,54 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
     IEnumerator coroutine;
 
     public Image backframe;
+    public Image frame;
+    public Text para;
 
     public Sprite[] foot;
+    public Sprite[] box1;
     public float maxStatus = 100f;
 
-    public TextMeshProUGUI para;
+    public IEnumerator jump()
+    {
+        RectTransform rect = gameObject.GetComponent<RectTransform>();
+        float plus = 0;
+        bool adding = true;
+        var fixedupdate = new WaitForFixedUpdate();
+        for (int i = 10; i >= -10; i--)
+        {
+            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + i);
+            yield return fixedupdate;
+        }
+    }
 
+    public void connectUI()
+    {
+        frame = listchild.transform.GetChild(1).gameObject.GetComponent<Image>();
+        para = listchild.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Text>();
+    }
 
     //0:Visual 1:Vocal 2:Dance
     public void setParams()
     {
         if (area == "visual")
         {
-            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Visual);
-            int dot = paranum.IndexOf(".");
-            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            frame.sprite = box1[0];
+            para.text = ((int)Common.progresses[id].Visual).ToString();
             para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
         }
         else if (area == "vocal")
         {
-            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Vocal);
-            int dot = paranum.IndexOf(".");
-            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            frame.sprite = box1[1];
+            para.text = ((int)Common.progresses[id].Vocal).ToString();
             para.color = new Color(255f / 255f, 84f / 255f, 175f / 255f);
         }
         else
         {
-            string paranum = string.Format("{0:F1}", (float)Common.progresses[id].Dance);
-            int dot = paranum.IndexOf(".");
-            para.text = $"<size=40>{paranum.Substring(0, dot)}</size><size=25>{paranum.Substring(dot)}</size>";
+            frame.sprite = box1[2];
+            para.text = ((int)Common.progresses[id].Dance).ToString();
             para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
+
 
     }
     public void setArea()
@@ -124,10 +141,11 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
+        if (eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
+            //parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }
