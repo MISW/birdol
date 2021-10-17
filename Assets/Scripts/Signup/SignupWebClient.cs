@@ -200,5 +200,6 @@ public class SignupWebClient : WebClient
         Common.AccessToken = srd.access_token;
         Common.RefreshToken = srd.refresh_token;
         Common.DefaultAccountID = srd.account_id;
+        Common.PlayerName = signupRequestData.name;
     }
 }

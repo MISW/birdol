@@ -186,6 +186,8 @@ public class GachaUnitManager : MonoBehaviour
             {
                 charcterIcons[currentcharacter].transform.GetChild(0).gameObject.SetActive(false);
             }
+            InputField input = characterTeamName.GetComponent<InputField>();
+            if (currentdialog == "maincharacter") input.text = characters[index].name;
             charcterIcons[index].transform.GetChild(0).gameObject.SetActive(true);
             currentcharacter = index;
             SetCharacterProfile(index);

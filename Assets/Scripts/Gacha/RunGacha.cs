@@ -83,9 +83,10 @@ public class RunGacha : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount == 1)
+        /*
+         * if (Input.touchCount == 1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            if (Input.GetTouch(0).phase == TouchPhase.Ended )
             {
                 if (isResultShowing)
                 {
@@ -95,6 +96,18 @@ public class RunGacha : MonoBehaviour
                 {
                     onButtonPressed10();
                 }
+            }
+        }
+         */
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isResultShowing)
+            {
+                NextResult();
+            }
+            else if (!result10.activeSelf)
+            {
+                onButtonPressed10();
             }
         }
     }

@@ -24,39 +24,43 @@ public class Sailium : MonoBehaviour
     public void enableSailium()
     {
         string imagename = RandomArray.GetRandom(keys);
-        GetComponent<Image>().sprite = map[imagename];
-        Color newcolor = GetComponent<Image>().color;
+        Image image = GetComponent<Image>();
+        image.sprite = map[imagename];
+        Color newcolor = image.color;
         newcolor.r -= (20f * layer / 255f);
         newcolor.g -= (20f * layer / 255f);
         newcolor.b -= (20f * layer / 255f);
-        GetComponent<Image>().color = newcolor;
-        GetComponent<Image>().enabled = true;
+        image.color = newcolor;
+        image.enabled = true;
         StartCoroutine(fadeIn(newcolor));
     }
 
     private IEnumerator fadeIn(Color color)
     {
+        Image image = GetComponent<Image>();
         for (float i=0;i<=255f;i+=5f)
         {
             color.a = (i/255f);
-            Debug.Log("A:"+color.a);
-            GetComponent<Image>().color = color;
+            image.color = color;
             yield return wait;
         }
         
     }
+
+
 
     private IEnumerator rotate()
     {
         RectTransform rect = gameObject.GetComponent<RectTransform>();
         float plus = 0;
         bool adding = true;
+        var fixedupdate = new WaitForFixedUpdate();
         while (true)
         {
             if (Math.Abs(plus) == 5.5f) adding = !adding;
             plus += (adding ? 0.25f : -0.25f);
             rect.transform.Rotate(new Vector3(0,0,plus));
-            yield return null;
+            yield return fixedupdate;
         }
     }
 }

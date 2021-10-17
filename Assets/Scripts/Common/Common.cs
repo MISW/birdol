@@ -14,7 +14,6 @@ public partial class Common : MonoBehaviour
     public static int lessonCount= 5;
     public static int progressId;
     public static GameObject loadingCanvas;
-    public static string playerName = "岩間好一";
     public static string mom = "ママ";
 
     public static void initCharacters()
@@ -46,6 +45,29 @@ public partial class Common : MonoBehaviour
     public const int timeout = 4; //通信タイムアウトの秒数 
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。
     public const string salt = "Ll7Iy0r9zWslDniwgUXeS0KM9xke4zeg"; //固定ソルト
+
+    public static string playerName;
+    private const string PLAYERPREFS_PLAYER_NAME = "PLAYER_NAME";
+    public static string PlayerName
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(playerName))
+            {
+                playerName = PlayerPrefs.GetString(PLAYERPREFS_PLAYER_NAME);
+            }
+            return playerName;
+        }
+        set
+        {
+            if (playerName != value)
+            {
+                playerName = value;
+                PlayerPrefs.SetString(PLAYERPREFS_PLAYER_NAME, playerName);
+                PlayerPrefs.Save();
+            }
+        }
+    }
 
     //PlayerPrefsに保存
     //ユーザID

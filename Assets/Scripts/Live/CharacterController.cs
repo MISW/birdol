@@ -29,6 +29,19 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     public Sprite[] box1;
     public Sprite[] box2;
 
+    public IEnumerator jump()
+    {
+        RectTransform rect = gameObject.GetComponent<RectTransform>();
+        float plus = 0;
+        bool adding = true;
+        var fixedupdate = new WaitForFixedUpdate();
+        for (int i = 10; i >= -10; i--)
+        {
+            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x,rect.anchoredPosition.y+i);
+            yield return fixedupdate;
+        }
+    }
+
 
     public void finishSkill()
     {
@@ -57,10 +70,12 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     }
 
     //0:Visual 1:Vocal 2:Dance
+    RectTransform rt;
+    Image standing;
+    Image frame;
+    Text para;
     public void setParamsFont()
     {
-        Image frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
-        Text para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
         if (area == "visual")
         {
             frame.sprite = box1[0];
@@ -80,11 +95,9 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
     }
+    
     public void setArea()
     {
-        RectTransform rt;
-        rt = transform.parent.gameObject.GetComponent<RectTransform>();
-        Image standing = transform.parent.gameObject.GetComponent<Image>();
         if (executingSkill)
         {
             //setWhite();
@@ -117,14 +130,27 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     {
         int index = 0;
         var wait = new WaitForSeconds(0.07f);
+        Image character = gameObject.GetComponent<Image>();
         while (true)
         {
-            gameObject.GetComponent<Image>().sprite = gifsprite[index];
+            character.sprite = gifsprite[index];
             if (index < 5) index++;
             else index = 0;
             //Debug.Log("current:"+index);
             yield return wait;
         }
+    }
+
+    public void connectUI()
+    {
+        frame = listchild.transform.GetChild(3).gameObject.GetComponent<Image>();
+        para = listchild.transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>();
+    }
+
+    public void Awake()
+    {
+        standing = transform.parent.gameObject.GetComponent<Image>();
+        rt = transform.parent.gameObject.GetComponent<RectTransform>();
     }
 
     public void stopGif()
@@ -157,6 +183,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
+            //parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }

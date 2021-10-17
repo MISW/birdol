@@ -23,7 +23,7 @@ public class LiveController : MonoBehaviour
     public Image Achievement;
     public GameObject Achieved;
     public Text RemainingText;
-    public float max = 100;
+    public float max = 300;
     public float score = 0;
     public int remainingTurn = 5;
     WaitForSeconds wait = new WaitForSeconds(0.01f);
@@ -48,19 +48,20 @@ public class LiveController : MonoBehaviour
         int depth = 0;
         for (int i=0;i<5;i++)
         {
-            string area = objs[i].GetComponent<CharacterController>().area;
+            CharacterController c = objs[i].GetComponent<CharacterController>();
+            string area = c.area;
             if (area == "dance") dance++;
             else if (area == "visual") visual++;
             else if (area == "vocal") vocal++;
             depth++;
-            if (objs[i].GetComponent<CharacterController>().id == selectedcharacter)
+            if (c.id == selectedcharacter)
             {
-                objs[i].GetComponent<CharacterController>().light.SetActive(true);
-                active = objs[i].GetComponent<CharacterController>().completedActiveSkill;
+                c.light.SetActive(true);
+                active = c.completedActiveSkill;
             }
             else
             {
-                objs[i].GetComponent<CharacterController>().light.SetActive(false);
+                c.light.SetActive(false);
             }
             objs[i].transform.parent.gameObject.transform.SetSiblingIndex(i);
         }
@@ -112,10 +113,11 @@ public class LiveController : MonoBehaviour
             if (i == 0) objk.SelectMe();
             //Change HEre
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
-            if (characters[i].BestSkill == "vocal") listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-            else if (characters[i].BestSkill == "visual") listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
-            else listchilds[i].transform.GetChild(3).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+            if (characters[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (characters[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            else listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
             objs[i].GetComponent<CharacterController>().listchild = listchilds[i];
+            objs[i].GetComponent<CharacterController>().connectUI();
             objk.setParamsFont();
             
 
@@ -286,6 +288,7 @@ public class LiveController : MonoBehaviour
             maxindex = index;
         }
         newscore += (parascore+activeskillscore);
+        yield return characterObj.jump();
         yield return updateScoreBar(score, newscore);
         score = newscore;
         //yield return new WaitForSeconds(1.0f);

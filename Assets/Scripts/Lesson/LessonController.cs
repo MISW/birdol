@@ -83,7 +83,7 @@ public class LessonController : MonoBehaviour
             if (characters[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
             else if (characters[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
-            objk.para = listchilds[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+            objk.connectUI();
             objk.setParams();
         }
         //For Test
@@ -119,7 +119,7 @@ public class LessonController : MonoBehaviour
         else Common.progresses[index].Dance += score;
         characterObj.setParams();
         characterObj.executingSkill = false;
-        yield return null;
+        yield return characterObj.jump();
     }
 
     private IEnumerator execSkills()
