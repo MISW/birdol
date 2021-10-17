@@ -53,7 +53,7 @@ public class HomeButtonUtil : MonoBehaviour
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
 
-        GetGalleryWebClient webClient= new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
+        //GetGalleryWebClient webClient= new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
         StartCoroutine(webClient.Send());
 
     }
@@ -63,8 +63,8 @@ public class HomeButtonUtil : MonoBehaviour
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
         CompletedController.CompletedCharacters.Clear();
-        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-        getCompletedWebClient.target = "completed";
+        //GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        //getCompletedWebClient.target = "completed";
         StartCoroutine(getCompletedWebClient.Send());
 
 
@@ -87,7 +87,7 @@ public class HomeButtonUtil : MonoBehaviour
         }
         else
         {
-            GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
+            //GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
             StartCoroutine(webClient.Send());
         }
 
