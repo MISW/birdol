@@ -26,14 +26,19 @@ public class GetGalleryWebClient : GameWebClient
     protected override void HandleGameSuccessData(string response)
     {
         GetCompletedResponse r = JsonUtility.FromJson<GetCompletedResponse>(response);
+        for (int i = 0; i < 32; i++)
+        {
+            GalleryManager.SetIsUnlocked(i,false);
+        }
         foreach(GalleryModel birdol in r.birdols)
         {
-            //Implement Here
-            Debug.Log("id:"+birdol.id);
+            GalleryManager.SetIsUnlocked(birdol.id, true);
         }
         Manager.manager.StateQueue((int)gamestate.Gallery);
 
     }
+
+    
 
     protected override void HandleGameSetupWebRequestData(UnityWebRequest www)
     {

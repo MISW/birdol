@@ -141,7 +141,7 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.position.y<=Screen.height/2.0f+180.0f)
+        if (eventData.position.y<=Screen.height/2.0f+289.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;

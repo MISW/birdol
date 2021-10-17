@@ -36,7 +36,12 @@ public class HomeUtil : MonoBehaviour
 
         json_parser();
 
-        positionAdjust();
+        //positionAdjust();
+
+    }
+
+    public void onButtonPressedScoreAttack()
+    {
 
     }
 
@@ -44,7 +49,8 @@ public class HomeUtil : MonoBehaviour
     {
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Gallery);
+        GetGalleryWebClient webClient = new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
+        StartCoroutine(webClient.Send());
 
     }
 
@@ -52,16 +58,25 @@ public class HomeUtil : MonoBehaviour
     {
         Debug.Log("Pushed Dendou");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.CompletedCharacters);
-
+        CompletedController.CompletedCharacters.Clear();
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "completed";
+        StartCoroutine(getCompletedWebClient.Send());
     }
 
     public void onButtonPressedIkusei()
     {
         Debug.Log("Pushed Ikusei");
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Story);
-
+        if (Common.mainstoryid == null)
+        {
+            Manager.manager.StateQueue((int)gamestate.Gacha);
+        }
+        else
+        {
+            GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
+            StartCoroutine(webClient.Send());
+        }
     }
 
     public void onButtonPressedCharacterImage()
@@ -97,7 +112,7 @@ public class HomeUtil : MonoBehaviour
         chara_id++;
         if (chara_id > 31) chara_id = 0;
         json_parser();
-        positionAdjust();
+        //positionAdjust();
     }
 
 

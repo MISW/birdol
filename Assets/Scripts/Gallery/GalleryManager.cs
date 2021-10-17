@@ -59,7 +59,6 @@ public class GalleryManager : MonoBehaviour
             tmp.name = GetLine(i)[NAME_INDEX];
 
             characters[i] = tmp;
-            isUnlocked[i] = true;
         }
 
         rowNodeOriginal.SetActive(true);
@@ -145,4 +144,16 @@ public class GalleryManager : MonoBehaviour
     public static string[] GetLine(int id) {
         return csvDatas[id+1];
     }
+
+    /// <summary>
+    /// 戻るボタンの挙動
+    /// </summary>
+    /// 
+    public void OnBackClicked()
+    {
+        Debug.Log("Pushed Gallery");
+        Common.loadingCanvas.SetActive(true);
+        Manager.manager.StateQueue((int)gamestate.Home);
+    }
+
 }
