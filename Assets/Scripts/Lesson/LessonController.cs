@@ -96,7 +96,6 @@ public class LessonController : MonoBehaviour
         dendouModel.Dance = Common.characters[4].dance;
         //Init teacher
         teacher = objs[5].GetComponent<TeacherController>();
-        teacher.name.text = dendouModel.Name;
         teacher.initPos();
         for (int j = 0; j < 6; j++)
         {

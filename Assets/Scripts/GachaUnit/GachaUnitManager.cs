@@ -180,7 +180,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void SelectCharacter(int index)
     {
-        if (!selected[index])
+        if ((currentdialog == "maincharacter") && unitInf[currentindex].mainselected == index || (currentdialog == "supportcharacter") && unitInf[currentindex].subselected == index || !selected[index])
         {
             if(currentcharacter != -1)
             {
@@ -232,9 +232,9 @@ public class GachaUnitManager : MonoBehaviour
             selected[currentcharacter] = true;
             float sp = 0.5f;
             pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[currentcharacter].id);
-            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].vocal * sp).ToString();
-            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].visual * sp).ToString();
-            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (characters[currentcharacter].dance * sp).ToString();
+            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].vocal * sp).ToString();
+            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].visual * sp).ToString();
+            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].dance * sp).ToString();
         }
         SetCharacterProfile(-1);
         characterTeamName.GetComponent<InputField>().interactable = false;
@@ -298,7 +298,7 @@ public class GachaUnitManager : MonoBehaviour
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher");
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = null;
+        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher_sub");
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";

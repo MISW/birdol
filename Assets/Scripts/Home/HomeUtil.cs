@@ -36,7 +36,7 @@ public class HomeUtil : MonoBehaviour
 
         json_parser();
 
-        positionAdjust();
+        //positionAdjust();
 
     }
 
@@ -112,7 +112,7 @@ public class HomeUtil : MonoBehaviour
         chara_id++;
         if (chara_id > 31) chara_id = 0;
         json_parser();
-        positionAdjust();
+        //positionAdjust();
     }
 
 
