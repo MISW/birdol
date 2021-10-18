@@ -107,7 +107,8 @@ public abstract class GameWebClient : WebClient
     {
         string timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
 
-        string body = Encoding.UTF8.GetString(www.uploadHandler.data);
+        string body = "";
+        if (www.uploadHandler!=null) body = Encoding.UTF8.GetString(www.uploadHandler.data);
         string signature = CalcSignature(timeStamp, body, privateKey);
         www.SetRequestHeader("Authorization", $"Bearer {accessToken}");
         www.SetRequestHeader("X-Birdol-Signature", signature );
