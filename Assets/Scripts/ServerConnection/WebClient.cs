@@ -106,7 +106,9 @@ public abstract class WebClient : MonoBehaviour
             yield return www.SendWebRequest();
 
             //show response 
-            Debug.Log($"Request data: {System.Text.Encoding.UTF8.GetString(www.uploadHandler.data)}\n To: {www.url}, Method: {www.method}");
+            String request = "";
+            if (www.uploadHandler != null) request = System.Text.Encoding.UTF8.GetString(www.uploadHandler.data);
+            Debug.Log($"Request data: { request }\n To: {www.url}, Method: {www.method}");
             Debug.Log($"Response code: {www.responseCode}");
             Debug.Log($"Response data: {www.downloadHandler.text}");
             if(www.error!=null) Debug.LogError($"Connection Error: {www.error}");
