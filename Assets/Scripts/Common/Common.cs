@@ -10,11 +10,12 @@ public partial class Common : MonoBehaviour
     public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
-    public static string mainstoryid ;
-    public static int lessonCount= 5;
+    public static string mainstoryid;
+    public static int lessonCount = 5;
     public static int progressId;
     public static GameObject loadingCanvas;
     public static string mom = "ママ";
+    private static readonly int[] liveScoreMaxValues = {150,300,500,1200,1500,2000,3000,4000};
 
     public static void initCharacters()
     {
@@ -35,6 +36,24 @@ public partial class Common : MonoBehaviour
     public static void syncProgress()
     {
 
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <returns>現在のLiveの目標ハートスコア</returns>
+    public static int GetLiveScoreMaxValue()
+    {
+        try
+        {
+            int chapter = mainstoryid[0]-'0';
+            if (chapter >= 10 || chapter < 1) throw new Exception($"Unexpected mainstoryid: {mainstoryid}");
+            Debug.Log($"chapter: {chapter}, ノルマ: {liveScoreMaxValues[chapter - 1]}");
+            return liveScoreMaxValues[chapter-1];
+        }catch(Exception e)
+        {
+            Debug.Log(e);
+            return 0;
+        }
     }
 
     //通信関連
