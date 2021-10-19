@@ -10,41 +10,50 @@ using UnityEngine.EventSystems;
 public class RunGacha : MonoBehaviour
 {
     //�������jA
-    List<CharacterModel> R3, R2, R1; //�������z�񂾂ƃG�f�B�^�\�ł�����Ȃ��̂ŁA���A�x���Ƃɔz����쐬
+    List<CharacterModel> R3, R2, R1;
+    CharacterModel cm;
     float[] probVec = { 0.1f, 0.25f, 0.65f };
-    //�������jB
-    //List<CharacterModel> Kuji = new List<CharacterModel>();
-    GameObject result10, resultImage;
+    [SerializeField] GameObject result10, resultImage, incubator, hinge, overPanelObj, particleObj, skipBtn;
     GameObject[] gachaobjs = new GameObject[10];
-    CanvasScaler cs;
-    int resultIndex; //結果を0から9まで
-    int[] result = new int[10]; //結果
-    bool isResultShowing;
-    Text nameLabel;
-    Image rareImg, nameBox;
+    [SerializeField] CanvasScaler cs;
+    int resultIndex;
+    int[] result = new int[10];
+    bool isResultShowing, isSkip, isSkippable;
+    [SerializeField] Text nameLabel, skillLabel;
+    [SerializeField] Image rareImg, nameBox, backGround, overPanel;
+    [SerializeField] SpriteRenderer charDot, upperEgg, underEgg;
+    [SerializeField] Sprite bgImage;
+    [SerializeField] Sprite[] rareSprites = new Sprite[3];
+    [SerializeField] Sprite[] backGrounds = new Sprite[4];
+    [SerializeField] Sprite[] upperEggs = new Sprite[3], underEggs = new Sprite[3];
+    [SerializeField] MeshRenderer[] eggs = new MeshRenderer[10];
+    [SerializeField] Material[] eggMats = new Material[3];
 
-    void Awake()
-    {
-        result10 = GameObject.Find("GachaResults");
-        resultImage = GameObject.Find("Image");
-        gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
-        nameLabel = GameObject.Find("NameLabel").GetComponent<Text>();
-        rareImg = GameObject.Find("Rare").GetComponent<Image>();
-        nameBox = GameObject.Find("NameBox").GetComponent<Image>();
-        rareImg.color = new Color(255, 255, 255, 0);
-        nameBox.color = new Color(255, 255, 255, 0);
-
-        cs = GameObject.Find("Canvas").GetComponent<CanvasScaler>();
-
-        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
-    }
 
     void Start()
     {
+        gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
+        rareImg.color = new Color(255, 255, 255, 0);
+        nameBox.color = new Color(255, 255, 255, 0);
+        overPanel.color = new Color(255, 255, 255, 0);
+        skillLabel.text = "";
+
+        GameObject[] eggsobj = GameObject.FindGameObjectsWithTag("GachaEgg");
+
+        for (int i = 0; i < 10; i++)
+        {
+            eggs[i] = eggsobj[i].GetComponent<MeshRenderer>();
+        }
+
+        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
+
         resultIndex = 0;
         result10.SetActive(false);
         resultImage.SetActive(false);
+        incubator.SetActive(false);
         isResultShowing = false;
+        isSkip = false;
+        isSkippable = false;
         nameLabel.text = "";
 
 
@@ -53,7 +62,7 @@ public class RunGacha : MonoBehaviour
         R1 = new List<CharacterModel>();
         if (Common.characters == null) Common.initCharacters();//Test Only
         for (int i = 0; i < 32; i++)
-        {   //�������jA
+        {
             CharacterModel character = Common.characters[i];
             if (character.rarity == 1)
             {
@@ -69,16 +78,7 @@ public class RunGacha : MonoBehaviour
             {
                 R3.Add(character);
             }
-            //�������jB
-            /*
-            for (int j = 0; j < 5; j++)
-            {
-                Kuji.Add(character);
-            }*/
-
         }
-
-        // Kuji = Kuji.OrderBy(a => Guid.NewGuid()).ToList();
     }
 
     void Update()
@@ -87,19 +87,236 @@ public class RunGacha : MonoBehaviour
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                if (isResultShowing)
-                {
-                    NextResult();
-                }
-                else if (!result10.activeSelf)
+                /*  if (isResultShowing)
+                  {
+                      NextResult();
+                  }
+                  else */
+                if (!result10.activeSelf && !isResultShowing)
                 {
                     onButtonPressed10();
+                    incubator.SetActive(true);
+                    skipBtn.SetActive(true);
+                    StartCoroutine("slideIncubator");
+                }
+                else if (isResultShowing && !isSkip && isSkippable)
+                {
+                    isSkip = true;
                 }
             }
         }
     }
 
+    IEnumerator slideIncubator()
+    {
+        backGround.sprite = bgImage;
+        isSkippable = false;
+        float t = 0;
+        while (t <= 1)
+        {
+            t += 0.025f;
+            incubator.transform.position = new Vector3(-8, QuadPassEase(-3, -0.6f, 0.8f, t), 0);
+            yield return new WaitForFixedUpdate();
+        }
 
+        yield return new WaitForSeconds(1);
+
+        t = 0;
+
+        while (t <= 1)
+        {
+            t += 0.025f;
+            incubator.transform.position = new Vector3(QuadEase(-8, 3, t), QuadEase(-0.6f, -0.2f, t), 0);
+            yield return new WaitForFixedUpdate();
+        }
+        StartCoroutine("openIncubator");
+    }
+
+    IEnumerator openIncubator()
+    {
+        float t = 0;
+
+        /* while (true)
+         {
+             if (Input.GetTouch(0).phase == TouchPhase.Ended)
+             {
+                 Debug.Log("aaa");
+
+             }
+         }
+
+         yield return new WaitForSeconds(2);
+         while (true)
+         {
+             if (Input.touchCount == 1)
+             {
+                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                 {
+                     t = 1;
+                     hinge.transform.rotation = Quaternion.Euler(0, 0, -70);
+                     Debug.Log("aa");
+                     break;
+                 }
+             }
+             else
+             {
+                 if (t >= 1) break;
+                 t += 0.02f;
+                 hinge.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 20), Quaternion.Euler(0, 0, -70), t);
+                 yield return new WaitForFixedUpdate();
+             }
+         }*/
+        yield return new WaitForSeconds(1);
+
+        while (t <= 1)
+        {
+            t += 0.02f;
+            hinge.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 20), Quaternion.Euler(0, 0, -70), t);
+            yield return new WaitForFixedUpdate();
+        }
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine("slideEgg");
+    }
+
+    IEnumerator slideEgg()
+    {
+        cm = Common.characters[result[resultIndex]];
+        charDot.color = new Color(255, 255, 255, 1);
+        upperEgg.color = new Color(255, 255, 255, 1);
+        underEgg.color = new Color(255, 255, 255, 1);
+        backGround.color = new Color(255, 255, 255, 1);
+        charDot.transform.position = new Vector3(0, 6, 0);
+        upperEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
+        underEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
+        upperEgg.sprite = upperEggs[cm.rarity - 1];
+        underEgg.sprite = underEggs[cm.rarity - 1];
+        rareImg.color = new Color(255, 255, 255, 0);
+        nameBox.color = new Color(255, 255, 255, 0);
+        nameLabel.text = "";
+        isSkip = false;
+        isSkippable = true;
+
+        backGround.sprite = backGrounds[cm.rarity];
+        float t = 0;
+        while (t <= 1)
+        {
+            if (isSkip)
+            {
+                charDot.transform.position = Vector3.zero;
+                isSkip = false;
+                break;
+            }
+
+            t += 0.02f;
+            charDot.transform.position = new Vector3(0, QuadEase(6, 0, t), 0);
+            yield return new WaitForFixedUpdate();
+        }
+        incubator.SetActive(false);
+        isSkippable = false;
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine("breakEgg");
+    }
+
+    IEnumerator breakEgg()
+    {
+        isSkippable = true;
+        float t = 0;
+        while (t <= 1)
+        {
+            if (isSkip)
+            {
+                upperEgg.transform.localPosition = new Vector3(0, 7, -0.1f);
+                underEgg.transform.localPosition = new Vector3(0, -5, -0.1f);
+                isSkip = false;
+                break;
+            }
+
+            t += 0.02f;
+            upperEgg.transform.localPosition = new Vector3(0, QuadEase(1, 7, t), -0.1f);
+            underEgg.transform.localPosition = new Vector3(0, QuadEase(1, -5, t), -0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        isSkippable = false;
+
+        yield return new WaitForSeconds(1);
+
+        particleObj.SetActive(true);
+        if (cm.rarity == 1)
+        {
+            StartCoroutine("whiteOutAndShowChar");
+        }
+        else
+        {
+            StartCoroutine("charText");
+        }
+
+        while (t >= 0)
+        {
+            t -= 0.05f;
+            charDot.color = new Color(255, 255, 255, t);
+            upperEgg.color = new Color(255, 255, 255, t);
+            underEgg.color = new Color(255, 255, 255, t);
+            backGround.color = new Color(255, 255, 255, t);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator charText()
+    {
+        backGround.color = new Color(255, 255, 255, 0);
+        skillLabel.text = cm.skillname;
+        yield return new WaitForSeconds(3);
+        StartCoroutine("whiteOutAndShowChar");
+    }
+
+    IEnumerator whiteOutAndShowChar()
+    {
+        overPanelObj.SetActive(true);
+
+        float t = 0;
+        while (t <= 1)
+        {
+            t += 0.05f;
+            overPanel.color = new Color(255, 255, 255, t);
+            yield return new WaitForFixedUpdate();
+        }
+
+        NextResult();
+        resultImage.SetActive(true);
+        rareImg.color = new Color(255, 255, 255, 1);
+        nameBox.color = new Color(255, 255, 255, 1);
+        skillLabel.text = "";
+
+        while (t >= 0)
+        {
+            t -= 0.05f;
+            overPanel.color = new Color(255, 255, 255, t);
+            yield return new WaitForFixedUpdate();
+        }
+
+        isSkippable = true;
+
+        while (!isSkip)
+        {
+            yield return null;
+        }
+
+        particleObj.SetActive(false);
+        resultImage.SetActive(false);
+
+        if (resultIndex < 10)
+        {
+            StartCoroutine("slideEgg");
+            isSkip = false;
+            // isSkippable = false;
+        }
+        else
+        {
+            Skip();
+
+            yield break;
+        }
+    }
 
     public void onButtonPressed10()
     {
@@ -107,9 +324,9 @@ public class RunGacha : MonoBehaviour
 
         cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
 
-        int resR = 3; //���I���A�x
-        int res; //���I�A�C�e���ԍ�
-        foreach (GameObject gachaobj in gachaobjs/*GameObject.FindGameObjectsWithTag("Gacha")*/)
+        int resR = 3;
+        int res;
+        foreach (GameObject gachaobj in gachaobjs)
         {
             CharacterModel gachacharacter;
             float f = UnityEngine.Random.Range(0, 1f);
@@ -128,108 +345,94 @@ public class RunGacha : MonoBehaviour
                 case 0:
                     res = UnityEngine.Random.Range(0, R3.Count);
                     gachacharacter = R3[res];
-                    /*   gachaobj.GetComponentInChildren<Text>().text = "SSR";
-                       gachaobj.GetComponentInChildren<Text>().color = Color.red;*/
                     break;
 
                 case 1:
                     res = UnityEngine.Random.Range(0, R2.Count);
                     gachacharacter = R2[res];
-                    /*   gachaobj.GetComponentInChildren<Text>().text = "SR";
-                       gachaobj.GetComponentInChildren<Text>().color = Color.yellow;*/
                     break;
 
                 default:
                     res = UnityEngine.Random.Range(0, R1.Count);
                     gachacharacter = R1[res];
-                    /*   gachaobj.GetComponentInChildren<Text>().text = "R";
-                       gachaobj.GetComponentInChildren<Text>().color = Color.black;*/
                     break;
             }
 
             result[resultIndex] = gachacharacter.id;
             resultIndex++;
 
-            /*
-            int index= UnityEngine.Random.Range(0, 100);
-            gachacharacter = Kuji[index];
-            */
-            switch (gachacharacter.rarity)
-            {
-                case 1:
-                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/R");
-                    break;
-
-                case 2:
-                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/SR");
-                    break;
-
-                default:
-                    gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/gacha/SSR");
-                    break;
-            }
-
-
-
+            gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = rareSprites[gachacharacter.rarity - 1];
             gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + gachacharacter.id);
         }
 
-        resultImage.SetActive(true);
+        for (int i = 0; i < 10; i++)
+        {
+            CharacterModel a = Common.characters[result[i]];
+            eggs[i].material = eggMats[a.rarity - 1];
+        }
 
+        //  resultImage.SetActive(true);
         resultIndex = 0;
-        NextResult();
+        // NextResult();
         isResultShowing = true;
     }
 
     public void NextResult()
     {
-        if (resultIndex < 10)
-        {
-            CharacterModel naaa = Common.characters[result[resultIndex]];
-            resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
-
-            nameLabel.text = naaa.name;
-            nameBox.color = new Color(255, 255, 255, 255);
-
-
-            switch (naaa.rarity)
-            {
-                case 3:
-                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/SSR");
-                    break;
-
-                case 2:
-                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/SR");
-                    break;
-
-                default:
-                    rareImg.sprite = Resources.Load<Sprite>("Images/gacha/R");
-                    break;
-            }
-            rareImg.color = new Color(255, 255, 255, 255);
-
-        }
+        /*   if (resultIndex < 10)
+           {*/
+        CharacterModel naaa = Common.characters[result[resultIndex]];
+        resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
+        backGround.sprite = backGrounds[naaa.rarity];
+        nameLabel.text = naaa.name;
+        nameBox.color = new Color(255, 255, 255, 1);
+        rareImg.sprite = rareSprites[naaa.rarity - 1];
+        rareImg.color = new Color(255, 255, 255, 1);
+        //  }
 
         resultIndex++;
 
-        if (resultIndex == 11)
-        {
-            cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-
-            rareImg.color = new Color(255, 255, 255, 0);
-            nameBox.color = new Color(255, 255, 255, 0);
-            nameLabel.text = "";
-            isResultShowing = false;
-            resultImage.SetActive(false);
-            result10.SetActive(true);
-            resultIndex = 0;
-        }
+        /*  if (resultIndex == 11)
+          {
+              cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+              rareImg.color = new Color(255, 255, 255, 0);
+              nameBox.color = new Color(255, 255, 255, 0);
+              nameLabel.text = "";
+              isResultShowing = false;
+              resultImage.SetActive(false);
+              result10.SetActive(true);
+              resultIndex = 0;
+          }*/
     }
 
     public void Hikinaoshi(GameObject obj)
     {
         obj.SetActive(false);
+        hinge.transform.rotation = Quaternion.Euler(0, 0, 20);
         resultIndex = 0;
+        resultImage.SetActive(false);
+    }
+
+    public void Skip()
+    {
+        StopAllCoroutines();
+        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+        rareImg.color = new Color(255, 255, 255, 0);
+        nameBox.color = new Color(255, 255, 255, 0);
+        backGround.color = new Color(255, 255, 255, 1);
+        backGround.sprite = bgImage;
+        nameLabel.text = "";
+        isResultShowing = false;
+        resultImage.SetActive(false);
+        result10.SetActive(true);
+        resultIndex = 0;
+        overPanelObj.SetActive(false);
+        skipBtn.SetActive(false);
+        incubator.SetActive(false);
+        particleObj.SetActive(false);
+        charDot.color = new Color(255, 255, 255, 0);
+        upperEgg.color = new Color(255, 255, 255, 0);
+        underEgg.color = new Color(255, 255, 255, 0);
     }
 
     public void GotoGachaUnit()
@@ -251,5 +454,19 @@ public class RunGacha : MonoBehaviour
         }
         //↑Temporary Code
         Manager.manager.StateQueue((int)gamestate.GachaUnit);
+    }
+
+    float QuadEase(float y1, float y2, float t)
+    {
+        t = Mathf.Clamp01(t);
+        float y = (y2 - y1) * (2 * t - t * t) + y1;
+        return y;
+    }
+
+    float QuadPassEase(float y1, float y2, float t0, float t)
+    {
+        t = Mathf.Clamp01(t);
+        float y = (y2 - y1) * (2 * t0 * t - t * t) / (2 * t0 - 1) + y1;
+        return y;
     }
 }
