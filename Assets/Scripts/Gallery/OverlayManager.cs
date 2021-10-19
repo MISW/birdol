@@ -27,6 +27,7 @@ public class OverlayManager : MonoBehaviour
     private GameObject descBackgroundObject;
 
     private const int IMAGE_HEIGHT_MIN = 600;
+    private const int BG_WIDTH = 600;
     private const int BG_HEIGHT_MIN = 200;
 
     private const int FONT_SIZE_MAX = 32;
@@ -157,7 +158,7 @@ public class OverlayManager : MonoBehaviour
 
         textDesc.fontSize = FONT_SIZE_MIN + (int)Math.Round((FONT_SIZE_MAX - FONT_SIZE_MIN) * (deviceRatio - 1.0));
         RectTransform descBg = descBackgroundObject.GetComponent<RectTransform>();
-        descBg.sizeDelta = new Vector2(600, deviceRatio * BG_HEIGHT_MIN);
+        descBg.sizeDelta = new Vector2(BG_WIDTH, deviceRatio * BG_HEIGHT_MIN);
 
         // ----
 
