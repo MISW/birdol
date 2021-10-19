@@ -145,15 +145,19 @@ public class LiveController : MonoBehaviour
         backlight.transform.SetSiblingIndex(114514);
     }
 
+    WaitForFixedUpdate fixedupdate = new WaitForFixedUpdate();
+
     private IEnumerator updateScoreBar(float oldScore, float newScore)
     {
         System.Random random = new System.Random();
         float kb = (float)max / 60.0f;
         float k = 0;
+        int plus = (int)max/100;
+        
         while (oldScore < newScore)
         {
-            oldScore++;
-            k++;
+            oldScore+=plus;
+            k+=plus;
             if (k>=kb&& sailiumcollections.Count>0)
             {
                 GameObject gameObject = sailiumcollections.ElementAt(random.Next(sailiumcollections.Count));
@@ -162,7 +166,7 @@ public class LiveController : MonoBehaviour
                 k = 0;
             }
             Achievement.fillAmount = oldScore / max;
-            yield return null;
+            yield return fixedupdate;
         }
         if (newScore / max >= 1.0f && !Achieved.active)
         {
@@ -329,6 +333,7 @@ public class LiveController : MonoBehaviour
             resultchanger.Achievement_num = score / max;
             ResultUI.SetActive(true);
         }
+        Debug.Log("CurrentScore:"+score+" Max:"+max);
     }
 
     public void onStartButtonClick()

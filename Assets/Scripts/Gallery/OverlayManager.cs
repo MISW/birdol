@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,9 +21,16 @@ public class OverlayManager : MonoBehaviour
     private GameObject familyNameObject;
     [SerializeField]
     private GameObject descObject;
+    [SerializeField]
+    private GameObject groupNameObject;
+    [SerializeField]
+    private GameObject descBackgroundObject;
 
-    private const int IMAGE_HEIGHT = 1200;
     private const int IMAGE_HEIGHT_MIN = 600;
+    private const int BG_HEIGHT_MIN = 200;
+
+    private const int FONT_SIZE_MAX = 32;
+    private const int FONT_SIZE_MIN = 24;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +56,9 @@ public class OverlayManager : MonoBehaviour
         Image im = standImageObject.GetComponent<Image>();
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 
+        float deviceRatio = Screen.currentResolution.height;
+        deviceRatio /= Screen.currentResolution.width;
+
         if (sp != null) {
             im.sprite = sp;
 
@@ -58,9 +69,6 @@ public class OverlayManager : MonoBehaviour
 
             RectTransform rectTransform = standImageObject.GetComponent<RectTransform>();
             Vector2 baseSizeMin = new Vector2(r * IMAGE_HEIGHT_MIN, IMAGE_HEIGHT_MIN);
-
-            float deviceRatio = Screen.currentResolution.height;
-            deviceRatio /= Screen.currentResolution.width;
 
             // deviceRatioが1.0のとき600、2.0のとき1200
             // キャラクターの立ち絵のはみ出し防止
@@ -137,9 +145,21 @@ public class OverlayManager : MonoBehaviour
         orderNameObject.GetComponent<Text>().text = data[GalleryManager.ORDER_INDEX];
         familyNameObject.GetComponent<Text>().text = data[GalleryManager.FAMILY_INDEX];
 
-        string raw = data[GalleryManager.DESC_INDEX];
+        string groupStr = data[GalleryManager.CLASS_INDEX];
+        groupNameObject.GetComponent<Text>().text = "【" + groupStr + "】";
 
-        descObject.GetComponent<Text>().text = raw;
+        Text textDesc = descObject.GetComponent<Text>();
+
+        string raw = data[GalleryManager.DESC_INDEX];
+        textDesc.text = raw;
+
+        // ---- 無理やり説明文のサイズの可変にしてる
+
+        textDesc.fontSize = FONT_SIZE_MIN + (int)Math.Round((FONT_SIZE_MAX - FONT_SIZE_MIN) * (deviceRatio - 1.0));
+        RectTransform descBg = descBackgroundObject.GetComponent<RectTransform>();
+        descBg.sizeDelta = new Vector2(600, deviceRatio * BG_HEIGHT_MIN);
+
+        // ----
 
         this.gameObject.SetActive(true);
     }
