@@ -86,6 +86,7 @@ public class Manager : MonoBehaviour
         if (SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
+        async.completed += x => SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)Next_GameState));
 
         statequeueflag = false;
 

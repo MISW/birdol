@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class RunGacha : MonoBehaviour
 {
@@ -82,10 +83,9 @@ public class RunGacha : MonoBehaviour
 
     void Update()
     {
-        /*
-         * if (Input.touchCount == 1)
+        if (Input.touchCount == 1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended )
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 if (!result10.activeSelf && !isResultShowing)
                 {
@@ -98,18 +98,6 @@ public class RunGacha : MonoBehaviour
                 {
                     isSkip = true;
                 }
-            }
-        }
-         */
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (isResultShowing)
-            {
-                NextResult();
-            }
-            else if (!result10.activeSelf)
-            {
-                onButtonPressed10();
             }
         }
     }
@@ -410,7 +398,6 @@ public class RunGacha : MonoBehaviour
         getCompletedWebClient.target = "gachaunit";
         StartCoroutine(getCompletedWebClient.Send());
         //↑Temporary Code
-        
     }
 
     float QuadEase(float y1, float y2, float t)
