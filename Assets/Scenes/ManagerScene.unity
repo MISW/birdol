@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6905fe5040746b7bcc5c0846c7d21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkTimeoutUI: {fileID: 499274397}
+  choiceWhenConnErrorUI: {fileID: 499274397}
   confirmUI: {fileID: 759946826}
 --- !u!1 &68363242
 GameObject:
@@ -451,7 +451,7 @@ GameObject:
   - component: {fileID: 499274400}
   - component: {fileID: 499274399}
   m_Layer: 5
-  m_Name: TimeoutUI
+  m_Name: ChoiceWhenConnectionErrorUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,7 +720,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u901A\u4FE1\u30BF\u30A4\u30E0\u30A2\u30A6\u30C8\u3057\u307E\u3057\u305F\u3002\n\u518D\u3073\u901A\u4FE1\u3057\u3066\u307F\u307E\u3059\u304B\uFF1F"
+  m_Text: "\u901A\u4FE1\u306B\u5931\u6557\u3057\u307E\u3057\u305F\u3002\n\u518D\u3073\u901A\u4FE1\u3057\u3066\u307F\u307E\u3059\u304B\uFF1F"
 --- !u!222 &699908188
 CanvasRenderer:
   m_ObjectHideFlags: 0

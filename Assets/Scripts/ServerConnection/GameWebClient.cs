@@ -15,7 +15,8 @@ public abstract class GameWebClient : WebClient
 
     protected bool TryRefreshToken = true; //トークンのリフレッシュ要求をするか否か: Trueの場合一度だけ要求を行う。
     protected bool IsAuthenticated = true; //認証用のヘッダをつけるか否か: Trueの場合ヘッダに認証用データを付加する。
-    protected bool IsDoContinueConnectionCheck = true;
+    public bool IsDoCheckIfContinueOrQuitConnection = true; //これがtrueの場合、サーバとの通信失敗時に再送するか諦めるかを選択できるようにする
+    public bool IsDoBackToTitleIfTokenRefreshError = true; //これがtrueの場合、通信成功だが認証失敗(AccessTokenもRefreshTokenも失敗)の時に、タイトルシーンへ遷移する
     protected ContinueConnectionChoice continueConnectionChoice = ContinueConnectionChoice.None;
 
     public enum ContinueConnectionChoice
@@ -58,13 +59,15 @@ public abstract class GameWebClient : WebClient
             }
             else //アクセストークンのリフレッシュ失敗。アカウント作成(orアカウント連携)が必要 
             {
-                //タイトルシーンへ遷移
-                Debug.LogError("認証に失敗したため、タイトルシーンに遷移します。");
-                NetworkErrorDialogController.OpenConfirmDialog(()=> {
-                    Common.loadingCanvas.SetActive(true);
-                    Manager.manager.StateQueue((int)gamestate.Title);
-                }, "認証に失敗しました。\nタイトルに戻ります。");
-                
+                if (IsDoBackToTitleIfTokenRefreshError)
+                {
+                    //タイトルシーンへ遷移
+                    Debug.LogError("認証に失敗したため、タイトルシーンに遷移します。");
+                    NetworkErrorDialogController.OpenConfirmDialog(() => {
+                        Common.loadingCanvas.SetActive(true);
+                        Manager.manager.StateQueue((int)gamestate.Title);
+                    }, "認証に失敗しました。\nタイトルに戻ります。");
+                }
             }
             yield break;
         }
@@ -94,14 +97,16 @@ public abstract class GameWebClient : WebClient
         this.message = "通信に失敗しました。";
         Debug.LogError(error);
         
-        if (IsDoContinueConnectionCheck) //サーバとの通信ができなかった時(、かつその際に通信再送するか否かのチェックをする場合)
+        if (IsDoCheckIfContinueOrQuitConnection) //サーバとの通信ができなかった時(、かつその際に通信再送するか否かのチェックをする場合)
         {
-            IsDoContinueConnectionCheck = false;
+            IsDoCheckIfContinueOrQuitConnection = false;
 
-            while (!string.IsNullOrEmpty(base.error) ) // && base.error==timeoutError  ) //エラーが続いている間繰り返す
+            while (!string.IsNullOrEmpty(base.error) ) //サーバと通信できないエラーが続いている間繰り返す
             {
+                /*
                 if (base.error == timeoutError) //タイムアウトエラー
                 {
+                */
                     NetworkErrorDialogController.OpenTimeoutDialog(this); //再送か否かの選択肢を表示する
                     yield return new WaitWhile(() => { return continueConnectionChoice == ContinueConnectionChoice.None; }); //タイムアウトを受けて、終了するか、の選択待ち
 
@@ -119,8 +124,9 @@ public abstract class GameWebClient : WebClient
                     continueConnectionChoice = ContinueConnectionChoice.None;
                     yield return new WaitForFixedUpdate();
 
+                /*
                 }
-                else //その他のサーバと通信できないエラー
+                else //その他のサーバと通信できないエラー。DNS解決できないなど。
                 {
                     NetworkErrorDialogController.OpenConfirmDialog(() => {
                         Common.loadingCanvas.SetActive(true);
@@ -128,6 +134,7 @@ public abstract class GameWebClient : WebClient
                     }, "通信に失敗しました。\nタイトルに戻ります。");
                     break;
                 }
+                */
             }
         }
         

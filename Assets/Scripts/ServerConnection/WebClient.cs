@@ -116,8 +116,8 @@ public abstract class WebClient : MonoBehaviour
             if(www.error!=null) Debug.LogError($"Connection Error: {www.error}");
 
             Coroutine handler = null;
-            /*try
-            {*/
+            try
+            {
                 //success
                 if (www.result == UnityWebRequest.Result.Success)
                 {
@@ -146,12 +146,12 @@ public abstract class WebClient : MonoBehaviour
                     this.error = www.error;
                     handler = GlobalCoroutine.StartCoroutineG( HandleErrorData(www.error) );
                 }
-            /*}
+            }
             catch(Exception e)
             {
                 Debug.LogError(e);
                 isSuccess = false;
-            }*/
+            }
             if(handler!=null) yield return handler; //終了待ち
 
             isInProgress = false;

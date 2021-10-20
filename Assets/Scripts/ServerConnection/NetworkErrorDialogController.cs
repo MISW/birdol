@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class NetworkErrorDialogController : MonoBehaviour
 {
-    [Header("Timeout choice")]
-    [SerializeField] public GameObject networkTimeoutUI;
-    public static GameObject NetworkTimeoutCanvas;
+    [Header("Choice")]
+    [SerializeField] public GameObject choiceWhenConnErrorUI;
+    public static GameObject ChoiceWhenConnErrorUI;
     public static GameWebClient gameWebClient;
 
     [Header("Confirm")]
@@ -18,7 +18,7 @@ public class NetworkErrorDialogController : MonoBehaviour
 
     private void Awake()
     {
-        NetworkTimeoutCanvas = this.networkTimeoutUI;
+        ChoiceWhenConnErrorUI = this.choiceWhenConnErrorUI;
         ConfirmUI = this.confirmUI;
     }
 
@@ -26,7 +26,7 @@ public class NetworkErrorDialogController : MonoBehaviour
     public static void OpenTimeoutDialog(GameWebClient gameWebClient)
     {
         NetworkErrorDialogController.gameWebClient = gameWebClient;
-        NetworkTimeoutCanvas.SetActive(true);
+        ChoiceWhenConnErrorUI.SetActive(true);
     }
 
     //Open Confirm UI, If agree, do action()
@@ -47,14 +47,14 @@ public class NetworkErrorDialogController : MonoBehaviour
     //When timeout, and send again
     public void OnContinueConnectionButtonClicked()
     {
-        NetworkErrorDialogController.NetworkTimeoutCanvas.SetActive(false);
+        NetworkErrorDialogController.ChoiceWhenConnErrorUI.SetActive(false);
         NetworkErrorDialogController.gameWebClient.Choice_ContinueConnection();
     }
 
     //when timeout, and return to title scene
     public void OnQuitConnectionButtonClicked()
     {
-        NetworkErrorDialogController.NetworkTimeoutCanvas.SetActive(false);
+        NetworkErrorDialogController.ChoiceWhenConnErrorUI.SetActive(false);
         NetworkErrorDialogController.gameWebClient.Choice_QuitConnection();
 
         Common.loadingCanvas.SetActive(true);
