@@ -114,11 +114,9 @@ public class LinkAccountPrefabController : MonoBehaviour
     /// </summary>
     private void OnLinkAccountSuccess()
     {
-        //TODO here or elsewhere: ガチャを回す必要があるかの判断をし、回す必要があればガチャシーンへ遷移する。
-        //TODO here maybe: アカウント連携したとして、ローカルのデータをリモートのデータと同期する。
-        //Homeシーンへ遷移
+        //Titleシーンへ遷移
         Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Home);
+        Manager.manager.StateQueue((int)gamestate.Title);
     }
 
     /// <summary>
