@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 /// </summary>
 public abstract class GameWebClient : WebClient
 {
-    const string timeoutError = "request timeout";
+    const string timeoutError = "Request timeout";
 
     protected bool TryRefreshToken = true; //トークンのリフレッシュ要求をするか否か: Trueの場合一度だけ要求を行う。
     protected bool IsAuthenticated = true; //認証用のヘッダをつけるか否か: Trueの場合ヘッダに認証用データを付加する。

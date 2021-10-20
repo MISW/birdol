@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class NetworkErrorDialogController : MonoBehaviour
 {
-    private bool isReturningToTitle = false;
-
     [Header("Timeout choice")]
     [SerializeField] public GameObject networkTimeoutUI;
     public static GameObject NetworkTimeoutCanvas;
@@ -59,7 +57,6 @@ public class NetworkErrorDialogController : MonoBehaviour
         NetworkErrorDialogController.NetworkTimeoutCanvas.SetActive(false);
         NetworkErrorDialogController.gameWebClient.Choice_QuitConnection();
 
-        if (!isReturningToTitle) return;
         Common.loadingCanvas.SetActive(true);
         Manager.manager.StateQueue((int)gamestate.Title);
     }
