@@ -13,14 +13,14 @@ public class RunGacha : MonoBehaviour
     List<CharacterModel> R3, R2, R1;
     CharacterModel cm;
     float[] probVec = { 0.1f, 0.25f, 0.65f };
-    [SerializeField] GameObject result10, resultImage, incubator, hinge, overPanelObj, particleObj, skipBtn;
+    [SerializeField] GameObject result10, resultImageObj, incubator, hinge, overPanelObj, particleObj, skipBtn;
     GameObject[] gachaobjs = new GameObject[10];
     [SerializeField] CanvasScaler cs;
     int resultIndex;
     int[] result = new int[10];
     bool isResultShowing, isSkip, isSkippable;
     [SerializeField] Text nameLabel, skillLabel;
-    [SerializeField] Image rareImg, nameBox, backGround, overPanel;
+    [SerializeField] Image rareImg, nameBox, backGround, overPanel, resultImage;
     [SerializeField] SpriteRenderer charDot, upperEgg, underEgg;
     [SerializeField] Sprite bgImage;
     [SerializeField] Sprite[] rareSprites = new Sprite[3];
@@ -33,8 +33,7 @@ public class RunGacha : MonoBehaviour
     void Start()
     {
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
-        rareImg.color = new Color(255, 255, 255, 0);
-        nameBox.color = new Color(255, 255, 255, 0);
+        setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
         skillLabel.text = "";
 
@@ -49,7 +48,7 @@ public class RunGacha : MonoBehaviour
 
         resultIndex = 0;
         result10.SetActive(false);
-        resultImage.SetActive(false);
+        resultImageObj.SetActive(false);
         incubator.SetActive(false);
         isResultShowing = false;
         isSkip = false;
@@ -87,11 +86,6 @@ public class RunGacha : MonoBehaviour
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                /*  if (isResultShowing)
-                  {
-                      NextResult();
-                  }
-                  else */
                 if (!result10.activeSelf && !isResultShowing)
                 {
                     onButtonPressed10();
@@ -135,37 +129,6 @@ public class RunGacha : MonoBehaviour
     IEnumerator openIncubator()
     {
         float t = 0;
-
-        /* while (true)
-         {
-             if (Input.GetTouch(0).phase == TouchPhase.Ended)
-             {
-                 Debug.Log("aaa");
-
-             }
-         }
-
-         yield return new WaitForSeconds(2);
-         while (true)
-         {
-             if (Input.touchCount == 1)
-             {
-                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
-                 {
-                     t = 1;
-                     hinge.transform.rotation = Quaternion.Euler(0, 0, -70);
-                     Debug.Log("aa");
-                     break;
-                 }
-             }
-             else
-             {
-                 if (t >= 1) break;
-                 t += 0.02f;
-                 hinge.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, 0, 20), Quaternion.Euler(0, 0, -70), t);
-                 yield return new WaitForFixedUpdate();
-             }
-         }*/
         yield return new WaitForSeconds(1);
 
         while (t <= 1)
@@ -181,17 +144,14 @@ public class RunGacha : MonoBehaviour
     IEnumerator slideEgg()
     {
         cm = Common.characters[result[resultIndex]];
-        charDot.color = new Color(255, 255, 255, 1);
-        upperEgg.color = new Color(255, 255, 255, 1);
-        underEgg.color = new Color(255, 255, 255, 1);
+        setEggAlpha(1);
         backGround.color = new Color(255, 255, 255, 1);
         charDot.transform.position = new Vector3(0, 6, 0);
         upperEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
         underEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
         upperEgg.sprite = upperEggs[cm.rarity - 1];
         underEgg.sprite = underEggs[cm.rarity - 1];
-        rareImg.color = new Color(255, 255, 255, 0);
-        nameBox.color = new Color(255, 255, 255, 0);
+        setNameAlpha(0);
         nameLabel.text = "";
         isSkip = false;
         isSkippable = true;
@@ -244,26 +204,30 @@ public class RunGacha : MonoBehaviour
         if (cm.rarity == 1)
         {
             StartCoroutine("whiteOutAndShowChar");
+            while (t >= 0)
+            {
+                t -= 0.05f;
+                setEggAlpha(t);
+                yield return new WaitForFixedUpdate();
+            }
+            backGround.color = new Color(255, 255, 255, 0);
+
         }
         else
         {
             StartCoroutine("charText");
-        }
-
-        while (t >= 0)
-        {
-            t -= 0.05f;
-            charDot.color = new Color(255, 255, 255, t);
-            upperEgg.color = new Color(255, 255, 255, t);
-            underEgg.color = new Color(255, 255, 255, t);
-            backGround.color = new Color(255, 255, 255, t);
-            yield return new WaitForFixedUpdate();
+            while (t >= 0)
+            {
+                t -= 0.05f;
+                setEggAlpha(t);
+                backGround.color = new Color(255, 255, 255, t);
+                yield return new WaitForFixedUpdate();
+            }
         }
     }
 
     IEnumerator charText()
     {
-        backGround.color = new Color(255, 255, 255, 0);
         skillLabel.text = cm.skillname;
         yield return new WaitForSeconds(3);
         StartCoroutine("whiteOutAndShowChar");
@@ -282,9 +246,8 @@ public class RunGacha : MonoBehaviour
         }
 
         NextResult();
-        resultImage.SetActive(true);
-        rareImg.color = new Color(255, 255, 255, 1);
-        nameBox.color = new Color(255, 255, 255, 1);
+        resultImageObj.SetActive(true);
+        setNameAlpha(1);
         skillLabel.text = "";
 
         while (t >= 0)
@@ -302,13 +265,12 @@ public class RunGacha : MonoBehaviour
         }
 
         particleObj.SetActive(false);
-        resultImage.SetActive(false);
+        resultImageObj.SetActive(false);
 
         if (resultIndex < 10)
         {
             StartCoroutine("slideEgg");
             isSkip = false;
-            // isSkippable = false;
         }
         else
         {
@@ -371,38 +333,19 @@ public class RunGacha : MonoBehaviour
             eggs[i].material = eggMats[a.rarity - 1];
         }
 
-        //  resultImage.SetActive(true);
         resultIndex = 0;
-        // NextResult();
         isResultShowing = true;
     }
 
     public void NextResult()
     {
-        /*   if (resultIndex < 10)
-           {*/
-        CharacterModel naaa = Common.characters[result[resultIndex]];
-        resultImage.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
-        backGround.sprite = backGrounds[naaa.rarity];
-        nameLabel.text = naaa.name;
-        nameBox.color = new Color(255, 255, 255, 1);
-        rareImg.sprite = rareSprites[naaa.rarity - 1];
-        rareImg.color = new Color(255, 255, 255, 1);
-        //  }
-
+        CharacterModel cm = Common.characters[result[resultIndex]];
+        resultImage.sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
+        backGround.sprite = backGrounds[cm.rarity];
+        nameLabel.text = cm.name;
+        setNameAlpha(1);
+        rareImg.sprite = rareSprites[cm.rarity - 1];
         resultIndex++;
-
-        /*  if (resultIndex == 11)
-          {
-              cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-              rareImg.color = new Color(255, 255, 255, 0);
-              nameBox.color = new Color(255, 255, 255, 0);
-              nameLabel.text = "";
-              isResultShowing = false;
-              resultImage.SetActive(false);
-              result10.SetActive(true);
-              resultIndex = 0;
-          }*/
     }
 
     public void Hikinaoshi(GameObject obj)
@@ -410,31 +353,40 @@ public class RunGacha : MonoBehaviour
         obj.SetActive(false);
         hinge.transform.rotation = Quaternion.Euler(0, 0, 20);
         resultIndex = 0;
-        resultImage.SetActive(false);
+        resultImageObj.SetActive(false);
     }
 
     public void Skip()
     {
         StopAllCoroutines();
         cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-        rareImg.color = new Color(255, 255, 255, 0);
-        nameBox.color = new Color(255, 255, 255, 0);
+        setNameAlpha(0);
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
         isResultShowing = false;
-        resultImage.SetActive(false);
+        resultImageObj.SetActive(false);
         result10.SetActive(true);
         resultIndex = 0;
         overPanelObj.SetActive(false);
         skipBtn.SetActive(false);
         incubator.SetActive(false);
         particleObj.SetActive(false);
-        charDot.color = new Color(255, 255, 255, 0);
-        upperEgg.color = new Color(255, 255, 255, 0);
-        underEgg.color = new Color(255, 255, 255, 0);
+        setEggAlpha(0);
     }
 
+    void setNameAlpha(int a)
+    {
+        rareImg.color = new Color(255, 255, 255, a);
+        nameBox.color = new Color(255, 255, 255, a);
+    }
+
+    void setEggAlpha(float a)
+    {
+        charDot.color = new Color(255, 255, 255, a);
+        upperEgg.color = new Color(255, 255, 255, a);
+        underEgg.color = new Color(255, 255, 255, a);
+    }
     public void GotoGachaUnit()
     {
         Common.loadingCanvas.SetActive(true);
