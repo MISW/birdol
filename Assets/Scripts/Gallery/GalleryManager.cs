@@ -6,8 +6,6 @@ using System.IO;
 
 /**
 To-do:
-素材がResourcesに実装されたらBgをbackground2に変える
-「さくいん」テキストをアイコンに差し替え
 **/
 
 /// <summary>
