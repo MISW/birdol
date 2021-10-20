@@ -100,6 +100,7 @@ public class LiveController : MonoBehaviour
             Common.progresses[i].PassiveSkillScore = subCharacter.passiveskillscore;
             Common.progresses[i].PassiveSkillType = subCharacter.passivetype;
             Common.progresses[i].PassiveSkillDescription = subCharacter.passivedescription;
+            Common.progresses[i].PassiveSkillProbability = subCharacter.passiveprobability;
             CharacterController objk = objs[i].GetComponent<CharacterController>();
             objk.id = i;
             objk.characterInf = Common.progresses[i];
