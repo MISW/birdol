@@ -22,7 +22,9 @@ public abstract class WebClient : MonoBehaviour
     public object data { get; protected set; }      //parsed data
     public string message { get; protected set; }   //message shown to users or developers 
     public bool isSuccess { get; protected set; }   //connection and data parse success 
-    public bool isInProgress { get; private set; }  //connection in progress
+    public bool isInProgress { get; protected set; }  //connection in progress
+
+    protected string error;
 
     /// <summary>
     /// Http Request Method Type 
@@ -113,6 +115,7 @@ public abstract class WebClient : MonoBehaviour
             Debug.Log($"Response data: {www.downloadHandler.text}");
             if(www.error!=null) Debug.LogError($"Connection Error: {www.error}");
 
+            Coroutine handler = null;
             try
             {
                 //success
@@ -120,14 +123,14 @@ public abstract class WebClient : MonoBehaviour
                 {
                     isSuccess = true;
                     this.message = "通信に成功しました。";
-                    HandleSuccessData(www.downloadHandler.text);
+                    handler = GlobalCoroutine.StartCoroutineG( HandleSuccessData(www.downloadHandler.text) );
                 }
                 //connection success, but failed to do some action 
                 else if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.DataProcessingError)
                 {
                     isSuccess = true;
                     this.message = "通信に失敗しました。";
-                    HandleSuccessData(www.downloadHandler.text);
+                    handler = GlobalCoroutine.StartCoroutineG( HandleSuccessData(www.downloadHandler.text) );
                 }
                 //in progress
                 else if (www.result == UnityWebRequest.Result.InProgress)
@@ -140,7 +143,8 @@ public abstract class WebClient : MonoBehaviour
                 {
                     isSuccess = false;
                     this.message = "通信に失敗しました。";
-                    HandleErrorData(www.error);
+                    this.error = www.error;
+                    handler = GlobalCoroutine.StartCoroutineG( HandleErrorData(www.error) );
                 }
             }
             catch(Exception e)
@@ -148,7 +152,7 @@ public abstract class WebClient : MonoBehaviour
                 Debug.LogError(e);
                 isSuccess = false;
             }
-            
+            if(handler!=null) yield return handler; //終了待ち
 
             isInProgress = false;
             Debug.Log(this.message);
@@ -164,6 +168,7 @@ public abstract class WebClient : MonoBehaviour
     protected void Refresh()
     {
         this.data = null;
+        this.error = null;
         this.message = null;
         this.isSuccess = false;
         this.isInProgress = true;
@@ -185,12 +190,12 @@ public abstract class WebClient : MonoBehaviour
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
-    protected abstract void HandleSuccessData(string response);
+    protected abstract IEnumerator HandleSuccessData(string response);
 
     /// <summary>
     /// HandleErrorData: define the way to handle connection error: when connection not succeeded 
     /// </summary>
-    protected abstract void HandleErrorData(string error);
+    protected abstract IEnumerator HandleErrorData(string error);
 
     /// <summary>
     /// HandleInProgressData: define the way to handle when inprogress 

@@ -26,7 +26,7 @@ public class RefreshTokenWebClient : WebClient
 
     }
 
-    protected override void HandleSuccessData(string response)
+    protected override IEnumerator HandleSuccessData(string response)
     {
         RefreshTokenResponse r = JsonUtility.FromJson<RefreshTokenResponse>(response);
         base.data = r;
@@ -44,12 +44,14 @@ public class RefreshTokenWebClient : WebClient
             this.message = ConnectionModel.ErrorMessage(r.error);
             Debug.Log($"アクセストークンのリフレッシュに失敗したため、アカウント作成(orアカウント連携)が必要です。 {r.error}");
         }
+        yield break;
     }
 
-    protected override void HandleErrorData(string error)
+    protected override IEnumerator HandleErrorData(string error)
     {
         this.message = "失敗しました。";
         Debug.LogError(error);
+        yield break;
     }
 
     protected override void HandleInProgressData()
@@ -60,7 +62,7 @@ public class RefreshTokenWebClient : WebClient
 
     protected override void HandleSetupWebRequestData(UnityWebRequest www)
     {
-        www.uploadHandler = (UploadHandler)new UploadHandlerRaw(new byte[] { });
+        //www.uploadHandler = (UploadHandler)new UploadHandlerRaw(new byte[] { });
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         GameWebClient.SetAuthenticationHeader(www);
     }

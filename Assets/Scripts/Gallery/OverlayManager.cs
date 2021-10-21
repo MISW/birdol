@@ -27,10 +27,13 @@ public class OverlayManager : MonoBehaviour
     private GameObject descBackgroundObject;
 
     private const int IMAGE_HEIGHT_MIN = 600;
+    private const int BG_WIDTH = 600;
     private const int BG_HEIGHT_MIN = 200;
 
     private const int FONT_SIZE_MAX = 32;
     private const int FONT_SIZE_MIN = 24;
+
+    private float deviceRatio;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +59,7 @@ public class OverlayManager : MonoBehaviour
         Image im = standImageObject.GetComponent<Image>();
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 
-        float deviceRatio = Screen.currentResolution.height;
+        deviceRatio = Screen.currentResolution.height;
         deviceRatio /= Screen.currentResolution.width;
 
         if (sp != null) {
@@ -74,69 +77,11 @@ public class OverlayManager : MonoBehaviour
             // キャラクターの立ち絵のはみ出し防止
             baseSizeMin *= deviceRatio;
 
+            rectTransform.sizeDelta = baseSizeMin;
+
             // キャラによってサイズが違うのでスケール変えたりしようかな…？
             Transform tr = standImageObject.transform;
-            Vector3 currentPos = new Vector3(-80, 0, 0);
-            Vector3 currentScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-            switch (model.id) {
-                case 0:
-                case 4:
-                    currentPos.y += (50 * deviceRatio);
-                    currentScale *= 1.1f;
-                    break;
-                case 1:
-                    currentPos.y += (20 * deviceRatio);
-                    break;
-                case 5:
-                    currentPos.y += (125 * deviceRatio);
-                    currentScale *= 1.3f;
-                    break;
-                case 7:
-                    currentPos.y += (15 * deviceRatio);
-                    break;
-                case 8:
-                case 9:
-                case 12:
-                case 20:
-                case 22:
-                    currentScale *= 0.9f;
-                    break;
-                case 11:
-                    currentPos.x -= 50;
-                    currentScale *= 1.5f;
-                    break;
-                case 13:
-                    currentScale.x *= -1;
-                    break;
-                case 15:
-                    currentPos.y += (40 * deviceRatio);
-                    currentScale *= 1.1f;
-                    break;
-                case 18:
-                    currentPos.y += (40 * deviceRatio);
-                    break;
-                case 19:
-                    currentScale.x *= -1;
-                    break;
-                case 25:
-                case 31:
-                    currentPos.y += (25 * deviceRatio);
-                    break;
-                case 27:
-                    currentScale *= 1.3f;
-                    break;
-                case 30:
-                    currentPos.y += (50 * deviceRatio);
-                    break;
-                default:
-                    break;
-            }
-
-            tr.localPosition = currentPos;
-            tr.localScale = currentScale;
-
-            rectTransform.sizeDelta = baseSizeMin;
+            FixImagePos(tr, model.id);
         }
 
         // 名前書き換え
@@ -157,10 +102,67 @@ public class OverlayManager : MonoBehaviour
 
         textDesc.fontSize = FONT_SIZE_MIN + (int)Math.Round((FONT_SIZE_MAX - FONT_SIZE_MIN) * (deviceRatio - 1.0));
         RectTransform descBg = descBackgroundObject.GetComponent<RectTransform>();
-        descBg.sizeDelta = new Vector2(600, deviceRatio * BG_HEIGHT_MIN);
+        descBg.sizeDelta = new Vector2(BG_WIDTH, deviceRatio * BG_HEIGHT_MIN);
 
         // ----
 
         this.gameObject.SetActive(true);
+    }
+
+    private const float baseImageScale = 0.88f;
+
+    private void FixImagePos(Transform tr, int id) {
+        Vector3 currentPos = new Vector3(-80, 0, 0);
+
+        Vector3 currentScale = new Vector3(1.0f, 1.0f, 1.0f);
+        currentScale *= baseImageScale;
+
+        switch (id) {
+            case 0:
+            case 4:
+                currentScale *= 1.1f;
+                break;
+            case 1:
+                break;
+            case 5:
+                currentScale *= 1.3f;
+                break;
+            case 7:
+                break;
+            case 8:
+            case 9:
+            case 12:
+            case 20:
+            case 22:
+                currentScale *= 0.9f;
+                break;
+            case 11:
+                currentScale *= 1.5f;
+                break;
+            case 13:
+                currentScale.x *= -1;
+                break;
+            case 15:
+                currentScale *= 1.1f;
+                break;
+            case 18:
+                break;
+            case 19:
+                currentScale.x *= -1;
+                break;
+            case 25:
+            case 31:
+                break;
+            case 27:
+                currentScale *= 1.3f;
+                break;
+            case 30:
+                break;
+            default:
+                break;
+        }
+
+        tr.localPosition = currentPos;
+        tr.localScale = currentScale;
     }
 }

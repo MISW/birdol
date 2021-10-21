@@ -262,6 +262,7 @@ public class GachaUnitManager : MonoBehaviour
     public void ClearCharacterSelect()
     {
         Transform pairList = pairLists[currentindex].transform;
+        Debug.Log("Cleared:"+currentindex);
         if (currentdialog == "maincharacter" && currentcharacter != -1)
         {
             if (unitInf[currentindex].mainselected != -1)
@@ -282,9 +283,9 @@ public class GachaUnitManager : MonoBehaviour
                 unitInf[currentindex].subselected = -1;
             }
             pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/support");
-            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "";
-            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "";
-            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "";
+            pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
+            pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
+            pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
         }
         SetCharacterProfile(-1);
         currentdialog = "";

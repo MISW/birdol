@@ -22,8 +22,8 @@ public class LiveController : MonoBehaviour
     public Image Achievement;
     public GameObject Achieved;
     public Text RemainingText;
-    float max = 1150;
-    float score = 0;
+    public float max;
+    public float score = 0;
     public int remainingTurn = 5;
     WaitForSeconds wait = new WaitForSeconds(0.01f);
     float maxscore = 0;
@@ -79,6 +79,7 @@ public class LiveController : MonoBehaviour
 
     void initLiveStage()
     {
+        max = Common.GetLiveScoreMaxValue();
         executingSkills = false;
         selectedcharacter = 0;
         GameObject[] objs = LiveCharacter;
