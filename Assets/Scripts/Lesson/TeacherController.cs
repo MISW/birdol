@@ -20,7 +20,7 @@ public class TeacherController : MonoBehaviour
         {
             gameObject.GetComponent<Image>().sprite = gifsprite[index];
             if (index < 5) index++;
-            else index = 1;
+            else index = 0;
             //Debug.Log("current:"+index);
             yield return wait;
         }

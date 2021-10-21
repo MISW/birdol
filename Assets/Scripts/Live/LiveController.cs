@@ -17,7 +17,6 @@ public class LiveController : MonoBehaviour
     int visual = 0;
     int vocal = 0;
     public static int selectedcharacter;
-    public ProgressModel[] characters;
 
     HashSet<GameObject> sailiumcollections = new HashSet<GameObject>();
     public Image Achievement;
@@ -108,14 +107,13 @@ public class LiveController : MonoBehaviour
             for (int j=0;j<6;j++)
             {
                 //Change Here 
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ characters[i].MainCharacterId+"/ch-"+j));
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ Common.progresses[i].MainCharacterId+"/ch-"+j));
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
-            //Change HEre
-            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
-            if (characters[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-            else if (characters[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
+            if (Common.progresses[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (Common.progresses[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
             objs[i].GetComponent<CharacterController>().listchild = listchilds[i];
             objs[i].GetComponent<CharacterController>().connectUI();

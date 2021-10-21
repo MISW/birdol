@@ -16,7 +16,6 @@ public class LessonController : MonoBehaviour
     int visual = 0;
     int vocal = 0;
     public static int selectedcharacter;
-    public ProgressModel[] characters;
     public Text remainingText;
     WaitForSeconds wait = new WaitForSeconds(0.01f);
     public static bool executingSkills = false;
@@ -68,8 +67,8 @@ public class LessonController : MonoBehaviour
         if (Common.characters == null) Common.initCharacters();//Delete On Pro
         for (int i = 0; i < 5; i++)
         {
-            CharacterModel mainCharacter = Common.characters[characters[i].MainCharacterId];
-            CharacterModel subCharacter = Common.characters[characters[i].SupportCharacterId];
+            CharacterModel mainCharacter = Common.characters[Common.progresses[i].MainCharacterId];
+            CharacterModel subCharacter = Common.characters[Common.progresses[i].SupportCharacterId];
             LessonCharacterController objk = objs[i].GetComponent<LessonCharacterController>();
             objk.id = i;
             objk.name.text = Common.progresses[i].Name;
@@ -79,27 +78,19 @@ public class LessonController : MonoBehaviour
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
-            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
-            if (characters[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-            else if (characters[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
+            if (Common.progresses[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (Common.progresses[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
             objk.connectUI();
             objk.setParams();
         }
-        //For Test
-        DendouModel dendouModel = new DendouModel();
-        dendouModel.MainCharacterId = 4;
-        dendouModel.SupportCharacterId = 4;
-        dendouModel.Name = Common.characters[4].name;
-        dendouModel.Vocal = Common.characters[4].vocal;
-        dendouModel.Visual = Common.characters[4].visual;
-        dendouModel.Dance = Common.characters[4].dance;
         //Init teacher
         teacher = objs[5].GetComponent<TeacherController>();
         teacher.initPos();
         for (int j = 0; j < 6; j++)
         {
-            teacher.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + dendouModel.MainCharacterId + "/ch-" + j));
+            teacher.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + Common.teacher.MainCharacterId + "/ch-" + j));
         }
         teacher.initImage();
         backlight.transform.SetSiblingIndex(114514);
