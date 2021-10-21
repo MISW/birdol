@@ -146,7 +146,7 @@ public class SignupWebClient : WebClient
     /// </summary>
     /// <param name="response">received data</param>
     /// <returns></returns>
-    protected override void HandleSuccessData(string response)
+    protected override IEnumerator HandleSuccessData(string response)
     {
         this.data = JsonUtility.FromJson<SignupResponseData>(response);
         SignupResponseData srd = (SignupResponseData)this.data;
@@ -167,15 +167,17 @@ public class SignupWebClient : WebClient
                 this.message = ConnectionModel.ErrorMessage(srd.error);
             }
         }
+        yield break;
     }
 
     /// <summary>
     /// HandleErrorData: 通信に失敗した時にSignupクライアントが行う処理
     /// </summary>
-    protected override void HandleErrorData(string error)
+    protected override IEnumerator HandleErrorData(string error)
     {
         this.message = $"通信に失敗しました。";
         Debug.Log($"error: \n{error}");
+        yield break;
     }
 
     /// <summary>

@@ -10,11 +10,20 @@ public class PressedAction : MonoBehaviour
     IEnumerator LoginAndSync()
     {
         TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
+        tokenAuthorizeWebClient.IsDoBackToTitleIfTokenRefreshError = false; //これがtrueのままだと、SignupシーンではなくTitleシーンへ遷移してしまう
         yield return tokenAuthorizeWebClient.Send();
-        if (Common.SessionID != null)
+        if (tokenAuthorizeWebClient.IsAuthorizeSuccess && Common.SessionID != null) //ログイン成功。アクセストークンが認証されたかつSessionIDが保存されたことを確かめている。
         {
             GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
             yield return getStoryWebClient.Send();
+        }
+        else if(!tokenAuthorizeWebClient.IsAuthorizeSuccess && tokenAuthorizeWebClient.isSuccess) //通信は成功したが、ログイン失敗 -> アカウント未生成と判断し、Signupシーンへ遷移する。
+        {
+            Common.loadingCanvas.SetActive(true);
+            Manager.manager.StateQueue((int)gamestate.Signup);
+        }
+        else //通信自体が失敗。これはGameWebClientの方で対処するためここでは何も書かなくて大丈夫なはず。
+        {
         }
         
     }

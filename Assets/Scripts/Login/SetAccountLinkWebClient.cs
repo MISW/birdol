@@ -152,10 +152,11 @@ public class SetAccountLinkWebClient : GameWebClient
     /// <summary>
     /// HandleErrorData: 通信に失敗した時にクライアントが行う処理
     /// </summary>
-    protected override void HandleErrorData(string error)
+    protected override IEnumerator HandleErrorData(string error)
     {
         this.message = $"通信に失敗しました。";
         Debug.Log($"error: \n{error}");
+        yield break;
     }
 
     /// <summary>
