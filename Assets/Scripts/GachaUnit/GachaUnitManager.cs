@@ -250,7 +250,7 @@ public class GachaUnitManager : MonoBehaviour
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].MainCharacterId);
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].MainCharacterId);
+        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].SupportCharacterId);
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Name;
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Vocal.ToString();
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Visual.ToString();

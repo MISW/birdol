@@ -87,7 +87,7 @@ public class LessonController : MonoBehaviour
         }
         //Init teacher
         teacher = objs[5].GetComponent<TeacherController>();
-        teacher.initPos();
+        teacher.updatePos();
         for (int j = 0; j < 6; j++)
         {
             teacher.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + Common.teacher.MainCharacterId + "/ch-" + j));
@@ -121,6 +121,7 @@ public class LessonController : MonoBehaviour
         }
         Common.lessonCount--;
         remainingText.text = Common.lessonCount.ToString();
+        teacher.updatePos();
         UpdateCharacterWebClient characterWebClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
         characterWebClient.SetData();
         UpdateMainStoryWebClient storyWebClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
