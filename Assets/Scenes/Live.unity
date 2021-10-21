@@ -913,55 +913,11 @@ MonoBehaviour:
   ResultUI: {fileID: 1948335098}
   sailium: {fileID: 4293168625306472711, guid: 9797841ceb4e7b64392983f8b31885d0, type: 3}
   backlight: {fileID: 167296889}
-  characters:
-  - id: 0
-    MainCharacterId: 11
-    Name: tokiwa8111f
-    Visual: 2
-    Vocal: 2
-    Dance: 2
-    ActiveSkillLevel: 1
-    SupportCharacterId: 0
-    PassiveSkillLevel: 1
-  - id: 0
-    MainCharacterId: 12
-    Name: Nanamii
-    Visual: 1
-    Vocal: 1
-    Dance: 2
-    ActiveSkillLevel: 1
-    SupportCharacterId: 2
-    PassiveSkillLevel: 1
-  - id: 0
-    MainCharacterId: 22
-    Name: Futoren
-    Visual: 1
-    Vocal: 2
-    Dance: 1
-    ActiveSkillLevel: 1
-    SupportCharacterId: 5
-    PassiveSkillLevel: 1
-  - id: 0
-    MainCharacterId: 27
-    Name: Liberal
-    Visual: 2
-    Vocal: 1
-    Dance: 1
-    ActiveSkillLevel: 1
-    SupportCharacterId: 3
-    PassiveSkillLevel: 1
-  - id: 0
-    MainCharacterId: 11
-    Name: SEED
-    Visual: 2
-    Vocal: 2
-    Dance: 2
-    ActiveSkillLevel: 1
-    SupportCharacterId: 2
-    PassiveSkillLevel: 1
   Achievement: {fileID: 1190848952}
   Achieved: {fileID: 1931810683}
   RemainingText: {fileID: 1753446895}
+  max: 0
+  score: 0
   remainingTurn: 5
   LiveCharacter:
   - {fileID: 1855865831}
@@ -975,6 +931,12 @@ MonoBehaviour:
   - {fileID: 319472644}
   - {fileID: 277602479}
   - {fileID: 1981870699}
+  passiveList:
+  - {fileID: 870648439}
+  - {fileID: 877998495}
+  - {fileID: 893084991}
+  - {fileID: 386085014}
+  - {fileID: 1454952186}
 --- !u!4 &261826504
 Transform:
   m_ObjectHideFlags: 0
@@ -1103,10 +1065,10 @@ RectTransform:
   m_Father: {fileID: 677791506}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 287.65894, y: -41.09413}
-  m_SizeDelta: {x: 82.18826, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277602481
 MonoBehaviour:
@@ -1212,10 +1174,10 @@ RectTransform:
   m_Father: {fileID: 677791506}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 205.47066, y: -41.09413}
-  m_SizeDelta: {x: 82.18826, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &319472646
 MonoBehaviour:
@@ -1362,7 +1324,7 @@ GameObject:
   - component: {fileID: 386085017}
   - component: {fileID: 386085016}
   m_Layer: 5
-  m_Name: Passive
+  m_Name: Passive3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2506,10 +2468,10 @@ RectTransform:
   m_Father: {fileID: 677791506}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 123.282394, y: -41.09413}
-  m_SizeDelta: {x: 82.18826, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &800103806
 MonoBehaviour:
@@ -2775,7 +2737,7 @@ GameObject:
   - component: {fileID: 870648442}
   - component: {fileID: 870648441}
   m_Layer: 5
-  m_Name: Passive
+  m_Name: Passive0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2865,7 +2827,7 @@ GameObject:
   - component: {fileID: 877998498}
   - component: {fileID: 877998497}
   m_Layer: 5
-  m_Name: Passive
+  m_Name: Passive1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2955,7 +2917,7 @@ GameObject:
   - component: {fileID: 893084994}
   - component: {fileID: 893084993}
   m_Layer: 5
-  m_Name: Passive
+  m_Name: Passive2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4458,7 +4420,7 @@ GameObject:
   - component: {fileID: 1454952189}
   - component: {fileID: 1454952188}
   m_Layer: 5
-  m_Name: Passive
+  m_Name: Passive4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5691,10 +5653,10 @@ RectTransform:
   m_Father: {fileID: 677791506}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 41.09413, y: -41.09413}
-  m_SizeDelta: {x: 82.18826, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1883488836
 MonoBehaviour:
@@ -6296,10 +6258,10 @@ RectTransform:
   m_Father: {fileID: 677791506}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 369.84717, y: -41.09413}
-  m_SizeDelta: {x: 82.18826, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1981870701
 MonoBehaviour:

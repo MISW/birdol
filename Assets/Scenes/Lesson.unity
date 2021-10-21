@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.68235296}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &36217688
 GameObject:
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.45490196, g: 0.45490196, b: 0.45490196, a: 0.68235296}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &51544629
 GameObject:
@@ -1052,52 +1052,6 @@ MonoBehaviour:
   startbutton: {fileID: 481610928}
   Background: {fileID: 1809988979}
   backlight: {fileID: 167296889}
-  characters:
-  - id: 0
-    MainCharacterId: 11
-    Name: tokiwa8111f
-    Visual: 6
-    Vocal: 5
-    Dance: 6
-    ActiveSkillLevel: 0
-    SupportCharacterId: 0
-    PassiveSkillLevel: 0
-  - id: 0
-    MainCharacterId: 12
-    Name: Nanamii
-    Visual: 4
-    Vocal: 8
-    Dance: 2
-    ActiveSkillLevel: 0
-    SupportCharacterId: 0
-    PassiveSkillLevel: 0
-  - id: 0
-    MainCharacterId: 22
-    Name: futoren
-    Visual: 3
-    Vocal: 9
-    Dance: 6
-    ActiveSkillLevel: 0
-    SupportCharacterId: 0
-    PassiveSkillLevel: 0
-  - id: 0
-    MainCharacterId: 27
-    Name: Liberal
-    Visual: 10
-    Vocal: 5
-    Dance: 4
-    ActiveSkillLevel: 0
-    SupportCharacterId: 0
-    PassiveSkillLevel: 0
-  - id: 0
-    MainCharacterId: 22
-    Name: SEED
-    Visual: 3
-    Vocal: 3
-    Dance: 4
-    ActiveSkillLevel: 0
-    SupportCharacterId: 0
-    PassiveSkillLevel: 0
   remainingText: {fileID: 2055324118}
   LiveCharacter:
   - {fileID: 1855865831}
@@ -1165,7 +1119,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110, y: 110}
+  m_SizeDelta: {x: 110, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &309478657
 MonoBehaviour:
@@ -1338,7 +1292,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110, y: 110}
+  m_SizeDelta: {x: 110, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &402332503
 MonoBehaviour:
@@ -2654,7 +2608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 160, y: -450}
+  m_AnchoredPosition: {x: 160, y: -500}
   m_SizeDelta: {x: 130, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1126839564
@@ -2802,7 +2756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.45490196, g: 0.45490196, b: 0.45490196, a: 0.68235296}
-  m_EffectDistance: {x: 2, y: -1}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &1239652076
 GameObject:
@@ -2843,7 +2797,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110, y: 110}
+  m_SizeDelta: {x: 110, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1239652078
 MonoBehaviour:
@@ -3639,7 +3593,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110, y: 110}
+  m_SizeDelta: {x: 110, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1652525979
 MonoBehaviour:
@@ -4345,7 +4299,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 110, y: 110}
+  m_SizeDelta: {x: 110, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1883488836
 MonoBehaviour:
@@ -4943,7 +4897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 0.68235296}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1 &2137032902
 GameObject:

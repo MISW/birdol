@@ -17,7 +17,6 @@ public class LiveController : MonoBehaviour
     int visual = 0;
     int vocal = 0;
     public static int selectedcharacter;
-    public ProgressModel[] characters;
 
     HashSet<GameObject> sailiumcollections = new HashSet<GameObject>();
     public Image Achievement;
@@ -32,6 +31,8 @@ public class LiveController : MonoBehaviour
 
     public GameObject[] LiveCharacter=new GameObject[5];
     public GameObject[] CharacterList=new GameObject[5];
+    public GameObject[] passiveList = new GameObject[5];
+    CharacterController[] characterControllers = new CharacterController[5];
 
     public static bool executingSkills = false;
 
@@ -48,7 +49,7 @@ public class LiveController : MonoBehaviour
         int depth = 0;
         for (int i=0;i<5;i++)
         {
-            CharacterController c = objs[i].GetComponent<CharacterController>();
+            CharacterController c = characterControllers[i];
             string area = c.area;
             if (area == "dance") dance++;
             else if (area == "visual") visual++;
@@ -101,24 +102,25 @@ public class LiveController : MonoBehaviour
             Common.progresses[i].PassiveSkillScore = subCharacter.passiveskillscore;
             Common.progresses[i].PassiveSkillType = subCharacter.passivetype;
             Common.progresses[i].PassiveSkillDescription = subCharacter.passivedescription;
+            Common.progresses[i].PassiveSkillProbability = subCharacter.passiveprobability;
             CharacterController objk = objs[i].GetComponent<CharacterController>();
+            characterControllers[i] = objk;
             objk.id = i;
             objk.characterInf = Common.progresses[i];
             objk.name.text = Common.progresses[i].Name;
             for (int j=0;j<6;j++)
             {
                 //Change Here 
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ characters[i].MainCharacterId+"/ch-"+j));
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ Common.progresses[i].MainCharacterId+"/ch-"+j));
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
-            //Change HEre
-            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].MainCharacterId);
-            if (characters[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-            else if (characters[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
+            if (Common.progresses[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+            else if (Common.progresses[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
-            objs[i].GetComponent<CharacterController>().listchild = listchilds[i];
-            objs[i].GetComponent<CharacterController>().connectUI();
+            objk.listchild = listchilds[i];
+            objk.connectUI();
             objk.setParamsFont();
             
 
@@ -149,6 +151,7 @@ public class LiveController : MonoBehaviour
 
     private IEnumerator updateScoreBar(float oldScore, float newScore)
     {
+        if (Achieved.active) yield break;
         System.Random random = new System.Random();
         float kb = (float)max / 60.0f;
         float k = 0;
@@ -212,10 +215,10 @@ public class LiveController : MonoBehaviour
         else
         {
             GameObject[] objs = LiveCharacter;
-            foreach(GameObject obj in objs)
+            for (int i=0;i<5;i++)
             {
-                CharacterController objinf = obj.GetComponent<CharacterController>();
-                if (characterInf.ActiveSkillType=="samearea"&&characterObj.area != objinf.area)
+                CharacterController objinf = characterControllers[i];
+                if (characterInf.ActiveSkillType == "samearea" && characterObj.area != objinf.area)
                 {
                     continue;
                 }
@@ -233,7 +236,7 @@ public class LiveController : MonoBehaviour
         int count = 0;
         for(int i = 0; i < 5;i++)
         {
-            CharacterController objcc = objs[i].GetComponent<CharacterController>();
+            CharacterController objcc = characterControllers[i];
             ProgressModel objinf = objcc.characterInf;
             if ((characterInf.PassiveSkillType.Contains("group")&&characterInf.Group!=objinf.Group) || 
                 (characterInf.PassiveSkillType != "all" && !characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
@@ -266,12 +269,12 @@ public class LiveController : MonoBehaviour
         ProgressModel characterInf = characterObj.characterInf;
         if (RandomArray.Probability(characterInf.PassiveSkillProbability*100.0f))
         {
-            listchilds[index].transform.GetChild(1).gameObject.SetActive(true);
+            passiveList[index].SetActive(true);
             execPassiveSkill(characterObj);
         }
         else
         {
-            listchilds[index].transform.GetChild(1).gameObject.SetActive(false);
+            passiveList[index].SetActive(false);
         }
         float parascore;
         float activeskillscore = 0;
@@ -305,10 +308,10 @@ public class LiveController : MonoBehaviour
         GameObject[] objs = LiveCharacter;
         for (int i = 0; i < 5; i++)
         {
-            yield return execSkillofOnePerson(objs[i].GetComponent<CharacterController>(),i,i==selectedcharacter);
+            yield return execSkillofOnePerson(characterControllers[i],i,i==selectedcharacter);
         }
         remainingTurn--;
-        objs[selectedcharacter].GetComponent<CharacterController>().finishSkill();
+        characterControllers[selectedcharacter].finishSkill();
         if (remainingTurn > 0)
         {
             RemainingText.text = remainingTurn.ToString();
@@ -318,7 +321,7 @@ public class LiveController : MonoBehaviour
             //testText.text = "Mission Complete!";
             var resultchanger = ResultUI.GetComponent<UIchanger>();
             resultchanger.Judge_Image_num = 0;
-            resultchanger.Chara_Image_num = LiveCharacter[maxindex].GetComponent<CharacterController>().characterInf.MainCharacterId;
+            resultchanger.Chara_Image_num = characterControllers[maxindex].characterInf.MainCharacterId;
             resultchanger.Score_num = (int)score;
             resultchanger.Achievement_num = score / max;
             ResultUI.SetActive(true);
@@ -328,7 +331,7 @@ public class LiveController : MonoBehaviour
             //testText.text = "Mission Failed!";
             var resultchanger = ResultUI.GetComponent<UIchanger>();
             resultchanger.Judge_Image_num = 1;
-            resultchanger.Chara_Image_num = LiveCharacter[maxindex].GetComponent<CharacterController>().characterInf.MainCharacterId;
+            resultchanger.Chara_Image_num = characterControllers[maxindex].characterInf.MainCharacterId;
             resultchanger.Score_num = (int)score;
             resultchanger.Achievement_num = score / max;
             ResultUI.SetActive(true);

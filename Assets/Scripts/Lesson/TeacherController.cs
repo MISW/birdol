@@ -20,7 +20,7 @@ public class TeacherController : MonoBehaviour
         {
             gameObject.GetComponent<Image>().sprite = gifsprite[index];
             if (index < 5) index++;
-            else index = 1;
+            else index = 0;
             //Debug.Log("current:"+index);
             yield return wait;
         }
@@ -37,7 +37,7 @@ public class TeacherController : MonoBehaviour
         //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
-    public void initPos()
+    public void updatePos()
     {
         area = RandomArray.GetRandom(new string[] { "visual", "vocal", "dance" });
         RectTransform rt;
@@ -45,21 +45,18 @@ public class TeacherController : MonoBehaviour
         Image standing = transform.parent.gameObject.GetComponent<Image>();
         if (area == "dance")
         {
-            Vector2 pos = new Vector2();
-            pos.x = Random.Range(102, 125);
-            pos.y = Random.Range(-350, 0);
+            Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            pos.x = 150;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "vocal")
         {
-            Vector2 pos = new Vector2();
-            pos.x = Random.Range(-125, -102);
-            pos.y = Random.Range(-350, 0);
+            Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            pos.x = -150;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "visual")
         {
-            Vector2 pos = new Vector2();
-            pos.x = Random.Range(-100, 100);
-            pos.y = Random.Range(-250, 0);
+            Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
+            pos.x = 0;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }
     }

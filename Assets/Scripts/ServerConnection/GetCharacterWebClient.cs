@@ -36,7 +36,7 @@ public class GetCharacterWebClient : GameWebClient
                 Debug.Log(Common.progresses[i].id+":"+ Common.progresses[i].Name);
             }
             Common.teacher = r.teachers[0].character;
-            if (Common.lessonCount!=5)
+            if (Common.lessonCount<5&&Common.lessonCount>0)
             {
                 Manager.manager.StateQueue((int)gamestate.Lesson);
             }
