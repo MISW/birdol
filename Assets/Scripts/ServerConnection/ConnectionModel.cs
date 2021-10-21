@@ -87,6 +87,7 @@ public class ConnectionModel : MonoBehaviour
         switch (error)
         {
 			case Response.ErrAuthorizationFail:
+			case Response.ErrInvalidToken:
 			case Response.ErrInvalidDevice:
 			case Response.ErrInvalidSignature:
 			case Response.ErrNotLoggedIn:
