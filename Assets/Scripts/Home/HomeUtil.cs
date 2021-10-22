@@ -18,6 +18,7 @@ public class HomeUtil : MonoBehaviour
     public GameObject AccuntUI;
     int PrevIndex = -1;
     int chara_id;
+    int dialogstatus = 0;
     public Text dialogtext;
     public Image CharacterImageSplite;
     public CharacterModel charactermodel;
@@ -27,15 +28,12 @@ public class HomeUtil : MonoBehaviour
     private void Start()
     {
 
-        Debug.Log("位置調整必要:2,6");
-
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
 
-        chara_id = 11;
+        chara_id = Common.HomeStandingId;
 
         json_parser();
-
         //positionAdjust();
 
     }
@@ -84,7 +82,7 @@ public class HomeUtil : MonoBehaviour
         Debug.Log("Pushed CharaImage");
         DialogTextChanger();
         Dialog.SetActive(true);
-
+        dialogstatus++;
         //Close Dialog after 5s 
         StartCoroutine(DelayCoroutine(5.0f, () =>
         {
@@ -96,8 +94,7 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedDialog()
     {
         Debug.Log("Pushed Dialog");
-        DialogCloser();
-
+        //Dialog.SetActive(false);
     }
 
     public void onButtonPressedOption()
@@ -108,7 +105,7 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedStandingTester()
     {
         Debug.Log("StandingTester");
-
+        Dialog.SetActive(false);
         chara_id++;
         if (chara_id > 31) chara_id = 0;
         json_parser();
@@ -137,11 +134,11 @@ public class HomeUtil : MonoBehaviour
 
     void json_parser()
     {
-        //Load Json file
+
         //standing select
         CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
 
-        //charatext select
+        //Load Json file
         string json_tmp = Resources.Load<TextAsset>("HomeData/CharaText").ToString();
         homeCharacters = JsonUtility.FromJson<HomeCharacters>(json_tmp);
     }
@@ -157,12 +154,14 @@ public class HomeUtil : MonoBehaviour
         } while ((TextMaxSize != 1 && rand_num == PrevIndex) || rand_num >= TextMaxSize);
 
         PrevIndex = rand_num;
-        dialogtext.text = homeCharacters.Characters[chara_id].text[rand_num];
+        string tmpserifu = homeCharacters.Characters[chara_id].text[rand_num];
+        dialogtext.text = tmpserifu.Replace("[mama]", Common.mom).Replace("[player]", Common.PlayerName);
     }
 
     void DialogCloser()
     {
-        Dialog.SetActive(false);
+        if (dialogstatus != 0) dialogstatus--;
+        if (dialogstatus == 0) Dialog.SetActive(false);
     }
 
     private IEnumerator DelayCoroutine(float seconds, UnityAction callback)

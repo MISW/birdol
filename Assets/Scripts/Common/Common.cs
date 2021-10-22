@@ -69,6 +69,29 @@ public partial class Common : MonoBehaviour
         }
     }
 
+    public static int homeStandingId = -1;
+    private const string PLAYERPREFS_HOMESTANDING_ID = "HOMESTANDING_ID";
+    public static int HomeStandingId
+    {
+        get
+        {
+            if (homeStandingId == -1)
+            {
+                homeStandingId = PlayerPrefs.GetInt(PLAYERPREFS_HOMESTANDING_ID);
+            }
+            return homeStandingId;
+        }
+        set
+        {
+            if (homeStandingId != value)
+            {
+                homeStandingId = value;
+                PlayerPrefs.SetInt(PLAYERPREFS_HOMESTANDING_ID, homeStandingId);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
     //PlayerPrefsに保存
     //ユーザID
     private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";  
