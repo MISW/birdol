@@ -16,6 +16,8 @@ public class UIchanger : MonoBehaviour{
     public GameObject Achievement_Image; //到達度ゲージ用画像のUI指定
     public GameObject Achievement_Text; //到達度テキストのUI指定
     public float Achievement_num; //到達度(0~1)
+    public GameObject Score_Image; //スコア用画像のUI指定
+    public Sprite[] Score_Sprites; //スコア用画像の配列
 
     void Start(){ //Start時にUIを全て変更
         Score_Text.GetComponent<Text>().text = Score_num.ToString("000,000");
@@ -24,6 +26,7 @@ public class UIchanger : MonoBehaviour{
         Chara_Image.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Chara_Image_num);
         Achievement_Image.GetComponent<Image>().fillAmount = Achievement_num;
         Achievement_Text.GetComponent<Text>().text = Achievement_num.ToString("P0");
+        Score_Image.GetComponent<Image>().sprite = Score_Sprites[Judge_Image_num];
     }
 
     public void onClick(){
