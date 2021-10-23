@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 4028709210373295703}
   - component: {fileID: 927592146923113793}
   - component: {fileID: 7791177876512685725}
-  - component: {fileID: 4036035659870507528}
-  - component: {fileID: 7889953816512260949}
+  - component: {fileID: -7822009883261453645}
   m_Layer: 5
   m_Name: CharacterButton
   m_TagString: GachaUnitIcons
@@ -38,9 +37,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -155, y: 670}
+  m_AnchoredPosition: {x: -155.00003, y: 670}
   m_SizeDelta: {x: 150, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.4999999, y: 0.5}
 --- !u!222 &4028709210373295703
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -123,10 +122,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GachaUnitManager, Assembly-CSharp
-        m_MethodName: SelectCharacter
-        m_Mode: 3
+      - m_Target: {fileID: -7822009883261453645}
+        m_TargetAssemblyTypeName: SelectedCharacter, Assembly-CSharp
+        m_MethodName: onButtonPressedCharacterButtoun
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -135,22 +134,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4036035659870507528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3515343572342935732}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.9811321, g: 0.6784556, b: 0.040726196, a: 1}
-  m_EffectDistance: {x: 10, y: 10}
-  m_UseGraphicAlpha: 1
---- !u!114 &7889953816512260949
+--- !u!114 &-7822009883261453645
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,10 +143,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3515343572342935732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92c268dbdf0e5714391e94009b0029b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d422c8cb109ad24ca6d1e03c76fab1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpriteNext: {fileID: 0}
 --- !u!1 &5825106185664942966
 GameObject:
   m_ObjectHideFlags: 0

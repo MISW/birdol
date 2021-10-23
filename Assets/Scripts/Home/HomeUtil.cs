@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class HomeUtil : MonoBehaviour
 {
-
+    int characterSize = 32;
     public GameObject Gallery;
     public GameObject Ikusei;
     public GameObject CharacterImage;
@@ -24,18 +24,21 @@ public class HomeUtil : MonoBehaviour
     public CharacterModel charactermodel;
     public HomeCharacters homeCharacters;
     public int tempteacherid;
+    public GameObject prefab;
+    public Transform content;
 
+    int[] isUnlocked = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
     private void Start()
     {
 
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
 
-        chara_id = Common.HomeStandingId;
-
         json_parser();
         //positionAdjust();
 
+        CharacterListInit();
+        CharacterListPushed(chara_id.ToString());
     }
 
     public void onButtonPressedScoreAttack()
@@ -107,7 +110,7 @@ public class HomeUtil : MonoBehaviour
         Debug.Log("StandingTester");
         Dialog.SetActive(false);
         chara_id++;
-        if (chara_id > 31) chara_id = 0;
+        if (chara_id >= characterSize) chara_id = 0;
         json_parser();
         //positionAdjust();
     }
@@ -134,13 +137,43 @@ public class HomeUtil : MonoBehaviour
 
     void json_parser()
     {
-
-        //standing select
-        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
-
         //Load Json file
         string json_tmp = Resources.Load<TextAsset>("HomeData/CharaText").ToString();
         homeCharacters = JsonUtility.FromJson<HomeCharacters>(json_tmp);
+    }
+
+    void standingChanger()
+    {
+        chara_id = Common.HomeStandingId;
+        //standing select
+        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
+    }
+
+    void CharacterListInit()
+    {
+        for (int i = 0; i < characterSize; i++)
+        {
+            if (isUnlocked[i] == 1)
+            {
+                GameObject node = Instantiate(prefab) as GameObject;
+                node.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + i);
+                node.name = i.ToString();
+                node.transform.SetParent(content);
+                node.transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+    }
+
+    public void CharacterListPushed(string s)
+    {
+
+        foreach (Transform child in content.transform)
+        {
+            child.transform.Find("Selected").gameObject.SetActive(false);
+        }
+        content.transform.Find(s).gameObject.transform.Find("Selected").gameObject.SetActive(true);
+        Common.HomeStandingId = int.Parse(s);
+        standingChanger();
     }
 
     void DialogTextChanger()
