@@ -43,7 +43,11 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedScoreAttack()
     {
-
+        Debug.Log("Pushed Gallery");
+        Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Manager.manager.StateQueue((int)gamestate.FreeSelect);
     }
 
     public void onButtonPressedGallery()
