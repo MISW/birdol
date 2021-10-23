@@ -133,8 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 197053544}
   - component: {fileID: 197053543}
-  - component: {fileID: 197053542}
   - component: {fileID: 197053546}
+  - component: {fileID: 197053542}
   m_Layer: 5
   m_Name: Message
   m_TagString: Untagged
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 197053541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -162,20 +162,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: cf45fd32db3985f4c8c0ac3da52a0d79, type: 3}
-    m_FontSize: 20
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 20
-    m_MaxSize: 80
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Tap Screen to Start
+  m_Sprite: {fileID: 21300000, guid: 29a55c06d1df8d2458c053391587859e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &197053543
 CanvasRenderer:
   m_ObjectHideFlags: 0

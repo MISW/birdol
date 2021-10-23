@@ -5,9 +5,10 @@ using UnityEngine;
 public class ReturnHome : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    public GameObject dialog;
     public void returnHome()
     {
-        Common.loadingCanvas.SetActive(true);
-        Manager.manager.StateQueue((int)gamestate.Home);
+        dialog.SetActive(true);
     }
 }

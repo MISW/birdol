@@ -14,6 +14,7 @@ public partial class Common : MonoBehaviour
     public static int lessonCount = 5;
     public static int progressId;
     public static GameObject loadingCanvas;
+    public static GameObject loadingGif;
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 1600, 2000, 2400, 2800, 3300 };
 
