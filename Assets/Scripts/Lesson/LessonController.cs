@@ -136,6 +136,8 @@ public class LessonController : MonoBehaviour
         {
             //Change Scene
             Common.loadingCanvas.SetActive(true);
+            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+            Common.loadingGif.GetComponent<GifPlayer>().StartGif();
             Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
             storyWebClient.SetData(Common.mainstoryid, 5);
             storyWebClient.sceneid = (int)gamestate.Story;

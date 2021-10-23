@@ -58,6 +58,8 @@ public class NetworkErrorDialogController : MonoBehaviour
         NetworkErrorDialogController.gameWebClient.Choice_QuitConnection();
 
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Manager.manager.StateQueue((int)gamestate.Title);
     }
 }

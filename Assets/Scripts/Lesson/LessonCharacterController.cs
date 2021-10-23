@@ -106,7 +106,7 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
     private IEnumerator updateImg()
     {
         int index = 0;
-        var wait = new WaitForSeconds(0.07f);
+        var wait = new WaitForSecondsRealtime(0.07f);
         while (true)
         {
             gameObject.GetComponent<Image>().sprite = gifsprite[index];
@@ -144,8 +144,8 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
         if (eventData.position.y<=Screen.height/2.0f+289.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
-            //parenttransform.y -= 150;
-            parenttransform.y -= 80;
+            parenttransform.y -= 150;
+            //parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }

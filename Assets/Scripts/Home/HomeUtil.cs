@@ -49,6 +49,8 @@ public class HomeUtil : MonoBehaviour
     {
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         GetGalleryWebClient webClient = new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
         StartCoroutine(webClient.Send());
 
@@ -58,6 +60,8 @@ public class HomeUtil : MonoBehaviour
     {
         Debug.Log("Pushed Dendou");
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         CompletedController.CompletedCharacters.Clear();
         GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
         getCompletedWebClient.target = "completed";
@@ -68,6 +72,8 @@ public class HomeUtil : MonoBehaviour
     {
         Debug.Log("Pushed Ikusei");
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         if (Common.mainstoryid == null)
         {
             Manager.manager.StateQueue((int)gamestate.Gacha);

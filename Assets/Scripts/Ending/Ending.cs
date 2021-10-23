@@ -251,6 +251,8 @@ public class Ending : MonoBehaviour
     public void ResetStory()
     {
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.mainstoryid = null;
         GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
         StartCoroutine(getStoryWebClient.Send());

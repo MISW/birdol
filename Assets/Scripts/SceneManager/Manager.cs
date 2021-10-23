@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
     public static Manager manager;
     public GameObject loadingCanvas;
     public GameObject gif;
+    public Text tips;
     
 
     private void Awake()
@@ -33,6 +35,7 @@ public class Manager : MonoBehaviour
         init();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
+        Common.loadingTips = tips;
     }
 
     // Update is called once per frame
@@ -84,8 +87,6 @@ public class Manager : MonoBehaviour
     IEnumerator StateChange()
     {
         SceneVisor Visor1 = GotVisorOnScene();
-        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
-        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         if (SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
@@ -93,6 +94,11 @@ public class Manager : MonoBehaviour
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)Next_GameState));
             loadingCanvas.SetActive(false);
+            if (Common.loadingTips.enabled)
+            {
+                Common.loadingTips.text = "";
+                Common.loadingTips.enabled = false;
+            }
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StopGif();
         };
@@ -179,7 +185,10 @@ public enum gamestate
     Login,
     Result,
     Story,
-    GachaUnit
+    GachaUnit,
+    Failed,
+    FreeSelect,
+    FreeLive
 }
 
 

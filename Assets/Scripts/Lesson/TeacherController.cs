@@ -15,7 +15,7 @@ public class TeacherController : MonoBehaviour
     private IEnumerator updateImg()
     {
         int index = 1;
-        var wait = new WaitForSeconds(0.07f);
+        var wait = new WaitForSecondsRealtime(0.07f);
         while (true)
         {
             gameObject.GetComponent<Image>().sprite = gifsprite[index];

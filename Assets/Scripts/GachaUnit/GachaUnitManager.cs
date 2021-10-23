@@ -360,6 +360,8 @@ public class GachaUnitManager : MonoBehaviour
         }
         Common.teacher = teachers[currentteacher];
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
         webClient.SetData(Common.progresses,new DendouModel[]{Common.teacher});
         StartCoroutine(webClient.Send());

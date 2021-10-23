@@ -33,14 +33,16 @@ public class GifPlayer : MonoBehaviour {
 
     private IEnumerator updateImg()
     {
-        int index = 0;
+        int index = 1;
+        int gifid = Random.Range(0, 4 + 1);
+        var waittime = new WaitForSecondsRealtime(speed);
         while (true)
         {
-            image.sprite = Resources.Load<Sprite>(path + index);
+            image.sprite = Resources.Load<Sprite>(path + gifid + "/" + index);
             if (index < size) index++;
-            else index = 0;
+            else index = 1;
             //Debug.Log("current:"+index);
-            yield return new WaitForSeconds(speed);
+            yield return waittime;
         }
     }
 }

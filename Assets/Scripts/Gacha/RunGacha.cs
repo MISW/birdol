@@ -83,18 +83,22 @@ public class RunGacha : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.touchCount == 1)
         {
-            if (!result10.activeSelf && !isResultShowing)
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                onButtonPressed10();
-                incubator.SetActive(true);
-                skipBtn.SetActive(true);
-                StartCoroutine("slideIncubator");
-            }
-            else if (isResultShowing && !isSkip && isSkippable)
-            {
-                isSkip = true;
+                if (!result10.activeSelf && !isResultShowing)
+                {
+                    Destroy(GameObject.Find("Tap"));
+                    onButtonPressed10();
+                    incubator.SetActive(true);
+                    skipBtn.SetActive(true);
+                    StartCoroutine("slideIncubator");
+                }
+                else if (isResultShowing && !isSkip && isSkippable)
+                {
+                    isSkip = true;
+                }
             }
         }
     }
@@ -145,14 +149,15 @@ public class RunGacha : MonoBehaviour
         setEggAlpha(1);
         backGround.color = new Color(255, 255, 255, 1);
         charDot.transform.position = new Vector3(0, 6, 0);
-        upperEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
-        underEgg.transform.localPosition = new Vector3(0, 1, -0.1f);
+        upperEgg.transform.localPosition = new Vector3(0, 1.667f, -0.1f);
+        underEgg.transform.localPosition = new Vector3(0, 1.667f, -0.1f);
         upperEgg.sprite = upperEggs[cm.rarity - 1];
         underEgg.sprite = underEggs[cm.rarity - 1];
         setNameAlpha(0);
         nameLabel.text = "";
         isSkip = false;
         isSkippable = true;
+        charDot.sprite = Resources.Load<Sprite>("Images/Live/Gif/" + cm.id + "/ch-0");
 
         backGround.sprite = backGrounds[cm.rarity];
         float t = 0;
@@ -166,7 +171,7 @@ public class RunGacha : MonoBehaviour
             }
 
             t += 0.02f;
-            charDot.transform.position = new Vector3(0, QuadEase(6, 0, t), 0);
+            charDot.transform.position = new Vector3(0, QuadEase(6, -0.2f, t), 0);
             yield return new WaitForFixedUpdate();
         }
         incubator.SetActive(false);
@@ -183,15 +188,15 @@ public class RunGacha : MonoBehaviour
         {
             if (isSkip)
             {
-                upperEgg.transform.localPosition = new Vector3(0, 7, -0.1f);
-                underEgg.transform.localPosition = new Vector3(0, -5, -0.1f);
+                upperEgg.transform.localPosition = new Vector3(0, 8.625f, -0.1f);
+                underEgg.transform.localPosition = new Vector3(0, -5.275f, -0.1f);
                 isSkip = false;
                 break;
             }
 
             t += 0.02f;
-            upperEgg.transform.localPosition = new Vector3(0, QuadEase(1, 7, t), -0.1f);
-            underEgg.transform.localPosition = new Vector3(0, QuadEase(1, -5, t), -0.1f);
+            upperEgg.transform.localPosition = new Vector3(0, QuadEase(1.667f, 8.625f, t), -0.1f);
+            underEgg.transform.localPosition = new Vector3(0, QuadEase(1.667f, -5.375f, t), -0.1f);
             yield return new WaitForFixedUpdate();
         }
         isSkippable = false;
@@ -362,6 +367,7 @@ public class RunGacha : MonoBehaviour
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
+        skillLabel.text="";
         isResultShowing = false;
         resultImageObj.SetActive(false);
         result10.SetActive(true);
@@ -388,6 +394,8 @@ public class RunGacha : MonoBehaviour
     public void GotoGachaUnit()
     {
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         GachaUnitManager.initid = result;
         GachaUnitManager.teachers.Clear();
         //ここで殿堂入りバードル一覧を取得するAPIを呼び出す

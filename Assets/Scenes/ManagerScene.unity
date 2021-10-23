@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingCanvas: {fileID: 864428056}
   gif: {fileID: 1857701551}
+  tips: {fileID: 2021531650}
   forTest: 0
 --- !u!114 &37573414
 MonoBehaviour:
@@ -903,7 +904,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &864428057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1545,7 +1546,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -310, y: 180}
-  m_SizeDelta: {x: 0, y: 235}
+  m_SizeDelta: {x: 581.47437, y: 235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1857701553
 MonoBehaviour:
@@ -1560,8 +1561,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  size: 23
-  path: Images/Loading/loading-
+  size: 33
+  path: Images/Loading/
 --- !u!114 &1857701554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1631,7 +1632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2021531649
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1664,7 +1665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1673,18 +1674,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5401b243d68138b438e0f21eba999e1e, type: 3}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 50
+    m_MinSize: 0
+    m_MaxSize: 54
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u3010TIPS\u3011\u5148\u751F\u306E\u80FD\u529B\u304C\u9AD8\u3044\u307B\u3069\u3001\u30C1\u30FC\u30E0\u306E\u80FD\u529B\u304C\u4E0A\u304C\u308A\u3084\u3059\u304F\u306A\u308B\u3093\u3060\u3068\u304B\u2026\u2026\r\n"
+  m_Text: 
 --- !u!222 &2021531651
 CanvasRenderer:
   m_ObjectHideFlags: 0
