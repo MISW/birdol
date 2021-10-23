@@ -65,6 +65,8 @@ public abstract class GameWebClient : WebClient
                     Debug.LogError("認証に失敗したため、タイトルシーンに遷移します。");
                     NetworkErrorDialogController.OpenConfirmDialog(() => {
                         Common.loadingCanvas.SetActive(true);
+                        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+                        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
                         Manager.manager.StateQueue((int)gamestate.Title);
                     }, "認証に失敗しました。\nタイトルに戻ります。");
                 }

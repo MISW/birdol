@@ -242,7 +242,7 @@ public class GachaUnitManager : MonoBehaviour
         currentdialog = "";
         currentindex = -1;
         currentcharacter = -1;
-        mainPage.transform.SetSiblingIndex(5);
+        mainPage.transform.SetSiblingIndex(2);
     }
 
     public void CompleteTeacherSelect()
@@ -256,7 +256,7 @@ public class GachaUnitManager : MonoBehaviour
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Visual.ToString();
         pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Dance.ToString();
         currentdialog = "";
-        mainPage.transform.SetSiblingIndex(5);
+        mainPage.transform.SetSiblingIndex(2);
     }
 
     public void ClearCharacterSelect()
@@ -291,7 +291,7 @@ public class GachaUnitManager : MonoBehaviour
         currentdialog = "";
         currentindex = -1;
         currentcharacter = -1;
-        mainPage.transform.SetSiblingIndex(5);
+        mainPage.transform.SetSiblingIndex(2);
     }
 
     public void ClearTeacherSelect()
@@ -306,7 +306,7 @@ public class GachaUnitManager : MonoBehaviour
         pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
         currentdialog = "";
         currentteacher = -1;
-        mainPage.transform.SetSiblingIndex(5);
+        mainPage.transform.SetSiblingIndex(2);
     }
 
     private IEnumerator showError(string error)
@@ -360,6 +360,8 @@ public class GachaUnitManager : MonoBehaviour
         }
         Common.teacher = teachers[currentteacher];
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
         webClient.SetData(Common.progresses,new DendouModel[]{Common.teacher});
         StartCoroutine(webClient.Send());

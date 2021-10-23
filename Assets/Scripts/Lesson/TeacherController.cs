@@ -15,7 +15,7 @@ public class TeacherController : MonoBehaviour
     private IEnumerator updateImg()
     {
         int index = 1;
-        var wait = new WaitForSeconds(0.07f);
+        var wait = new WaitForSecondsRealtime(0.07f);
         while (true)
         {
             gameObject.GetComponent<Image>().sprite = gifsprite[index];
@@ -46,12 +46,12 @@ public class TeacherController : MonoBehaviour
         if (area == "dance")
         {
             Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            pos.x = 150;
+            pos.x = 180;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "vocal")
         {
             Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            pos.x = -150;
+            pos.x = -180;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "visual")
         {

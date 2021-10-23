@@ -129,7 +129,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     private IEnumerator updateImg()
     {
         int index = 0;
-        var wait = new WaitForSeconds(0.07f);
+        var wait = new WaitForSecondsRealtime(0.07f);
         Image character = gameObject.GetComponent<Image>();
         while (true)
         {

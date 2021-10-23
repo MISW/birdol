@@ -31,6 +31,8 @@ public class UIchanger : MonoBehaviour{
 
     public void onClick(){
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         if (Judge_Image_num==0)
         {   //Success
             Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
@@ -45,6 +47,7 @@ public class UIchanger : MonoBehaviour{
             //Failed
             FinishProgressWebClient webClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
             webClient.SetData();
+            webClient.sceneid = (int)gamestate.Failed;
             StartCoroutine(webClient.Send());
         }
     }

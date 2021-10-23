@@ -10,8 +10,9 @@ public class RotText : UIBehaviour, IMeshModifier
     Text text;
     public new void OnValidate()
     {
+#if UNITY_EDITOR
         base.OnValidate();
-
+# endif
         Graphic graphic = base.GetComponent<Graphic>();
         if (graphic != null) graphic.SetVerticesDirty();
         

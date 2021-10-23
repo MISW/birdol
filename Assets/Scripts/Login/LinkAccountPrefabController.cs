@@ -116,6 +116,8 @@ public class LinkAccountPrefabController : MonoBehaviour
     {
         //Titleシーンへ遷移
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Manager.manager.StateQueue((int)gamestate.Title);
     }
 

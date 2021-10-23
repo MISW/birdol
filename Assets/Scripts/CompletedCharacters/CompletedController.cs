@@ -168,6 +168,8 @@ public class CompletedController : MonoBehaviour
     public void ReturnToHome()
     {
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         CompletedCharacters.Clear();
         Manager.manager.StateQueue((int)gamestate.Home);
         

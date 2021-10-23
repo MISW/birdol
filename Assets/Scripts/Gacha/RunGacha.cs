@@ -394,6 +394,8 @@ public class RunGacha : MonoBehaviour
     public void GotoGachaUnit()
     {
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         GachaUnitManager.initid = result;
         GachaUnitManager.teachers.Clear();
         //ここで殿堂入りバードル一覧を取得するAPIを呼び出す
