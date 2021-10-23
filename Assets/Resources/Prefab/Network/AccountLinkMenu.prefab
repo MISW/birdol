@@ -150,6 +150,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1158812528708975632}
     m_Modifications:
+    - target: {fileID: 959702530, guid: c62123d8d8d254309bf0e590835763af, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8665562923872648620, guid: c62123d8d8d254309bf0e590835763af, type: 3}
       propertyPath: m_Name
       value: AccountUI
@@ -237,6 +241,10 @@ PrefabInstance:
     - target: {fileID: 8665562923872648623, guid: c62123d8d8d254309bf0e590835763af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8665562924318464701, guid: c62123d8d8d254309bf0e590835763af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c62123d8d8d254309bf0e590835763af, type: 3}

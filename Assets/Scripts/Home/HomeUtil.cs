@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 public class HomeUtil : MonoBehaviour
 {
-
+    int characterSize = 32;
     public GameObject Gallery;
     public GameObject Ikusei;
     public GameObject CharacterImage;
@@ -18,26 +18,27 @@ public class HomeUtil : MonoBehaviour
     public GameObject AccuntUI;
     int PrevIndex = -1;
     int chara_id;
+    int dialogstatus = 0;
     public Text dialogtext;
     public Image CharacterImageSplite;
     public CharacterModel charactermodel;
     public HomeCharacters homeCharacters;
     public int tempteacherid;
+    public GameObject prefab;
+    public Transform content;
 
+    int[] isUnlocked = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
     private void Start()
     {
-
-        Debug.Log("位置調整必要:2,6");
 
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
 
-        chara_id = 11;
-
         json_parser();
-
         //positionAdjust();
 
+        CharacterListInit();
+        CharacterListPushed(chara_id.ToString());
     }
 
     public void onButtonPressedScoreAttack()
@@ -90,7 +91,7 @@ public class HomeUtil : MonoBehaviour
         Debug.Log("Pushed CharaImage");
         DialogTextChanger();
         Dialog.SetActive(true);
-
+        dialogstatus++;
         //Close Dialog after 5s 
         StartCoroutine(DelayCoroutine(5.0f, () =>
         {
@@ -102,8 +103,7 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedDialog()
     {
         Debug.Log("Pushed Dialog");
-        DialogCloser();
-
+        //Dialog.SetActive(false);
     }
 
     public void onButtonPressedOption()
@@ -114,9 +114,9 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedStandingTester()
     {
         Debug.Log("StandingTester");
-
+        Dialog.SetActive(false);
         chara_id++;
-        if (chara_id > 31) chara_id = 0;
+        if (chara_id >= characterSize) chara_id = 0;
         json_parser();
         //positionAdjust();
     }
@@ -144,12 +144,42 @@ public class HomeUtil : MonoBehaviour
     void json_parser()
     {
         //Load Json file
-        //standing select
-        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
-
-        //charatext select
         string json_tmp = Resources.Load<TextAsset>("HomeData/CharaText").ToString();
         homeCharacters = JsonUtility.FromJson<HomeCharacters>(json_tmp);
+    }
+
+    void standingChanger()
+    {
+        chara_id = Common.HomeStandingId;
+        //standing select
+        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
+    }
+
+    void CharacterListInit()
+    {
+        for (int i = 0; i < characterSize; i++)
+        {
+            if (isUnlocked[i] == 1)
+            {
+                GameObject node = Instantiate(prefab) as GameObject;
+                node.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + i);
+                node.name = i.ToString();
+                node.transform.SetParent(content);
+                node.transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+    }
+
+    public void CharacterListPushed(string s)
+    {
+
+        foreach (Transform child in content.transform)
+        {
+            child.transform.Find("Selected").gameObject.SetActive(false);
+        }
+        content.transform.Find(s).gameObject.transform.Find("Selected").gameObject.SetActive(true);
+        Common.HomeStandingId = int.Parse(s);
+        standingChanger();
     }
 
     void DialogTextChanger()
@@ -163,12 +193,14 @@ public class HomeUtil : MonoBehaviour
         } while ((TextMaxSize != 1 && rand_num == PrevIndex) || rand_num >= TextMaxSize);
 
         PrevIndex = rand_num;
-        dialogtext.text = homeCharacters.Characters[chara_id].text[rand_num];
+        string tmpserifu = homeCharacters.Characters[chara_id].text[rand_num];
+        dialogtext.text = tmpserifu.Replace("[mama]", Common.mom).Replace("[player]", Common.PlayerName);
     }
 
     void DialogCloser()
     {
-        Dialog.SetActive(false);
+        if (dialogstatus != 0) dialogstatus--;
+        if (dialogstatus == 0) Dialog.SetActive(false);
     }
 
     private IEnumerator DelayCoroutine(float seconds, UnityAction callback)
