@@ -46,12 +46,12 @@ public class TeacherController : MonoBehaviour
         if (area == "dance")
         {
             Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            pos.x = 150;
+            pos.x = 180;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "vocal")
         {
             Vector2 pos = transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition;
-            pos.x = -150;
+            pos.x = -180;
             transform.parent.gameObject.GetComponent<RectTransform>().anchoredPosition = pos;
         }else if (area == "visual")
         {

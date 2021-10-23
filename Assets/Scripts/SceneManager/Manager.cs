@@ -86,7 +86,12 @@ public class Manager : MonoBehaviour
         if (SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
-        async.completed += x => SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)Next_GameState));
+        async.completed += x =>
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)Next_GameState));
+            loadingCanvas.SetActive(false);
+            gif.GetComponent<GifPlayer>().StopGif();
+        };
 
         statequeueflag = false;
 
@@ -111,7 +116,6 @@ public class Manager : MonoBehaviour
         }
         yield return new WaitForSeconds(2);
         async.allowSceneActivation = true;
-        loadingCanvas.SetActive(false);
         yield return new WaitUntil(() => SceneManager.GetSceneByBuildIndex((int)Next_GameState).isLoaded);
         gif.GetComponent<GifPlayer>().index = 0;
         SceneVisor Visor2 = GotVisorOnScene();
@@ -125,7 +129,7 @@ public class Manager : MonoBehaviour
         }
         Visor = Visor2;
         Now_GameState = Next_GameState;
-        gif.GetComponent<GifPlayer>().StopGif();
+        
 
         Debug.Log($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
 
