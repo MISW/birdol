@@ -33,6 +33,10 @@ public class GetStoryWebClient : GameWebClient
         base.data = r;
         if (r.result == ConnectionModel.Response.ResultOK)
         {
+            for (int i = 10; i <= 16; i++)
+            {
+                if (!Common.TriggeredSubStory.Contains(i.ToString())) Common.remainingSubstory.Add(i);
+            }
             Common.progressId = r.id;
             Common.mainstoryid = r.main_story_id;
             Common.lessonCount = r.lesson_count;
