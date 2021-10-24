@@ -183,8 +183,8 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
-            parenttransform.y -= 150;
-            //parenttransform.y -= 80;
+            //parenttransform.y -= 150;
+            parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }

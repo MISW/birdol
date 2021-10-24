@@ -9,7 +9,7 @@
 /選択start
 /sel(おかしいよ)>12a
 /sel(そんなことない)>>12b
-
+/選択end
 
 ///12astart
 
