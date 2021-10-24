@@ -138,6 +138,10 @@ public class SignupSceneController : SceneVisor
     private void OnSignupSuccess()
     {
         Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         TokenAuthorizeWebClient webClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
         StartCoroutine(Login());
     }

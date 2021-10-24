@@ -167,6 +167,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     void Start()
     {
         Application.targetFrameRate = 60;
+        Debug.Log("CurID:"+this.id);
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
     }

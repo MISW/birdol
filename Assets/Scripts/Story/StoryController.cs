@@ -51,6 +51,8 @@ public class StoryController : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         if (Common.mainstoryid == "opening")
         {
             Common.mainstoryid = "0";

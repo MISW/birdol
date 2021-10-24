@@ -81,8 +81,16 @@ public class RunGacha : MonoBehaviour
         }
     }
 
+    bool triggerdPlayer = false;
+
     void Update()
     {
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gacha")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG08");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
         if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -396,6 +404,8 @@ public class RunGacha : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         GachaUnitManager.initid = result;
         GachaUnitManager.teachers.Clear();
         //ここで殿堂入りバードル一覧を取得するAPIを呼び出す

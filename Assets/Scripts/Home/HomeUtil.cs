@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class HomeUtil : MonoBehaviour
 {
@@ -39,6 +40,21 @@ public class HomeUtil : MonoBehaviour
 
         CharacterListInit();
         CharacterListPushed(chara_id.ToString());
+        if (Common.mainstoryid != null)
+        {
+            Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
+        }
+    }
+
+    bool triggerdPlayer = false;
+    private void Update()
+    {
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Home")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
     }
 
     public void onButtonPressedScoreAttack()
@@ -47,7 +63,12 @@ public class HomeUtil : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
-        Manager.manager.StateQueue((int)gamestate.FreeSelect);
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "freeselect";
+        StartCoroutine(getCompletedWebClient.Send());
+        
     }
 
     public void onButtonPressedGallery()
@@ -56,6 +77,8 @@ public class HomeUtil : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         GetGalleryWebClient webClient = new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
         StartCoroutine(webClient.Send());
 
@@ -67,6 +90,8 @@ public class HomeUtil : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         CompletedController.CompletedCharacters.Clear();
         GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
         getCompletedWebClient.target = "completed";
@@ -79,6 +104,8 @@ public class HomeUtil : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         if (Common.mainstoryid == null)
         {
             Manager.manager.StateQueue((int)gamestate.Gacha);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Ending : MonoBehaviour
@@ -253,8 +254,21 @@ public class Ending : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
         GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
         StartCoroutine(getStoryWebClient.Send());
+    }
+
+    bool triggerdPlayer = false;
+    void Update()
+    {
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Ending")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG09");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
     }
 }

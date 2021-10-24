@@ -50,4 +50,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Failed.unity
     guid: 0dde1b734d00d524f9018e62dacf551f
+  - enabled: 1
+    path: Assets/Scenes/FreeSelect.unity
+    guid: 95e5da7ef684f264c83d357d2ae7a41c
+  - enabled: 1
+    path: Assets/Scenes/FreeLive.unity
+    guid: 52a2450e454451b4cb4a9f382bdf39e7
   m_configObjects: {}

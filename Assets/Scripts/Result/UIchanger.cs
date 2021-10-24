@@ -29,10 +29,36 @@ public class UIchanger : MonoBehaviour{
         Score_Image.GetComponent<Image>().sprite = Score_Sprites[Judge_Image_num];
     }
 
+    public void onClickFree()
+    {
+        Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
+        Manager.manager.StateQueue((int)gamestate.Home);
+    }
+
+    public void Twitter()
+    {
+        string comment = WWW.EscapeURL($"{Common.PlayerName}さんがバードル☆マーチのフリーライブで{Score_num}♡稼ぎました！ #birdol", System.Text.Encoding.UTF8);
+        string tweetURL = "http://twitter.com/intent/tweet?text=" + comment + "&hashtags=" + "#birdol";
+
+#if UNITY_EDITOR
+        Application.OpenURL(tweetURL);
+#elif UNITY_WEBGL
+        OpenNewWindow(tweetURL);
+#else
+        Application.OpenURL(tweetURL);
+#endif
+    }
+
     public void onClick(){
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         if (Judge_Image_num==0)
         {   //Success
             Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
