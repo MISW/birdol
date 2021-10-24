@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour
     public GameObject loadingCanvas;
     public GameObject gif;
     public Text tips;
+    public AudioSource bgmplayer;
     
 
     private void Awake()
@@ -32,10 +33,11 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        init();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
         Common.loadingTips = tips;
+        Common.bgmplayer = bgmplayer;
+        init();
     }
 
     // Update is called once per frame

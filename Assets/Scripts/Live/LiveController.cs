@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LiveController : MonoBehaviour
@@ -36,6 +37,8 @@ public class LiveController : MonoBehaviour
     CharacterController[] characterControllers = new CharacterController[5];
 
     ProgressModel[] tempProgress = new ProgressModel[5];
+
+    public GameObject backtext;
 
     public static bool executingSkills = false;
 
@@ -95,6 +98,7 @@ public class LiveController : MonoBehaviour
             CharacterModel mainCharacter = Common.characters[Common.progresses[i].MainCharacterId];
             CharacterModel subCharacter = Common.characters[Common.progresses[i].SupportCharacterId];
             tempProgress[i] = new ProgressModel();
+            tempProgress[i].Name = Common.progresses[i].Name;
             tempProgress[i].MainCharacterId = Common.progresses[i].MainCharacterId;
             tempProgress[i].SupportCharacterId = Common.progresses[i].SupportCharacterId;
             tempProgress[i].Visual = Common.progresses[i].Visual;
@@ -274,17 +278,8 @@ public class LiveController : MonoBehaviour
     {
         characterObj.executingSkill = true;
         float newscore = score;
-        //パッシブスキルの発動
         ProgressModel characterInf = characterObj.characterInf;
-        if (RandomArray.Probability(characterInf.PassiveSkillProbability*100.0f))
-        {
-            passiveList[index].SetActive(true);
-            execPassiveSkill(characterObj);
-        }
-        else
-        {
-            passiveList[index].SetActive(false);
-        }
+       
         float parascore;
         float activeskillscore = 0;
         if (characterObj.area == "visual") parascore = characterInf.Visual;
@@ -351,15 +346,35 @@ public class LiveController : MonoBehaviour
 
     private IEnumerator execSkills()
     {
-        GameObject[] objs = LiveCharacter;
+        backtext.SetActive(false);
+        for (int i = 0;i < 5; i++)
+        {
+            if (RandomArray.Probability(tempProgress[i].PassiveSkillProbability * 100.0f))
+            {
+                passiveList[i].SetActive(true);
+                execPassiveSkill(characterControllers[i]);
+            }
+            else
+            {
+                passiveList[i].SetActive(false);
+            }
+        }
         for (int i = 0; i < 5; i++)
         {
             yield return execSkillofOnePerson(characterControllers[i],i,i==selectedcharacter);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            characterControllers[i].characterInf.Visual = Common.progresses[i].Visual;
+            characterControllers[i].characterInf.Vocal = Common.progresses[i].Vocal;
+            characterControllers[i].characterInf.Dance = Common.progresses[i].Dance;
+            characterControllers[i].setParamsFont();
         }
         remainingTurn--;
         characterControllers[selectedcharacter].finishSkill();
         RemainingText.text = remainingTurn.ToString();
         executingSkills = false;
+        backtext.SetActive(true);
         if (remainingTurn == 0)
         {
             yield return finishLive();
@@ -382,8 +397,18 @@ public class LiveController : MonoBehaviour
         checkPos();
     }
 
+    bool triggeredPlayer = false;
     void Update()
     {
         if(!executingSkills)checkPos();
+        if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Live")
+        {
+            String filename = "TM01";
+            int storyid = int.Parse(Common.mainstoryid.Substring(0, 1));
+            if (storyid == 4 || storyid == 7) filename = "TM02";
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/"+filename);
+            Common.bgmplayer.Play();
+            triggeredPlayer = true;
+        }
     }
 }

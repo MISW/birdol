@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LessonController : MonoBehaviour
@@ -138,6 +139,8 @@ public class LessonController : MonoBehaviour
             Common.loadingCanvas.SetActive(true);
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+            Common.bgmplayer.Stop();
+            Common.bgmplayer.time = 0;
             Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
             storyWebClient.SetData(Common.mainstoryid, 5);
             storyWebClient.sceneid = (int)gamestate.Story;
@@ -160,8 +163,15 @@ public class LessonController : MonoBehaviour
         checkPos();
     }
 
+    bool triggeredPlayer = false;
     void Update()
     {
         if(!executingSkills)checkPos();
+        if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Lesson")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG06");
+            Common.bgmplayer.Play();
+            triggeredPlayer = true;
+        }
     }
 }

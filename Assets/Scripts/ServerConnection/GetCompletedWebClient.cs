@@ -34,6 +34,7 @@ public class GetCompletedWebClient : GameWebClient
         {
             if (target == "gachaunit")
             {
+                GachaUnitManager.teachers.Clear();
                 foreach (DendouModel character in r.characters)
                 {
                     Debug.Log("character:"+character.Name);
@@ -42,12 +43,22 @@ public class GetCompletedWebClient : GameWebClient
                 Manager.manager.StateQueue((int)gamestate.GachaUnit);
             }else if(target == "completed")
             {
+                CompletedController.CompletedCharacters.Clear();
                 foreach (DendouModel character in r.characters)
                 {
                     Debug.Log("character:" + character.Name);
                     CompletedController.CompletedCharacters.Add(character);
                 }
                 Manager.manager.StateQueue((int)gamestate.CompletedCharacters);
+            }else if(target == "freeselect")
+            {
+                FreeSelectManager.CompletedCharacters.Clear();
+                foreach (DendouModel character in r.characters)
+                {
+                    Debug.Log("character:" + character.Name);
+                    FreeSelectManager.CompletedCharacters.Add(character);
+                }
+                Manager.manager.StateQueue((int)gamestate.FreeSelect);
             }
         }
         else

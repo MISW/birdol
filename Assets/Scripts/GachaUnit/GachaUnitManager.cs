@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 class UnitInf
@@ -362,8 +363,22 @@ public class GachaUnitManager : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
         webClient.SetData(Common.progresses,new DendouModel[]{Common.teacher});
         StartCoroutine(webClient.Send());
     }
-   }
+
+    bool triggerdPlayer = false;
+    private void Update()
+    {
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "GachaUnit")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
+    }
+
+}

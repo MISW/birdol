@@ -28,6 +28,10 @@ public class FailedManager : MonoBehaviour
         Common.loadingTips.text = RandomArray.GetRandom(tips);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
         GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
         StartCoroutine(getStoryWebClient.Send());
