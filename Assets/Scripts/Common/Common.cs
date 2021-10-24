@@ -18,6 +18,7 @@ public partial class Common : MonoBehaviour
     public static GameObject loadingGif;
     public static AudioSource bgmplayer;
     public static Text loadingTips;
+    public static List<int> remainingSubstory = new List<int>(); 
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 1600, 2000, 2400, 2800, 3300 };
 
@@ -89,6 +90,21 @@ public partial class Common : MonoBehaviour
                 PlayerPrefs.SetString(PLAYERPREFS_PLAYER_NAME, playerName);
                 PlayerPrefs.Save();
             }
+        }
+    }
+
+    private const string TRIGGERED_SUB = "TRIGGERED_SUB";
+    public static string TriggeredSubStory
+    {
+        get
+        {
+            
+            return PlayerPrefs.GetString(TRIGGERED_SUB);
+        }
+        set
+        {
+            PlayerPrefs.SetString(TRIGGERED_SUB, value);
+            PlayerPrefs.Save();
         }
     }
 

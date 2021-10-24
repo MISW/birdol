@@ -57,6 +57,7 @@ public class FinishProgressWebClient : GameWebClient
     protected override void HandleGameSuccessData(string response)
     {
          FinishProgressResponseData r = JsonUtility.FromJson<FinishProgressResponseData>(response);
+        Common.TriggeredSubStory = "";
         if (r.result == ConnectionModel.Response.ResultOK)
         {
             Manager.manager.StateQueue(sceneid);
