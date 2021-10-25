@@ -6,7 +6,14 @@ using UnityEngine.SceneManagement;
 public class PressedAction : MonoBehaviour
 {
 
-    
+    private void Start()
+    {
+        Common.bgmplayer.time = 0;
+        Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/TM01");
+        Common.bgmplayer.Play();
+    }
+
+
     IEnumerator LoginAndSync()
     {
         TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
@@ -22,6 +29,8 @@ public class PressedAction : MonoBehaviour
             Common.loadingCanvas.SetActive(true);
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+            Common.bgmplayer.Stop();
+            Common.bgmplayer.time = 0;
             Manager.manager.StateQueue((int)gamestate.Signup);
         }
         else //通信自体が失敗。これはGameWebClientの方で対処するためここでは何も書かなくて大丈夫なはず。
@@ -35,6 +44,8 @@ public class PressedAction : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         if (Common.UserID == 0)
         {
             Manager.manager.StateQueue((int)gamestate.Signup); //アカウント新規登録(またはアカウント連携)を行うSignupシーンへ遷移する

@@ -9,6 +9,7 @@ public class UpdateCharacterWebClient : GameWebClient
     [Header("Request Data Information")]
     [SerializeField] protected UpdateCharacterRequestData updateCharacterRequestData;
 
+    public bool isReturnLesson = false;
 
     [Serializable]
     public struct UpdateCharacterRequestData

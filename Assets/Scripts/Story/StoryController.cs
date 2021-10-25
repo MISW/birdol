@@ -34,16 +34,53 @@ public class StoryController : MonoBehaviour
 
     private Color normal = new Color(1f,1f,1f);
     private Color dark = new Color(0.5f, 0.5f, 0.5f);
+
+    public static bool isSubStory = false;
     void Start()
     {
         if (Common.characters == null) Common.initCharacters();//Test Only
-        datas = Resources.Load<TextAsset>("story/"+Common.mainstoryid).ToString().Split(
+        if (isSubStory)
+        {
+            int id = RandomArray.GetRandom(Common.remainingSubstory);
+            Common.TriggeredSubStory += (id + ",");
+            Common.remainingSubstory.Remove(id);
+            datas = Resources.Load<TextAsset>("story/sub/" + id).ToString().Split(
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
-        );
+            );
+        }
+        else
+        {
+            datas = Resources.Load<TextAsset>("story/" + Common.mainstoryid).ToString().Split(
+            new[] { "\r\n", "\r", "\n" },
+            StringSplitOptions.None
+            );
+        }
         size = datas.Length;
         UpdateDialog();
     }
+
+    private IEnumerator UpdateSub()
+    {
+        UpdateCharacterWebClient characterWebClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
+        characterWebClient.isReturnLesson = true;
+        characterWebClient.SetData();
+        yield return characterWebClient.Send();
+        if(Common.lessonCount > 0)
+        {
+            Manager.manager.StateQueue((int)gamestate.Lesson);
+        }
+        else
+        {
+            UpdateMainStoryWebClient storyWebClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
+            Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
+            storyWebClient.SetData(Common.mainstoryid, 5);
+            StoryController.isSubStory = false;
+            storyWebClient.sceneid = (int)gamestate.Story;
+            yield return storyWebClient.Send();
+        }
+    }
+   
 
     public void EndStory()
     {
@@ -51,55 +88,68 @@ public class StoryController : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
-        if (Common.mainstoryid == "opening")
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
+        if (isSubStory)
         {
-            Common.mainstoryid = "0";
-            sceneid = (int)gamestate.Story;
+            isSubStory = false;
+            StartCoroutine(UpdateSub());
         }
-        else if (Common.mainstoryid == "0")
+        else
         {
-            Common.mainstoryid = "1a";
-            sceneid = (int)gamestate.Story;
+            isSubStory = false;
+            if (Common.mainstoryid == "opening")
+            {
+                Common.mainstoryid = "0";
+                sceneid = (int)gamestate.Story;
+            }
+            else if (Common.mainstoryid == "0")
+            {
+                Common.mainstoryid = "1a";
+                sceneid = (int)gamestate.Story;
+            }
+            else if (Common.mainstoryid == "8c")
+            {
+                Common.mainstoryid = "ending";
+                sceneid = (int)gamestate.Story;
+            }
+            else if (Common.mainstoryid == "ending")
+            {
+                sceneid = (int)gamestate.Ending;
+                FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+                finishiClient.sceneid = (int)gamestate.Ending;
+                finishiClient.SetData();
+                StartCoroutine(finishiClient.Send());
+                return;
+            }
+            else if (Common.mainstoryid.EndsWith("a"))
+            {
+                //To Lesson
+                sceneid = (int)gamestate.Lesson;
+            }
+            else if (Common.mainstoryid.EndsWith("b"))
+            {
+                //To Live
+                sceneid = (int)gamestate.Live;
+            }
+            else if (Common.mainstoryid.EndsWith("c"))
+            {
+                //To Live
+                Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
+                sceneid = (int)gamestate.Story;
+            }
+            Debug.Log(Common.progressId);
+            UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
+            Common.lessonCount = 5;
+            webClient.SetData(Common.mainstoryid, Common.lessonCount);
+            webClient.sceneid = sceneid;
+            StartCoroutine(webClient.Send());
         }
-        else if (Common.mainstoryid == "8c")
-        {
-            Common.mainstoryid = "ending";
-            sceneid = (int)gamestate.Story;
-        }
-        else if (Common.mainstoryid == "ending")
-        {
-            sceneid = (int)gamestate.Ending;
-            FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
-            finishiClient.sceneid = (int)gamestate.Ending;
-            finishiClient.SetData();
-            StartCoroutine(finishiClient.Send());
-            return;
-        }
-        else if (Common.mainstoryid.EndsWith("a"))
-        {
-            //To Lesson
-            sceneid = (int)gamestate.Lesson;
-        }
-        else if (Common.mainstoryid.EndsWith("b"))
-        {
-            //To Live
-            sceneid = (int)gamestate.Live;
-        }
-        else if (Common.mainstoryid.EndsWith("c"))
-        {
-            //To Live
-            Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
-            sceneid = (int)gamestate.Story;
-        }
-        Debug.Log(Common.progressId);
-        UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
-        Common.lessonCount = 5;
-        webClient.SetData(Common.mainstoryid,Common.lessonCount);
-        webClient.sceneid = sceneid;
-        StartCoroutine(webClient.Send());
+        
     }
 
-
+    bool allowShowing = true;
+    string condId;
     public void UpdateDialog()
     {
         if (!showingseifu&&!selectionDialog.active)
@@ -113,7 +163,7 @@ public class StoryController : MonoBehaviour
             String data = datas[currentline];
             Debug.Log("Data:" + data);
             currentline++;
-            if (data.StartsWith("##"))
+           if (data.StartsWith("##") && allowShowing)
             {
                 String name = data.Substring(2);
                 String filename = "";
@@ -130,7 +180,7 @@ public class StoryController : MonoBehaviour
                 characterName.text = name;
                 UpdateDialog();
             }
-            else if (data.StartsWith("#"))
+            else if (data.StartsWith("#") && allowShowing)
             {
                 String name = data.Substring(1);
                 String filename = "";
@@ -170,7 +220,20 @@ public class StoryController : MonoBehaviour
                 selectionDialog.SetActive(true);
             }
             else if (data.StartsWith("/")){
-                if (data.StartsWith("/‘I‘ðstart"))
+                if (data.StartsWith("///"))
+                {
+                    if (data.EndsWith("start"))
+                    {
+                        string choiceText = data.Replace("///","").Replace("start","");
+                        Debug.Log("CurrentChoice:"+choiceText);
+                        allowShowing = (choiceText == condId);
+                    }
+                    else
+                    {
+                        allowShowing = true;
+                    }
+                }
+                else if (data.StartsWith("/‘I‘ðstart") && allowShowing)
                 {
                     int count = 0;
                     while (selectionqueue.Count != 0)
@@ -178,7 +241,7 @@ public class StoryController : MonoBehaviour
                         Destroy(selectionqueue.Dequeue());
                     }
                 }
-                else if (data.StartsWith("/sel"))
+                else if (data.StartsWith("/sel") && allowShowing)
                 {
                     Button selectButton;
                     RectTransform rt = selectionDialog.GetComponent<RectTransform>();
@@ -208,30 +271,55 @@ public class StoryController : MonoBehaviour
                     selectButton.GetComponentInChildren<Text>().text = choiceText;
                     selectButton.onClick.RemoveAllListeners();
                     selectButton.onClick.AddListener(delegate {
-                        string command = data.Substring(data.IndexOf(">>"));
+                        string command = data.Substring(data.IndexOf(">>")+2);
                         if (command != "all")
                         {
-
+                            condId = command;
+                            Debug.Log("CurrentChoice:" + condId);
                         }
                         selectionDialog.SetActive(false);
                         UpdateDialog();
                     });
                     selcount++;
-                }else if (data.StartsWith("/2‘Ìon"))
+                }else if (data.StartsWith("/2‘Ìon") && allowShowing)
                 {
                     characterImage.enabled = false;
                     leftImage.enabled = true;
                     rightImage.enabled = true;
                 }
-                else if (data.StartsWith("/2‘Ìoff"))
+                else if (data.StartsWith("/2‘Ìoff") && allowShowing)
                 {
                     characterImage.enabled = true;
                     leftImage.enabled = false;
                     rightImage.enabled = false;
                 }
+                else if (data.StartsWith("/BGM") && allowShowing)
+                {
+                    int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
+                    string bgm = data.Substring(data.IndexOf("(") + 1, ctlength);
+                    Debug.Log("BGM:"+bgm);
+                    Common.bgmplayer.Stop();
+                    Common.bgmplayer.time = 0;
+                    Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
+                    Common.bgmplayer.Play();
+                }
+                else if (data.StartsWith("/active") && allowShowing)
+                {
+                    foreach (ProgressModel progress in Common.progresses)
+                    {
+                        progress.ActiveSkillLevel++;
+                    }
+                }
+                else if (data.StartsWith("/passive") && allowShowing)
+                {
+                    foreach (ProgressModel progress in Common.progresses)
+                    {
+                        progress.PassiveSkillLevel++;
+                    }
+                }
                 UpdateDialog();
             }
-            else if (data.Length > 0)
+            else if (data.Length > 0 && allowShowing)
             {
                 curserifu = data.Replace("[mom]",Common.mom).Replace("[player]",Common.PlayerName);
                 coroutine = ShowSerifu();
@@ -241,58 +329,6 @@ public class StoryController : MonoBehaviour
             {
                 UpdateDialog();
             }
-            
-            /*
-            else if (curevent.choiceName != null)
-            {
-                selectionName.text = curevent.choiceName;
-                int count = 0;
-                
-                while (selectionqueue.Count != 0)
-                {
-                    Destroy(selectionqueue.Dequeue());
-                }
-                foreach (Choice choice in curevent.choices)
-                {
-                    Button selectButton;
-                    RectTransform rt = selectionDialog.GetComponent<RectTransform>();
-                    if (count==0)
-                    {
-                        selectButton = firstSelection.GetComponent<Button>();
-                        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 300);
-                    }
-                    else
-                    {
-                        GameObject newSelection = GameObject.Instantiate(firstSelection);
-                        selectButton = newSelection.GetComponent<Button>();
-                        selectButton.GetComponent<RectTransform>().SetParent(selectionDialog.transform);
-                        selectButton.GetComponent<RectTransform>().localPosition = Vector3.zero;
-                        selectButton.GetComponent<RectTransform>().localRotation = Quaternion.identity;
-                        selectButton.GetComponent<RectTransform>().localScale = Vector3.one;
-                        selectButton.GetComponent<RectTransform>().pivot = firstSelection.GetComponent<RectTransform>().pivot;
-                        selectButton.GetComponent<RectTransform>().anchorMin = firstSelection.GetComponent<RectTransform>().anchorMin;
-                        selectButton.GetComponent<RectTransform>().anchorMax = firstSelection.GetComponent<RectTransform>().anchorMax;
-                        float buttonHeight = firstSelection.GetComponent<RectTransform>().rect.height;
-                        selectButton.GetComponent<RectTransform>().anchoredPosition = firstSelection.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, -1 * (buttonHeight + 15) * count);
-                        selectButton.GetComponent<RectTransform>().sizeDelta = firstSelection.GetComponent<RectTransform>().sizeDelta;
-                        newSelection.name = "otherselection";
-                        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,rt.rect.height+ (buttonHeight+10));
-                        selectionqueue.Enqueue(newSelection);
-                    }
-                    selectButton.GetComponentInChildren<Text>().text = choice.choiceName;
-                    selectButton.onClick.RemoveAllListeners();
-                    selectButton.onClick.AddListener(delegate {
-                        currentEventId = 0;
-                        currentStoryId = choice.targetStoryId;
-                        Debug.Log("TargentSelection:" + choice.choiceName);
-                        Debug.Log("TargentStoryId:"+choice.targetStoryId);
-                        selectionDialog.SetActive(false);
-                        UpdateDialog();
-                    });
-                    count++;
-                }
-                selectionDialog.SetActive(true);
-            }*/
         }
         else if (showingseifu)
         {

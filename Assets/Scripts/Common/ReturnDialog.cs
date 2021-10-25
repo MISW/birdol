@@ -12,6 +12,8 @@ public class ReturnDialog : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         Manager.manager.StateQueue((int)gamestate.Home);
     }
 

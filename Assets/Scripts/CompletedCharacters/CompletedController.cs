@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CompletedController : MonoBehaviour
@@ -170,6 +171,8 @@ public class CompletedController : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         CompletedCharacters.Clear();
         Manager.manager.StateQueue((int)gamestate.Home);
         
@@ -190,6 +193,17 @@ public class CompletedController : MonoBehaviour
         }
         Destroy(HorizontalChild);
         FindStar();
+    }
+
+    bool triggerdPlayer = false;
+    private void Update()
+    {
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "CompletedCharacters")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG03");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
     }
 
 }

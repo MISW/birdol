@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 /**
 To-do:
@@ -111,9 +112,16 @@ public class GalleryManager : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    bool triggerdPlayer = false;
     void Update()
     {
-        
+        if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gallery")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG02");
+            Common.bgmplayer.Play();
+            triggerdPlayer = true;
+        }
     }
 
     /// <summary>
@@ -161,6 +169,8 @@ public class GalleryManager : MonoBehaviour
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        Common.bgmplayer.Stop();
+        Common.bgmplayer.time = 0;
         Manager.manager.StateQueue((int)gamestate.Home);
     }
 

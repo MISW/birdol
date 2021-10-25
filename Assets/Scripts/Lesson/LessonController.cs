@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LessonController : MonoBehaviour
@@ -131,6 +132,16 @@ public class LessonController : MonoBehaviour
             executingSkills = false;
             storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
             yield return storyWebClient.Send();
+            if(RandomArray.Probability(0.3f * 100.0f))
+            {
+                Common.loadingCanvas.SetActive(true);
+                Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+                Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+                Common.bgmplayer.Stop();
+                Common.bgmplayer.time = 0;
+                StoryController.isSubStory = true;
+                Manager.manager.StateQueue((int)gamestate.Story);
+            }
         }
         else
         {
@@ -138,8 +149,11 @@ public class LessonController : MonoBehaviour
             Common.loadingCanvas.SetActive(true);
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+            Common.bgmplayer.Stop();
+            Common.bgmplayer.time = 0;
             Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
             storyWebClient.SetData(Common.mainstoryid, 5);
+            StoryController.isSubStory = false;
             storyWebClient.sceneid = (int)gamestate.Story;
             yield return storyWebClient.Send();
         }
@@ -160,8 +174,15 @@ public class LessonController : MonoBehaviour
         checkPos();
     }
 
+    bool triggeredPlayer = false;
     void Update()
     {
         if(!executingSkills)checkPos();
+        if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Lesson")
+        {
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG06");
+            Common.bgmplayer.Play();
+            triggeredPlayer = true;
+        }
     }
 }
