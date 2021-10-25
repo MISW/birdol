@@ -21,6 +21,7 @@ public class HomeUtil : MonoBehaviour
     int chara_id;
     int dialogstatus = 0;
     public Text dialogtext;
+    public Text chosencharacter;
     public Image CharacterImageSplite;
     public CharacterModel charactermodel;
     public HomeCharacters homeCharacters;
@@ -28,9 +29,12 @@ public class HomeUtil : MonoBehaviour
     public GameObject prefab;
     public Transform content;
 
-    int[] isUnlocked = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+    private List<bool> isUnlocked = new List<bool>();
     private void Start()
     {
+        //解禁状況仮データ
+        for (int i = 0; i <= characterSize; i++) isUnlocked.Add(true);
+
 
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
@@ -184,13 +188,14 @@ public class HomeUtil : MonoBehaviour
         chara_id = Common.HomeStandingId;
         //standing select
         CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
+        chosencharacter.text = "選択中　：　" + homeCharacters.Characters[chara_id].name;
     }
 
     void CharacterListInit()
     {
         for (int i = 0; i < characterSize; i++)
         {
-            if (isUnlocked[i] == 1)
+            if (isUnlocked[i])
             {
                 GameObject node = Instantiate(prefab) as GameObject;
                 node.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + i);
