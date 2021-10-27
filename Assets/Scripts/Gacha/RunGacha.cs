@@ -37,6 +37,9 @@ public class RunGacha : MonoBehaviour
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
         skillLabel.text = "";
+        float ratio = Screen.currentResolution.height / Screen.currentResolution.width;
+        resultImage.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
+        backGround.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
 
         GameObject[] eggsobj = GameObject.FindGameObjectsWithTag("GachaEgg");
 
@@ -45,7 +48,7 @@ public class RunGacha : MonoBehaviour
             eggs[i] = eggsobj[i].GetComponent<MeshRenderer>();
         }
 
-        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
+        //   cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
 
         resultIndex = 0;
         result10.SetActive(false);
@@ -295,7 +298,7 @@ public class RunGacha : MonoBehaviour
     {
         result10.SetActive(false);
 
-        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
+        //  cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
 
         int resR = 3;
         int res;
@@ -370,12 +373,12 @@ public class RunGacha : MonoBehaviour
     public void Skip()
     {
         StopAllCoroutines();
-        cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+        //   cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
         setNameAlpha(0);
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
-        skillLabel.text="";
+        skillLabel.text = "";
         isResultShowing = false;
         resultImageObj.SetActive(false);
         result10.SetActive(true);
