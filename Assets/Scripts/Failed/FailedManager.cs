@@ -30,11 +30,11 @@ public class FailedManager : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        Common.bgmplayer.Stop();
-        Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
-        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
-        StartCoroutine(getStoryWebClient.Send());
+        FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
+        finishiClient.sceneid = (int)gamestate.Ending;
+        finishiClient.SetData();
+        StartCoroutine(finishiClient.Send());
     }
     
     IEnumerator fadeIn(GameObject text)
