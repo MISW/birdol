@@ -24,6 +24,7 @@ public class StoryController : MonoBehaviour
     public Image characterImage;
     public Image leftImage;
     public Image rightImage;
+    public Image background;
     public GameObject selectionDialog;
     public GameObject firstSelection;
     float showspeed = 0.05f;
@@ -115,7 +116,6 @@ public class StoryController : MonoBehaviour
             }
             else if (Common.mainstoryid == "ending")
             {
-                sceneid = (int)gamestate.Ending;
                 FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
                 finishiClient.sceneid = (int)gamestate.Ending;
                 finishiClient.SetData();
@@ -224,8 +224,8 @@ public class StoryController : MonoBehaviour
                 {
                     if (data.EndsWith("start"))
                     {
-                        string choiceText = data.Replace("///","").Replace("start","");
-                        Debug.Log("CurrentChoice:"+choiceText);
+                        string choiceText = data.Replace("///", "").Replace("start", "");
+                        Debug.Log("CurrentChoice:" + choiceText);
                         allowShowing = (choiceText == condId);
                     }
                     else
@@ -266,12 +266,13 @@ public class StoryController : MonoBehaviour
                         newSelection.name = "otherselection";
                         selectionqueue.Enqueue(newSelection);
                     }
-                    int ctlength = data.IndexOf(")") - data.IndexOf("(")-1;
-                    string choiceText = data.Substring(data.IndexOf("(")+1,ctlength);
+                    int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
+                    string choiceText = data.Substring(data.IndexOf("(") + 1, ctlength);
                     selectButton.GetComponentInChildren<Text>().text = choiceText;
                     selectButton.onClick.RemoveAllListeners();
-                    selectButton.onClick.AddListener(delegate {
-                        string command = data.Substring(data.IndexOf(">>")+2);
+                    selectButton.onClick.AddListener(delegate
+                    {
+                        string command = data.Substring(data.IndexOf(">>") + 2);
                         if (command != "all")
                         {
                             condId = command;
@@ -281,7 +282,8 @@ public class StoryController : MonoBehaviour
                         UpdateDialog();
                     });
                     selcount++;
-                }else if (data.StartsWith("/2ëÃon") && allowShowing)
+                }
+                else if (data.StartsWith("/2ëÃon") && allowShowing)
                 {
                     characterImage.enabled = false;
                     leftImage.enabled = true;
@@ -293,11 +295,26 @@ public class StoryController : MonoBehaviour
                     leftImage.enabled = false;
                     rightImage.enabled = false;
                 }
+                else if (data.StartsWith("/îwåi") && allowShowing)
+                {
+                    int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
+                    string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
+                    background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
+
+                }
+                else if (data.StartsWith("/BGMàÍéûí‚é~") && allowShowing)
+                {
+                    Common.bgmplayer.Pause();
+                }
+                else if (data.StartsWith("/BGMçƒäJ") && allowShowing)
+                {
+                    Common.bgmplayer.Play();
+                }
                 else if (data.StartsWith("/BGM") && allowShowing)
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string bgm = data.Substring(data.IndexOf("(") + 1, ctlength);
-                    Debug.Log("BGM:"+bgm);
+                    Debug.Log("BGM:" + bgm);
                     Common.bgmplayer.Stop();
                     Common.bgmplayer.time = 0;
                     Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);

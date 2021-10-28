@@ -18,6 +18,7 @@ public class Manager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
+        Common.CreateRsaKeyPair();//Android‰Šú‰»‘Îô
         if (manager == null)
         {
             manager = this;
