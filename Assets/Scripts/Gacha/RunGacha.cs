@@ -10,13 +10,11 @@ using UnityEngine.SceneManagement;
 
 public class RunGacha : MonoBehaviour
 {
-    //�������jA
     List<CharacterModel> R3, R2, R1;
     CharacterModel cm;
     float[] probVec = { 0.1f, 0.25f, 0.65f };
     [SerializeField] GameObject result10, resultImageObj, incubator, hinge, overPanelObj, particleObj, skipBtn;
     GameObject[] gachaobjs = new GameObject[10];
-    [SerializeField] CanvasScaler cs;
     int resultIndex;
     int[] result = new int[10];
     bool isResultShowing, isSkip, isSkippable;
@@ -47,8 +45,6 @@ public class RunGacha : MonoBehaviour
         {
             eggs[i] = eggsobj[i].GetComponent<MeshRenderer>();
         }
-
-        //   cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
 
         resultIndex = 0;
         result10.SetActive(false);
@@ -290,8 +286,6 @@ public class RunGacha : MonoBehaviour
     {
         result10.SetActive(false);
 
-        //  cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Shrink;
-
         int resR = 3;
         int res;
         foreach (GameObject gachaobj in gachaobjs)
@@ -365,7 +359,6 @@ public class RunGacha : MonoBehaviour
     public void Skip()
     {
         StopAllCoroutines();
-        //   cs.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
         setNameAlpha(0);
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
