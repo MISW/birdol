@@ -244,6 +244,9 @@ public class Ending : MonoBehaviour
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Common.progresses[i].MainCharacterId);
+            //CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
+            CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0");
+            //CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Characters[i].MainCharacterId + "/Ch-0");
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
