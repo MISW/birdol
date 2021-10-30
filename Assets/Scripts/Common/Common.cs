@@ -17,11 +17,27 @@ public partial class Common : MonoBehaviour
     public static GameObject loadingCanvas;
     public static GameObject loadingGif;
     public static AudioSource bgmplayer;
+    public static AudioSource seplayer;
+    public static AudioSource subseplayer;
     public static Text loadingTips;
     public static List<int> remainingSubstory = new List<int>(); 
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 1600, 2000, 2400, 2800, 3300 };
 
+    public static Dictionary<string, AudioClip> seclips;
+
+    public static void initSounds()
+    {
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"okbig1", (AudioClip)Resources.Load("SE/okbig1") },
+            {"ikuseistart1", (AudioClip)Resources.Load("SE/ikuseistart1") },
+            {"freelive1", (AudioClip)Resources.Load("SE/menu/freelive1") },
+            {"zukan1", (AudioClip)Resources.Load("SE/menu/zukan1") },
+            {"sudattabirdol1", (AudioClip)Resources.Load("SE/menu/sudattabirdol1") },
+            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
+        };
+    }
     public static void initCharacters()
     {
         string json = Resources.Load<TextAsset>("Common/characters").ToString();

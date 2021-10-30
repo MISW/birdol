@@ -7,6 +7,11 @@ public class ReturnDialog : MonoBehaviour
     // Start is called before the first frame update
     public GameObject dialog;
 
+    public void Start()
+    {
+
+    }
+
     public void OnYesClicked()
     {
         Common.loadingCanvas.SetActive(true);

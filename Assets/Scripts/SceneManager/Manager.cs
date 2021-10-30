@@ -13,7 +13,8 @@ public class Manager : MonoBehaviour
     public GameObject gif;
     public Text tips;
     public AudioSource bgmplayer;
-    
+    public AudioSource seplayer;
+    public AudioSource subseplayer;
 
     private void Awake()
     {
@@ -38,6 +39,8 @@ public class Manager : MonoBehaviour
         Common.loadingGif = gif;
         Common.loadingTips = tips;
         Common.bgmplayer = bgmplayer;
+        Common.seplayer = seplayer;
+        Common.subseplayer = subseplayer;
         init();
     }
 
@@ -54,6 +57,7 @@ public class Manager : MonoBehaviour
     [ContextMenu("test")]
     void init()
     {
+        Common.initSounds();
         StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;

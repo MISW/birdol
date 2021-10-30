@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PressedAction : MonoBehaviour
 {
+    
 
     private void Start()
     {
@@ -21,6 +22,9 @@ public class PressedAction : MonoBehaviour
         yield return tokenAuthorizeWebClient.Send();
         if (tokenAuthorizeWebClient.IsAuthorizeSuccess && Common.SessionID != null) //ログイン成功。アクセストークンが認証されたかつSessionIDが保存されたことを確かめている。
         {
+            GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+            getCompletedWebClient.target = "home";
+            yield return getCompletedWebClient.Send();
             GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
             yield return getStoryWebClient.Send();
         }
@@ -39,8 +43,10 @@ public class PressedAction : MonoBehaviour
         
     }
 
+
     public void OnClick() {
         //ここを変える
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

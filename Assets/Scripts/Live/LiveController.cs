@@ -83,7 +83,7 @@ public class LiveController : MonoBehaviour
     }
 
     private GameObject[] listchilds;
-
+    Dictionary<string, AudioClip> seclips;
 
     void initLiveStage()
     {
@@ -157,6 +157,13 @@ public class LiveController : MonoBehaviour
             xins -= 10;
             scale -= 0.1f;
         }
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"gaugemax1", (AudioClip)Resources.Load("SE/live/gaugemax1") },
+            {"up1", (AudioClip)Resources.Load("SE/live/up1") },
+            {"resultsuccess1", (AudioClip)Resources.Load("SE/live/resultsuccess1") },
+            {"resultfault1", (AudioClip)Resources.Load("SE/live/resultfault1") },
+        };
         backlight.transform.SetSiblingIndex(114514);
     }
 
@@ -187,6 +194,7 @@ public class LiveController : MonoBehaviour
         if (newScore / max >= 1.0f && !Achieved.active)
         {
             Achieved.SetActive(true);
+            Common.subseplayer.PlayOneShot(seclips["gaugemax1"]);
         }
     }
 
@@ -337,6 +345,14 @@ public class LiveController : MonoBehaviour
             ResultUI.SetActive(true);
         }
         yield return new WaitForSecondsRealtime(1f);
+        if (score >= max)
+        {
+            Common.subseplayer.PlayOneShot(seclips["resultsuccess1"]);
+        }
+        else
+        {
+            Common.subseplayer.PlayOneShot(seclips["resultfault1"]);
+        }
         for (int i = 1;i <= 71; i+=2)
         {
             curatinrect.anchoredPosition = new Vector2(curatinrect.anchoredPosition.x, curatinrect.anchoredPosition.y + i);

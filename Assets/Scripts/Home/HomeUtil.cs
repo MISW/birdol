@@ -29,25 +29,29 @@ public class HomeUtil : MonoBehaviour
     public GameObject prefab;
     public Transform content;
 
-    private List<bool> isUnlocked = new List<bool>();
+    public static List<bool> isUnlocked = new List<bool>();
+    Dictionary<string, AudioClip> seclips;
     private void Start()
     {
         //解禁状況仮データ
-        for (int i = 0; i <= characterSize; i++) isUnlocked.Add(true);
+        //for (int i = 0; i <= characterSize; i++) isUnlocked.Add(true);
 
-
+        
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
 
         json_parser();
         //positionAdjust();
-
+        chara_id = Common.HomeStandingId;
         CharacterListInit();
         CharacterListPushed(chara_id.ToString());
+        
+        standingChanger();
         if (Common.mainstoryid != null)
         {
             Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
         }
+
     }
 
     bool triggerdPlayer = false;
@@ -63,7 +67,7 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedScoreAttack()
     {
-        Debug.Log("Pushed Gallery");
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -77,6 +81,7 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedGallery()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Debug.Log("Pushed Gallery");
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -90,6 +95,7 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedDendou()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Debug.Log("Pushed Dendou");
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -104,6 +110,7 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedIkusei()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Debug.Log("Pushed Ikusei");
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -143,6 +150,7 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedOption()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Debug.Log("Pushed Option");
 
     }

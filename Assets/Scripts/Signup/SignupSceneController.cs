@@ -125,10 +125,11 @@ public class SignupSceneController : SceneVisor
     {
         TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
         yield return tokenAuthorizeWebClient.Send();
-        if (Common.SessionID != null)
-        {
-            Manager.manager.StateQueue((int)gamestate.Home);
-        }
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "home";
+        yield return getCompletedWebClient.Send();
+        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
+        yield return getStoryWebClient.Send();
 
     }
 
