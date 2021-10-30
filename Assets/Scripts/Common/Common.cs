@@ -22,7 +22,7 @@ public partial class Common : MonoBehaviour
     public static Text loadingTips;
     public static List<int> remainingSubstory = new List<int>(); 
     public static string mom = "ママ";
-    private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 1600, 2000, 2400, 2800, 3300 };
+    private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
 
     public static Dictionary<string, AudioClip> seclips;
 
