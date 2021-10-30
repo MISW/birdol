@@ -954,7 +954,7 @@ PrefabInstance:
     - target: {fileID: 2088070741062636545, guid: 15c8c832675f5ad49ad6e4cdda4ee1ec, type: 3}
       propertyPath: dialog
       value: 
-      objectReference: {fileID: 7186821700594819430}
+      objectReference: {fileID: 0}
     - target: {fileID: 3425313838083634689, guid: 15c8c832675f5ad49ad6e4cdda4ee1ec, type: 3}
       propertyPath: m_Name
       value: ReturnHome
@@ -7542,11 +7542,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772207354}
   m_CullTransparentMesh: 1
---- !u!224 &1793451673 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5470294210801373114, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
-  m_PrefabInstance: {fileID: 7186821700594819429}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1846497612
 GameObject:
   m_ObjectHideFlags: 0
@@ -8549,7 +8544,7 @@ RectTransform:
   m_Children:
   - {fileID: 1771096142}
   - {fileID: 709471076}
-  - {fileID: 1793451673}
+  - {fileID: 7186821700594819430}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9642,10 +9637,30 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -1096.7086
       objectReference: {fileID: 0}
+    - target: {fileID: 6007859820880353827, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007859820880353827, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007859820880353827, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007859820880353836, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481226913449726468, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 388.8889
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
---- !u!1 &7186821700594819430 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5470294210801373109, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
+--- !u!224 &7186821700594819430 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6007859820880353827, guid: 523af25e8258d334fab7cbda68ea065c, type: 3}
   m_PrefabInstance: {fileID: 7186821700594819429}
   m_PrefabAsset: {fileID: 0}
