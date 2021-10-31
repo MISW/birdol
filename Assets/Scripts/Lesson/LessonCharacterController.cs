@@ -33,6 +33,7 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
         float plus = 0;
         bool adding = true;
         var fixedupdate = new WaitForFixedUpdate();
+        Common.subseplayer.PlayOneShot(seclips["haneru1"]);
         for (int i = 10; i >= -10; i--)
         {
             rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + i);
@@ -128,9 +129,17 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
         //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
+    Dictionary<string, AudioClip> seclips;
     void Start()
     {
         Application.targetFrameRate = 60;
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
+        };
     }
 
 
@@ -141,31 +150,24 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.position.y<=Screen.height/2.0f+289.0f)
+        if (!LessonController.executingSkills &&  eventData.position.y<=Screen.height/2.0f+289.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
-            //parenttransform.y -= 150;
-            parenttransform.y -= 80;
+            parenttransform.y -= 150;
+            //parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }
     }
 
-    public void SelectMe()
-    {
-        if (!LiveController.executingSkills)
-        {
-            LiveController.selectedcharacter = id;
-        }
-    }
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        SelectMe();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        SelectMe();
+        Common.subseplayer.PlayOneShot(seclips["skillkettei1"]);
     }
 }

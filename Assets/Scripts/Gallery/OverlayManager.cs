@@ -62,9 +62,11 @@ public class OverlayManager : MonoBehaviour
         deviceRatio = Screen.currentResolution.height;
         deviceRatio /= Screen.currentResolution.width;
 
+        
         if (sp != null) {
             im.sprite = sp;
 
+            /*
             // キャラの立ち絵のサイズによって幅を変えないと見た目が壊れる
             // todo: 位置調整
             float r = sp.texture.width;
@@ -81,7 +83,7 @@ public class OverlayManager : MonoBehaviour
 
             // キャラによってサイズが違うのでスケール変えたりしようかな…？
             Transform tr = standImageObject.transform;
-            FixImagePos(tr, model.id);
+            FixImagePos(tr, model.id);*/
         }
 
         // 名前書き換え

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
     public bool completedActiveSkill = false;
-    public bool completedPassiveSkill = false;
+    public bool PassiveSkillenabled = false;
     public bool executingSkill = false;
     public int id;
     public float score = 0;
@@ -35,6 +35,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         float plus = 0;
         bool adding = true;
         var fixedupdate = new WaitForFixedUpdate();
+        Common.subseplayer.PlayOneShot(seclips["haneru1"]);
         for (int i = 10; i >= -10; i--)
         {
             rect.anchoredPosition = new Vector2(rect.anchoredPosition.x,rect.anchoredPosition.y+i);
@@ -143,8 +144,8 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void connectUI()
     {
-        frame = listchild.transform.GetChild(3).gameObject.GetComponent<Image>();
-        para = listchild.transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>();
+        frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
+        para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
     }
 
     public void Awake()
@@ -164,12 +165,19 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
+    Dictionary<string, AudioClip> seclips;
     void Start()
     {
         Application.targetFrameRate = 60;
-        Debug.Log("CurID:"+this.id);
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
+        };
     }
 
 
@@ -180,11 +188,11 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
+        if (!LiveController.executingSkills && eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
-            //parenttransform.y -= 150;
-            parenttransform.y -= 80;
+            parenttransform.y -= 150;
+            //parenttransform.y -= 80;
             transform.parent.position = parenttransform;
             setArea();
         }
@@ -208,8 +216,14 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         SelectMe();
     }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Common.subseplayer.PlayOneShot(seclips["orosu1"]);
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        Common.subseplayer.PlayOneShot(seclips["skillkettei1"]);
         SelectMe();
     }
 }

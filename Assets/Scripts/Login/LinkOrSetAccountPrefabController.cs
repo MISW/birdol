@@ -15,6 +15,7 @@ public class LinkOrSetAccountPrefabController : MonoBehaviour
     public void Open()
     {
         if (isAnimating) return;
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         StopCoroutine(this.CloseCoroutine(this.DisplayRootUI));
         StartCoroutine(OpenCoroutine(this.DisplayRootUI));
     }
@@ -39,6 +40,7 @@ public class LinkOrSetAccountPrefabController : MonoBehaviour
     public void Close()
     {
         if (isAnimating) return;
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         StopCoroutine(CloseCoroutine(this.DisplayRootUI));
         StartCoroutine(CloseCoroutine(this.DisplayRootUI));
     }

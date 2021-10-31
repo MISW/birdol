@@ -31,10 +31,7 @@ public class FailedManager : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
-        FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
-        finishiClient.sceneid = (int)gamestate.Ending;
-        finishiClient.SetData();
-        StartCoroutine(finishiClient.Send());
+        Manager.manager.StateQueue((int)gamestate.Ending);
     }
     
     IEnumerator fadeIn(GameObject text)

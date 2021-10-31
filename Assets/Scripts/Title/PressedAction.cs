@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PressedAction : MonoBehaviour
 {
+    
 
     private void Start()
     {
@@ -21,16 +22,14 @@ public class PressedAction : MonoBehaviour
         yield return tokenAuthorizeWebClient.Send();
         if (tokenAuthorizeWebClient.IsAuthorizeSuccess && Common.SessionID != null) //ログイン成功。アクセストークンが認証されたかつSessionIDが保存されたことを確かめている。
         {
+            GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+            getCompletedWebClient.target = "home";
+            yield return getCompletedWebClient.Send();
             GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
             yield return getStoryWebClient.Send();
         }
         else if(!tokenAuthorizeWebClient.IsAuthorizeSuccess && tokenAuthorizeWebClient.isSuccess) //通信は成功したが、ログイン失敗 -> アカウント未生成と判断し、Signupシーンへ遷移する。
         {
-            Common.loadingCanvas.SetActive(true);
-            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
-            Common.loadingGif.GetComponent<GifPlayer>().StartGif();
-            Common.bgmplayer.Stop();
-            Common.bgmplayer.time = 0;
             Manager.manager.StateQueue((int)gamestate.Signup);
         }
         else //通信自体が失敗。これはGameWebClientの方で対処するためここでは何も書かなくて大丈夫なはず。
@@ -39,8 +38,10 @@ public class PressedAction : MonoBehaviour
         
     }
 
+
     public void OnClick() {
         //ここを変える
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

@@ -24,6 +24,9 @@ public class FreeSelectManager : MonoBehaviour
     int[] selected;
     public GameObject[] charcterIcons;
 
+    public Button TM01;
+    public Button TM02;
+
     int currentindex = -1;
     int backup = -1;
     int currentselected = -1;
@@ -36,6 +39,8 @@ public class FreeSelectManager : MonoBehaviour
         mainPage.transform.SetSiblingIndex(1);
         selected = new int[CompletedCharacters.Count];
         bool completedinited = false;
+        if (Common.Freebgm == "TM01") onTM01();
+        else onTM02();
         foreach (DendouModel dendouModel in CompletedCharacters)
         {
             GameObject completedChild = completedFirst;
@@ -190,6 +195,20 @@ public class FreeSelectManager : MonoBehaviour
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
+    }
+
+    public void onTM01()
+    {
+        TM01.interactable = false;
+        TM02.interactable = true;
+        Common.Freebgm = "TM01";
+    }
+
+    public void onTM02()
+    {
+        TM01.interactable = true;
+        TM02.interactable = false;
+        Common.Freebgm = "TM02";
     }
 
 }

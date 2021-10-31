@@ -155,8 +155,8 @@ RectTransform:
   m_Father: {fileID: 1598974740}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -341,7 +341,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -759,7 +759,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -0.000015258789, y: 22.455}
-  m_SizeDelta: {x: -310.67636, y: 55.659492}
+  m_SizeDelta: {x: -310.4199, y: 55.68222}
   m_Pivot: {x: -0.000000044703484, y: 0.99999976}
 --- !u!114 &611541497
 MonoBehaviour:
@@ -1796,7 +1796,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2663,6 +2663,7 @@ MonoBehaviour:
   tempteacherid: 0
   prefab: {fileID: 3515343572342935732, guid: 775a04550efd91d4985f31c297282bc4, type: 3}
   content: {fileID: 233333426}
+  volumeSlider: {fileID: 951988646}
 --- !u!1 &1292342338
 GameObject:
   m_ObjectHideFlags: 0
@@ -4813,7 +4814,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -99.511, y: 27.863}
-  m_SizeDelta: {x: 199.41, y: 55.659492}
+  m_SizeDelta: {x: 199.4587, y: 55.68222}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7742920257670702243
 MonoBehaviour:

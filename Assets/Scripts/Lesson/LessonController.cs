@@ -78,7 +78,6 @@ public class LessonController : MonoBehaviour
                 objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
             }
             objk.initImage();
-            if (i == 0) objk.SelectMe();
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
             if (Common.progresses[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
             else if (Common.progresses[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");

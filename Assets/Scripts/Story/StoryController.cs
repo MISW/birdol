@@ -25,8 +25,14 @@ public class StoryController : MonoBehaviour
     public Image leftImage;
     public Image rightImage;
     public Image background;
+    public Image black;
     public GameObject selectionDialog;
     public GameObject firstSelection;
+    public GameObject skipButton;
+    public Image skipCheck;
+    public GameObject skipDialog;
+    public Sprite[] checkSprite = new Sprite[2];
+
     float showspeed = 0.05f;
     string curserifu;
     bool showingseifu = false;
@@ -36,10 +42,13 @@ public class StoryController : MonoBehaviour
     private Color normal = new Color(1f,1f,1f);
     private Color dark = new Color(0.5f, 0.5f, 0.5f);
 
+    Dictionary<string, AudioClip> seclips;
+
     public static bool isSubStory = false;
     void Start()
     {
-        if (Common.characters == null) Common.initCharacters();//Test Only
+        //Test Only
+
         if (isSubStory)
         {
             int id = RandomArray.GetRandom(Common.remainingSubstory);
@@ -49,6 +58,7 @@ public class StoryController : MonoBehaviour
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
             );
+            skipButton.SetActive(false);
         }
         else
         {
@@ -57,6 +67,18 @@ public class StoryController : MonoBehaviour
             StringSplitOptions.None
             );
         }
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"ドア閉め", (AudioClip)Resources.Load("SE/story/ドア閉め") },
+            {"拍手", (AudioClip)Resources.Load("SE/story/拍手") },
+            {"拍手2", (AudioClip)Resources.Load("SE/story/拍手2") },
+            {"歓声", (AudioClip)Resources.Load("SE/story/歓声") },
+            {"歩く", (AudioClip)Resources.Load("SE/story/歩く") },
+            {"紙擦れ", (AudioClip)Resources.Load("SE/story/紙擦れ") },
+            {"駆け足", (AudioClip)Resources.Load("SE/story/駆け足") },
+            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+        };
         size = datas.Length;
         UpdateDialog();
     }
@@ -81,7 +103,42 @@ public class StoryController : MonoBehaviour
             yield return storyWebClient.Send();
         }
     }
-   
+
+    bool isFading = false;
+
+    private IEnumerator Dark()
+    {
+        isFading = true;
+        Color color = black.color;
+        var fixedUpdate = new WaitForFixedUpdate();
+        while(color.a <= 1)
+        {
+            color.a += 0.01f;
+            black.color = color;
+            yield return fixedUpdate;
+        }
+        isFading = false;
+        characterName.text = "";
+        serifu.text = "";
+        characterImage.sprite = null;
+        UpdateDialog();
+    }
+
+    private IEnumerator Light()
+    {
+        isFading = true;
+        Color color = black.color;
+        var fixedUpdate = new WaitForFixedUpdate();
+        while (color.a >= 0)
+        {
+            color.a -= 0.01f;
+            black.color = color;
+            yield return fixedUpdate;
+        }
+        isFading = false;
+        UpdateDialog();
+    }
+
 
     public void EndStory()
     {
@@ -90,7 +147,9 @@ public class StoryController : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
+        Common.seplayer.Stop();
         Common.bgmplayer.time = 0;
+        Common.seplayer.time = 0;
         if (isSubStory)
         {
             isSubStory = false;
@@ -106,8 +165,7 @@ public class StoryController : MonoBehaviour
             }
             else if (Common.mainstoryid == "0")
             {
-                Common.mainstoryid = "1a";
-                sceneid = (int)gamestate.Story;
+                sceneid = (int)gamestate.Gacha;
             }
             else if (Common.mainstoryid == "8c")
             {
@@ -152,7 +210,7 @@ public class StoryController : MonoBehaviour
     string condId;
     public void UpdateDialog()
     {
-        if (!showingseifu&&!selectionDialog.active)
+        if (!showingseifu&&!selectionDialog.active&&!isFading)
         {
             if (currentline >= size)
             {
@@ -283,6 +341,22 @@ public class StoryController : MonoBehaviour
                     });
                     selcount++;
                 }
+                else if (data.StartsWith("/dark") && allowShowing)
+                {
+                    StartCoroutine(Dark());
+                }
+                else if (data.StartsWith("/light") && allowShowing)
+                {
+                    StartCoroutine(Light());
+                }
+                else if (data.StartsWith("/SE") && allowShowing)
+                {
+                    int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
+                    string se = data.Substring(data.IndexOf("(") + 1, ctlength);
+                    Common.seplayer.Stop();
+                    Common.seplayer.time = 0;
+                    Common.seplayer.PlayOneShot(seclips[se]);
+                }
                 else if (data.StartsWith("/2体on") && allowShowing)
                 {
                     characterImage.enabled = false;
@@ -315,24 +389,34 @@ public class StoryController : MonoBehaviour
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string bgm = data.Substring(data.IndexOf("(") + 1, ctlength);
                     Debug.Log("BGM:" + bgm);
-                    Common.bgmplayer.Stop();
-                    Common.bgmplayer.time = 0;
-                    Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
-                    Common.bgmplayer.Play();
+                    if(bgm != "無音")
+                    {
+                        Common.bgmplayer.Stop();
+
+                        Common.bgmplayer.time = 0;
+                        Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
+                        Common.bgmplayer.Play();
+                    }
                 }
                 else if (data.StartsWith("/active") && allowShowing)
                 {
+                    skipButton.SetActive(true);
                     foreach (ProgressModel progress in Common.progresses)
                     {
-                        progress.ActiveSkillLevel++;
+                        if(progress.ActiveSkillLevel<5) progress.ActiveSkillLevel++;
                     }
                 }
                 else if (data.StartsWith("/passive") && allowShowing)
                 {
+                    skipButton.SetActive(true);
                     foreach (ProgressModel progress in Common.progresses)
                     {
-                        progress.PassiveSkillLevel++;
+                        if (progress.PassiveSkillLevel < 5) progress.PassiveSkillLevel++;
                     }
+                }
+                else if (data.StartsWith("/none") && allowShowing)
+                {
+                    skipButton.SetActive(true);
                 }
                 UpdateDialog();
             }
@@ -369,6 +453,56 @@ public class StoryController : MonoBehaviour
         }
         showingseifu = false;
     }
+
+    public void OnTouch()
+    {
+        Common.subseplayer.
+            PlayOneShot(seclips["tsukamu1"]);
+        UpdateDialog();
+    }
+
+    public void OnSkip()
+    {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
+        Common.subseplayer.PlayOneShot(seclips["ok1"]);
+        if(Common.SkipStory == "YES")
+        {
+            EndStory();
+        }
+        else
+        {
+            skipDialog.SetActive(true);
+        }
+        
+    }
+
+    public void OnCheck()
+    {
+        if (Common.SkipStory == "YES")
+        {
+            Common.SkipStory = "";
+            skipCheck.sprite = checkSprite[1];
+        }
+        else
+        {
+            Common.SkipStory = "YES";
+            skipCheck.sprite = checkSprite[0];
+        }
+    }
+
+    public void OnYes()
+    {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+        EndStory();
+    }
+
+    public void OnNo()
+    {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
+        skipDialog.SetActive(false);
+    }
+
+
 
 
 }

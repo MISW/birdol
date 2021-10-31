@@ -252,6 +252,15 @@ public class Ending : MonoBehaviour
         }
     }
 
+    IEnumerator ReloadHome()
+    {
+        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+        getCompletedWebClient.target = "home";
+        yield return getCompletedWebClient.Send();
+        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
+        yield return getStoryWebClient.Send();
+    }
+
     public void ResetStory()
     {
         Common.loadingCanvas.SetActive(true);
@@ -260,8 +269,7 @@ public class Ending : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
-        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
-        StartCoroutine(getStoryWebClient.Send());
+        StartCoroutine(ReloadHome());
     }
 
     bool triggerdPlayer = false;

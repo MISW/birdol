@@ -85,7 +85,6 @@ public class FreeLiveController : MonoBehaviour
 
     private GameObject[] listchilds;
 
-
     void initLiveStage()
     {
         executingSkills = false;
@@ -124,9 +123,9 @@ public class FreeLiveController : MonoBehaviour
                 objk.initImage();
                 if (i == 0) objk.SelectMe();
                 listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + tempProgress[i].MainCharacterId);
-                if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
-                else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
-                else listchilds[i].transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+                if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
+                else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
+                else listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
                 objk.listchild = listchilds[i];
                 objk.connectUI();
                 objk.setParamsFont();
@@ -157,6 +156,7 @@ public class FreeLiveController : MonoBehaviour
             xins -= 10;
             scale -= 0.1f;
         }
+        enablePassives();
         backlight.transform.SetSiblingIndex(114514);
     }
 
@@ -253,15 +253,15 @@ public class FreeLiveController : MonoBehaviour
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Visual *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
+                objinf.Visual *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
             }
             if (characterInf.PassiveSkillParams.Contains("vocal") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Vocal *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
+                objinf.Vocal *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
             }
             if (characterInf.PassiveSkillParams.Contains("dance") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Dance *= (characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel);
+                objinf.Dance *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
             }
             objcc.setParamsFont();
         }
@@ -326,18 +326,6 @@ public class FreeLiveController : MonoBehaviour
     private IEnumerator execSkills()
     {
         backtext.SetActive(false);
-        for (int i = 0;i < SIZE; i++)
-        {
-            if (RandomArray.Probability(tempProgress[i].PassiveSkillProbability * 100.0f))
-            {
-                passiveList[i].SetActive(true);
-                execPassiveSkill(characterControllers[i]);
-            }
-            else
-            {
-                passiveList[i].SetActive(false);
-            }
-        }
         for (int i = 0; i < SIZE; i++)
         {
             yield return execSkillofOnePerson(characterControllers[i],i,i==selectedcharacter);
@@ -358,7 +346,27 @@ public class FreeLiveController : MonoBehaviour
         {
             yield return finishLive();
         }
+        else
+        {
+            enablePassives();
+        }
         Debug.Log("CurrentScore:"+score+" Max:"+max);
+    }
+
+    private void enablePassives()
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            if (RandomArray.Probability(tempProgress[i].PassiveSkillProbability * 100.0f))
+            {
+                passiveList[i].SetActive(true);
+                execPassiveSkill(characterControllers[i]);
+            }
+            else
+            {
+                passiveList[i].SetActive(false);
+            }
+        }
     }
 
     public void onStartButtonClick()
@@ -374,7 +382,14 @@ public class FreeLiveController : MonoBehaviour
         SIZE = backup.Count;
         for(int i = 0; i < SIZE; i++)
         {
-            tempProgress[i] = backup[i];
+            tempProgress[i] = new ProgressModel();
+            tempProgress[i].MainCharacterId = backup[i].MainCharacterId;
+            tempProgress[i].SupportCharacterId = backup[i].SupportCharacterId;
+            tempProgress[i].Visual = backup[i].Visual;
+            tempProgress[i].Vocal= backup[i].Vocal;
+            tempProgress[i].Dance = backup[i].Dance;
+            tempProgress[i].ActiveSkillLevel = backup[i].ActiveSkillLevel;
+            tempProgress[i].PassiveSkillLevel = backup[i].PassiveSkillLevel;
         }
         if (Common.characters == null) Common.initCharacters();//Test Only
         initLiveStage();
@@ -387,7 +402,7 @@ public class FreeLiveController : MonoBehaviour
         if(!executingSkills)checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "FreeLive")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/Tm01");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/"+Common.Freebgm);
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

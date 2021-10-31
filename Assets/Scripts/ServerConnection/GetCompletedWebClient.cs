@@ -60,6 +60,14 @@ public class GetCompletedWebClient : GameWebClient
                 }
                 Manager.manager.StateQueue((int)gamestate.FreeSelect);
             }
+            else if (target == "home")
+            {
+                HomeUtil.isUnlocked = new List<bool>(new bool[32]);
+                foreach (DendouModel character in r.characters)
+                {
+                    HomeUtil.isUnlocked[character.MainCharacterId] = true;
+                }
+            }
         }
         else
         {

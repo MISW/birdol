@@ -36,8 +36,8 @@ public class RunGacha : MonoBehaviour
         overPanel.color = new Color(255, 255, 255, 0);
         skillLabel.text = "";
         float ratio = Screen.currentResolution.height / Screen.currentResolution.width;
-        resultImage.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
-        backGround.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
+        //resultImage.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
+        backGround.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.37f;
 
         GameObject[] eggsobj = GameObject.FindGameObjectsWithTag("GachaEgg");
 
