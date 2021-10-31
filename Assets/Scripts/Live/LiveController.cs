@@ -116,6 +116,7 @@ public class LiveController : MonoBehaviour
             tempProgress[i].Visual = Common.progresses[i].Visual;
             tempProgress[i].Vocal = Common.progresses[i].Vocal;
             tempProgress[i].Dance = Common.progresses[i].Dance;
+            tempProgress[i].Group = mainCharacter.group;
             tempProgress[i].ActiveSkillLevel = Common.progresses[i].ActiveSkillLevel;
             tempProgress[i].PassiveSkillLevel = Common.progresses[i].PassiveSkillLevel;
             tempProgress[i].ActiveSkillName = mainCharacter.skillname;
@@ -280,6 +281,7 @@ public class LiveController : MonoBehaviour
             {
                 if ((characterInf.PassiveSkillType.Contains("group") && characterInf.Group != objinf.Group) || (!characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
                 {
+                    Debug.Log("ignored:"+i);
                     continue;
                 }
             }

@@ -104,6 +104,7 @@ public class FreeLiveController : MonoBehaviour
                 tempProgress[i].ActiveSkillType = mainCharacter.activetype;
                 tempProgress[i].ActiveSkillDescription = mainCharacter.activedescription;
                 tempProgress[i].BestSkill = mainCharacter.bestskill;
+                tempProgress[i].Group = mainCharacter.group;
                 tempProgress[i].SupportSkillName = subCharacter.skillname;
                 tempProgress[i].PassiveSkillParams = subCharacter.passiveparams;
                 tempProgress[i].PassiveSkillScore = subCharacter.passiveskillscore;
