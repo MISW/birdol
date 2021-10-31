@@ -131,7 +131,7 @@ public class LessonController : MonoBehaviour
             executingSkills = false;
             storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
             yield return storyWebClient.Send();
-            if(RandomArray.Probability(0.3f * 100.0f))
+            if(RandomArray.Probability(0.3f * 100.0f) && Common.remainingSubstory.Count > 0)
             {
                 Common.loadingCanvas.SetActive(true);
                 Common.loadingGif.GetComponent<GifPlayer>().index = 0;
