@@ -276,10 +276,12 @@ public class LiveController : MonoBehaviour
         {
             CharacterController objcc = characterControllers[i];
             ProgressModel objinf = objcc.characterInf;
-            if ((characterInf.PassiveSkillType.Contains("group")&&characterInf.Group!=objinf.Group) || 
-                (characterInf.PassiveSkillType != "all" && !characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
+            if(characterInf.PassiveSkillType != "all")
             {
-                continue;
+                if ((characterInf.PassiveSkillType.Contains("group") && characterInf.Group != objinf.Group) || (!characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
+                {
+                    continue;
+                }
             }
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
