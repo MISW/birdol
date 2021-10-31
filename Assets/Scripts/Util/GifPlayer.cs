@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class GifPlayer : MonoBehaviour {
     //public
     float speed = 0.1f;
     public int index = 0;
-    public int size;
+    int size = 35;
     public string path;
 
     private Image image;
@@ -31,10 +32,20 @@ public class GifPlayer : MonoBehaviour {
         StopCoroutine(coroutine);
     }
 
+    private int GenerateRandomIntExclude4()
+    {
+        var exclude = new HashSet<int>() { 4};
+        var range = Enumerable.Range(0, 32).Where(i => !exclude.Contains(i));
+
+        var rand = new System.Random();
+        int index = rand.Next(0, 32 - exclude.Count);
+        return range.ElementAt(index);
+    }
+
     private IEnumerator updateImg()
     {
         int index = 1;
-        int gifid = Random.Range(0, 4 + 1);
+        int gifid = GenerateRandomIntExclude4();
         var waittime = new WaitForSecondsRealtime(speed);
         while (true)
         {

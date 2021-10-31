@@ -104,9 +104,9 @@ public class LessonController : MonoBehaviour
         int score = 0;
         if(characterObj.area==teacher.area)score = RandomArray.GetRandom(new int[] { 0,1,1,1,2,2,2,3,3,3 });
         else score = RandomArray.GetRandom(new int[] { 0, 1, 2 });
-        if (characterObj.area == "visual" && Common.progresses[index].Visual + score <= 99) Common.progresses[index].Visual+=score;
-        else if (characterObj.area == "vocal" && Common.progresses[index].Vocal + score <= 99) Common.progresses[index].Vocal += score;
-        else if (characterObj.area == "dance" && Common.progresses[index].Dance + score <= 99) Common.progresses[index].Dance += score;
+        if (characterObj.area == "visual") Common.progresses[index].Visual = (Common.progresses[index].Visual + score <= 99) ? Common.progresses[index].Visual + score : 99;
+        else if (characterObj.area == "vocal") Common.progresses[index].Vocal = (Common.progresses[index].Vocal + score <= 99) ? Common.progresses[index].Vocal + score : 99;
+        else if (characterObj.area == "dance") Common.progresses[index].Dance = (Common.progresses[index].Dance + score <= 99) ? Common.progresses[index].Dance + score : 99;
         characterObj.setParams();
         characterObj.executingSkill = false;
         yield return characterObj.jump();
@@ -128,7 +128,6 @@ public class LessonController : MonoBehaviour
         yield return characterWebClient.Send();
         if (Common.lessonCount > 0)
         {
-            executingSkills = false;
             storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
             yield return storyWebClient.Send();
             if(RandomArray.Probability(0.3f * 100.0f) && Common.remainingSubstory.Count > 0)
@@ -156,6 +155,7 @@ public class LessonController : MonoBehaviour
             storyWebClient.sceneid = (int)gamestate.Story;
             yield return storyWebClient.Send();
         }
+        executingSkills = false;
     }
 
     public void onStartButtonClick()

@@ -222,24 +222,25 @@ public class LiveController : MonoBehaviour
     private float ApplyActiveSkill(ProgressModel targetInf,ProgressModel characterInf)
     {
         float activescore = 0;
+        float multiply = 0.5f;
         if (characterInf.ActiveSkillParams == "all")
         {
-            activescore += (targetInf.Visual + targetInf.Vocal + targetInf.Dance) * characterInf.ActiveSkillScore;
+            activescore += (targetInf.Visual + targetInf.Vocal + targetInf.Dance) * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel * multiply;
         }
         else
         {
             if (characterInf.ActiveSkillParams.Contains("visual"))
             {
-                activescore += (targetInf.Visual * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Visual * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
 
             }
             if (characterInf.ActiveSkillParams.Contains("vocal"))
             {
-                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel)* multiply;
             }
             if (characterInf.ActiveSkillParams.Contains("dance"))
             {
-                activescore += (targetInf.Dance * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Dance * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
             }
         }
         return activescore;
@@ -295,29 +296,12 @@ public class LiveController : MonoBehaviour
             ProgressModel objinf = objcc.characterInf;
             if (targetGroup != "" && targetGroup != objinf.Group)
             {
-                Debug.Log("Rejected:"+objinf.MainCharacterId);
                 continue;
             }
             if (targetArea != "" && targetArea != objcc.area)
             {
-                Debug.Log("Rejected:" + objinf.MainCharacterId);
                 continue;
             }
-            /*
-            if (characterInf.PassiveSkillType != "all")
-            {
-                
-                if (characterInf.PassiveSkillType.Contains("group")) { 
-                    targetGroup = characterInf.PassiveSkillType.Replace("group","");
-                    if(targetGroup)
-                }
-                
-                if (( && characterInf.Group != objinf.Group) || (!characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
-                {
-                    Debug.Log("Passive:ignored->" + i + "group:"+objinf.Group);
-                    continue;
-                }
-            }*/
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {

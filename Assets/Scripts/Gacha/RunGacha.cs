@@ -128,6 +128,7 @@ public class RunGacha : MonoBehaviour
         backGround.sprite = bgImage;
         isSkippable = false;
         float t = 0;
+        Common.subseplayer.PlayOneShot(seclips["hukakishitakaraue1"]);
         while (t <= 1)
         {
             t += 0.025f;
@@ -138,7 +139,7 @@ public class RunGacha : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         t = 0;
-
+        Common.subseplayer.PlayOneShot(seclips["hukakitemaekaraoku1"]);
         while (t <= 1)
         {
             t += 0.025f;
@@ -152,7 +153,7 @@ public class RunGacha : MonoBehaviour
     {
         float t = 0;
         yield return new WaitForSeconds(1);
-
+        Common.subseplayer.PlayOneShot(seclips["youkiakeru1"]);
         while (t <= 1)
         {
             t += 0.02f;
@@ -165,6 +166,7 @@ public class RunGacha : MonoBehaviour
 
     IEnumerator slideEgg()
     {
+        Common.subseplayer.PlayOneShot(seclips["tamagouekarashita1"]);
         cm = Common.characters[result[resultIndex]];
         setEggAlpha(1);
         backGround.color = new Color(255, 255, 255, 1);
@@ -202,6 +204,7 @@ public class RunGacha : MonoBehaviour
 
     IEnumerator breakEgg()
     {
+        Common.subseplayer.PlayOneShot(seclips["karatoreru1"]);
         isSkippable = true;
         float t = 0;
         while (t <= 1)
@@ -226,6 +229,7 @@ public class RunGacha : MonoBehaviour
         particleObj.SetActive(true);
         if (cm.rarity == 1)
         {
+            Common.subseplayer.PlayOneShot(seclips["touzyou_common1"]);
             StartCoroutine("whiteOutAndShowChar");
             while (t >= 0)
             {
@@ -238,6 +242,7 @@ public class RunGacha : MonoBehaviour
         }
         else
         {
+            Common.subseplayer.PlayOneShot(seclips["haneochiru_Srare1"]);
             StartCoroutine("charText");
             while (t >= 0)
             {
@@ -253,6 +258,7 @@ public class RunGacha : MonoBehaviour
     {
         skillLabel.text = cm.skillname;
         yield return new WaitForSeconds(3);
+        Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
         StartCoroutine("whiteOutAndShowChar");
     }
 
@@ -371,6 +377,7 @@ public class RunGacha : MonoBehaviour
 
     public void Hikinaoshi(GameObject obj)
     {
+        Common.subseplayer.PlayOneShot(seclips["ok1"]);
         obj.SetActive(false);
         hinge.transform.rotation = Quaternion.Euler(0, 0, 20);
         resultIndex = 0;
@@ -379,6 +386,7 @@ public class RunGacha : MonoBehaviour
 
     public void Skip()
     {
+        Common.subseplayer.PlayOneShot(seclips["ok1"]);
         StopAllCoroutines();
         setNameAlpha(0);
         backGround.color = new Color(255, 255, 255, 1);
@@ -410,6 +418,7 @@ public class RunGacha : MonoBehaviour
     }
     public void GotoGachaUnit()
     {
+        Common.subseplayer.PlayOneShot(seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

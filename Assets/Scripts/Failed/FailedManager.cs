@@ -21,8 +21,15 @@ public class FailedManager : MonoBehaviour
     "【TIPS】ミニイベントの選択肢によって、上がるスキルレベルの種類が変わるんだとか……"
     };
 
+    private IEnumerator GoToEnding()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Ending);
+    }
+
     public void OnClick()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingTips.enabled = true;
         Common.loadingTips.text = RandomArray.GetRandom(tips);
@@ -31,7 +38,7 @@ public class FailedManager : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
-        Manager.manager.StateQueue((int)gamestate.Ending);
+        StartCoroutine(GoToEnding());
     }
     
     IEnumerator fadeIn(GameObject text)

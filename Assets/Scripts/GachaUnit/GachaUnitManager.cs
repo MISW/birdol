@@ -40,7 +40,10 @@ public class GachaUnitManager : MonoBehaviour
     int currentcharacter = -1;
     int currentteacher = -1;
     // Start is called before the first frame update
-   
+
+    Dictionary<string, string> groupJP;
+
+
     void Start()
     {
         mainPage.transform.SetSiblingIndex(2);
@@ -71,12 +74,23 @@ public class GachaUnitManager : MonoBehaviour
             teacherChild.transform.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Dance.ToString();
             teacherObjects.Add(teacherChild);
         }
-
+        groupJP = new Dictionary<string, string>()
+        {
+            { "street", "äX" },
+            { "water", "êÖ" },
+            { "mountain", "éR" },
+            { "sky", "ãÛ" },
+            { "forest", "ó—" },
+            { "snow", "ê·" },
+            { "south", "ìÏ" },
+            { "home", "â∆" },
+        };
 
     }
 
     public void OpenMainCharacterPage(int index)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform param = characterPage.transform.GetChild(4);
         currentdialog = "maincharacter";
         for (int i=0;i<10;i++)
@@ -114,6 +128,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void OpenSupportCharacterPage(int index)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform param = characterPage.transform.GetChild(4);
         currentdialog = "supportcharacter";
         for (int i = 0; i < 10; i++)
@@ -164,7 +179,7 @@ public class GachaUnitManager : MonoBehaviour
         else
         {
             transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[index].id);//SelectedIcon
-            transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = $"Åy{characters[index].skillname}Åz\n";
+            transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = $"Åy{groupJP[characters[index].group]}ÅzÅy{characters[index].skillname}Åz\n";
             if (currentdialog == "maincharacter")
             {
                 transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text += characters[index].activedescription;//Description
@@ -184,6 +199,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void SelectCharacter(int index)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         if ((currentdialog == "maincharacter") && unitInf[currentindex].mainselected == index || (currentdialog == "supportcharacter") && unitInf[currentindex].subselected == index || !selected[index])
         {
             if(currentcharacter != -1)
@@ -200,6 +216,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void SelectTeacher(Button button)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
         currentteacher = button.transform.GetSiblingIndex();
         teacherTeamName.GetComponent<InputField>().text = teachers[currentteacher].Name;
@@ -208,6 +225,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void OpenTeacherPage()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         currentdialog = "teacher";
         teacherTeamName.GetComponent<InputField>().text = (currentteacher != -1) ? teachers[currentteacher].Name : "";
         if(currentteacher >= 0)teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(true);
@@ -216,6 +234,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void CompleteCharacterSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform pairList = pairLists[currentindex].transform;
         if (currentdialog == "maincharacter" && currentcharacter != -1)
         {
@@ -251,6 +270,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void CompleteTeacherSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].MainCharacterId);
@@ -265,6 +285,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void ClearCharacterSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[currentindex].transform;
         Debug.Log("Cleared:"+currentindex);
         if (currentdialog == "maincharacter" && currentcharacter != -1)
@@ -300,6 +321,7 @@ public class GachaUnitManager : MonoBehaviour
 
     public void ClearTeacherSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher");
@@ -315,6 +337,7 @@ public class GachaUnitManager : MonoBehaviour
 
     private IEnumerator showError(string error)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["error1"]);
         errorDialog.SetActive(true);
         errorDialog.transform.GetChild(0).gameObject.GetComponent<Text>().text = error;
         yield return new WaitForSeconds(2);
@@ -362,6 +385,7 @@ public class GachaUnitManager : MonoBehaviour
             StartCoroutine(showError("êÊê∂ÉoÅ[ÉhÉãÇ™ê›íËÇ≥ÇÍÇƒÇ¢Ç‹ÇπÇÒ!"));
             return;
         }
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.teacher = teachers[currentteacher];
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
