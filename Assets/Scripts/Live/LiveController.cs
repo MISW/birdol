@@ -284,15 +284,15 @@ public class LiveController : MonoBehaviour
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Visual *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Visual *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             if (characterInf.PassiveSkillParams.Contains("vocal") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Vocal *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Vocal *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             if (characterInf.PassiveSkillParams.Contains("dance") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Dance *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Dance *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             objcc.setParamsFont();
         }

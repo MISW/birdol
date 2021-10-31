@@ -104,9 +104,9 @@ public class LessonController : MonoBehaviour
         int score = 0;
         if(characterObj.area==teacher.area)score = RandomArray.GetRandom(new int[] { 0,1,1,1,2,2,2,3,3,3 });
         else score = RandomArray.GetRandom(new int[] { 0, 1, 2 });
-        if (characterObj.area == "visual") Common.progresses[index].Visual+=score;
-        else if (characterObj.area == "vocal") Common.progresses[index].Vocal += score;
-        else Common.progresses[index].Dance += score;
+        if (characterObj.area == "visual" && Common.progresses[index].Visual + score <= 99) Common.progresses[index].Visual+=score;
+        else if (characterObj.area == "vocal" && Common.progresses[index].Vocal + score <= 99) Common.progresses[index].Vocal += score;
+        else if (characterObj.area == "dance" && Common.progresses[index].Dance + score <= 99) Common.progresses[index].Dance += score;
         characterObj.setParams();
         characterObj.executingSkill = false;
         yield return characterObj.jump();

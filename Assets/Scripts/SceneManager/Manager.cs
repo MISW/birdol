@@ -40,8 +40,11 @@ public class Manager : MonoBehaviour
         Common.loadingGif = gif;
         Common.loadingTips = tips;
         Common.bgmplayer = bgmplayer;
+        Common.bgmplayer.volume = Common.BGMVol/Common.bgmmaxvol;
         Common.seplayer = seplayer;
+        Common.seplayer.volume = Common.SEVol;
         Common.subseplayer = subseplayer;
+        Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
         init();
     }
 

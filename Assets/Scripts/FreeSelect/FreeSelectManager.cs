@@ -65,6 +65,7 @@ public class FreeSelectManager : MonoBehaviour
 
     public void SelectCompleted(Button button)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         if (currentselected != -1) completedObjects[currentselected].transform.GetChild(0).gameObject.SetActive(false);
         currentselected = button.transform.GetSiblingIndex();
         completedTeamName.GetComponent<InputField>().text = CompletedCharacters[currentselected].Name;
@@ -73,6 +74,7 @@ public class FreeSelectManager : MonoBehaviour
 
     public void OpenCompletedPage(int index)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         currentindex = index;
         for (int i = 0; i < CompletedCharacters.Count; i++)
         {
@@ -103,6 +105,7 @@ public class FreeSelectManager : MonoBehaviour
 
     public void FinishCompletedSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform pairList = pairLists[currentindex].transform;
         if (currentselected != -1) completedObjects[currentselected].transform.GetChild(0).gameObject.SetActive(false);
         else
@@ -126,6 +129,7 @@ public class FreeSelectManager : MonoBehaviour
     }
     public void ClearCompletedSelect()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[currentindex].transform;
         if (currentselected != -1) completedObjects[currentselected].transform.GetChild(0).gameObject.SetActive(false);
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/main");
@@ -144,6 +148,7 @@ public class FreeSelectManager : MonoBehaviour
 
     private IEnumerator showError(string error)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["error1"]);
         errorDialog.SetActive(true);
         errorDialog.transform.GetChild(0).gameObject.GetComponent<Text>().text = error;
         yield return new WaitForSeconds(2);
@@ -177,6 +182,7 @@ public class FreeSelectManager : MonoBehaviour
             StartCoroutine(showError("1体以上のキャラクターを設定してください!"));
             return;
         }
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

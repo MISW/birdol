@@ -29,6 +29,7 @@ public class HomeUtil : MonoBehaviour
     public GameObject prefab;
     public Transform content;
     public Slider volumeSlider;
+    public Slider SEvolumeSlider;
 
     public static List<bool> isUnlocked = new List<bool>();
     Dictionary<string, AudioClip> seclips;
@@ -43,7 +44,24 @@ public class HomeUtil : MonoBehaviour
         else
         {
             Common.bgmplayer.mute = false;
-            Common.bgmplayer.volume = Common.BGMVol;
+            Common.bgmplayer.volume = Common.BGMVol/Common.bgmmaxvol;
+        }
+    }
+
+    public void SEVolumeChangeCheck()
+    {
+        Common.SEVol = Common.semaxvol * SEvolumeSlider.value;
+        if (SEvolumeSlider.value == 0)
+        {
+            Common.seplayer.mute = true;
+            Common.subseplayer.mute = true;
+        }
+        else
+        {
+            Common.seplayer.mute = false;
+            Common.subseplayer.mute = false;
+            Common.seplayer.volume = Common.SEVol/Common.semaxvol;
+            Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
         }
     }
     private void Start()
@@ -54,13 +72,17 @@ public class HomeUtil : MonoBehaviour
         
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
+        volumeSlider.value = Common.BGMVol / Common.bgmmaxvol;
+        SEvolumeSlider.value = Common.SEVol / Common.semaxvol;
         volumeSlider.onValueChanged.AddListener(delegate { VolumeChangeCheck(); });
+        SEvolumeSlider.onValueChanged.AddListener(delegate { SEVolumeChangeCheck(); });
         json_parser();
         //positionAdjust();
         chara_id = Common.HomeStandingId;
         CharacterListInit();
         CharacterListPushed(chara_id.ToString());
-        volumeSlider.value = Common.BGMVol / Common.bgmmaxvol; 
+        volumeSlider.value = Common.BGMVol / Common.bgmmaxvol;
+        SEvolumeSlider.value = Common.SEVol / Common.semaxvol;
         standingChanger();
         if (Common.mainstoryid != null)
         {

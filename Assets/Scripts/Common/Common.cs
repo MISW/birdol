@@ -48,14 +48,13 @@ public partial class Common : MonoBehaviour
         }
     }
 
-    public static float bgmmaxvol = 0.59f;
+    public static float bgmmaxvol = 1.0f;
     private const string BGM_VOLUME = "BGM_VOLUME";
-    public static float bgmvol = 0.59f;
+    public static float bgmvol = 0.5f;
     public static float BGMVol
     {
         get
         {
-            bgmvol = bgmmaxvol;
             if (PlayerPrefs.GetFloat(BGM_VOLUME) > 0f)
             {
                 bgmvol = PlayerPrefs.GetFloat(BGM_VOLUME);
@@ -68,6 +67,30 @@ public partial class Common : MonoBehaviour
             {
                 bgmvol = value;
                 PlayerPrefs.SetFloat(BGM_VOLUME, bgmvol);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    public static float semaxvol = 1.0f;
+    private const string SE_VOLUME = "SE_VOLUME";
+    public static float sevol = 0.5f;
+    public static float SEVol
+    {
+        get
+        {
+            if (PlayerPrefs.GetFloat(SE_VOLUME) > 0f)
+            {
+                sevol = PlayerPrefs.GetFloat(SE_VOLUME);
+            }
+            return sevol;
+        }
+        set
+        {
+            if (sevol != value)
+            {
+                sevol = value;
+                PlayerPrefs.SetFloat(SE_VOLUME, sevol);
                 PlayerPrefs.Save();
             }
         }
@@ -154,6 +177,7 @@ public partial class Common : MonoBehaviour
             {"ok1", (AudioClip)Resources.Load("SE/ok1") },
             {"cancel1", (AudioClip)Resources.Load("SE/cancel1") },
             {"cancel2", (AudioClip)Resources.Load("SE/cancel2") },
+            {"error1", (AudioClip)Resources.Load("SE/error1") },
         };
     }
     public static void initCharacters()
