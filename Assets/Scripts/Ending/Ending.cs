@@ -263,6 +263,7 @@ public class Ending : MonoBehaviour
 
     public void ResetStory()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

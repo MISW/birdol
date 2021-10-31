@@ -29,18 +29,27 @@ public class UIchanger : MonoBehaviour{
         Score_Image.GetComponent<Image>().sprite = Score_Sprites[Judge_Image_num];
     }
 
+
+    private IEnumerator returnToHome()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Home);
+    }
+
     public void onClickFree()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        Manager.manager.StateQueue((int)gamestate.Home);
+        StartCoroutine(returnToHome());
     }
 
     public void Twitter()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         string comment = WWW.EscapeURL($"{Common.PlayerName}さんがバードル☆マーチのフリーライブで{Score_num}♡稼ぎました！ #birdol", System.Text.Encoding.UTF8);
         string tweetURL = "http://twitter.com/intent/tweet?text=" + comment + "&hashtags=" + "#birdol";
 
@@ -54,6 +63,7 @@ public class UIchanger : MonoBehaviour{
     }
 
     public void onClick(){
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

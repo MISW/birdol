@@ -245,23 +245,25 @@ public class FreeLiveController : MonoBehaviour
         {
             FreeCharacterController objcc = characterControllers[i];
             ProgressModel objinf = objcc.characterInf;
-            if ((characterInf.PassiveSkillType.Contains("group")&&characterInf.Group!=objinf.Group) || 
-                (characterInf.PassiveSkillType != "all" && !characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
+            if (characterInf.PassiveSkillType != "all")
             {
-                continue;
+                if ((characterInf.PassiveSkillType.Contains("group") && characterInf.Group != objinf.Group) || (!characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
+                {
+                    continue;
+                }
             }
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Visual *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Visual *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore ;
             }
             if (characterInf.PassiveSkillParams.Contains("vocal") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Vocal *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Vocal *= (1 +  characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             if (characterInf.PassiveSkillParams.Contains("dance") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Dance *= (1 + characterInf.PassiveSkillScore * characterInf.PassiveSkillLevel * 0.2f);
+                objinf.Dance *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             objcc.setParamsFont();
         }

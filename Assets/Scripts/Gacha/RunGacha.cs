@@ -28,7 +28,7 @@ public class RunGacha : MonoBehaviour
     [SerializeField] MeshRenderer[] eggs = new MeshRenderer[10];
     [SerializeField] Material[] eggMats = new Material[3];
 
-
+    Dictionary<string, AudioClip> seclips;
     void Start()
     {
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
@@ -78,6 +78,19 @@ public class RunGacha : MonoBehaviour
                 R3.Add(character);
             }
         }
+
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
+            {"hukakishitakaraue1", (AudioClip)Resources.Load("SE/gacha/hukakishitakaraue1") },
+            {"hukakitemaekaraoku1", (AudioClip)Resources.Load("SE/gacha/hukakitemaekaraoku1") },
+            {"tamagouekarashita1", (AudioClip)Resources.Load("SE/gacha/youkiakeru1") },
+            {"youkiakeru1", (AudioClip)Resources.Load("SE/gacha/tamagouekarashita1") },
+            {"karatoreru1", (AudioClip)Resources.Load("SE/gacha/karatoreru1") },
+            {"haneochiru_Srare1", (AudioClip)Resources.Load("SE/gacha/haneochiru_Srare1") },
+            {"touzyou_common1", (AudioClip)Resources.Load("SE/gacha/touzyou_common1") },
+            {"touzyou_Srare1", (AudioClip)Resources.Load("SE/gacha/touzyou_Srare1") },
+        };
     }
 
     bool triggerdPlayer = false;

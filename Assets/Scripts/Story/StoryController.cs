@@ -325,7 +325,7 @@ public class StoryController : MonoBehaviour
                         selectionqueue.Enqueue(newSelection);
                     }
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
-                    string choiceText = data.Substring(data.IndexOf("(") + 1, ctlength);
+                    string choiceText = data.Substring(data.IndexOf("(") + 1, ctlength).Replace("[mom]", Common.mom).Replace("[player]", Common.PlayerName);
                     selectButton.GetComponentInChildren<Text>().text = choiceText;
                     selectButton.onClick.RemoveAllListeners();
                     selectButton.onClick.AddListener(delegate

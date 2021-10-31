@@ -13,8 +13,6 @@ public class CompletedController : MonoBehaviour
     public GameObject Dialog;
 
     public Text TeamName;
-    public Text ActiveSkillLevel;
-    public Text PassiveSkillLevel;
     public Image StandImage;
     public Sprite[] star = new Sprite[5];
 
@@ -22,23 +20,36 @@ public class CompletedController : MonoBehaviour
     private List<Image> VisualStarImage = new List<Image>();
     private List<Image> DanceStarImage = new List<Image>();
 
+    public Image activeSkillGaugeImage;
+    public Image passiveSkillGaugeImage;
+
+    [Header("アクティブスキルゲージのSprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
+    [Header("パッシブスキルゲージのSprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
+
     int maxStar = 10;
     public float maxStatus = 100;
 
+    private void ChangeCurrentCharacterSKillGauge(int i)
+    {
+        
+    }
+
     public void OpenDialog(Button button)
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         int index = button.transform.GetSiblingIndex() + button.transform.parent.GetSiblingIndex() * 5;
         DendouModel character = CompletedCharacters[index];
         StandImage.sprite = Common.standImages[character.MainCharacterId];
         TeamName.text = character.Name;
-        ActiveSkillLevel.text = "Lv." + character.ActiveSkillLevel;
-        PassiveSkillLevel.text = "Lv." + character.PassiveSkillLevel;
+        activeSkillGaugeImage.sprite = activeSkillGaugeSprites[character.ActiveSkillLevel];
+        passiveSkillGaugeImage.sprite = passiveSkillGaugeSprites[character.PassiveSkillLevel];
         ChangeCurrentCharacterStars(index);
         Dialog.transform.SetSiblingIndex(114514);
     }
 
     public void CloseDialog()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
         StandImage.GetComponent<Image>().sprite = null;
         TeamName.text = "";
         Dialog.transform.SetSiblingIndex(0);
@@ -165,16 +176,23 @@ public class CompletedController : MonoBehaviour
         }
     }
 
-   
+    private IEnumerator returnToHome()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Home);
+    }
+
+
     public void ReturnToHome()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         CompletedCharacters.Clear();
-        Manager.manager.StateQueue((int)gamestate.Home);
+        StartCoroutine(returnToHome());
         
     }
     // Start is called be

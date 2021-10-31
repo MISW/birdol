@@ -46,6 +46,7 @@ public class OverlayManager : MonoBehaviour
     {
         // キャラ画面をクリックすると図鑑画面に戻る
         if (Input.GetMouseButton(0)) {
+            Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
             this.gameObject.SetActive(false);
         }
     }
@@ -55,7 +56,7 @@ public class OverlayManager : MonoBehaviour
         // オーバーレイを開いたときに発火
         // 渡されたキャラクターのデータに書き換える
         Debug.Log(model.id + ": " + model.name);
-
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 
