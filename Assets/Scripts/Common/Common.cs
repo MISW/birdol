@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public partial class Common : MonoBehaviour
 {
@@ -24,6 +25,121 @@ public partial class Common : MonoBehaviour
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
 
+    private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
+    public static string freebgm;
+    public static string Freebgm
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(freebgm))
+            {
+                freebgm = PlayerPrefs.GetString(FREE_LIVE_BGM);
+            }
+            return freebgm;
+        }
+        set
+        {
+            if (freebgm != value)
+            {
+                freebgm = value;
+                PlayerPrefs.SetString(FREE_LIVE_BGM, freebgm);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    public static float bgmmaxvol = 0.59f;
+    private const string BGM_VOLUME = "BGM_VOLUME";
+    public static float bgmvol = 0.59f;
+    public static float BGMVol
+    {
+        get
+        {
+            bgmvol = bgmmaxvol;
+            if (PlayerPrefs.GetFloat(BGM_VOLUME) > 0f)
+            {
+                bgmvol = PlayerPrefs.GetFloat(BGM_VOLUME);
+            }
+            return bgmvol;
+        }
+        set
+        {
+            if (bgmvol != value)
+            {
+                bgmvol = value;
+                PlayerPrefs.SetFloat(BGM_VOLUME, bgmvol);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    private const string SKIP_STORY = "SKIP_STORY";
+    public static string skipStory;
+    public static string SkipStory
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(skipStory))
+            {
+                skipStory = PlayerPrefs.GetString(SKIP_STORY);
+            }
+            return skipStory;
+        }
+        set
+        {
+            if (skipStory != value)
+            {
+                skipStory = value;
+                PlayerPrefs.SetString(SKIP_STORY, skipStory);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    public static IEnumerator playBGM()
+    {
+        bgmplayer.volume = 0f;
+        bgmplayer.Play();
+        var fixedupdate = new WaitForFixedUpdate();
+        float currentvol = 0f;
+        float destvol = BGMVol;
+        while (currentvol <= destvol)
+        {
+            currentvol += 0.001f;
+            bgmplayer.volume = currentvol;
+            yield return fixedupdate;
+        }
+        
+    }
+
+    public static IEnumerator pauseBGM()
+    {
+        var fixedupdate = new WaitForFixedUpdate();
+        float currentvol = BGMVol;
+        while (currentvol > 0f)
+        {
+            currentvol -= 0.001f;
+            bgmplayer.volume = currentvol;
+            yield return fixedupdate;
+        }
+        bgmplayer.Pause();
+    }
+
+    public static IEnumerator stopBGM()
+    {
+        var fixedupdate = new WaitForFixedUpdate();
+        float currentvol = BGMVol;
+        while(currentvol > 0f)
+        {
+            currentvol -= 0.001f;
+            Debug.Log("StopVol:"+currentvol);
+            bgmplayer.volume = currentvol;
+            yield return fixedupdate;
+        }
+        bgmplayer.Stop();
+        bgmplayer.time = 0f;
+    }
+
     public static Dictionary<string, AudioClip> seclips;
 
     public static void initSounds()
@@ -36,6 +152,8 @@ public partial class Common : MonoBehaviour
             {"zukan1", (AudioClip)Resources.Load("SE/menu/zukan1") },
             {"sudattabirdol1", (AudioClip)Resources.Load("SE/menu/sudattabirdol1") },
             {"ok1", (AudioClip)Resources.Load("SE/ok1") },
+            {"cancel1", (AudioClip)Resources.Load("SE/cancel1") },
+            {"cancel2", (AudioClip)Resources.Load("SE/cancel2") },
         };
     }
     public static void initCharacters()

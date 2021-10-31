@@ -28,9 +28,24 @@ public class HomeUtil : MonoBehaviour
     public int tempteacherid;
     public GameObject prefab;
     public Transform content;
+    public Slider volumeSlider;
 
     public static List<bool> isUnlocked = new List<bool>();
     Dictionary<string, AudioClip> seclips;
+
+    public void VolumeChangeCheck()
+    {
+        Common.BGMVol = Common.bgmmaxvol * volumeSlider.value;
+        if (volumeSlider.value == 0)
+        {
+            Common.bgmplayer.mute = true;
+        }
+        else
+        {
+            Common.bgmplayer.mute = false;
+            Common.bgmplayer.volume = Common.BGMVol;
+        }
+    }
     private void Start()
     {
         //解禁状況仮データ
@@ -39,13 +54,13 @@ public class HomeUtil : MonoBehaviour
         
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
-
+        volumeSlider.onValueChanged.AddListener(delegate { VolumeChangeCheck(); });
         json_parser();
         //positionAdjust();
         chara_id = Common.HomeStandingId;
         CharacterListInit();
         CharacterListPushed(chara_id.ToString());
-        
+        volumeSlider.value = Common.BGMVol / Common.bgmmaxvol; 
         standingChanger();
         if (Common.mainstoryid != null)
         {
@@ -119,7 +134,8 @@ public class HomeUtil : MonoBehaviour
         Common.bgmplayer.time = 0;
         if (Common.mainstoryid == null)
         {
-            Manager.manager.StateQueue((int)gamestate.Gacha);
+            Common.mainstoryid = "opening";
+            Manager.manager.StateQueue((int)gamestate.Story);
         }
         else
         {

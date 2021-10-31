@@ -22,6 +22,7 @@ public class GachaUnitManager : MonoBehaviour
     public GameObject teacherTeamName;
     public GameObject teacherFirst;
     public GameObject errorDialog;
+    public Image property;
 
     public GameObject[] pairLists;
 
@@ -153,6 +154,7 @@ public class GachaUnitManager : MonoBehaviour
         Transform transform = characterPage.transform;
         if (index == -1)
         {
+            property.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
             transform.GetChild(2).gameObject.GetComponent<Image>().sprite = null;
             transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = "";
             transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
@@ -172,6 +174,7 @@ public class GachaUnitManager : MonoBehaviour
                 transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text += characters[index].passivedescription;//Description
             }
             //Params
+            property.sprite = Resources.Load<Sprite>("Images/UI/"+ characters[index].bestskill);
             transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].vocal.ToString();
             transform.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].visual.ToString();
             transform.GetChild(4).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].dance.ToString();

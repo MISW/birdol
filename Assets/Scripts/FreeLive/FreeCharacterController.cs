@@ -36,6 +36,7 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
         float plus = 0;
         bool adding = true;
         var fixedupdate = new WaitForFixedUpdate();
+        Common.subseplayer.PlayOneShot(seclips["haneru1"]);
         for (int i = 10; i >= -10; i--)
         {
             rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + i);
@@ -144,8 +145,8 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
 
     public void connectUI()
     {
-        frame = listchild.transform.GetChild(3).gameObject.GetComponent<Image>();
-        para = listchild.transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>();
+        frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
+        para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
     }
 
     public void Awake()
@@ -165,12 +166,21 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
         //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
+    Dictionary<string, AudioClip> seclips;
+
     void Start()
     {
         Application.targetFrameRate = 60;
         Debug.Log("CurID:" + this.id);
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
+        seclips = new Dictionary<string, AudioClip>()
+        {
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
+        };
     }
 
 
@@ -204,6 +214,11 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
         }
     }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Common.subseplayer.PlayOneShot(seclips["orosu1"]);
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         SelectMe();
@@ -211,6 +226,7 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Common.subseplayer.PlayOneShot(seclips["skillkettei1"]);
         SelectMe();
     }
 }

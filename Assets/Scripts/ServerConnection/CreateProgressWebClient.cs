@@ -80,7 +80,7 @@ public class CreateProgressWebClient : GameWebClient
                 Debug.Log("NewId:"+ Common.progresses[i].id);
             }
             Common.teacher.id = r.teachers[0].teacher_id;
-            Common.mainstoryid = "opening";
+            Common.mainstoryid = "1a";
             Debug.Log("TeacherId:" + Common.teacher.id);
             Manager.manager.StateQueue((int)gamestate.Story);
         }

@@ -9,6 +9,7 @@ public class ReturnHome : MonoBehaviour
     public GameObject dialog;
     public void returnHome()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
         dialog.SetActive(true);
     }
 }

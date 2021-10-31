@@ -29,6 +29,10 @@ public class StoryController : MonoBehaviour
     public GameObject selectionDialog;
     public GameObject firstSelection;
     public GameObject skipButton;
+    public Image skipCheck;
+    public GameObject skipDialog;
+    public Sprite[] checkSprite = new Sprite[2];
+
     float showspeed = 0.05f;
     string curserifu;
     bool showingseifu = false;
@@ -43,7 +47,8 @@ public class StoryController : MonoBehaviour
     public static bool isSubStory = false;
     void Start()
     {
-        if (Common.characters == null) Common.initCharacters();//Test Only
+        //Test Only
+
         if (isSubStory)
         {
             int id = RandomArray.GetRandom(Common.remainingSubstory);
@@ -74,7 +79,6 @@ public class StoryController : MonoBehaviour
             {"ok1", (AudioClip)Resources.Load("SE/ok1") },
             {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
         };
-
         size = datas.Length;
         UpdateDialog();
     }
@@ -106,7 +110,7 @@ public class StoryController : MonoBehaviour
     {
         isFading = true;
         Color color = black.color;
-        var fixedUpdate = new FixedUpdate();
+        var fixedUpdate = new WaitForFixedUpdate();
         while(color.a <= 1)
         {
             color.a += 0.01f;
@@ -124,7 +128,7 @@ public class StoryController : MonoBehaviour
     {
         isFading = true;
         Color color = black.color;
-        var fixedUpdate = new FixedUpdate();
+        var fixedUpdate = new WaitForFixedUpdate();
         while (color.a >= 0)
         {
             color.a -= 0.01f;
@@ -161,8 +165,7 @@ public class StoryController : MonoBehaviour
             }
             else if (Common.mainstoryid == "0")
             {
-                Common.mainstoryid = "1a";
-                sceneid = (int)gamestate.Story;
+                sceneid = (int)gamestate.Gacha;
             }
             else if (Common.mainstoryid == "8c")
             {
@@ -389,6 +392,7 @@ public class StoryController : MonoBehaviour
                     if(bgm != "–³‰¹")
                     {
                         Common.bgmplayer.Stop();
+
                         Common.bgmplayer.time = 0;
                         Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
                         Common.bgmplayer.Play();
@@ -396,18 +400,22 @@ public class StoryController : MonoBehaviour
                 }
                 else if (data.StartsWith("/active") && allowShowing)
                 {
+                    skipButton.SetActive(true);
                     foreach (ProgressModel progress in Common.progresses)
                     {
                         if(progress.ActiveSkillLevel<5) progress.ActiveSkillLevel++;
                     }
-                    skipButton.SetActive(true);
                 }
                 else if (data.StartsWith("/passive") && allowShowing)
                 {
+                    skipButton.SetActive(true);
                     foreach (ProgressModel progress in Common.progresses)
                     {
                         if (progress.PassiveSkillLevel < 5) progress.PassiveSkillLevel++;
                     }
+                }
+                else if (data.StartsWith("/none") && allowShowing)
+                {
                     skipButton.SetActive(true);
                 }
                 UpdateDialog();
@@ -448,14 +456,50 @@ public class StoryController : MonoBehaviour
 
     public void OnTouch()
     {
-        Common.subseplayer.PlayOneShot(seclips["tsukamu1"]);
+        Common.subseplayer.
+            PlayOneShot(seclips["tsukamu1"]);
         UpdateDialog();
     }
 
     public void OnSkip()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
         Common.subseplayer.PlayOneShot(seclips["ok1"]);
+        if(Common.SkipStory == "YES")
+        {
+            EndStory();
+        }
+        else
+        {
+            skipDialog.SetActive(true);
+        }
+        
+    }
+
+    public void OnCheck()
+    {
+        if (Common.SkipStory == "YES")
+        {
+            Common.SkipStory = "";
+            skipCheck.sprite = checkSprite[1];
+        }
+        else
+        {
+            Common.SkipStory = "YES";
+            skipCheck.sprite = checkSprite[0];
+        }
+    }
+
+    public void OnYes()
+    {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         EndStory();
+    }
+
+    public void OnNo()
+    {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
+        skipDialog.SetActive(false);
     }
 
 

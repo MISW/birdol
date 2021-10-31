@@ -30,11 +30,6 @@ public class PressedAction : MonoBehaviour
         }
         else if(!tokenAuthorizeWebClient.IsAuthorizeSuccess && tokenAuthorizeWebClient.isSuccess) //通信は成功したが、ログイン失敗 -> アカウント未生成と判断し、Signupシーンへ遷移する。
         {
-            Common.loadingCanvas.SetActive(true);
-            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
-            Common.loadingGif.GetComponent<GifPlayer>().StartGif();
-            Common.bgmplayer.Stop();
-            Common.bgmplayer.time = 0;
             Manager.manager.StateQueue((int)gamestate.Signup);
         }
         else //通信自体が失敗。これはGameWebClientの方で対処するためここでは何も書かなくて大丈夫なはず。

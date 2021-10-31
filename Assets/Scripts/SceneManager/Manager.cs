@@ -35,6 +35,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Common.initCharacters();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
         Common.loadingTips = tips;
@@ -94,7 +95,10 @@ public class Manager : MonoBehaviour
     IEnumerator StateChange()
     {
         SceneVisor Visor1 = GotVisorOnScene();
-        if (SceneManager.GetAllScenes().Length>1) SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
+        if (SceneManager.GetAllScenes().Length > 1)
+        {
+            SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).buildIndex);
+        }
         AsyncOperation async = SceneManager.LoadSceneAsync((int)Next_GameState, LoadSceneMode.Additive);
         async.allowSceneActivation = false;
         async.completed += x =>

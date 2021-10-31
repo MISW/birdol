@@ -12,18 +12,26 @@ public class ReturnDialog : MonoBehaviour
 
     }
 
+    private IEnumerator returnToHome()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Home);
+    }
+
     public void OnYesClicked()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        Manager.manager.StateQueue((int)gamestate.Home);
+        StartCoroutine(returnToHome());
     }
 
     public void OnNoClicked()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
         dialog.SetActive(false);
     }
 

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
     public bool completedActiveSkill = false;
-    public bool completedPassiveSkill = false;
+    public bool PassiveSkillenabled = false;
     public bool executingSkill = false;
     public int id;
     public float score = 0;
@@ -144,8 +144,8 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void connectUI()
     {
-        frame = listchild.transform.GetChild(3).gameObject.GetComponent<Image>();
-        para = listchild.transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>();
+        frame = listchild.transform.GetChild(2).gameObject.GetComponent<Image>();
+        para = listchild.transform.GetChild(2).GetChild(0).gameObject.GetComponent<Text>();
     }
 
     public void Awake()
@@ -169,7 +169,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     void Start()
     {
         Application.targetFrameRate = 60;
-        Debug.Log("CurID:"+this.id);
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()
@@ -189,7 +188,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills&&eventData.position.y<=Screen.height/2.0f+180.0f)
+        if (!LiveController.executingSkills && eventData.position.y<=Screen.height/2.0f+180.0f)
         {// ドラッグ中は位置を更新する
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
@@ -214,7 +213,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Common.subseplayer.PlayOneShot(seclips["tsukamu1"]);
         SelectMe();
     }
 
