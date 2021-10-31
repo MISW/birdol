@@ -242,29 +242,43 @@ public class FreeLiveController : MonoBehaviour
         ProgressModel characterInf = characterObj.characterInf;
         GameObject[] objs = LiveCharacter;
         int count = 0;
-        for(int i = 0; i < SIZE; i++)
+        string targetGroup = "";
+        if (characterInf.PassiveSkillType.Contains("group"))
+        {
+            targetGroup = characterInf.PassiveSkillType.Replace("group", "");
+        }
+        string targetArea = "";
+        if (characterInf.PassiveSkillType == "visual"
+            || characterInf.PassiveSkillType == "vocal"
+            || characterInf.PassiveSkillType == "dance")
+        {
+            targetArea = characterInf.PassiveSkillType;
+        }
+        Debug.Log("Passive:" + characterInf.SupportCharacterId + " Group:" + characterInf.Group + " SkillScore " + " PassiveType:" + characterInf.PassiveSkillProbability + "PassiveScore:"+characterInf.PassiveSkillScore);
+        for (int i = 0; i < SIZE; i++)
         {
             FreeCharacterController objcc = characterControllers[i];
-            ProgressModel objinf = objcc.characterInf;
-            if (characterInf.PassiveSkillType != "all")
+            if (targetGroup != "" || targetGroup != objcc.characterInf.Group)
             {
-                if ((characterInf.PassiveSkillType.Contains("group") && characterInf.Group != objinf.Group) || (!characterInf.PassiveSkillType.Contains("group") && objcc.area != characterObj.area))
-                {
-                    continue;
-                }
+                continue;
             }
+            if (targetArea != "" || targetArea != objcc.area)
+            {
+                continue;
+            }
+            
             count++;
             if (characterInf.PassiveSkillParams.Contains("visual") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Visual *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore ;
+                objcc.characterInf.Visual *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore ;
             }
             if (characterInf.PassiveSkillParams.Contains("vocal") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Vocal *= (1 +  characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
+                objcc.characterInf.Vocal *= (1 +  characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             if (characterInf.PassiveSkillParams.Contains("dance") || characterInf.PassiveSkillParams == "all")
             {
-                objinf.Dance *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
+                objcc.characterInf.Dance *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
             objcc.setParamsFont();
         }
