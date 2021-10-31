@@ -62,7 +62,11 @@ public class Manager : MonoBehaviour
     void init()
     {
         Common.initSounds();
-        StateQueue((int)gamestate.Title);
+        /*
+        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/ver");
+        checkUpdate.SetData("Win","0.0.0","000000");
+        StartCoroutine(checkUpdate.Send());*/
+        Manager.manager.StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;
 
@@ -113,8 +117,8 @@ public class Manager : MonoBehaviour
                 Common.loadingTips.text = "";
                 Common.loadingTips.enabled = false;
             }
-            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StopGif();
+            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         };
 
         statequeueflag = false;

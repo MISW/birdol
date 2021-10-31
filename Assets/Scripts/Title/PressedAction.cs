@@ -5,16 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class PressedAction : MonoBehaviour
 {
-    
+
+    public GameObject NewUpdate;
 
     private void Start()
     {
+        if (Common.hasUpdate)
+        {
+            NewUpdate.SetActive(true);
+        }
         Common.bgmplayer.time = 0;
         Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/TM01");
         Common.bgmplayer.Play();
     }
 
-
+    private IEnumerator SignUp()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Signup);
+    }
     IEnumerator LoginAndSync()
     {
         TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
@@ -42,19 +51,32 @@ public class PressedAction : MonoBehaviour
     public void OnClick() {
         //ここを変える
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
-        Common.loadingCanvas.SetActive(true);
-        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
-        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
-        Common.bgmplayer.Stop();
-        Common.bgmplayer.time = 0;
-        if (Common.UserID == 0)
+        if (Common.hasUpdate)
         {
-            Manager.manager.StateQueue((int)gamestate.Signup); //アカウント新規登録(またはアカウント連携)を行うSignupシーンへ遷移する
+            //ストアへリダイレクト
+#if UNITY_ANDROID
+            //Application.OpenURL("market://details?id=YOUR_ID");
+#elif UNITY_IPHONE
+            //Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+#endif
         }
         else
         {
-            StartCoroutine(LoginAndSync());
+            Common.loadingCanvas.SetActive(true);
+            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+            Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+            Common.bgmplayer.Stop();
+            Common.bgmplayer.time = 0;
+            if (Common.UserID == 0)
+            {
+                StartCoroutine(SignUp()); //アカウント新規登録(またはアカウント連携)を行うSignupシーンへ遷移する
+            }
+            else
+            {
+                StartCoroutine(LoginAndSync());
+            }
         }
+        
 
 #if false
             /*

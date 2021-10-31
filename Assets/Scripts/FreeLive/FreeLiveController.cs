@@ -189,24 +189,25 @@ public class FreeLiveController : MonoBehaviour
     private float ApplyActiveSkill(ProgressModel targetInf,ProgressModel characterInf)
     {
         float activescore = 0;
+        float multiply = 0.5f;
         if (characterInf.ActiveSkillParams == "all")
         {
-            activescore += (targetInf.Visual + targetInf.Vocal + targetInf.Dance) * characterInf.ActiveSkillScore;
+            activescore += (targetInf.Visual + targetInf.Vocal + targetInf.Dance) * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel * multiply;
         }
         else
         {
             if (characterInf.ActiveSkillParams.Contains("visual"))
             {
-                activescore += (targetInf.Visual * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Visual * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
 
             }
             if (characterInf.ActiveSkillParams.Contains("vocal"))
             {
-                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
             }
             if (characterInf.ActiveSkillParams.Contains("dance"))
             {
-                activescore += (targetInf.Dance * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel);
+                activescore += (targetInf.Dance * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
             }
         }
         return activescore;
@@ -258,11 +259,11 @@ public class FreeLiveController : MonoBehaviour
         for (int i = 0; i < SIZE; i++)
         {
             FreeCharacterController objcc = characterControllers[i];
-            if (targetGroup != "" || targetGroup != objcc.characterInf.Group)
+            if (targetGroup != "" && targetGroup != objcc.characterInf.Group)
             {
                 continue;
             }
-            if (targetArea != "" || targetArea != objcc.area)
+            if (targetArea != "" && targetArea != objcc.area)
             {
                 continue;
             }

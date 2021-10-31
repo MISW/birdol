@@ -14,6 +14,7 @@ public class SelectedCharacter : MonoBehaviour
 
     public void onButtonPressedCharacterButtoun()
     {
+        Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         hu.CharacterListPushed(this.name);
     }
 }

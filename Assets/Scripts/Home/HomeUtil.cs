@@ -145,6 +145,12 @@ public class HomeUtil : MonoBehaviour
         StartCoroutine(getCompletedWebClient.Send());
     }
 
+    private IEnumerator NewStory()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+        Manager.manager.StateQueue((int)gamestate.Story);
+    }
+
     public void onButtonPressedIkusei()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
@@ -157,7 +163,7 @@ public class HomeUtil : MonoBehaviour
         if (Common.mainstoryid == null)
         {
             Common.mainstoryid = "opening";
-            Manager.manager.StateQueue((int)gamestate.Story);
+            StartCoroutine(NewStory());
         }
         else
         {
