@@ -69,13 +69,13 @@ public class StoryController : MonoBehaviour
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"ƒhƒA•Â‚ß", (AudioClip)Resources.Load("SE/story/ƒhƒA•Â‚ß") },
-            {"”è", (AudioClip)Resources.Load("SE/story/”è") },
-            {"”è2", (AudioClip)Resources.Load("SE/story/”è2") },
-            {"Š½º", (AudioClip)Resources.Load("SE/story/Š½º") },
-            {"•à‚­", (AudioClip)Resources.Load("SE/story/•à‚­") },
-            {"†C‚ê", (AudioClip)Resources.Load("SE/story/†C‚ê") },
-            {"‹ì‚¯‘«", (AudioClip)Resources.Load("SE/story/‹ì‚¯‘«") },
+            {"ãƒ‰ã‚¢é–‰ã‚", (AudioClip)Resources.Load("SE/story/ãƒ‰ã‚¢é–‰ã‚") },
+            {"æ‹æ‰‹", (AudioClip)Resources.Load("SE/story/æ‹æ‰‹") },
+            {"æ‹æ‰‹2", (AudioClip)Resources.Load("SE/story/æ‹æ‰‹2") },
+            {"æ­“å£°", (AudioClip)Resources.Load("SE/story/æ­“å£°") },
+            {"æ­©ã", (AudioClip)Resources.Load("SE/story/æ­©ã") },
+            {"ç´™æ“¦ã‚Œ", (AudioClip)Resources.Load("SE/story/ç´™æ“¦ã‚Œ") },
+            {"é§†ã‘è¶³", (AudioClip)Resources.Load("SE/story/é§†ã‘è¶³") },
             {"ok1", (AudioClip)Resources.Load("SE/ok1") },
             {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
         };
@@ -203,7 +203,7 @@ public class StoryController : MonoBehaviour
             webClient.sceneid = sceneid;
             StartCoroutine(webClient.Send());
         }
-        
+
     }
 
     bool allowShowing = true;
@@ -263,8 +263,8 @@ public class StoryController : MonoBehaviour
                             rightImage.color = normal;
                         }
                     }
-                    
-                    
+
+
                 }
                 else
                 {
@@ -273,7 +273,7 @@ public class StoryController : MonoBehaviour
                 characterName.text = name;
                 UpdateDialog();
             }
-            else if (data.StartsWith("/‘I‘ğend"))
+            else if (data.StartsWith("/é¸æŠend"))
             {
                 selcount = 0;
                 selectionDialog.SetActive(true);
@@ -292,7 +292,7 @@ public class StoryController : MonoBehaviour
                         allowShowing = true;
                     }
                 }
-                else if (data.StartsWith("/‘I‘ğstart") && allowShowing)
+                else if (data.StartsWith("/é¸æŠstart") && allowShowing)
                 {
                     int count = 0;
                     while (selectionqueue.Count != 0)
@@ -358,30 +358,30 @@ public class StoryController : MonoBehaviour
                     Common.seplayer.time = 0;
                     Common.seplayer.PlayOneShot(seclips[se]);
                 }
-                else if (data.StartsWith("/2‘Ìon") && allowShowing)
+                else if (data.StartsWith("/2ä½“on") && allowShowing)
                 {
                     characterImage.enabled = false;
                     leftImage.enabled = true;
                     rightImage.enabled = true;
                 }
-                else if (data.StartsWith("/2‘Ìoff") && allowShowing)
+                else if (data.StartsWith("/2ä½“off") && allowShowing)
                 {
                     characterImage.enabled = true;
                     leftImage.enabled = false;
                     rightImage.enabled = false;
                 }
-                else if (data.StartsWith("/”wŒi") && allowShowing)
+                else if (data.StartsWith("/èƒŒæ™¯") && allowShowing)
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
                     background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
 
                 }
-                else if (data.StartsWith("/BGMˆê’â~") && allowShowing)
+                else if (data.StartsWith("/BGMä¸€æ™‚åœæ­¢") && allowShowing)
                 {
                     Common.bgmplayer.Pause();
                 }
-                else if (data.StartsWith("/BGMÄŠJ") && allowShowing)
+                else if (data.StartsWith("/BGMå†é–‹") && allowShowing)
                 {
                     Common.bgmplayer.Play();
                 }
@@ -390,7 +390,7 @@ public class StoryController : MonoBehaviour
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string bgm = data.Substring(data.IndexOf("(") + 1, ctlength);
                     Debug.Log("BGM:" + bgm);
-                    if(bgm != "–³‰¹")
+                    if(bgm != "ç„¡éŸ³")
                     {
                         Common.bgmplayer.Stop();
 
@@ -443,7 +443,7 @@ public class StoryController : MonoBehaviour
 
     private IEnumerator ShowSerifu()
     {
-        int count = 0; 
+        int count = 0;
         serifu.text = "";
         showingseifu = true;
         while (count < curserifu.Length)
@@ -474,7 +474,7 @@ public class StoryController : MonoBehaviour
         {
             skipDialog.SetActive(true);
         }
-        
+
     }
 
     public void OnCheck()

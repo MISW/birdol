@@ -36,10 +36,10 @@ public class SignupSceneController : SceneVisor
         signupButton.onClick.AddListener(() => {
             OnSignupButtonClicked();
         });
-        //username 中の文字としてふさわしくなさそうなものを削除する。 
+        //username 中の文字としてふさわしくなさそうなものを削除する。
         usernameInputField.onEndEdit.AddListener((s) =>
         {
-            usernameInputField.text = System.Text.RegularExpressions.Regex.Replace(usernameInputField.text, @"\n|\r|\s|\t|\v", string.Empty); 
+            usernameInputField.text = System.Text.RegularExpressions.Regex.Replace(usernameInputField.text, @"\n|\r|\s|\t|\v", string.Empty);
         });
     }
 
@@ -50,11 +50,13 @@ public class SignupSceneController : SceneVisor
     }
 
     /// <summary>
-    /// Signup Request 
+    /// Signup Request
     /// </summary>
     /// <returns></returns>
     private IEnumerator Signup()
     {
+        AlertUI.SetActive(true);
+        AlertText.text = "通信中...";
         isConnectionInProgress = true;
         string username = usernameInputField.text;
         (string privateKey, string publicKey) rsaKeyPair = Common.CreateRsaKeyPair();
@@ -71,8 +73,6 @@ public class SignupSceneController : SceneVisor
             yield break;
         }
 
-        AlertUI.SetActive(true);
-        AlertText.text = "通信中..."; 
         float conn_start = Time.time;
         yield return StartCoroutine(signupWebClient.Send());
         float conn_end = Time.time;
@@ -90,9 +90,9 @@ public class SignupSceneController : SceneVisor
                 Common.Uuid = _uuid;
                 Common.RsaKeyPair = rsaKeyPair;
                 Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
-                
+
                 AlertText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));                
+                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
                 OnSignupSuccess();
             }
             else

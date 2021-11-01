@@ -21,10 +21,12 @@ public partial class Common : MonoBehaviour
     public static AudioSource seplayer;
     public static AudioSource subseplayer;
     public static Text loadingTips;
-    public static List<int> remainingSubstory = new List<int>(); 
+    public static List<int> remainingSubstory = new List<int>();
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
     public static bool hasUpdate = false;
+
+    public static string version = "1.0.0";
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
@@ -133,7 +135,7 @@ public partial class Common : MonoBehaviour
             bgmplayer.volume = currentvol;
             yield return fixedupdate;
         }
-        
+
     }
 
     public static IEnumerator pauseBGM()
@@ -221,11 +223,11 @@ public partial class Common : MonoBehaviour
     }
 
     //通信関連
-    public const string api_version = "v2"; //"v1" or "v2" 
-    public const string protocol = "https"; //"http" や "https" など 
+    public const string api_version = "v2"; //"v1" or "v2"
+    public const string protocol = "https"; //"http" や "https" など
     public const string hostname = "birdol.herokuapp.com";
     public const string port = "443";
-    public const int timeout = 4; //通信タイムアウトの秒数 
+    public const int timeout = 4; //通信タイムアウトの秒数
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。
     public const string salt = "Ll7Iy0r9zWslDniwgUXeS0KM9xke4zeg"; //固定ソルト
 
@@ -257,7 +259,7 @@ public partial class Common : MonoBehaviour
     {
         get
         {
-            
+
             return PlayerPrefs.GetString(TRIGGERED_SUB);
         }
         set
@@ -292,7 +294,7 @@ public partial class Common : MonoBehaviour
 
     //PlayerPrefsに保存
     //ユーザID
-    private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";  
+    private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";
     private static uint userID=0;
     public static uint UserID
     {
@@ -314,8 +316,8 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    //アクセストークン 
-    private const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN"; 
+    //アクセストークン
+    private const string PLAYERPREFS_ACCESS_TOKEN = "PLAYERPREFS_ACCESS_TOKEN";
     private static string accessToken;
     public static string AccessToken
     {
@@ -337,8 +339,8 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    //リフレッシュトークン 
-    private const string PLAYERPREFS_REFRESH_TOKEN = "PLAYERPREFS_REFRESH_TOKEN"; 
+    //リフレッシュトークン
+    private const string PLAYERPREFS_REFRESH_TOKEN = "PLAYERPREFS_REFRESH_TOKEN";
     private static string refreshToken;
     public static string RefreshToken
     {
@@ -360,7 +362,7 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    //デバイスID 
+    //デバイスID
     private const string PLAYERPREFS_UUID = "PLAYERPREFS_UUID";
     private static string uuid;
     public static string Uuid
@@ -383,8 +385,8 @@ public partial class Common : MonoBehaviour
             }
         }
     }
-    //セッションID 
-    private const string PLAYERPREFS_SESSION_ID = "PLAYERPREFS_SESSION_ID"; 
+    //セッションID
+    private const string PLAYERPREFS_SESSION_ID = "PLAYERPREFS_SESSION_ID";
     private static string sessionID;
     public static string SessionID
     {
@@ -409,7 +411,7 @@ public partial class Common : MonoBehaviour
     //Signup時にサーバから受け取るアカウントID。手動で設定するアカウントIDをデバイスに保存することは現在想定していない。
     private const string PLAYERPREFS_DEFALT_ACCOUNT_ID = "PLAYERPREFS_DEFALT_ACCOUNT_ID";
     private static string defaultAccountID;
-    public static string DefaultAccountID { 
+    public static string DefaultAccountID {
         get
         {
             if (string.IsNullOrEmpty(defaultAccountID))
@@ -451,7 +453,7 @@ public partial class Common : MonoBehaviour
     }
 
     /// <summary>
-    /// RSA 秘密鍵 公開鍵 生成 
+    /// RSA 秘密鍵 公開鍵 生成
     /// </summary>
     public static (string privateKey, string publicKey) CreateRsaKeyPair()
     {

@@ -1,10 +1,10 @@
 # birdol
 
 2021/08/30
-シーンGachaのCanvas->Panel->ButtonをPanelと同列にし、名前をStartに変更。
-シーンGachaのCanvas->Panelの10連結果の表示順を変更（順番がばらばらだったので）
+�V�[��Gacha��Canvas->Panel->Button��Panel�Ɠ���ɂ��A���O��Start�ɕύX�B
+�V�[��Gacha��Canvas->Panel��10�A���ʂ̕\������ύX�i���Ԃ��΂�΂炾�����̂Łj
 
 2021/09/03
-ボタン削除
-タップ操作
-当選アイテム名とレア度表示
+�{�^���폜
+�^�b�v����
+���I�A�C�e�����ƃ��A�x�\��

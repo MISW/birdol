@@ -3,33 +3,33 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Ql
+/// å‚è€ƒ
 /// https://kan-kikuchi.hatenablog.com/entry/playModeStateChanged
 /// </summary>
 
-//[InitializeOnLoad]//ƒGƒfƒBƒ^[‹N“®‚ÉƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚É
+//[InitializeOnLoad]//ã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼èµ·å‹•æ™‚ã«ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒå‘¼ã°ã‚Œã‚‹ã‚ˆã†ã«
 public static class SceneTester
 {
 
     /// <summary>
-    /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^(InitializeOnLoad‘®«‚É‚æ‚èƒGƒfƒBƒ^[‹N“®‚ÉŒÄ‚Ño‚³‚ê‚é)
+    /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿(InitializeOnLoadå±æ€§ã«ã‚ˆã‚Šã‚¨ãƒ‡ã‚£ã‚¿ãƒ¼èµ·å‹•æ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹)
     /// </summary>
     static SceneTester()
     {
-        //playModeStateChangedƒCƒxƒ“ƒg‚Éƒƒ\ƒbƒh“o˜^
+        //playModeStateChangedã‚¤ãƒ™ãƒ³ãƒˆã«ãƒ¡ã‚½ãƒƒãƒ‰ç™»éŒ²
        // EditorApplication.playModeStateChanged += OnTestPlayStarted;
 
     }
 
     /*
-    //ƒvƒŒƒCƒ‚[ƒh‚ª•ÏX‚³‚ê‚½
+    //ãƒ—ãƒ¬ã‚¤ãƒ¢ãƒ¼ãƒ‰ãŒå¤‰æ›´ã•ã‚ŒãŸ
     private static void OnTestPlayStarted(PlayModeStateChange state)
     {
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
             if (SceneManager.GetActiveScene().buildIndex != 0)
             {
-                Debug.LogWarning("TestMode‚É‚æ‚é‹N“®:" + SceneManager.GetActiveScene().name);
+                Debug.LogWarning("TestModeã«ã‚ˆã‚‹èµ·å‹•:" + SceneManager.GetActiveScene().name);
 
                 SceneVisor Visor = null;
 
@@ -40,7 +40,7 @@ public static class SceneTester
                 }
                 else
                 {
-                    Debug.LogError("ƒV[ƒ“‚É‚Í•K‚¸ˆê‚Â‚ÌSceneVisor‚ğİ’u‚·‚é‚±‚Æ‚ª•K—v");
+                    Debug.LogError("ã‚·ãƒ¼ãƒ³ã«ã¯å¿…ãšä¸€ã¤ã®SceneVisorã‚’è¨­ç½®ã™ã‚‹ã“ã¨ãŒå¿…è¦");
                 }
 
                 Visor.TestFunction();

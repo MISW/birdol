@@ -54,7 +54,7 @@ public class GetCharacterWebClient : GameWebClient
 
     protected override void HandleGameSetupWebRequestData(UnityWebRequest www)
     {
-        www.uploadHandler = (UploadHandler)new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(" "));
+        //www.uploadHandler = (UploadHandler)new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(" "));
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         SetAuthenticationHeader(www);
     }
