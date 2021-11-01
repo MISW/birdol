@@ -375,7 +375,7 @@ public class FreeLiveController : MonoBehaviour
     {
         for (int i = 0; i < SIZE; i++)
         {
-            if (RandomArray.Probability(tempProgress[i].PassiveSkillProbability * 100.0f))
+            if (RandomArray.Probability(tempProgress[i].PassiveSkillProbability / 2 * tempProgress[i].PassiveSkillLevel * 100.0f))
             {
                 passiveList[i].SetActive(true);
                 execPassiveSkill(characterControllers[i]);
