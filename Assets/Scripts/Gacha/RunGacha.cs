@@ -36,7 +36,7 @@ public class RunGacha : MonoBehaviour
         overPanel.color = new Color(255, 255, 255, 0);
         //skillLabel.text = "";
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
-
+        skillImage.enabled = false;
         float ratio = (float)Screen.height / (float)Screen.width;
         float imgRatio = 2048f / 1535f;
         if (ratio > imgRatio)
@@ -266,6 +266,7 @@ public class RunGacha : MonoBehaviour
 
     IEnumerator charText()
     {
+        skillImage.enabled = true;
         skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/"+cm.id);
         yield return new WaitForSeconds(3);
         Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
@@ -288,6 +289,7 @@ public class RunGacha : MonoBehaviour
         resultImageObj.SetActive(true);
         setNameAlpha(1);
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+        skillImage.enabled = false;
 
         while (t >= 0)
         {
@@ -404,6 +406,7 @@ public class RunGacha : MonoBehaviour
         backGround.sprite = bgImage;
         nameLabel.text = "";
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+        skillImage.enabled = false;
         isResultShowing = false;
         resultImageObj.SetActive(false);
         result10.SetActive(true);
