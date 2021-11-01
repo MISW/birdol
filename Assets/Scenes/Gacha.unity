@@ -7101,7 +7101,7 @@ RectTransform:
   m_GameObject: {fileID: 808631777}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.07, y: 1.07, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2007507}
   m_RootOrder: 1
@@ -8337,7 +8337,6 @@ MonoBehaviour:
   overPanelObj: {fileID: 1599435935}
   particleObj: {fileID: 751971154}
   skipBtn: {fileID: 1780025723}
-  cs: {fileID: 2007505}
   nameLabel: {fileID: 1729778445}
   skillLabel: {fileID: 1424895426}
   rareImg: {fileID: 1195143969}

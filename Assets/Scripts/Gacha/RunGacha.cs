@@ -35,9 +35,17 @@ public class RunGacha : MonoBehaviour
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
         skillLabel.text = "";
-        float ratio = Screen.currentResolution.height / Screen.currentResolution.width;
-        //resultImage.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
-        backGround.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.37f;
+
+        float ratio = (float)Screen.height / (float)Screen.width;
+        float imgRatio = 2048f / 1535f;
+        if (ratio > imgRatio)
+        {
+            backGround.rectTransform.localScale = new Vector3(ratio / imgRatio, ratio / imgRatio, 1);
+        }
+        else if (ratio < imgRatio)
+        {
+            backGround.rectTransform.localScale = new Vector3(imgRatio / ratio, imgRatio / ratio, 1);
+        }
 
         GameObject[] eggsobj = GameObject.FindGameObjectsWithTag("GachaEgg");
 
@@ -103,13 +111,14 @@ public class RunGacha : MonoBehaviour
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
+
         if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 if (!result10.activeSelf && !isResultShowing)
                 {
-                    Destroy(GameObject.Find("Tap"));
+                    GameObject.Find("Tap").GetComponent<Text>().text = "";
                     onButtonPressed10();
                     incubator.SetActive(true);
                     skipBtn.SetActive(true);
@@ -378,6 +387,7 @@ public class RunGacha : MonoBehaviour
     public void Hikinaoshi(GameObject obj)
     {
         Common.subseplayer.PlayOneShot(seclips["ok1"]);
+        GameObject.Find("Tap").GetComponent<Text>().text = "TAP";
         obj.SetActive(false);
         hinge.transform.rotation = Quaternion.Euler(0, 0, 20);
         resultIndex = 0;
@@ -430,7 +440,6 @@ public class RunGacha : MonoBehaviour
         GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
         getCompletedWebClient.target = "gachaunit";
         StartCoroutine(getCompletedWebClient.Send());
-        //↑Temporary Code
     }
 
     float QuadEase(float y1, float y2, float t)
