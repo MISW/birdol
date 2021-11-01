@@ -275,6 +275,7 @@ public class StoryController : MonoBehaviour
             }
             else if (data.StartsWith("/選択end"))
             {
+                selcount = 0;
                 selectionDialog.SetActive(true);
             }
             else if (data.StartsWith("/")){

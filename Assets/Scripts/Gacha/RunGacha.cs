@@ -18,8 +18,8 @@ public class RunGacha : MonoBehaviour
     int resultIndex;
     int[] result = new int[10];
     bool isResultShowing, isSkip, isSkippable;
-    [SerializeField] Text nameLabel, skillLabel;
-    [SerializeField] Image rareImg, nameBox, backGround, overPanel, resultImage;
+    [SerializeField] Text nameLabel;
+    [SerializeField] Image rareImg, nameBox, backGround, overPanel, skillImage, resultImage;
     [SerializeField] SpriteRenderer charDot, upperEgg, underEgg;
     [SerializeField] Sprite bgImage;
     [SerializeField] Sprite[] rareSprites = new Sprite[3];
@@ -34,10 +34,19 @@ public class RunGacha : MonoBehaviour
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
-        skillLabel.text = "";
-        float ratio = Screen.currentResolution.height / Screen.currentResolution.width;
-        //resultImage.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.07f;
-        backGround.rectTransform.localScale = new Vector3(ratio, ratio, 1) * 1.37f;
+        //skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+
+        float ratio = (float)Screen.height / (float)Screen.width;
+        float imgRatio = 2048f / 1535f;
+        if (ratio > imgRatio)
+        {
+            backGround.rectTransform.localScale = new Vector3(ratio / imgRatio, ratio / imgRatio, 1);
+        }
+        else if (ratio < imgRatio)
+        {
+            backGround.rectTransform.localScale = new Vector3(imgRatio / ratio, imgRatio / ratio, 1);
+        }
 
         GameObject[] eggsobj = GameObject.FindGameObjectsWithTag("GachaEgg");
 
@@ -103,13 +112,14 @@ public class RunGacha : MonoBehaviour
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
+
         if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 if (!result10.activeSelf && !isResultShowing)
                 {
-                    Destroy(GameObject.Find("Tap"));
+                    GameObject.Find("Tap").GetComponent<Text>().text = "";
                     onButtonPressed10();
                     incubator.SetActive(true);
                     skipBtn.SetActive(true);
@@ -256,7 +266,7 @@ public class RunGacha : MonoBehaviour
 
     IEnumerator charText()
     {
-        skillLabel.text = cm.skillname;
+        skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/"+cm.id);
         yield return new WaitForSeconds(3);
         Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
         StartCoroutine("whiteOutAndShowChar");
@@ -277,7 +287,7 @@ public class RunGacha : MonoBehaviour
         NextResult();
         resultImageObj.SetActive(true);
         setNameAlpha(1);
-        skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
 
         while (t >= 0)
         {
@@ -378,6 +388,7 @@ public class RunGacha : MonoBehaviour
     public void Hikinaoshi(GameObject obj)
     {
         Common.subseplayer.PlayOneShot(seclips["ok1"]);
+        GameObject.Find("Tap").GetComponent<Text>().text = "TAP";
         obj.SetActive(false);
         hinge.transform.rotation = Quaternion.Euler(0, 0, 20);
         resultIndex = 0;
@@ -392,7 +403,7 @@ public class RunGacha : MonoBehaviour
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
-        skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
         isResultShowing = false;
         resultImageObj.SetActive(false);
         result10.SetActive(true);
@@ -430,7 +441,6 @@ public class RunGacha : MonoBehaviour
         GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
         getCompletedWebClient.target = "gachaunit";
         StartCoroutine(getCompletedWebClient.Send());
-        //↑Temporary Code
     }
 
     float QuadEase(float y1, float y2, float t)
