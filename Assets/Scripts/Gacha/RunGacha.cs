@@ -18,8 +18,8 @@ public class RunGacha : MonoBehaviour
     int resultIndex;
     int[] result = new int[10];
     bool isResultShowing, isSkip, isSkippable;
-    [SerializeField] Text nameLabel, skillLabel;
-    [SerializeField] Image rareImg, nameBox, backGround, overPanel, resultImage;
+    [SerializeField] Text nameLabel;
+    [SerializeField] Image rareImg, nameBox, backGround, overPanel, skillImage, resultImage;
     [SerializeField] SpriteRenderer charDot, upperEgg, underEgg;
     [SerializeField] Sprite bgImage;
     [SerializeField] Sprite[] rareSprites = new Sprite[3];
@@ -34,7 +34,8 @@ public class RunGacha : MonoBehaviour
         gachaobjs = GameObject.FindGameObjectsWithTag("Gacha");
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
-        skillLabel.text = "";
+        //skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
 
         float ratio = (float)Screen.height / (float)Screen.width;
         float imgRatio = 2048f / 1535f;
@@ -265,7 +266,7 @@ public class RunGacha : MonoBehaviour
 
     IEnumerator charText()
     {
-        skillLabel.text = cm.skillname;
+        skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/"+cm.id);
         yield return new WaitForSeconds(3);
         Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
         StartCoroutine("whiteOutAndShowChar");
@@ -286,7 +287,7 @@ public class RunGacha : MonoBehaviour
         NextResult();
         resultImageObj.SetActive(true);
         setNameAlpha(1);
-        skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
 
         while (t >= 0)
         {
@@ -402,7 +403,7 @@ public class RunGacha : MonoBehaviour
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
-        skillLabel.text = "";
+        skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
         isResultShowing = false;
         resultImageObj.SetActive(false);
         result10.SetActive(true);

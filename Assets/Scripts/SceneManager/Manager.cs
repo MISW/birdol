@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -66,6 +67,7 @@ public class Manager : MonoBehaviour
         CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/ver");
         checkUpdate.SetData("Win","0.0.0","000000");
         StartCoroutine(checkUpdate.Send());*/
+        NativeLeakDetection.Mode = NativeLeakDetectionMode.EnabledWithStackTrace;
         Manager.manager.StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;

@@ -275,6 +275,7 @@ public class StoryController : MonoBehaviour
             }
             else if (data.StartsWith("/‘I‘ðend"))
             {
+                selcount = 0;
                 selectionDialog.SetActive(true);
             }
             else if (data.StartsWith("/")){
