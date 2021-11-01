@@ -19,7 +19,7 @@ public class Manager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-        Common.CreateRsaKeyPair();//Android‰Šú‰»‘Îô
+        Common.CreateRsaKeyPair();//Androidï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îï¿½
         if (manager == null)
         {
             manager = this;
@@ -62,11 +62,16 @@ public class Manager : MonoBehaviour
     void init()
     {
         Common.initSounds();
-        /*
-        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/ver");
-        checkUpdate.SetData("Win","0.0.0","000000");
-        StartCoroutine(checkUpdate.Send());*/
-        Manager.manager.StateQueue((int)gamestate.Title);
+        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
+        #if UNITY_ANDROID
+            checkUpdate.SetData("Win",Common.version,"000000");
+        #elif UNITY_IPHONE
+            checkUpdate.SetData("iOS",Common.version,"000000");
+        #else
+            checkUpdate.SetData("Android",Common.version,"000000");
+        #endif
+        StartCoroutine(checkUpdate.Send());
+        //Manager.manager.StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;
 
@@ -112,6 +117,8 @@ public class Manager : MonoBehaviour
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex((int)Next_GameState));
             loadingCanvas.SetActive(false);
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
             if (Common.loadingTips.enabled)
             {
                 Common.loadingTips.text = "";
@@ -125,7 +132,7 @@ public class Manager : MonoBehaviour
 
         Pre_GameState = Now_GameState;
         Now_GameState = gamestate.Undefined;
-        Debug.Log("Transitionc");
+        Debug.Log("Transitionï¿½c");
 
         if (Visor1 != null)
         {
@@ -156,7 +163,7 @@ public class Manager : MonoBehaviour
         }
         Visor = Visor2;
         Now_GameState = Next_GameState;
-        
+
 
         Debug.Log($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
 
@@ -187,7 +194,7 @@ public class Manager : MonoBehaviour
 
 
 
-//gamestate‚ÆSceneIndex‚ğˆê’v‚³‚¹‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
+//gamestateï¿½ï¿½SceneIndexï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½Î‚È‚ï¿½ï¿½È‚ï¿½
 public enum gamestate
 {
     Undefined,
@@ -208,5 +215,3 @@ public enum gamestate
     FreeSelect,
     FreeLive
 }
-
-

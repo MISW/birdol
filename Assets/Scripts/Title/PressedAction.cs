@@ -44,24 +44,23 @@ public class PressedAction : MonoBehaviour
         else //通信自体が失敗。これはGameWebClientの方で対処するためここでは何も書かなくて大丈夫なはず。
         {
         }
-        
+
     }
 
 
     public void OnClick() {
         //ここを変える
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+        /*
         if (Common.hasUpdate)
         {
             //ストアへリダイレクト
 #if UNITY_ANDROID
-            //Application.OpenURL("market://details?id=YOUR_ID");
+            Application.OpenURL("market://details?id="+Application.productName);
 #elif UNITY_IPHONE
-            //Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+            Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
 #endif
-        }
-        else
-        {
+        }*/
             Common.loadingCanvas.SetActive(true);
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -75,13 +74,13 @@ public class PressedAction : MonoBehaviour
             {
                 StartCoroutine(LoginAndSync());
             }
-        }
         
+
 
 #if false
             /*
              * トークン認証(セッション更新)について、例をここにあげておきます。使わなければ消しておいてください。 (b^-^)b
-             * 
+             *
              */
             TokenAuthorizeWebClient webClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
             StartCoroutine(webClient.Send());
