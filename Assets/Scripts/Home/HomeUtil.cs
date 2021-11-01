@@ -69,7 +69,7 @@ public class HomeUtil : MonoBehaviour
         //解禁状況仮データ
         //for (int i = 0; i <= characterSize; i++) isUnlocked.Add(true);
 
-        
+
         Dialog.SetActive(false);
         CharacterImage.SetActive(true);
         volumeSlider.value = Common.BGMVol / Common.bgmmaxvol;
@@ -113,7 +113,7 @@ public class HomeUtil : MonoBehaviour
         GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
         getCompletedWebClient.target = "freeselect";
         StartCoroutine(getCompletedWebClient.Send());
-        
+
     }
 
     public void onButtonPressedGallery()
@@ -160,7 +160,7 @@ public class HomeUtil : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        if (Common.mainstoryid == null)
+        if (Common.mainstoryid == null || Common.mainstoryid == "opening" || Common.mainstoryid == "0")
         {
             Common.mainstoryid = "opening";
             StartCoroutine(NewStory());
@@ -178,7 +178,7 @@ public class HomeUtil : MonoBehaviour
         DialogTextChanger();
         Dialog.SetActive(true);
         dialogstatus++;
-        //Close Dialog after 5s 
+        //Close Dialog after 5s
         StartCoroutine(DelayCoroutine(5.0f, () =>
         {
             DialogCloser();

@@ -76,14 +76,14 @@ public class GachaUnitManager : MonoBehaviour
         }
         groupJP = new Dictionary<string, string>()
         {
-            { "street", "ŠX" },
-            { "water", "…" },
-            { "mountain", "R" },
-            { "sky", "‹ó" },
-            { "forest", "—Ñ" },
-            { "snow", "á" },
-            { "south", "“ì" },
-            { "home", "‰Æ" },
+            { "street", "è¡—" },
+            { "water", "æ°´" },
+            { "mountain", "å±±" },
+            { "sky", "ç©º" },
+            { "forest", "æ—" },
+            { "snow", "é›ª" },
+            { "south", "å—" },
+            { "home", "å®¶" },
         };
 
     }
@@ -179,7 +179,7 @@ public class GachaUnitManager : MonoBehaviour
         else
         {
             transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[index].id);//SelectedIcon
-            transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = $"y{groupJP[characters[index].group]}zy{characters[index].skillname}z\n";
+            transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = $"ã€{groupJP[characters[index].group]}ã€‘ã€{characters[index].skillname}ã€‘\n";
             if (currentdialog == "maincharacter")
             {
                 transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text += characters[index].activedescription;//Description
@@ -352,17 +352,17 @@ public class GachaUnitManager : MonoBehaviour
         {
             if (unitInf[i].mainselected == -1)
             {
-                StartCoroutine(showError("ƒƒCƒ“ƒLƒƒƒ‰ƒNƒ^[‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚ª‚ ‚è‚Ü‚·!"));
+                StartCoroutine(showError("ãƒ¡ã‚¤ãƒ³ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚Šã¾ã™!"));
                 return;
             }
             if (unitInf[i].subselected == -1)
             {
-                StartCoroutine(showError("ƒTƒ|[ƒgƒLƒƒƒ‰ƒNƒ^[‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚ª‚ ‚è‚Ü‚·!"));
+                StartCoroutine(showError("ã‚µãƒãƒ¼ãƒˆã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚Šã¾ã™!"));
                 return;
             }
             if (unitInf[i].unitname == "")
             {
-                StartCoroutine(showError("•Ò¬–¼‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚ª‚ ‚è‚Ü‚·!"));
+                StartCoroutine(showError("ç·¨æˆåãŒè¨­å®šã•ã‚Œã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚Šã¾ã™!"));
                 return;
             }
             float sp = 0.5f;
@@ -382,7 +382,7 @@ public class GachaUnitManager : MonoBehaviour
         }
         if (currentteacher == -1)
         {
-            StartCoroutine(showError("æ¶ƒo[ƒhƒ‹‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ!"));
+            StartCoroutine(showError("å…ˆç”Ÿãƒãƒ¼ãƒ‰ãƒ«ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“!"));
             return;
         }
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
