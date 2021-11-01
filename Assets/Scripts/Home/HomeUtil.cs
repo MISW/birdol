@@ -84,7 +84,7 @@ public class HomeUtil : MonoBehaviour
         volumeSlider.value = Common.BGMVol / Common.bgmmaxvol;
         SEvolumeSlider.value = Common.SEVol / Common.semaxvol;
         standingChanger();
-        if (Common.mainstoryid != null || Common.mainstoryid != "opening" || Common.mainstoryid != "0")
+        if (Common.mainstoryid != null && Common.mainstoryid != "opening" && Common.mainstoryid != "0")
         {
             Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
         }
