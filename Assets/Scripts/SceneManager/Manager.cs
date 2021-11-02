@@ -223,7 +223,6 @@ public enum gamestate
     Ending,
     Gallery,
     Login,
-    Result,
     Story,
     GachaUnit,
     Failed,
