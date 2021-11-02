@@ -33,7 +33,9 @@ public class GetCharacterWebClient : GameWebClient
             for (int i=0;i < 5;i++)
             {
                 Common.progresses[i] = r.character_progresses[i];
+#if UNITY_EDITOR
                 Debug.Log(Common.progresses[i].id+":"+ Common.progresses[i].Name);
+#endif
             }
             Common.teacher = r.teachers[0].character;
             if (Common.lessonCount<5&&Common.lessonCount>0)
@@ -47,7 +49,9 @@ public class GetCharacterWebClient : GameWebClient
         }
         else
         {
+#if UNITY_EDITOR
             Debug.Log("Connection Error Occured.");
+#endif
         }
 
     }

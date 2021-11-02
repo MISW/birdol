@@ -196,7 +196,9 @@ public class StoryController : MonoBehaviour
                 Common.mainstoryid = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
                 sceneid = (int)gamestate.Story;
             }
+#if UNITY_EDITOR
             Debug.Log(Common.progressId);
+#endif
             UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
             Common.lessonCount = 5;
             webClient.SetData(Common.mainstoryid, Common.lessonCount);
@@ -217,9 +219,13 @@ public class StoryController : MonoBehaviour
                 EndStory();
                 return;
             }
+#if UNITY_EDITOR
             Debug.Log("Current:" + currentline);
+#endif
             String data = datas[currentline];
+#if UNITY_EDITOR
             Debug.Log("Data:" + data);
+#endif
             currentline++;
            if (data.StartsWith("##") && allowShowing)
             {
@@ -284,7 +290,9 @@ public class StoryController : MonoBehaviour
                     if (data.EndsWith("start"))
                     {
                         string choiceText = data.Replace("///", "").Replace("start", "");
+#if UNITY_EDITOR
                         Debug.Log("CurrentChoice:" + choiceText);
+#endif
                         allowShowing = (choiceText == condId);
                     }
                     else
@@ -335,7 +343,9 @@ public class StoryController : MonoBehaviour
                         if (command != "all")
                         {
                             condId = command;
+#if UNITY_EDITOR
                             Debug.Log("CurrentChoice:" + condId);
+#endif
                         }
                         selectionDialog.SetActive(false);
                         UpdateDialog();
@@ -389,7 +399,9 @@ public class StoryController : MonoBehaviour
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string bgm = data.Substring(data.IndexOf("(") + 1, ctlength);
+#if UNITY_EDITOR
                     Debug.Log("BGM:" + bgm);
+#endif
                     if(bgm != "無音")
                     {
                         Common.bgmplayer.Stop();

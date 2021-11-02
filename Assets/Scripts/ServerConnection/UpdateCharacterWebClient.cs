@@ -58,7 +58,9 @@ public class UpdateCharacterWebClient : GameWebClient
         UpdateCharacterResponseData r = JsonUtility.FromJson<UpdateCharacterResponseData>(response);
         if (r.result == ConnectionModel.Response.ResultSuccess)
         {
+#if UNITY_EDITOR
             Debug.Log("Success");
+#endif
         }
     }
 }

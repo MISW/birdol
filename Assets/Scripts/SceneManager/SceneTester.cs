@@ -29,7 +29,9 @@ public static class SceneTester
         {
             if (SceneManager.GetActiveScene().buildIndex != 0)
             {
+            #if UNITY_EDITOR
                 Debug.LogWarning("TestModeによる起動:" + SceneManager.GetActiveScene().name);
+                #endif
 
                 SceneVisor Visor = null;
 
@@ -40,7 +42,9 @@ public static class SceneTester
                 }
                 else
                 {
+                #if UNITY_EDITOR
                     Debug.LogError("シーンには必ず一つのSceneVisorを設置することが必要");
+                    #endif
                 }
 
                 Visor.TestFunction();

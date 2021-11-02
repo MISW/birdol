@@ -107,7 +107,9 @@ public class LinkAccountWebClient: WebClient
         {
             ok = false;
             this.message = "エラー";
+#if UNITY_EDITOR
             Debug.LogError("privateKeyがセットされていません。");
+#endif
         }
         return ok;
     }
@@ -125,7 +127,9 @@ public class LinkAccountWebClient: WebClient
         }
         catch(Exception e)
         {
+#if UNITY_EDITOR
             Debug.LogError(e);
+#endif
             this.message = "このパスワードは使用できません。";
             throw;
         }
@@ -175,7 +179,9 @@ public class LinkAccountWebClient: WebClient
     protected override IEnumerator HandleErrorData(string error)
     {
         this.message = $"通信に失敗しました。";
+#if UNITY_EDITOR
         Debug.Log($"error: \n{error}");
+#endif
         yield break;
     }
 
@@ -184,8 +190,10 @@ public class LinkAccountWebClient: WebClient
     /// </summary>
     protected override void HandleInProgressData()
     {
-        this.message = "通信中です。"; 
+        this.message = "通信中です。";
+#if UNITY_EDITOR
         Debug.LogError("Unexpected UnityWebRequest Result");
+#endif
     }
 
 

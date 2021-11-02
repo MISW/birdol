@@ -18,7 +18,7 @@ public abstract class GameWebClient : WebClient
     public bool IsDoCheckIfContinueOrQuitConnection = true; //これがtrueの場合、サーバとの通信失敗時に再送するか諦めるかを選択できるようにする
     public bool IsDoBackToTitleIfTokenRefreshError = true; //これがtrueの場合、通信成功だが認証失敗(AccessTokenもRefreshTokenも失敗)の時に、タイトルシーンへ遷移する
     protected ContinueConnectionChoice continueConnectionChoice = ContinueConnectionChoice.None;
-
+    public bool IsExitOnFailed = false;
     public enum ContinueConnectionChoice
     {
         None,
@@ -43,7 +43,9 @@ public abstract class GameWebClient : WebClient
     /// <param name="response"></param>
     protected override IEnumerator HandleSuccessData(string response)
     {
+#if UNITY_EDITOR
         Debug.Log($"TEST: {response}");
+#endif
         Response r = JsonUtility.FromJson<Response>(response);
         if (r.result == ConnectionModel.Response.ResultFail && r.error == ConnectionModel.Response.ErrInvalidToken && TryRefreshToken == true)
         {
@@ -62,7 +64,9 @@ public abstract class GameWebClient : WebClient
                 if (IsDoBackToTitleIfTokenRefreshError)
                 {
                     //タイトルシーンへ遷移
+#if UNITY_EDITOR
                     Debug.LogError("認証に失敗したため、タイトルシーンに遷移します。");
+#endif
                     NetworkErrorDialogController.OpenConfirmDialog(() => {
                         Common.loadingCanvas.SetActive(true);
                         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -99,8 +103,10 @@ public abstract class GameWebClient : WebClient
     protected override IEnumerator HandleErrorData(string error)
     {
         this.message = "通信に失敗しました。";
+#if UNITY_EDITOR
         Debug.LogError(error);
-        
+#endif
+
         if (IsDoCheckIfContinueOrQuitConnection) //サーバとの通信ができなかった時(、かつその際に通信再送するか否かのチェックをする場合)
         {
             IsDoCheckIfContinueOrQuitConnection = false;
@@ -152,7 +158,9 @@ public abstract class GameWebClient : WebClient
     protected override void HandleInProgressData()
     {
         this.message = "通信中です...";
+#if UNITY_EDITOR
         Debug.LogError("通信中です...");
+#endif
     }
 
     /// <summary>
@@ -172,12 +180,18 @@ public abstract class GameWebClient : WebClient
         www.SetRequestHeader("X-Birdol-Signature", signature );
         www.SetRequestHeader("X-birdol-TimeStamp", timeStamp);
         www.SetRequestHeader("device_id", uuid);
-
+#if UNITY_EDITOR
         Debug.Log($"AccessToken: {Common.AccessToken}, Signature: {signature}, TimeStamp: {timeStamp}, DeviceID: {Common.Uuid}");
+#endif
     }
     public static void SetAuthenticationHeader(UnityWebRequest www)
     {
         SetAuthenticationHeader(www, Common.AccessToken, Common.Uuid, Common.RsaKeyPair.privateKey);
+    }
+
+    public void EnableExitOnFailure()
+    {
+        IsExitOnFailed = true;
     }
 
     /// <summary>
@@ -192,8 +206,9 @@ public abstract class GameWebClient : WebClient
         try
         {
             string signature_raw = $"{Common.api_version}:{timestamp}:{body}";
+#if UNITY_EDITOR
             //Debug.Log($"Signature_raw: {signature_raw} ");
-
+#endif
             RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
             csp.FromXmlString( Common.StrFromBase64Str(privateKey) );
 
@@ -203,7 +218,9 @@ public abstract class GameWebClient : WebClient
         }
         catch(Exception e)
         {
+#if UNITY_EDITOR
             Debug.Log($"Signatureの作成に失敗しました。 {e}");
+#endif
             return "";
         }
         

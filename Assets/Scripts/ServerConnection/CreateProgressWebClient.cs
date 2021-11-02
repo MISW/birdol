@@ -77,16 +77,22 @@ public class CreateProgressWebClient : GameWebClient
             for (int i=0;i<5;i++)
             {
                 Common.progresses[i].id = r.characters[i].character_id;
+#if UNITY_EDITOR
                 Debug.Log("NewId:"+ Common.progresses[i].id);
+#endif
             }
             Common.teacher.id = r.teachers[0].teacher_id;
             Common.mainstoryid = "1a";
+#if UNITY_EDITOR
             Debug.Log("TeacherId:" + Common.teacher.id);
+#endif
             Manager.manager.StateQueue((int)gamestate.Story);
         }
         else
         {
+#if UNITY_EDITOR
             Debug.Log("Connection Error Occured.");
+#endif
         }
     }
 }

@@ -46,8 +46,10 @@ public class TokenAuthorizeWebClient : GameWebClient
             IsAuthorizeSuccess = true;
             Common.SessionID = r.session_id;
             this.message = "成功しました。";
+#if UNITY_EDITOR
             Debug.Log("new session:"+Common.SessionID);
             Debug.Log($"アクセストークンを用いてログインに成功しました。SessionID: {r.session_id}");
+#endif
         }
         else
         {

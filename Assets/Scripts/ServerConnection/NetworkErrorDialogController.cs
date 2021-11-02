@@ -15,6 +15,8 @@ public class NetworkErrorDialogController : MonoBehaviour
     [SerializeField] public GameObject confirmUI;
     public static GameObject ConfirmUI;
 
+    public static bool EnableExit = false;
+
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class NetworkErrorDialogController : MonoBehaviour
     public static void OpenTimeoutDialog(GameWebClient gameWebClient)
     {
         NetworkErrorDialogController.gameWebClient = gameWebClient;
+        NetworkErrorDialogController.EnableExit = gameWebClient.IsExitOnFailed;
         ChoiceWhenConnErrorUI.SetActive(true);
     }
 
@@ -47,6 +50,7 @@ public class NetworkErrorDialogController : MonoBehaviour
     //When timeout, and send again
     public void OnContinueConnectionButtonClicked()
     {
+        EnableExit = false;
         NetworkErrorDialogController.ChoiceWhenConnErrorUI.SetActive(false);
         NetworkErrorDialogController.gameWebClient.Choice_ContinueConnection();
     }
@@ -54,12 +58,25 @@ public class NetworkErrorDialogController : MonoBehaviour
     //when timeout, and return to title scene
     public void OnQuitConnectionButtonClicked()
     {
+        if (EnableExit)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            UnityEngine.Application.Quit();
+#endif
+            return;
+        }
+        EnableExit = false;
         NetworkErrorDialogController.ChoiceWhenConnErrorUI.SetActive(false);
         NetworkErrorDialogController.gameWebClient.Choice_QuitConnection();
 
-        Common.loadingCanvas.SetActive(true);
-        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
-        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        if (!Common.loadingCanvas.active)
+        {
+            Common.loadingCanvas.SetActive(true);
+            Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+            Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        }
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         Manager.manager.StateQueue((int)gamestate.Title);

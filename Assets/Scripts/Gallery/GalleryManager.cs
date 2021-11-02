@@ -173,7 +173,9 @@ public class GalleryManager : MonoBehaviour
     public void OnBackClicked()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["cancel2"]);
+#if UNITY_EDITOR
         Debug.Log("Pushed Gallery");
+#endif
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();

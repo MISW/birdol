@@ -64,14 +64,18 @@ public abstract class WebClient : MonoBehaviour
         {
             this.isSuccess = false;
             this.message = "通信中です。";
+#if UNITY_EDITOR
             Debug.Log("<color=\"red\">Previous WWW connection is in Progress...</color>");
+#endif
             yield break;
         }
 
         if (CheckRequestData() != true)
         {
             this.isSuccess = false;
+#if UNITY_EDITOR
             Debug.Log("<color=\"red\">Invalid Data. So Stopped to Send Data to Server.</color>");
+#endif
             yield break;
         }
 
@@ -98,7 +102,9 @@ public abstract class WebClient : MonoBehaviour
                 this.isSuccess = false;
                 this.isInProgress = false;
                 this.message = "<color=\"red\">エラーが生じました。</color>";
+#if UNITY_EDITOR
                 Debug.LogError($"送信するリクエストデータの作成に失敗しました。 {e}");
+#endif
                 yield break;
             }
             
@@ -110,11 +116,12 @@ public abstract class WebClient : MonoBehaviour
             //show response 
             String request = "";
             if (www.uploadHandler != null) request = System.Text.Encoding.UTF8.GetString(www.uploadHandler.data);
+#if UNITY_EDITOR
             Debug.Log($"Request data: { request }\n To: {www.url}, Method: {www.method}");
             Debug.Log($"Response code: {www.responseCode}");
             Debug.Log($"Response data: {www.downloadHandler.text}");
             if(www.error!=null) Debug.LogError($"Connection Error: {www.error}");
-
+#endif
             Coroutine handler = null;
             try
             {
@@ -149,13 +156,17 @@ public abstract class WebClient : MonoBehaviour
             }
             catch(Exception e)
             {
+#if UNITY_EDITOR
                 Debug.LogError(e);
+#endif
                 isSuccess = false;
             }
             if(handler!=null) yield return handler; //終了待ち
 
             isInProgress = false;
+#if UNITY_EDITOR
             Debug.Log(this.message);
+#endif
             //www.Dispose();
         }
 

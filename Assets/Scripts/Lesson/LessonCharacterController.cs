@@ -113,7 +113,9 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
             gameObject.GetComponent<Image>().sprite = gifsprite[index];
             if (index < 5) index++;
             else index = 0;
+#if UNITY_EDITOR
             //Debug.Log("current:"+index);
+#endif
             yield return wait;
         }
     }

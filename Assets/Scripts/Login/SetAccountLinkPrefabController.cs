@@ -52,7 +52,9 @@ public class SetAccountLinkPrefabController : MonoBehaviour
         if (setAccountLinkWebClient.CheckRequestData() == false)
         {
             AlertText.text = setAccountLinkWebClient.message;
+#if UNITY_EDITOR
             Debug.Log(setAccountLinkWebClient.message);
+#endif
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
@@ -71,7 +73,9 @@ public class SetAccountLinkPrefabController : MonoBehaviour
         {
             //通信に成功した時
             SetAccountLinkWebClient.SetAccountLinkResponseData aerd = (SetAccountLinkWebClient.SetAccountLinkResponseData)setAccountLinkWebClient.data;
+#if UNITY_EDITOR
             Debug.Log("ParsedResponseData: \n" + aerd.ToString());
+#endif
             if (setAccountLinkWebClient.isSetAccountLinkSuccess)
             {
                 AlertText.text = setAccountLinkWebClient.message;

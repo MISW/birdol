@@ -37,7 +37,9 @@ public class GetCompletedWebClient : GameWebClient
                 GachaUnitManager.teachers.Clear();
                 foreach (DendouModel character in r.characters)
                 {
+#if UNITY_EDITOR
                     Debug.Log("character:"+character.Name);
+#endif
                     GachaUnitManager.teachers.Add(character);
                 }
                 Manager.manager.StateQueue((int)gamestate.GachaUnit);
@@ -46,7 +48,9 @@ public class GetCompletedWebClient : GameWebClient
                 CompletedController.CompletedCharacters.Clear();
                 foreach (DendouModel character in r.characters)
                 {
+#if UNITY_EDITOR
                     Debug.Log("character:" + character.Name);
+#endif
                     CompletedController.CompletedCharacters.Add(character);
                 }
                 Manager.manager.StateQueue((int)gamestate.CompletedCharacters);
@@ -55,7 +59,9 @@ public class GetCompletedWebClient : GameWebClient
                 FreeSelectManager.CompletedCharacters.Clear();
                 foreach (DendouModel character in r.characters)
                 {
+#if UNITY_EDITOR
                     Debug.Log("character:" + character.Name);
+#endif
                     FreeSelectManager.CompletedCharacters.Add(character);
                 }
                 Manager.manager.StateQueue((int)gamestate.FreeSelect);
@@ -71,7 +77,9 @@ public class GetCompletedWebClient : GameWebClient
         }
         else
         {
+#if UNITY_EDITOR
             Debug.Log("Connection Error Occured.");
+#endif
         }
 
     }
