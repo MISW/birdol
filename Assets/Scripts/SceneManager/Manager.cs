@@ -20,6 +20,11 @@ public class Manager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
+        Common.initCharacters();
+        Common.loadingCanvas = loadingCanvas;
+        Common.loadingGif = gif;
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.CreateRsaKeyPair();//Android�������΍�
         if (manager == null)
         {
@@ -36,9 +41,6 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Common.initCharacters();
-        Common.loadingCanvas = loadingCanvas;
-        Common.loadingGif = gif;
         Common.loadingTips = tips;
         Common.bgmplayer = bgmplayer;
         Common.bgmplayer.volume = Common.BGMVol/Common.bgmmaxvol;
@@ -49,9 +51,15 @@ public class Manager : MonoBehaviour
         init();
     }
 
+    int cnt = 15;
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot("iPhone_7/" + cnt.ToString() + ".png");
+            cnt++;
+        }
         if (statequeueflag)
         {
             StartCoroutine(StateChange());
