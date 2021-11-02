@@ -54,7 +54,9 @@ public class LinkAccountPrefabController : MonoBehaviour
         if (linkAccountWebClient.CheckRequestData() == false)
         {
             AlertText.text = linkAccountWebClient.message;
+#if UNITY_EDITOR
             Debug.Log(linkAccountWebClient.message);
+#endif
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
@@ -73,7 +75,9 @@ public class LinkAccountPrefabController : MonoBehaviour
         {
             //通信に成功した時 
             LinkAccountWebClient.LinkAccountResponseData lrd = (LinkAccountWebClient.LinkAccountResponseData)linkAccountWebClient.data;
+#if UNITY_EDITOR
             Debug.Log("ParsedResponseData: \n"+lrd.ToString());
+#endif
             if (linkAccountWebClient.isLinkAccountSuccess)
             {
                 Common.DefaultAccountID = id;

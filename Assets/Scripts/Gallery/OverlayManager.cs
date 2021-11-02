@@ -55,7 +55,9 @@ public class OverlayManager : MonoBehaviour
     public void OpenOverlay(CharacterModel model) {
         // オーバーレイを開いたときに発火
         // 渡されたキャラクターのデータに書き換える
+#if UNITY_EDITOR
         Debug.Log(model.id + ": " + model.name);
+#endif
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);

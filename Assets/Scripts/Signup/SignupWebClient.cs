@@ -117,7 +117,9 @@ public class SignupWebClient : WebClient
         {
             ok = false;
             this.message = "エラー";
+#if UNITY_EDITOR
             Debug.LogError("privateKeyがセットされていません。");
+#endif
         }
 
         return ok;
@@ -176,7 +178,9 @@ public class SignupWebClient : WebClient
     protected override IEnumerator HandleErrorData(string error)
     {
         this.message = $"通信に失敗しました。";
+#if UNITY_EDITOR
         Debug.Log($"error: \n{error}");
+#endif
         yield break;
     }
 
@@ -186,7 +190,9 @@ public class SignupWebClient : WebClient
     protected override void HandleInProgressData()
     {
         this.message = "通信中です。";
+#if UNITY_EDITOR
         Debug.LogError("Unexpected UnityWebRequest Result");
+#endif
     }
 
 
@@ -197,7 +203,9 @@ public class SignupWebClient : WebClient
     private void OnSignupSuccess(SignupResponseData srd)
     {
         isSignupSuccess = true;
+#if UNITY_EDITOR
         Debug.Log($"PlayerPrefs Saved\nuser_id: {srd.user_id}, access_token: {srd.access_token}, refresh_token: {srd.refresh_token}, default_account_id: {srd.account_id}");
+#endif
         Common.UserID = srd.user_id;
         Common.AccessToken = srd.access_token;
         Common.RefreshToken = srd.refresh_token;

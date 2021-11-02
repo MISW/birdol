@@ -110,7 +110,9 @@ public class SetAccountLinkWebClient : GameWebClient
         }
         catch (Exception e)
         {
+#if UNITY_EDITOR
             Debug.LogError(e);
+#endif
             this.message = "このパスワードは使用できません。";
             throw;
         }
@@ -155,7 +157,9 @@ public class SetAccountLinkWebClient : GameWebClient
     protected override IEnumerator HandleErrorData(string error)
     {
         this.message = $"通信に失敗しました。";
+#if UNITY_EDITOR
         Debug.Log($"error: \n{error}");
+#endif
         yield break;
     }
 
@@ -165,7 +169,9 @@ public class SetAccountLinkWebClient : GameWebClient
     protected override void HandleInProgressData()
     {
         this.message = "通信中です。";
+#if UNITY_EDITOR
         Debug.LogError("Unexpected UnityWebRequest Result");
+#endif
     }
 
 

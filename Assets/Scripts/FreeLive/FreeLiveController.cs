@@ -255,7 +255,9 @@ public class FreeLiveController : MonoBehaviour
         {
             targetArea = characterInf.PassiveSkillType;
         }
+#if UNITY_EDITOR
         Debug.Log("Passive:" + characterInf.SupportCharacterId + " Group:" + characterInf.Group + " SkillScore " + " PassiveType:" + characterInf.PassiveSkillProbability + "PassiveScore:"+characterInf.PassiveSkillScore);
+#endif
         for (int i = 0; i < SIZE; i++)
         {
             FreeCharacterController objcc = characterControllers[i];
@@ -283,7 +285,9 @@ public class FreeLiveController : MonoBehaviour
             }
             objcc.setParamsFont();
         }
+#if UNITY_EDITOR
         Debug.Log("Triggered:"+count);
+#endif
     }
 
     private IEnumerator execSkillofOnePerson(FreeCharacterController characterObj,int index,bool selected)
@@ -368,7 +372,9 @@ public class FreeLiveController : MonoBehaviour
         {
             enablePassives();
         }
+#if UNITY_EDITOR
         Debug.Log("CurrentScore:"+score+" Max:"+max);
+#endif
     }
 
     private void enablePassives()

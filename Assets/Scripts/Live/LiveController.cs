@@ -133,8 +133,10 @@ public class LiveController : MonoBehaviour
             tempProgress[i].PassiveSkillProbability = subCharacter.passiveprobability;
             CharacterController objk = objs[i].GetComponent<CharacterController>();
             characterControllers[i] = objk;
+#if UNITY_EDITOR
             Debug.Log("Group:"+tempProgress[i].Group);
             Debug.Log("PassiveType:" + tempProgress[i].PassiveSkillType);
+#endif
             objk.id = i;
             objk.characterInf = tempProgress[i];
             objk.name.text = tempProgress[i].Name;
@@ -288,8 +290,9 @@ public class LiveController : MonoBehaviour
         {
             targetArea = characterInf.PassiveSkillType;
         }
-
+#if UNITY_EDITOR
         Debug.Log("Passive:" + characterInf.SupportCharacterId + " Group:" + characterInf.Group + " SkillScore " + characterInf.PassiveSkillScore + " PassiveType:" + characterInf.PassiveSkillType + " PassiveScore:" + characterInf.PassiveSkillScore);
+#endif
         for (int i = 0; i < 5;i++)
         {
             CharacterController objcc = characterControllers[i];
@@ -315,7 +318,9 @@ public class LiveController : MonoBehaviour
             {
                 objcc.characterInf.Dance *= (1 + characterInf.PassiveSkillLevel * 0.2f) * characterInf.PassiveSkillScore;
             }
+#if UNITY_EDITOR
             Debug.Log("Applied:" + objinf.MainCharacterId);
+#endif
             objcc.setParamsFont();
         }
     }
@@ -441,7 +446,9 @@ public class LiveController : MonoBehaviour
         {
             enablePassives();
         }
+#if UNITY_EDITOR
         Debug.Log("CurrentScore:"+score+" Max:"+max);
+#endif
     }
 
     public void onStartButtonClick()

@@ -67,7 +67,9 @@ public class SignupSceneController : SceneVisor
         if (signupWebClient.CheckRequestData()==false)
         {
             AlertText.text = signupWebClient.message;
+#if UNITY_EDITOR
             Debug.Log(signupWebClient.message);
+#endif
             yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
             isConnectionInProgress = false;
             yield break;
@@ -84,12 +86,16 @@ public class SignupSceneController : SceneVisor
         {
             //成功した時
             SignupWebClient.SignupResponseData srd = (SignupWebClient.SignupResponseData)signupWebClient.data;
+#if UNITY_EDITOR
             Debug.Log("ParsedResponseData: \n" + srd.ToString());
+#endif
             if (signupWebClient.isSignupSuccess)
             {
                 Common.Uuid = _uuid;
                 Common.RsaKeyPair = rsaKeyPair;
+#if UNITY_EDITOR
                 Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
+#endif
 
                 AlertText.text = signupWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));

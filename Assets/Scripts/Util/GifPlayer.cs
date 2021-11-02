@@ -52,7 +52,9 @@ public class GifPlayer : MonoBehaviour {
             image.sprite = Resources.Load<Sprite>(path + gifid + "/" + index);
             if (index < size) index++;
             else index = 1;
+#if UNITY_EDITOR
             //Debug.Log("current:"+index);
+#endif
             yield return waittime;
         }
     }

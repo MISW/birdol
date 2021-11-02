@@ -51,8 +51,10 @@ public class Ending : MonoBehaviour
     /// <param name="i"></param>
     public void ChangeCurrentCharacter(int i)
     {
+#if UNITY_EDITOR
         //Debug.Log(i);
-        if(currentCharacterNumber != i)
+#endif
+        if (currentCharacterNumber != i)
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
             CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -112,8 +114,10 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetSongStar(int status)
     {
+#if UNITY_EDITOR
         //Debug.Log("Vocal" + status);
-        for(int i=0;i<status/5;i++)
+#endif
+        for (int i=0;i<status/5;i++)
         {
             VocalStarImage[i].enabled = true;
             VocalStarImage[i].sprite = star[4];
@@ -142,7 +146,9 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetVisualStar(int status)
     {
+#if UNITY_EDITOR
         //Debug.Log("Visual" + status);
+#endif
         for (int i = 0; i < status / 5; i++)
         {
             VisualStarImage[i].enabled = true;
@@ -172,7 +178,9 @@ public class Ending : MonoBehaviour
     /// <param name="status"></param>
     private void SetDanceStar(int status)
     {
+#if UNITY_EDITOR
         //Debug.Log("Dance" + status);
+#endif
         for (int i = 0; i < status / 5; i++)
         {
             DanceStarImage[i].enabled = true;

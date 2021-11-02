@@ -78,7 +78,9 @@ public class FreeSelectManager : MonoBehaviour
         currentindex = index;
         for (int i = 0; i < CompletedCharacters.Count; i++)
         {
+#if UNITY_EDITOR
             Debug.Log("Current: "+ i +"value" + selected[i]);
+#endif
             if (selected[i]!=0)
             {
                 if (selected[i] - 1 == currentindex)

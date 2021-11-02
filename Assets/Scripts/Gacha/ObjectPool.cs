@@ -39,7 +39,11 @@ namespace UnityEngine.UI
         public void Release(T element)
         {
             if (m_Stack.Count > 0 && ReferenceEquals(m_Stack.Peek(), element))
+            {
+#if UNITY_EDITOR
                 Debug.LogError("Internal error. Trying to destroy object that is already released to pool.");
+#endif
+            }
             if (m_ActionOnRelease != null)
                 m_ActionOnRelease(element);
             m_Stack.Push(element);

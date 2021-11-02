@@ -119,7 +119,9 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedGallery()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+#if UNITY_EDITOR
         Debug.Log("Pushed Gallery");
+#endif
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -133,7 +135,9 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedDendou()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+#if UNITY_EDITOR
         Debug.Log("Pushed Dendou");
+#endif
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -154,7 +158,9 @@ public class HomeUtil : MonoBehaviour
     public void onButtonPressedIkusei()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+#if UNITY_EDITOR
         Debug.Log("Pushed Ikusei");
+#endif
         Common.loadingCanvas.SetActive(true);
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -174,7 +180,9 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedCharacterImage()
     {
+#if UNITY_EDITOR
         Debug.Log("Pushed CharaImage");
+#endif
         DialogTextChanger();
         Dialog.SetActive(true);
         dialogstatus++;
@@ -188,19 +196,25 @@ public class HomeUtil : MonoBehaviour
 
     public void onButtonPressedDialog()
     {
+#if UNITY_EDITOR
         Debug.Log("Pushed Dialog");
+#endif
         //Dialog.SetActive(false);
     }
 
     public void onButtonPressedOption()
     {
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
+#if UNITY_EDITOR
         Debug.Log("Pushed Option");
+#endif
 
     }
     public void onButtonPressedStandingTester()
     {
+#if UNITY_EDITOR
         Debug.Log("StandingTester");
+#endif
         Dialog.SetActive(false);
         chara_id++;
         if (chara_id >= characterSize) chara_id = 0;
@@ -211,9 +225,9 @@ public class HomeUtil : MonoBehaviour
 
     void positionAdjust()
     {
-
+#if UNITY_EDITOR
         Debug.Log(homeCharacters.Characters[chara_id].id + ": " + homeCharacters.Characters[chara_id].name);
-
+#endif
         Transform tr = CharacterImage.transform;
         Vector3 currentPos = tr.localPosition;
         Vector3 currentScale = tr.localScale;

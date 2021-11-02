@@ -133,7 +133,9 @@ public class Manager : MonoBehaviour
 
         Pre_GameState = Now_GameState;
         Now_GameState = gamestate.Undefined;
+#if UNITY_EDITOR
         Debug.Log("Transition�c");
+#endif
 
         if (Visor1 != null)
         {
@@ -141,13 +143,17 @@ public class Manager : MonoBehaviour
         }
         else
         {
+#if UNITY_EDITOR
             Debug.Log("Visor null");
+#endif
         }
 
         if (Pre_GameState != 0)
         {
+#if UNITY_EDITOR
             Debug.Log("unload");
-           // SceneManager.UnloadSceneAsync((int)Pre_GameState);
+#endif
+            // SceneManager.UnloadSceneAsync((int)Pre_GameState);
 
         }
         yield return new WaitForSeconds(2);
@@ -165,9 +171,9 @@ public class Manager : MonoBehaviour
         Visor = Visor2;
         Now_GameState = Next_GameState;
 
-
+#if UNITY_EDITOR
         Debug.Log($"GameState was Changed from {Pre_GameState} to {Now_GameState}");
-
+#endif
         yield break;
     }
     void Updater()

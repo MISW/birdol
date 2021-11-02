@@ -261,7 +261,9 @@ public class GachaUnitManager : MonoBehaviour
         }
         SetCharacterProfile(-1);
         characterTeamName.GetComponent<InputField>().interactable = false;
+#if UNITY_EDITOR
         Debug.Log("SavedMain:" + unitInf[currentindex].mainselected);
+#endif
         currentdialog = "";
         currentindex = -1;
         currentcharacter = -1;
@@ -287,7 +289,9 @@ public class GachaUnitManager : MonoBehaviour
     {
         Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[currentindex].transform;
+#if UNITY_EDITOR
         Debug.Log("Cleared:"+currentindex);
+#endif
         if (currentdialog == "maincharacter" && currentcharacter != -1)
         {
             if (unitInf[currentindex].mainselected != -1)

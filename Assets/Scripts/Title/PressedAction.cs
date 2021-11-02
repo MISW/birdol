@@ -51,16 +51,18 @@ public class PressedAction : MonoBehaviour
     public void OnClick() {
         //ここを変える
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
-        /*
+        
         if (Common.hasUpdate)
         {
             //ストアへリダイレクト
-#if UNITY_ANDROID
-            Application.OpenURL("market://details?id="+Application.productName);
-#elif UNITY_IPHONE
-            Application.OpenURL("itms-apps://itunes.apple.com/app/idYOUR_ID");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            UnityEngine.Application.Quit();
 #endif
-        }*/
+        }
+        else
+        {
             Common.loadingCanvas.SetActive(true);
             Common.loadingGif.GetComponent<GifPlayer>().index = 0;
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -74,6 +76,7 @@ public class PressedAction : MonoBehaviour
             {
                 StartCoroutine(LoginAndSync());
             }
+        }
         
 
 

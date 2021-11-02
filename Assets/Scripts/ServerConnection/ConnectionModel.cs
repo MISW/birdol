@@ -82,7 +82,9 @@ public class ConnectionModel : MonoBehaviour
 	public static string ErrorMessage(string error="")
     {
 		if (error == null) return "";
+#if UNITY_EDITOR
 		Debug.LogError($"Error: {error}");
+#endif
 		string message="";
         switch (error)
         {
@@ -121,7 +123,9 @@ public class ConnectionModel : MonoBehaviour
 				message = "サーバでエラーが生じました。";
 				break;
 			default:
+#if UNITY_EDITOR
 				Debug.LogError("予期せぬエラーがサーバから返ってきました。");
+#endif
 				break;
 		}
 		return message;

@@ -37,12 +37,16 @@ public class RefreshTokenWebClient : WebClient
             Common.RefreshToken = r.refresh_token;
             Common.SessionID = r.session_id;
             this.message = "成功しました。";
+#if UNITY_EDITOR
             Debug.Log($"RefreshTokenに成功しました。 AccessToken: {r.token}, RefreshToken: {r.refresh_token}, SessionID: {r.session_id}");
+#endif
         }
         else
         {
             this.message = ConnectionModel.ErrorMessage(r.error);
+#if UNITY_EDITOR
             Debug.Log($"アクセストークンのリフレッシュに失敗したため、アカウント作成(orアカウント連携)が必要です。 {r.error}");
+#endif
         }
         yield break;
     }
@@ -50,14 +54,18 @@ public class RefreshTokenWebClient : WebClient
     protected override IEnumerator HandleErrorData(string error)
     {
         this.message = "失敗しました。";
+#if UNITY_EDITOR
         Debug.LogError(error);
+#endif
         yield break;
     }
 
     protected override void HandleInProgressData()
     {
         this.message = "通信中です";
+#if UNITY_EDITOR
         Debug.LogError("Connection in progress...");
+#endif
     }
 
     protected override void HandleSetupWebRequestData(UnityWebRequest www)

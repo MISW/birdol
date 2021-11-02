@@ -33,7 +33,9 @@ public class CharaNodeManager : MonoBehaviour
     // キャラをタップしたときの処理
     // オーバーレイ画面を開く
     public void OnClick() {
+#if UNITY_EDITOR
         // Debug.Log("clicked " + this.character.id);
+#endif
 
         if (this.isUnlocked) overlayManager.OpenOverlay(this.character);
     }

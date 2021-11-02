@@ -138,7 +138,9 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
             character.sprite = gifsprite[index];
             if (index < 5) index++;
             else index = 0;
+#if UNITY_EDITOR
             //Debug.Log("current:"+index);
+#endif
             yield return wait;
         }
     }
@@ -171,7 +173,9 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
     void Start()
     {
         Application.targetFrameRate = 60;
+#if UNITY_EDITOR
         Debug.Log("CurID:" + this.id);
+#endif
         setArea();
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()

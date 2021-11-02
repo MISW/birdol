@@ -58,6 +58,7 @@ public class CheckVersionWebClient : GameWebClient
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(postData);
         www.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         www.SetRequestHeader("Content-Type", "application/json");
+        EnableExitOnFailure();
     }
 
     protected override void HandleGameSuccessData(string response)

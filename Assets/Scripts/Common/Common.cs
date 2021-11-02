@@ -158,7 +158,9 @@ public partial class Common : MonoBehaviour
         while(currentvol > 0f)
         {
             currentvol -= 0.001f;
+#if UNITY_EDITOR
             Debug.Log("StopVol:"+currentvol);
+#endif
             bgmplayer.volume = currentvol;
             yield return fixedupdate;
         }
@@ -213,11 +215,15 @@ public partial class Common : MonoBehaviour
         {
             int chapter = mainstoryid[0]-'0';
             if (chapter >= 10 || chapter < 1) throw new Exception($"Unexpected mainstoryid: {mainstoryid}");
+#if UNITY_EDITOR
             Debug.Log($"chapter: {chapter}, ノルマ: {liveScoreMaxValues[chapter - 1]}");
+#endif
             return liveScoreMaxValues[chapter-1];
         }catch(Exception e)
         {
+#if UNITY_EDITOR
             Debug.Log(e);
+#endif
             return 0;
         }
     }
@@ -465,9 +471,10 @@ public partial class Common : MonoBehaviour
         publicKey = StrToBase64Str(publicKey);
         privateKey= StrToBase64Str(privateKey);
         (string privateKey, string publicKey) keyPair = (privateKey: privateKey, publicKey: publicKey);
-
+#if UNITY_EDITOR
         Debug.Log($"private_key: { StrFromBase64Str(keyPair.privateKey) }");
         Debug.Log($"public_key: { StrFromBase64Str(keyPair.publicKey) }");
+#endif
 
         return keyPair;
     }
@@ -495,7 +502,9 @@ public partial class Common : MonoBehaviour
         }
         catch (Exception e)
         {
+#if UNITY_EDITOR
             Debug.LogError(e);
+#endif
         }
         return str;
     }
@@ -508,7 +517,9 @@ public partial class Common : MonoBehaviour
         }
         catch (Exception e)
         {
+#if UNITY_EDITOR
             Debug.LogError(e);
+#endif
         }
         return str;
     }
