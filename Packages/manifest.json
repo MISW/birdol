@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "com.google.android.appbundle": "file:C:/Users/akihi/Downloads/com.google.android.appbundle-1.5.0.tgz",
+    "com.google.play.assetdelivery": "file:C:/Users/akihi/Downloads/com.google.play.assetdelivery-1.5.0.tgz",
+    "com.google.play.common": "file:C:/Users/akihi/Downloads/com.google.play.common-1.5.0.tgz",
+    "com.google.play.core": "file:C:/Users/akihi/Downloads/com.google.play.core-1.5.0.tgz",
     "com.unity.2d.animation": "6.0.3",
     "com.unity.2d.pixel-perfect": "5.0.0",
     "com.unity.2d.psdimporter": "5.0.3",
@@ -7,6 +11,7 @@
     "com.unity.2d.spriteshape": "6.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.2d.tilemap.extras": "2.0.0",
+    "com.unity.assetbundlebrowser": "https://github.com/Unity-Technologies/AssetBundles-Browser.git",
     "com.unity.collab-proxy": "1.5.7",
     "com.unity.ide.rider": "3.0.7",
     "com.unity.ide.visualstudio": "2.0.9",
@@ -47,5 +52,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "Game Package Registry by Google",
+      "url": "https://github.com/google/play-unity-plugins.git",
+      "scopes": [
+        "com.google"
+      ]
+    }
+  ]
 }

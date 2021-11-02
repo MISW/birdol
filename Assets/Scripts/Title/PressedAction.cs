@@ -15,7 +15,11 @@ public class PressedAction : MonoBehaviour
             NewUpdate.SetActive(true);
         }
         Common.bgmplayer.time = 0;
-        Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/TM01");
+#if UNITY_ANDROID
+        Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("TM01");
+#else
+        Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/TM01");
+#endif
         Common.bgmplayer.Play();
     }
 

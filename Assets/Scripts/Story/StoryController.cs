@@ -54,30 +54,56 @@ public class StoryController : MonoBehaviour
             int id = RandomArray.GetRandom(Common.remainingSubstory);
             Common.TriggeredSubStory += (id + ",");
             Common.remainingSubstory.Remove(id);
+#if UNITY_ANDROID
+            datas = Common.assetBundle.LoadAsset<TextAsset>("Assets/Resources/story/sub/" + id + ".txt").ToString().Split(
+            new[] { "\r\n", "\r", "\n" },
+            StringSplitOptions.None
+            );
+#else
             datas = Resources.Load<TextAsset>("story/sub/" + id).ToString().Split(
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
             );
+#endif
             skipButton.SetActive(false);
         }
         else
         {
+#if UNITY_ANDROID
+            datas = Common.assetBundle.LoadAsset<TextAsset>("Assets/Resources/story/" + Common.mainstoryid + ".txt").ToString().Split(
+            new[] { "\r\n", "\r", "\n" },
+            StringSplitOptions.None
+            );
+#else
             datas = Resources.Load<TextAsset>("story/" + Common.mainstoryid).ToString().Split(
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
             );
+#endif
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"ドア閉め", (AudioClip)Resources.Load("SE/story/ドア閉め") },
-            {"拍手", (AudioClip)Resources.Load("SE/story/拍手") },
-            {"拍手2", (AudioClip)Resources.Load("SE/story/拍手2") },
-            {"歓声", (AudioClip)Resources.Load("SE/story/歓声") },
-            {"歩く", (AudioClip)Resources.Load("SE/story/歩く") },
-            {"紙擦れ", (AudioClip)Resources.Load("SE/story/紙擦れ") },
-            {"駆け足", (AudioClip)Resources.Load("SE/story/駆け足") },
-            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
-            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+#if UNITY_ANDROID
+            {"ドア閉め", Common.assetBundle.LoadAsset<AudioClip>("ドア閉め") },
+            {"拍手", Common.assetBundle.LoadAsset<AudioClip>("拍手") },
+            {"拍手2", Common.assetBundle.LoadAsset<AudioClip>("拍手2") },
+            {"歓声", Common.assetBundle.LoadAsset<AudioClip>("歓声") },
+            {"歩く", Common.assetBundle.LoadAsset<AudioClip>("歩く") },
+            {"紙擦れ", Common.assetBundle.LoadAsset<AudioClip>("紙擦れ") },
+            {"駆け足", Common.assetBundle.LoadAsset<AudioClip>("駆け足") },
+            {"ok1", Common.assetBundle.LoadAsset<AudioClip>("ok1") },
+            {"tsukamu1", Common.assetBundle.LoadAsset<AudioClip>("tsukamu1") },
+#else
+            {"ドア閉め", Resources.Load<AudioClip>("SE/story/ドア閉め") },
+            {"拍手", Resources.Load<AudioClip>("SE/story/拍手") },
+            {"拍手2", Resources.Load<AudioClip>("SE/story/拍手2") },
+            {"歓声", Resources.Load<AudioClip>("SE/story/歓声") },
+            {"歩く", Resources.Load<AudioClip>("SE/story/歩く") },
+            {"紙擦れ", Resources.Load<AudioClip>("SE/story/紙擦れ") },
+            {"駆け足", Resources.Load<AudioClip>("SE/story/駆け足") },
+            {"ok1", Resources.Load<AudioClip>("SE/ok1") },
+            {"tsukamu1", Resources.Load<AudioClip>("SE/live/tsukamu1") },
+#endif
         };
         size = datas.Length;
         UpdateDialog();
@@ -239,8 +265,13 @@ public class StoryController : MonoBehaviour
                     filename = arr[0];
                     dir = arr[1];
                 }
+#if UNITY_ANDROID
+                if(dir=="l") leftImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
+                else rightImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
+#else
                 if(dir=="l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
                 else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+#endif
                 characterName.text = name;
                 UpdateDialog();
             }
@@ -254,7 +285,11 @@ public class StoryController : MonoBehaviour
                     filename = data.Substring(data.IndexOf("(") + 1).Replace(")", "");
                     if (characterImage.enabled)
                     {
+#if UNITY_ANDROID
+                        characterImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
+#else
                         characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+#endif
                     }
                     else
                     {
@@ -384,7 +419,11 @@ public class StoryController : MonoBehaviour
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
+#if UNITY_ANDROID
+                    background.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/UI_Background/" + filename + ".png");
+#else
                     background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
+#endif
 
                 }
                 else if (data.StartsWith("/BGM一時停止") && allowShowing)
@@ -407,7 +446,11 @@ public class StoryController : MonoBehaviour
                         Common.bgmplayer.Stop();
 
                         Common.bgmplayer.time = 0;
+#if UNITY_ANDROID
+                        Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>(bgm);
+#else
                         Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
+#endif
                         Common.bgmplayer.Play();
                     }
                 }

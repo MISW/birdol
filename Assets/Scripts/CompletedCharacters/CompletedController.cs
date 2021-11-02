@@ -205,7 +205,11 @@ public class CompletedController : MonoBehaviour
         {
             if(index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
             DendouModel dendouModel = CompletedCharacters[i];
+#if UNITY_ANDROID
+            horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.MainCharacterId + ".png");
+#else
             horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
+#endif
             if (index == 4)index = 0;
             else index++;
         }
@@ -218,7 +222,11 @@ public class CompletedController : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "CompletedCharacters")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG03");
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("BG03");
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/BG03");
+#endif
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

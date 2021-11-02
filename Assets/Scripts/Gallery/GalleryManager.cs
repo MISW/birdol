@@ -43,7 +43,11 @@ public class GalleryManager : MonoBehaviour
     /// 図鑑データを読み込む
     /// </summary>
     private void LoadCSV() {
+#if UNITY_ANDROID
+        infoCSV = Common.assetBundle.LoadAsset<TextAsset>("info");
+#else
         infoCSV = Resources.Load<TextAsset>("GalleryData/info");
+#endif
         StringReader reader = new StringReader(infoCSV.text);
 
         while (reader.Peek() != -1) {
@@ -118,7 +122,11 @@ public class GalleryManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gallery")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG02");
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("Music/BG02");
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/BG02");
+#endif
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

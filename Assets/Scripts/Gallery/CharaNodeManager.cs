@@ -50,8 +50,13 @@ public class CharaNodeManager : MonoBehaviour
         GameObject nameObject = this.transform.Find("Panel/Text").gameObject;
 
         Image faceImage = faceObject.GetComponent<Image>();
+#if UNITY_ANDROID
+        Sprite faceSprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + model.id + ".png");
+        Sprite lockedSprite = Common.assetBundle.LoadAsset<Sprite>("loacked");
+#else
         Sprite faceSprite = Resources.Load<Sprite>("Images/charactericon/" + model.id);
         Sprite lockedSprite = Resources.Load<Sprite>(lockedPath);
+#endif
 
         Text nameText = nameObject.GetComponent<Text>();
 

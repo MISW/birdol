@@ -23,7 +23,11 @@ public class UIchanger : MonoBehaviour{
         Score_Text.GetComponent<Text>().text = Score_num.ToString("000,000");
         Judge_Image.GetComponent<Image>().sprite = Judge_Sprites[Judge_Image_num];
         //Chara_Image.GetComponent<Image>().sprite = Chara_Sprites[Chara_Image_num];
+#if UNITY_ANDROID
+        Chara_Image.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + Chara_Image_num + ".png");
+#else
         Chara_Image.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Chara_Image_num);
+#endif
         Achievement_Image.GetComponent<Image>().fillAmount = Achievement_num;
         Achievement_Text.GetComponent<Text>().text = Achievement_num.ToString("P0");
         Score_Image.GetComponent<Image>().sprite = Score_Sprites[Judge_Image_num];

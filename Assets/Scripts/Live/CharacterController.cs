@@ -138,7 +138,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             if (index < 5) index++;
             else index = 0;
 #if UNITY_EDITOR
-            //Debug.Log("current:"+index);
+            Debug.Log("current:"+index);
 #endif
             yield return wait;
         }
@@ -164,7 +164,6 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
     {
         coroutine = updateImg();
         StartCoroutine(coroutine);
-        //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     Dictionary<string, AudioClip> seclips;
@@ -175,10 +174,17 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
-            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
-            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
-            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
+#if UNITY_ANDROID
+            {"tsukamu1", Common.assetBundle.LoadAsset<AudioClip>("tsukamu1") },
+            {"orosu1", Common.assetBundle.LoadAsset<AudioClip>("orosu1") },
+            {"haneru1", Common.assetBundle.LoadAsset<AudioClip>("haneru1") },
+            {"skillkettei1", Common.assetBundle.LoadAsset<AudioClip>("skillkettei1") },
+#else
+            {"tsukamu1", Resources.Load<AudioClip>("SE/live/tsukamu1") },
+            {"orosu1", Resources.Load<AudioClip>("SE/live/orosu1") },
+            {"haneru1", Resources.Load<AudioClip>("SE/live/haneru1") },
+            {"skillkettei1", Resources.Load<AudioClip>("SE/live/skillkettei1") },
+#endif
         };
     }
 

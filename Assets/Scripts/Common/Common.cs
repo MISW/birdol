@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Google.Play.AssetDelivery;
 
 public partial class Common : MonoBehaviour
 {
@@ -30,6 +31,10 @@ public partial class Common : MonoBehaviour
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
+
+    public static PlayAssetBundleRequest bundleRequest;
+    public static AssetBundle assetBundle;
+
     public static string Freebgm
     {
         get
@@ -174,30 +179,54 @@ public partial class Common : MonoBehaviour
     {
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"okbig1", (AudioClip)Resources.Load("SE/okbig1") },
-            {"ikuseistart1", (AudioClip)Resources.Load("SE/ikuseistart1") },
-            {"freelive1", (AudioClip)Resources.Load("SE/menu/freelive1") },
-            {"zukan1", (AudioClip)Resources.Load("SE/menu/zukan1") },
-            {"sudattabirdol1", (AudioClip)Resources.Load("SE/menu/sudattabirdol1") },
-            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
-            {"cancel1", (AudioClip)Resources.Load("SE/cancel1") },
-            {"cancel2", (AudioClip)Resources.Load("SE/cancel2") },
-            {"error1", (AudioClip)Resources.Load("SE/error1") },
+#if UNITY_ANDROID
+            {"okbig1", Common.assetBundle.LoadAsset<AudioClip>("okbig1") },
+            {"ikuseistart1",  Common.assetBundle.LoadAsset<AudioClip>("ikuseistart1") },
+            {"freelive1",  Common.assetBundle.LoadAsset<AudioClip>("freelive1") },
+            {"zukan1",  Common.assetBundle.LoadAsset<AudioClip>("zukan1") },
+            {"sudattabirdol1",  Common.assetBundle.LoadAsset<AudioClip>("sudattabirdol1") },
+            {"ok1",  Common.assetBundle.LoadAsset<AudioClip>("ok1") },
+            {"cancel1",  Common.assetBundle.LoadAsset<AudioClip>("cancel1") },
+            {"cancel2",  Common.assetBundle.LoadAsset<AudioClip>("cancel2") },
+            {"error1",  Common.assetBundle.LoadAsset<AudioClip>("error1") },
+#else
+            {"okbig1", Resources.Load<AudioClip>("SE/okbig1") },
+            {"ikuseistart1",  Resources.Load<AudioClip>("SE/ikuseistart1") },
+            {"freelive1",  Resources.Load<AudioClip>("SE/menu/freelive1") },
+            {"zukan1",  Resources.Load<AudioClip>("SE/menu/zukan1") },
+            {"sudattabirdol1",  Resources.Load<AudioClip>("SE/menu/sudattabirdol1") },
+            {"ok1",  Resources.Load<AudioClip>("SE/ok1") },
+            {"cancel1",  Resources.Load<AudioClip>("SE/cancel1") },
+            {"cancel2",  Resources.Load<AudioClip>("SE/cancel2") },
+            {"error1",  Resources.Load<AudioClip>("SE/error1") },
+#endif
         };
     }
     public static void initCharacters()
     {
-        string json = Resources.Load<TextAsset>("Common/characters").ToString();
+#if UNITY_ANDROID
+        string json = Common.assetBundle.LoadAsset<TextAsset>("characters").ToString();
+#else
+        string json = Resources.Load<TextAsset>("common/characters").ToString();
+#endif
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
         for (int i=0;i<32;i++)
         {
+#if UNITY_ANDROID
+            standImages[i] = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + characters[i].id + ".png");
+#else
             standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
+#endif
         }
     }
 
     public static void initProgress()
     {
+#if UNITY_ANDROID
+        string json = Common.assetBundle.LoadAsset<TextAsset>("testdata").ToString();
+#else
         string json = Resources.Load<TextAsset>("Live/testdata").ToString();
+#endif
         progresses = JsonUtility.FromJson<ProgressData>(json).progresses;
     }
 

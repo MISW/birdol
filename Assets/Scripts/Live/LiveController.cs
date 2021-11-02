@@ -142,15 +142,26 @@ public class LiveController : MonoBehaviour
             objk.name.text = tempProgress[i].Name;
             for (int j=0;j<6;j++)
             {
-                //Change Here 
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ tempProgress[i].MainCharacterId+"/ch-"+j));
+                //Change Here
+#if UNITY_ANDROID
+                objk.gifsprite.Add(Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + tempProgress[i].MainCharacterId + "/ch-" + j + ".png"));
+#else
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + tempProgress[i].MainCharacterId + "/ch-" + j));
+#endif
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
+#if UNITY_ANDROID
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + tempProgress[i].MainCharacterId + ".png");
+            if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Pink_Edge");
+            else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Yellow_Edge");
+            else listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Blue_Edge");
+#else
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + tempProgress[i].MainCharacterId);
             if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
             else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+#endif
             objk.listchild = listchilds[i];
             objk.connectUI();
             objk.setParamsFont();
@@ -176,10 +187,17 @@ public class LiveController : MonoBehaviour
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"gaugemax1", (AudioClip)Resources.Load("SE/live/gaugemax1") },
-            {"up1", (AudioClip)Resources.Load("SE/live/up1") },
-            {"resultsuccess1", (AudioClip)Resources.Load("SE/live/resultsuccess1") },
-            {"resultfault1", (AudioClip)Resources.Load("SE/live/resultfault1") },
+#if UNITY_ANDROID
+            {"gaugemax1", Common.assetBundle.LoadAsset<AudioClip>("gaugemax1") },
+            {"up1", Common.assetBundle.LoadAsset<AudioClip>("up1") },
+            {"resultsuccess1", Common.assetBundle.LoadAsset<AudioClip>("resultsuccess1") },
+            {"resultfault1", Common.assetBundle.LoadAsset<AudioClip>("resultfault1") },
+#else
+            {"gaugemax1", Resources.Load<AudioClip>("SE/live/gaugemax1") },
+            {"up1", Resources.Load<AudioClip>("SE/live/up1") },
+            {"resultsuccess1", Resources.Load<AudioClip>("SE/live/resultsuccess1") },
+            {"resultfault1", Resources.Load<AudioClip>("SE/live/resultfault1") },
+#endif
         };
         enablePassives();
         backlight.transform.SetSiblingIndex(114514);
@@ -475,7 +493,11 @@ public class LiveController : MonoBehaviour
             String filename = "TM01";
             int storyid = int.Parse(Common.mainstoryid.Substring(0, 1));
             if (storyid == 4 || storyid == 7) filename = "TM02";
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/"+filename);
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>(filename);
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/" + filename);
+#endif
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

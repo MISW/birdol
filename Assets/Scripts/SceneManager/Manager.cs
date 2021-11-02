@@ -6,6 +6,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Google.Play.AssetDelivery;
 
 public class Manager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class Manager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-        Common.CreateRsaKeyPair();//Android�������΍�
+        Common.CreateRsaKeyPair();
         if (manager == null)
         {
             manager = this;
@@ -30,6 +31,11 @@ public class Manager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        // Get AssetBundle
+#if UNITY_ANDROID
+        Common.bundleRequest = PlayAssetDelivery.RetrieveAssetBundleAsync("android");
+        Common.assetBundle = Common.bundleRequest.AssetBundle;
+#endif
     }
 
 
@@ -64,15 +70,15 @@ public class Manager : MonoBehaviour
     {
         Common.initSounds();
         CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
-        #if UNITY_ANDROID
-            checkUpdate.SetData("Win",Common.version,"000000");
-        #elif UNITY_IPHONE
-            checkUpdate.SetData("iOS",Common.version,"000000");
-        #else
-            checkUpdate.SetData("Android",Common.version,"000000");
-        #endif
+#if UNITY_ANDROID
+        checkUpdate.SetData("Android", Application.version, "000000");
+#elif UNITY_IPHONE
+        checkUpdate.SetData("iOS", Application.version, "000000");
+#else
+        checkUpdate.SetData("Win", Application.version, "000000");
+#endif
         StartCoroutine(checkUpdate.Send());
-        //Manager.manager.StateQueue((int)gamestate.Title);
+        // Manager.manager.StateQueue((int)gamestate.Title);
     }
     [SerializeField] gamestate forTest;
 
@@ -196,12 +202,6 @@ public class Manager : MonoBehaviour
 
 }
 
-
-
-
-
-
-//gamestate��SceneIndex�����v�����Ȃ����΂Ȃ��Ȃ�
 public enum gamestate
 {
     Undefined,

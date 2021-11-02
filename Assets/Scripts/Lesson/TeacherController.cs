@@ -22,7 +22,7 @@ public class TeacherController : MonoBehaviour
             if (index < 5) index++;
             else index = 0;
 #if UNITY_EDITOR
-            //Debug.Log("current:"+index);
+            Debug.Log("current:"+index);
 #endif
             yield return wait;
         }
@@ -36,7 +36,6 @@ public class TeacherController : MonoBehaviour
     {
         coroutine = updateImg();
         StartCoroutine(coroutine);
-        //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     public void updatePos()

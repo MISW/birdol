@@ -49,11 +49,15 @@ public class GifPlayer : MonoBehaviour {
         var waittime = new WaitForSecondsRealtime(speed);
         while (true)
         {
+#if UNITY_ANDROID
+            image.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/" + path + gifid + "/" + index + ".png");
+#else
             image.sprite = Resources.Load<Sprite>(path + gifid + "/" + index);
+#endif
             if (index < size) index++;
             else index = 1;
 #if UNITY_EDITOR
-            //Debug.Log("current:"+index);
+            Debug.Log("current:"+index);
 #endif
             yield return waittime;
         }

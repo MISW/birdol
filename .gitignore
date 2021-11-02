@@ -73,3 +73,7 @@ crashlytics-build.properties
 
 # VS Code Stuff
 /.vscode/
+
+# AssetBundle
+/[Aa]ssets/AssetBundles
+/[Aa]ssets/AssetBundles.meta

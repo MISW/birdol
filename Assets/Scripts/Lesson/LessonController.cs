@@ -75,13 +75,24 @@ public class LessonController : MonoBehaviour
             objk.name.text = Common.progresses[i].Name;
             for (int j=0;j<6;j++)
             {
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
+#if UNITY_ANDROID
+                objk.gifsprite.Add(Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + mainCharacter.id + "/ch-" + j + ".png"));
+#else
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + mainCharacter.id + "/ch-" + j));
+#endif
             }
             objk.initImage();
+#if UNITY_ANDROID
+            listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + Common.progresses[i].MainCharacterId + ".png");
+            if (Common.progresses[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Pink_Edge");
+            else if (Common.progresses[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Yellow_Edge");
+            else listchilds[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Frame_Blue_Edge");
+#else
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
             if (Common.progresses[i].BestSkill == "vocal") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
             else if (Common.progresses[i].BestSkill == "visual") listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
             else listchilds[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
+#endif
             objk.connectUI();
             objk.setParams();
         }
@@ -90,7 +101,11 @@ public class LessonController : MonoBehaviour
         teacher.updatePos();
         for (int j = 0; j < 6; j++)
         {
+#if UNITY_ANDROID
+            teacher.gifsprite.Add(Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + Common.teacher.MainCharacterId + "/ch-" + j + ".png"));
+#else
             teacher.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + Common.teacher.MainCharacterId + "/ch-" + j));
+#endif
         }
         teacher.initImage();
         backlight.transform.SetSiblingIndex(114514);
@@ -179,7 +194,11 @@ public class LessonController : MonoBehaviour
         if(!executingSkills)checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Lesson")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG06");
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("BG06");
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/BG06");
+#endif
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

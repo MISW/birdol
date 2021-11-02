@@ -86,7 +86,11 @@ public class HomeUtil : MonoBehaviour
         standingChanger();
         if (Common.mainstoryid != null && Common.mainstoryid != "opening" && Common.mainstoryid != "0")
         {
+#if UNITY_ANDROID
+            Ikusei.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("button_ikuseirestart");
+#else
             Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
+#endif
         }
 
     }
@@ -96,7 +100,11 @@ public class HomeUtil : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Home")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("BG01");
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/BG01");
+#endif
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
@@ -244,16 +252,24 @@ public class HomeUtil : MonoBehaviour
 
     void json_parser()
     {
-        //Load Json file
+        // Load Json file
+#if UNITY_ANDROID
+        string json_tmp = Common.assetBundle.LoadAsset<TextAsset>("CharaText").ToString();
+#else
         string json_tmp = Resources.Load<TextAsset>("HomeData/CharaText").ToString();
+#endif
         homeCharacters = JsonUtility.FromJson<HomeCharacters>(json_tmp);
     }
 
     void standingChanger()
     {
         chara_id = Common.HomeStandingId;
-        //standing select
+        // standing select
+#if UNITY_ANDROID
+        CharacterImageSplite.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + chara_id + ".png");
+#else
         CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
+#endif
         chosencharacter.text = "選択中　：　" + homeCharacters.Characters[chara_id].name;
     }
 
@@ -264,7 +280,11 @@ public class HomeUtil : MonoBehaviour
             if (isUnlocked[i])
             {
                 GameObject node = Instantiate(prefab) as GameObject;
+#if UNITY_ANDROID
+                node.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + i + ".png");
+#else
                 node.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + i);
+#endif
                 node.name = i.ToString();
                 node.transform.SetParent(content);
                 node.transform.localScale = new Vector3(1, 1, 1);

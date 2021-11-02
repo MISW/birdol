@@ -51,6 +51,7 @@ public class OverlayManager : MonoBehaviour
         }
     }
 
+    private const string pathToResources = "Assets/Resources";
     private const string standImagePath = "Images/standimage/";
     public void OpenOverlay(CharacterModel model) {
         // オーバーレイを開いたときに発火
@@ -60,33 +61,17 @@ public class OverlayManager : MonoBehaviour
 #endif
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
+#if UNITY_ANDROID
+        Sprite sp = Common.assetBundle.LoadAsset<Sprite>(pathToResources + standImagePath + model.id + ".png");
+#else
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
+#endif
 
         deviceRatio = Screen.currentResolution.height;
         deviceRatio /= Screen.currentResolution.width;
 
-        
         if (sp != null) {
             im.sprite = sp;
-
-            /*
-            // キャラの立ち絵のサイズによって幅を変えないと見た目が壊れる
-            // todo: 位置調整
-            float r = sp.texture.width;
-            r /= sp.texture.height;
-
-            RectTransform rectTransform = standImageObject.GetComponent<RectTransform>();
-            Vector2 baseSizeMin = new Vector2(r * IMAGE_HEIGHT_MIN, IMAGE_HEIGHT_MIN);
-
-            // deviceRatioが1.0のとき600、2.0のとき1200
-            // キャラクターの立ち絵のはみ出し防止
-            baseSizeMin *= deviceRatio;
-
-            rectTransform.sizeDelta = baseSizeMin;
-
-            // キャラによってサイズが違うのでスケール変えたりしようかな…？
-            Transform tr = standImageObject.transform;
-            FixImagePos(tr, model.id);*/
         }
 
         // 名前書き換え
@@ -112,62 +97,5 @@ public class OverlayManager : MonoBehaviour
         // ----
 
         this.gameObject.SetActive(true);
-    }
-
-    private const float baseImageScale = 0.88f;
-
-    private void FixImagePos(Transform tr, int id) {
-        Vector3 currentPos = new Vector3(-80, 0, 0);
-
-        Vector3 currentScale = new Vector3(1.0f, 1.0f, 1.0f);
-        currentScale *= baseImageScale;
-
-        switch (id) {
-            case 0:
-            case 4:
-                currentScale *= 1.1f;
-                break;
-            case 1:
-                break;
-            case 5:
-                currentScale *= 1.3f;
-                break;
-            case 7:
-                break;
-            case 8:
-            case 9:
-            case 12:
-            case 20:
-            case 22:
-                currentScale *= 0.9f;
-                break;
-            case 11:
-                currentScale *= 1.5f;
-                break;
-            case 13:
-                currentScale.x *= -1;
-                break;
-            case 15:
-                currentScale *= 1.1f;
-                break;
-            case 18:
-                break;
-            case 19:
-                currentScale.x *= -1;
-                break;
-            case 25:
-            case 31:
-                break;
-            case 27:
-                currentScale *= 1.3f;
-                break;
-            case 30:
-                break;
-            default:
-                break;
-        }
-
-        tr.localPosition = currentPos;
-        tr.localScale = currentScale;
     }
 }

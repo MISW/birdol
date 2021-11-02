@@ -35,7 +35,11 @@ public class RunGacha : MonoBehaviour
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
         //skillLabel.text = "";
+#if UNITY_ANDROID
+        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
+#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+#endif
         skillImage.enabled = false;
         float ratio = (float)Screen.height / (float)Screen.width;
         float imgRatio = 2048f / 1535f;
@@ -90,15 +94,27 @@ public class RunGacha : MonoBehaviour
 
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
-            {"hukakishitakaraue1", (AudioClip)Resources.Load("SE/gacha/hukakishitakaraue1") },
-            {"hukakitemaekaraoku1", (AudioClip)Resources.Load("SE/gacha/hukakitemaekaraoku1") },
-            {"tamagouekarashita1", (AudioClip)Resources.Load("SE/gacha/youkiakeru1") },
-            {"youkiakeru1", (AudioClip)Resources.Load("SE/gacha/tamagouekarashita1") },
-            {"karatoreru1", (AudioClip)Resources.Load("SE/gacha/karatoreru1") },
-            {"haneochiru_Srare1", (AudioClip)Resources.Load("SE/gacha/haneochiru_Srare1") },
-            {"touzyou_common1", (AudioClip)Resources.Load("SE/gacha/touzyou_common1") },
-            {"touzyou_Srare1", (AudioClip)Resources.Load("SE/gacha/touzyou_Srare1") },
+#if UNITY_ANDROID
+            {"ok1", Common.assetBundle.LoadAsset<AudioClip>("ok1") },
+            {"hukakishitakaraue1", Common.assetBundle.LoadAsset<AudioClip>("hukakishitakaraue1") },
+            {"hukakitemaekaraoku1", Common.assetBundle.LoadAsset<AudioClip>("hukakitemaekaraoku1") },
+            {"tamagouekarashita1", Common.assetBundle.LoadAsset<AudioClip>("youkiakeru1") },
+            {"youkiakeru1", Common.assetBundle.LoadAsset<AudioClip>("tamagouekarashita1") },
+            {"karatoreru1", Common.assetBundle.LoadAsset<AudioClip>("karatoreru1") },
+            {"haneochiru_Srare1", Common.assetBundle.LoadAsset<AudioClip>("haneochiru_Srare1") },
+            {"touzyou_common1", Common.assetBundle.LoadAsset<AudioClip>("touzyou_common1") },
+            {"touzyou_Srare1", Common.assetBundle.LoadAsset<AudioClip>("touzyou_Srare1") },
+#else
+            {"ok1", Resources.Load<AudioClip>("SE/ok1") },
+            {"hukakishitakaraue1", Resources.Load<AudioClip>("SE/gacha/hukakishitakaraue1") },
+            {"hukakitemaekaraoku1", Resources.Load<AudioClip>("SE/gacha/hukakitemaekaraoku1") },
+            {"tamagouekarashita1", Resources.Load<AudioClip>("SE/gacha/youkiakeru1") },
+            {"youkiakeru1", Resources.Load<AudioClip>("SE/gacha/tamagouekarashita1") },
+            {"karatoreru1", Resources.Load<AudioClip>("SE/gacha/karatoreru1") },
+            {"haneochiru_Srare1", Resources.Load<AudioClip>("SE/gacha/haneochiru_Srare1") },
+            {"touzyou_common1", Resources.Load<AudioClip>("SE/gacha/touzyou_common1") },
+            {"touzyou_Srare1", Resources.Load<AudioClip>("SE/gacha/touzyou_Srare1") },
+#endif
         };
     }
 
@@ -108,7 +124,11 @@ public class RunGacha : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gacha")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG08");
+#if UNITY_ANDROID
+            Common.bgmplayer.clip = Common.assetBundle.LoadAsset<AudioClip>("BG08");
+#else
+            Common.bgmplayer.clip = Resources.Load<AudioClip>("Music/BG08");
+#endif
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
@@ -189,8 +209,11 @@ public class RunGacha : MonoBehaviour
         nameLabel.text = "";
         isSkip = false;
         isSkippable = true;
+#if UNITY_ANDROID
+        charDot.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + cm.id + "/ch-0" + ".png");
+#else
         charDot.sprite = Resources.Load<Sprite>("Images/Live/Gif/" + cm.id + "/ch-0");
-
+#endif
         backGround.sprite = backGrounds[cm.rarity];
         float t = 0;
         while (t <= 1)
@@ -267,7 +290,11 @@ public class RunGacha : MonoBehaviour
     IEnumerator charText()
     {
         skillImage.enabled = true;
-        skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/"+cm.id);
+#if UNITY_ANDROID
+        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/gacha/Rare/" + cm.id + ".png");
+#else
+        skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/" + cm.id);
+#endif
         yield return new WaitForSeconds(3);
         Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
         StartCoroutine("whiteOutAndShowChar");
@@ -288,7 +315,11 @@ public class RunGacha : MonoBehaviour
         NextResult();
         resultImageObj.SetActive(true);
         setNameAlpha(1);
+#if UNITY_ANDROID
+        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
+#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+#endif
         skillImage.enabled = false;
 
         while (t >= 0)
@@ -363,7 +394,11 @@ public class RunGacha : MonoBehaviour
             resultIndex++;
 
             gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = rareSprites[gachacharacter.rarity - 1];
+#if UNITY_ANDROID
+            gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + gachacharacter.id + ".png");
+#else
             gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + gachacharacter.id);
+#endif
         }
 
         for (int i = 0; i < 10; i++)
@@ -379,7 +414,11 @@ public class RunGacha : MonoBehaviour
     public void NextResult()
     {
         CharacterModel cm = Common.characters[result[resultIndex]];
+#if UNITY_ANDROID
+        resultImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/gacha/CharImg/" + result[resultIndex] + ".png");
+#else
         resultImage.sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
+#endif
         backGround.sprite = backGrounds[cm.rarity];
         nameLabel.text = cm.name;
         setNameAlpha(1);
@@ -405,7 +444,11 @@ public class RunGacha : MonoBehaviour
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
+#if UNITY_ANDROID
+        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
+#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
+#endif
         skillImage.enabled = false;
         isResultShowing = false;
         resultImageObj.SetActive(false);
