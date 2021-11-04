@@ -30,18 +30,15 @@ public class Manager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        // Get AssetBundle
-#if UNITY_ANDROID
-        Common.bundleRequest = PlayAssetDelivery.RetrieveAssetBundleAsync("android");
-        Common.assetBundle = Common.bundleRequest.AssetBundle;
-#endif
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+#if UNITY_ANDROID
+        StartCoroutine(getAssetBundle("android"));
+#endif
         Common.initCharacters();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
@@ -200,7 +197,25 @@ public class Manager : MonoBehaviour
         return null;
     }
 
+#if UNITY_ANDROID
+    IEnumerator getAssetBundle(string assetBundle)
+    {
+        // Get AssetBundle
+        Common.bundleRequest = PlayAssetDelivery.RetrieveAssetBundleAsync(assetBundle);
+        while (!Common.bundleRequest.IsDone)
+        {
+            yield return null;
+        }
+        if (Common.bundleRequest.Error == AssetDeliveryErrorCode.NoError)
+        {
+            Debug.Log(Common.bundleRequest.AssetBundle);
+            Common.assetBundle = Common.bundleRequest.AssetBundle;
+        }
+    }
+#endif
 }
+
+
 
 public enum gamestate
 {
