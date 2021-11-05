@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "com.google.android.appbundle": "file:C:/Users/akihi/Downloads/com.google.android.appbundle-1.5.0.tgz",
-    "com.google.play.assetdelivery": "file:C:/Users/akihi/Downloads/com.google.play.assetdelivery-1.5.0.tgz",
-    "com.google.play.common": "file:C:/Users/akihi/Downloads/com.google.play.common-1.5.0.tgz",
-    "com.google.play.core": "file:C:/Users/akihi/Downloads/com.google.play.core-1.5.0.tgz",
+    "com.google.android.appbundle": "file:C:/Users/HYZIT/Downloads/com.google.android.appbundle-1.5.0.tgz",
+    "com.google.play.assetdelivery": "file:C:/Users/HYZIT/Downloads/com.google.play.assetdelivery-1.5.0.tgz",
+    "com.google.play.common": "file:C:/Users/HYZIT/Downloads/com.google.play.common-1.5.0.tgz",
+    "com.google.play.core": "file:C:/Users/HYZIT/Downloads/com.google.play.core-1.5.0.tgz",
     "com.unity.2d.animation": "6.0.3",
     "com.unity.2d.pixel-perfect": "5.0.0",
     "com.unity.2d.psdimporter": "5.0.3",

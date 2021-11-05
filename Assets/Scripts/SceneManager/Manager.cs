@@ -18,6 +18,8 @@ public class Manager : MonoBehaviour
     public AudioSource seplayer;
     public AudioSource subseplayer;
 
+    bool inited = false;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -30,15 +32,34 @@ public class Manager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        Common.loadingCanvas = loadingCanvas;
+        Common.loadingGif = gif;
+        Common.loadingTips = tips;
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
 #if UNITY_ANDROID
-        StartCoroutine(getAssetBundle("android"));
-#endif
+        PlayAssetBundleRequest Request = PlayAssetDelivery.RetrieveAssetBundleAsync("android");
+        Request.Completed += x =>
+        {
+            Common.assetBundle = Request.AssetBundle;
+            Common.initCharacters();
+            Common.bgmplayer = bgmplayer;
+            Common.bgmplayer.volume = Common.BGMVol / Common.bgmmaxvol;
+            Common.seplayer = seplayer;
+            Common.seplayer.volume = Common.SEVol;
+            Common.subseplayer = subseplayer;
+            Common.subseplayer.volume = Common.SEVol / Common.semaxvol;
+            inited = true;
+            init();
+        };
+#else
         Common.initCharacters();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
@@ -50,16 +71,20 @@ public class Manager : MonoBehaviour
         Common.subseplayer = subseplayer;
         Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
         init();
+#endif
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (statequeueflag)
+        if (inited)
         {
-            StartCoroutine(StateChange());
+            if (statequeueflag)
+            {
+                StartCoroutine(StateChange());
+            }
+            Updater();
         }
-        Updater();
     }
 
     [ContextMenu("test")]
@@ -197,22 +222,7 @@ public class Manager : MonoBehaviour
         return null;
     }
 
-#if UNITY_ANDROID
-    IEnumerator getAssetBundle(string assetBundle)
-    {
-        // Get AssetBundle
-        Common.bundleRequest = PlayAssetDelivery.RetrieveAssetBundleAsync(assetBundle);
-        while (!Common.bundleRequest.IsDone)
-        {
-            yield return null;
-        }
-        if (Common.bundleRequest.Error == AssetDeliveryErrorCode.NoError)
-        {
-            Debug.Log(Common.bundleRequest.AssetBundle);
-            Common.assetBundle = Common.bundleRequest.AssetBundle;
-        }
-    }
-#endif
+
 }
 
 
@@ -230,7 +240,6 @@ public enum gamestate
     Ending,
     Gallery,
     Login,
-    Result,
     Story,
     GachaUnit,
     Failed,

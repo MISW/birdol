@@ -53,11 +53,7 @@ public class GachaUnitManager : MonoBehaviour
         }
         for (int i = 0; i < 10; i++) {
             characters[i] = Common.characters[initid[i]];
-#if UNITY_ANDROID
-            charcterIcons[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + characters[i].id + ".png");
-#else
             charcterIcons[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].id);
-#endif
         }
         bool teacherinited = false;
         foreach (DendouModel dendouModel in teachers)
@@ -71,13 +67,8 @@ public class GachaUnitManager : MonoBehaviour
             {
                 teacherinited = true;
             }
-#if UNITY_ANDROID
-            teacherChild.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.MainCharacterId + ".png");
-            teacherChild.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.SupportCharacterId + ".png");
-#else
             teacherChild.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
             teacherChild.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.SupportCharacterId);
-#endif
             teacherChild.transform.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Vocal.ToString();
             teacherChild.transform.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Visual.ToString();
             teacherChild.transform.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Dance.ToString();
@@ -178,11 +169,7 @@ public class GachaUnitManager : MonoBehaviour
         Transform transform = characterPage.transform;
         if (index == -1)
         {
-#if UNITY_ANDROID
-            property.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
-#else
             property.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
-#endif
             transform.GetChild(2).gameObject.GetComponent<Image>().sprite = null;
             transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = "";
             transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
@@ -191,11 +178,7 @@ public class GachaUnitManager : MonoBehaviour
         }
         else
         {
-#if UNITY_ANDROID
-            transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + characters[index].id + ".png"); // SelectedIcon
-#else
             transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[index].id);
-#endif
             transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text = $"【{groupJP[characters[index].group]}】【{characters[index].skillname}】\n";
             if (currentdialog == "maincharacter")
             {
@@ -206,11 +189,7 @@ public class GachaUnitManager : MonoBehaviour
                 transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text += characters[index].passivedescription;//Description
             }
             //Params
-#if UNITY_ANDROID
-            property.sprite = Common.assetBundle.LoadAsset<Sprite>(characters[index].bestskill);
-#else
-            property.sprite = Resources.Load<Sprite>("Images/UI/"+ characters[index].bestskill);
-#endif
+            property.sprite = Resources.Load<Sprite>("Images/UI/" + characters[index].bestskill);
             transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].vocal.ToString();
             transform.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].visual.ToString();
             transform.GetChild(4).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].dance.ToString();
@@ -263,11 +242,7 @@ public class GachaUnitManager : MonoBehaviour
             unitInf[currentindex].mainselected = currentcharacter;
             unitInf[currentindex].unitname = characterTeamName.GetComponent<InputField>().text;
             selected[currentcharacter] = true;
-#if UNITY_ANDROID
-            pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + characters[currentcharacter].id + ".png");
-#else
             pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[currentcharacter].id);
-#endif
             pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = unitInf[currentindex].unitname;
             pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = characters[currentcharacter].vocal.ToString();
             pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = characters[currentcharacter].visual.ToString();
@@ -279,11 +254,7 @@ public class GachaUnitManager : MonoBehaviour
             unitInf[currentindex].subselected = currentcharacter;
             selected[currentcharacter] = true;
             float sp = 0.5f;
-#if UNITY_ANDROID
-            pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + characters[currentcharacter].id + ".png");
-#else
             pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[currentcharacter].id);
-#endif
             pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].vocal * sp).ToString();
             pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].visual * sp).ToString();
             pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = (characters[currentcharacter].dance * sp).ToString();
@@ -304,13 +275,8 @@ public class GachaUnitManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
-#if UNITY_ANDROID
-        pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + teachers[currentteacher].MainCharacterId + ".png");
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + teachers[currentteacher].SupportCharacterId + ".png");
-#else
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].MainCharacterId);
         pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + teachers[currentteacher].SupportCharacterId);
-#endif
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Name;
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Vocal.ToString();
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = teachers[currentteacher].Visual.ToString();
@@ -333,11 +299,7 @@ public class GachaUnitManager : MonoBehaviour
                 selected[unitInf[currentindex].mainselected] = false;
                 unitInf[currentindex].mainselected = -1;
             }
-#if UNITY_ANDROID
-            pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("main");
-#else
             pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/main");
-#endif
             pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
             pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
             pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
@@ -349,11 +311,7 @@ public class GachaUnitManager : MonoBehaviour
                 selected[unitInf[currentindex].subselected] = false;
                 unitInf[currentindex].subselected = -1;
             }
-#if UNITY_ANDROID
-            pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("support");
-#else
             pairList.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/support");
-#endif
             pairList.GetChild(3).GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
             pairList.GetChild(3).GetChild(1).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
             pairList.GetChild(3).GetChild(2).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
@@ -370,13 +328,8 @@ public class GachaUnitManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[5].transform;
         if (currentteacher != -1) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(false);
-#if UNITY_ANDROID
-        pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("teacher");
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("teacher_sub");
-#else
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher");
         pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher_sub");
-#endif
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";

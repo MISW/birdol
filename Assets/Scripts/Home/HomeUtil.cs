@@ -86,11 +86,7 @@ public class HomeUtil : MonoBehaviour
         standingChanger();
         if (Common.mainstoryid != null && Common.mainstoryid != "opening" && Common.mainstoryid != "0")
         {
-#if UNITY_ANDROID
-            Ikusei.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("button_ikuseirestart");
-#else
             Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
-#endif
         }
 
     }
@@ -253,11 +249,7 @@ public class HomeUtil : MonoBehaviour
     void json_parser()
     {
         // Load Json file
-#if UNITY_ANDROID
-        string json_tmp = Common.assetBundle.LoadAsset<TextAsset>("CharaText").ToString();
-#else
         string json_tmp = Resources.Load<TextAsset>("HomeData/CharaText").ToString();
-#endif
         homeCharacters = JsonUtility.FromJson<HomeCharacters>(json_tmp);
     }
 
@@ -266,7 +258,7 @@ public class HomeUtil : MonoBehaviour
         chara_id = Common.HomeStandingId;
         // standing select
 #if UNITY_ANDROID
-        CharacterImageSplite.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + chara_id + ".png");
+        CharacterImageSplite.sprite = Common.assetBundle.LoadAsset<Sprite>(chara_id.ToString());
 #else
         CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
 #endif
@@ -280,11 +272,7 @@ public class HomeUtil : MonoBehaviour
             if (isUnlocked[i])
             {
                 GameObject node = Instantiate(prefab) as GameObject;
-#if UNITY_ANDROID
-                node.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + i + ".png");
-#else
                 node.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + i);
-#endif
                 node.name = i.ToString();
                 node.transform.SetParent(content);
                 node.transform.localScale = new Vector3(1, 1, 1);

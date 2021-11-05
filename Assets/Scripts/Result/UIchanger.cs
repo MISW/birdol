@@ -24,7 +24,7 @@ public class UIchanger : MonoBehaviour{
         Judge_Image.GetComponent<Image>().sprite = Judge_Sprites[Judge_Image_num];
         //Chara_Image.GetComponent<Image>().sprite = Chara_Sprites[Chara_Image_num];
 #if UNITY_ANDROID
-        Chara_Image.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + Chara_Image_num + ".png");
+        Chara_Image.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>(Chara_Image_num.ToString());
 #else
         Chara_Image.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Chara_Image_num);
 #endif

@@ -118,26 +118,14 @@ public class FreeLiveController : MonoBehaviour
                 objk.name.text = tempProgress[i].Name;
                 for (int j = 0; j < 6; j++)
                 {
-                    //Change Here 
-#if UNITY_ANDROID
-                    objk.gifsprite.Add(Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + tempProgress[i].MainCharacterId + "/ch-" + j + ".png"));
-#else
                     objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + tempProgress[i].MainCharacterId + "/ch-" + j));
-#endif
                 }
                 objk.initImage();
                 if (i == 0) objk.SelectMe();
-#if UNITY_ANDROID
-                listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + tempProgress[i].MainCharacterId + ".png");
-                if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Frame_Pink_Edge.png");
-                else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Frame_Yellow_Edge.png");
-                else listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Frame_Blue_Edge.png");
-#else
                 listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + tempProgress[i].MainCharacterId);
                 if (tempProgress[i].BestSkill == "vocal") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Pink_Edge");
                 else if (tempProgress[i].BestSkill == "visual") listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Yellow_Edge");
                 else listchilds[i].transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Frame_Blue_Edge");
-#endif
                 objk.listchild = listchilds[i];
                 objk.connectUI();
                 objk.setParamsFont();

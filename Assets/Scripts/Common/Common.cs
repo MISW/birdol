@@ -32,7 +32,6 @@ public partial class Common : MonoBehaviour
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
 
-    public static PlayAssetBundleRequest bundleRequest;
     public static AssetBundle assetBundle;
 
     public static string Freebgm
@@ -180,15 +179,15 @@ public partial class Common : MonoBehaviour
         seclips = new Dictionary<string, AudioClip>()
         {
 #if UNITY_ANDROID
-            {"okbig1", Common.assetBundle.LoadAsset<AudioClip>("okbig1") },
-            {"ikuseistart1",  Common.assetBundle.LoadAsset<AudioClip>("ikuseistart1") },
-            {"freelive1",  Common.assetBundle.LoadAsset<AudioClip>("freelive1") },
-            {"zukan1",  Common.assetBundle.LoadAsset<AudioClip>("zukan1") },
-            {"sudattabirdol1",  Common.assetBundle.LoadAsset<AudioClip>("sudattabirdol1") },
-            {"ok1",  Common.assetBundle.LoadAsset<AudioClip>("ok1") },
-            {"cancel1",  Common.assetBundle.LoadAsset<AudioClip>("cancel1") },
-            {"cancel2",  Common.assetBundle.LoadAsset<AudioClip>("cancel2") },
-            {"error1",  Common.assetBundle.LoadAsset<AudioClip>("error1") },
+            {"okbig1",assetBundle.LoadAsset<AudioClip>("okbig1") },
+            {"ikuseistart1",  assetBundle.LoadAsset<AudioClip>("ikuseistart1") },
+            {"freelive1",  assetBundle.LoadAsset<AudioClip>("freelive1") },
+            {"zukan1",  assetBundle.LoadAsset<AudioClip>("zukan1") },
+            {"sudattabirdol1",  assetBundle.LoadAsset<AudioClip>("sudattabirdol1") },
+            {"ok1",  assetBundle.LoadAsset<AudioClip>("ok1") },
+            {"cancel1",  assetBundle.LoadAsset<AudioClip>("cancel1") },
+            {"cancel2",  assetBundle.LoadAsset<AudioClip>("cancel2") },
+            {"error1",  assetBundle.LoadAsset<AudioClip>("error1") },
 #else
             {"okbig1", Resources.Load<AudioClip>("SE/okbig1") },
             {"ikuseistart1",  Resources.Load<AudioClip>("SE/ikuseistart1") },
@@ -204,31 +203,18 @@ public partial class Common : MonoBehaviour
     }
     public static void initCharacters()
     {
-#if UNITY_ANDROID
-        string json = Common.assetBundle.LoadAsset<TextAsset>("characters").ToString();
-#else
         string json = Resources.Load<TextAsset>("common/characters").ToString();
-#endif
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
         for (int i=0;i<32;i++)
         {
 #if UNITY_ANDROID
-            standImages[i] = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + characters[i].id + ".png");
+            standImages[i] = assetBundle.LoadAsset<Sprite>(characters[i].id.ToString());
 #else
             standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
 #endif
         }
     }
 
-    public static void initProgress()
-    {
-#if UNITY_ANDROID
-        string json = Common.assetBundle.LoadAsset<TextAsset>("testdata").ToString();
-#else
-        string json = Resources.Load<TextAsset>("Live/testdata").ToString();
-#endif
-        progresses = JsonUtility.FromJson<ProgressData>(json).progresses;
-    }
 
     public static void syncProgress()
     {
@@ -551,10 +537,5 @@ public partial class Common : MonoBehaviour
 #endif
         }
         return str;
-    }
-
-    void Start()
-    {
-        initCharacters();
     }
 }

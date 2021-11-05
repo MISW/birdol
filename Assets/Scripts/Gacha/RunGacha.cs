@@ -35,11 +35,7 @@ public class RunGacha : MonoBehaviour
         setNameAlpha(0);
         overPanel.color = new Color(255, 255, 255, 0);
         //skillLabel.text = "";
-#if UNITY_ANDROID
-        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
-#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
-#endif
         skillImage.enabled = false;
         float ratio = (float)Screen.height / (float)Screen.width;
         float imgRatio = 2048f / 1535f;
@@ -209,11 +205,7 @@ public class RunGacha : MonoBehaviour
         nameLabel.text = "";
         isSkip = false;
         isSkippable = true;
-#if UNITY_ANDROID
-        charDot.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/Live/Gif/" + cm.id + "/ch-0" + ".png");
-#else
         charDot.sprite = Resources.Load<Sprite>("Images/Live/Gif/" + cm.id + "/ch-0");
-#endif
         backGround.sprite = backGrounds[cm.rarity];
         float t = 0;
         while (t <= 1)
@@ -290,11 +282,7 @@ public class RunGacha : MonoBehaviour
     IEnumerator charText()
     {
         skillImage.enabled = true;
-#if UNITY_ANDROID
-        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/gacha/Rare/" + cm.id + ".png");
-#else
         skillImage.sprite = Resources.Load<Sprite>("Images/gacha/Rare/" + cm.id);
-#endif
         yield return new WaitForSeconds(3);
         Common.subseplayer.PlayOneShot(seclips["touzyou_Srare1"]);
         StartCoroutine("whiteOutAndShowChar");
@@ -315,11 +303,7 @@ public class RunGacha : MonoBehaviour
         NextResult();
         resultImageObj.SetActive(true);
         setNameAlpha(1);
-#if UNITY_ANDROID
-        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
-#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
-#endif
         skillImage.enabled = false;
 
         while (t >= 0)
@@ -394,11 +378,7 @@ public class RunGacha : MonoBehaviour
             resultIndex++;
 
             gachaobj.transform.Find("Rarity").gameObject.GetComponentInChildren<Image>().sprite = rareSprites[gachacharacter.rarity - 1];
-#if UNITY_ANDROID
-            gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + gachacharacter.id + ".png");
-#else
             gachaobj.transform.Find("Icon").gameObject.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + gachacharacter.id);
-#endif
         }
 
         for (int i = 0; i < 10; i++)
@@ -414,11 +394,7 @@ public class RunGacha : MonoBehaviour
     public void NextResult()
     {
         CharacterModel cm = Common.characters[result[resultIndex]];
-#if UNITY_ANDROID
-        resultImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/gacha/CharImg/" + result[resultIndex] + ".png");
-#else
-        resultImage.sprite = Resources.Load<Sprite>("Images/gacha/CharImg/" + result[resultIndex]);
-#endif
+        resultImage.sprite = Common.assetBundle.LoadAsset<Sprite>("gacha"+result[resultIndex]);
         backGround.sprite = backGrounds[cm.rarity];
         nameLabel.text = cm.name;
         setNameAlpha(1);
@@ -444,11 +420,7 @@ public class RunGacha : MonoBehaviour
         backGround.color = new Color(255, 255, 255, 1);
         backGround.sprite = bgImage;
         nameLabel.text = "";
-#if UNITY_ANDROID
-        skillImage.sprite = Common.assetBundle.LoadAsset<Sprite>("empty");
-#else
         skillImage.sprite = Resources.Load<Sprite>("Images/charactericon/empty");
-#endif
         skillImage.enabled = false;
         isResultShowing = false;
         resultImageObj.SetActive(false);

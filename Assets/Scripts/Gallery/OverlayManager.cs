@@ -62,7 +62,7 @@ public class OverlayManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
 #if UNITY_ANDROID
-        Sprite sp = Common.assetBundle.LoadAsset<Sprite>(pathToResources + standImagePath + model.id + ".png");
+        Sprite sp = Common.assetBundle.LoadAsset<Sprite>(model.id.ToString());
 #else
         Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 #endif

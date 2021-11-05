@@ -52,13 +52,8 @@ public class FreeSelectManager : MonoBehaviour
             {
                 completedinited = true;
             }
-#if UNITY_ANDROID
-            completedChild.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.MainCharacterId + ".png");
-            completedChild.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.SupportCharacterId + ".png");
-#else
             completedChild.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
             completedChild.transform.GetChild(2).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.SupportCharacterId);
-#endif
             completedChild.transform.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Vocal.ToString();
             completedChild.transform.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Visual.ToString();
             completedChild.transform.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = dendouModel.Dance.ToString();
@@ -120,13 +115,8 @@ public class FreeSelectManager : MonoBehaviour
             mainPage.transform.SetSiblingIndex(1);
             return;
         }
-#if UNITY_ANDROID
-        pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + CompletedCharacters[currentselected].MainCharacterId + ".png");
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + CompletedCharacters[currentselected].SupportCharacterId + ".png");
-#else
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + CompletedCharacters[currentselected].MainCharacterId);
         pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + CompletedCharacters[currentselected].SupportCharacterId);
-#endif
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Name;
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Vocal.ToString();
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Visual.ToString();
@@ -144,13 +134,8 @@ public class FreeSelectManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["cancel1"]);
         Transform pairList = pairLists[currentindex].transform;
         if (currentselected != -1) completedObjects[currentselected].transform.GetChild(0).gameObject.SetActive(false);
-#if UNITY_ANDROID
-        pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("main");
-        pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("teacher_sub");
-#else
         pairList.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/main");
         pairList.GetChild(1).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/gachaunit/teacher_sub");
-#endif
         pairList.GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";

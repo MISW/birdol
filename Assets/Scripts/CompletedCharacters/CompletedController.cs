@@ -205,11 +205,7 @@ public class CompletedController : MonoBehaviour
         {
             if(index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
             DendouModel dendouModel = CompletedCharacters[i];
-#if UNITY_ANDROID
-            horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/charactericon/" + dendouModel.MainCharacterId + ".png");
-#else
             horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
-#endif
             if (index == 4)index = 0;
             else index++;
         }

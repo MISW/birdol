@@ -17,29 +17,16 @@ public class Sailium : MonoBehaviour
         Application.targetFrameRate = 60;
         if (!map.ContainsKey("blue"))
         {
-#if UNITY_ANDROID
-            map.Add("blue", Common.assetBundle.LoadAsset<Sprite>("lightstick_blue"));
-#else
             map.Add("blue", Resources.Load<Sprite>("Images/Live/lightstick_blue"));
-#endif
         }
-
         if (!map.ContainsKey("pink"))
         {
-#if UNITY_ANDROID
-            map.Add("pink", Common.assetBundle.LoadAsset<Sprite>("lightstick_pink"));
-#else
             map.Add("pink", Resources.Load<Sprite>("Images/Live/lightstick_pink"));
-#endif
         }
 
         if (!map.ContainsKey("yellow"))
         {
-#if UNITY_ANDROID
-            map.Add("yellow", Common.assetBundle.LoadAsset<Sprite>("lightstick_yellow"));
-#else
             map.Add("yellow", Resources.Load<Sprite>("Images/Live/lightstick_yellow"));
-#endif
         }
         StartCoroutine(rotate());
     }

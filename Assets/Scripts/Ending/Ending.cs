@@ -252,8 +252,8 @@ public class Ending : MonoBehaviour
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
 #if UNITY_ANDROID
-            CharacterList[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + Common.progresses[i].MainCharacterId + ".png");
-            CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Assets/Resources/Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0" + ".png");
+            CharacterList[i].GetComponent<Image>().sprite = Common.assetBundle.LoadAsset<Sprite>(Common.progresses[i].MainCharacterId.ToString());
+            CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Assets/Resources/Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0");
 #else
             CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Common.progresses[i].MainCharacterId);
             CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0");

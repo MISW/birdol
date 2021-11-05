@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.google.android.appbundle": {
-      "version": "file:C:/Users/akihi/Downloads/com.google.android.appbundle-1.5.0.tgz",
+      "version": "file:C:/Users/HYZIT/Downloads/com.google.android.appbundle-1.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
     },
     "com.google.play.assetdelivery": {
-      "version": "file:C:/Users/akihi/Downloads/com.google.play.assetdelivery-1.5.0.tgz",
+      "version": "file:C:/Users/HYZIT/Downloads/com.google.play.assetdelivery-1.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -16,7 +16,7 @@
       }
     },
     "com.google.play.common": {
-      "version": "file:C:/Users/akihi/Downloads/com.google.play.common-1.5.0.tgz",
+      "version": "file:C:/Users/HYZIT/Downloads/com.google.play.common-1.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -24,7 +24,7 @@
       }
     },
     "com.google.play.core": {
-      "version": "file:C:/Users/akihi/Downloads/com.google.play.core-1.5.0.tgz",
+      "version": "file:C:/Users/HYZIT/Downloads/com.google.play.core-1.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

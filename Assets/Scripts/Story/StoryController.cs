@@ -1,3 +1,4 @@
+using Google.Play.AssetDelivery;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,32 +55,18 @@ public class StoryController : MonoBehaviour
             int id = RandomArray.GetRandom(Common.remainingSubstory);
             Common.TriggeredSubStory += (id + ",");
             Common.remainingSubstory.Remove(id);
-#if UNITY_ANDROID
-            datas = Common.assetBundle.LoadAsset<TextAsset>("Assets/Resources/story/sub/" + id + ".txt").ToString().Split(
-            new[] { "\r\n", "\r", "\n" },
-            StringSplitOptions.None
-            );
-#else
             datas = Resources.Load<TextAsset>("story/sub/" + id).ToString().Split(
-            new[] { "\r\n", "\r", "\n" },
-            StringSplitOptions.None
+                new[] { "\r\n", "\r", "\n" },
+                StringSplitOptions.None
             );
-#endif
             skipButton.SetActive(false);
         }
         else
         {
-#if UNITY_ANDROID
-            datas = Common.assetBundle.LoadAsset<TextAsset>("Assets/Resources/story/" + Common.mainstoryid + ".txt").ToString().Split(
-            new[] { "\r\n", "\r", "\n" },
-            StringSplitOptions.None
-            );
-#else
             datas = Resources.Load<TextAsset>("story/" + Common.mainstoryid).ToString().Split(
-            new[] { "\r\n", "\r", "\n" },
-            StringSplitOptions.None
+                new[] { "\r\n", "\r", "\n" },
+                StringSplitOptions.None
             );
-#endif
         }
         seclips = new Dictionary<string, AudioClip>()
         {
@@ -266,8 +253,8 @@ public class StoryController : MonoBehaviour
                     dir = arr[1];
                 }
 #if UNITY_ANDROID
-                if(dir=="l") leftImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
-                else rightImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
+                if(dir=="l") leftImage.sprite = Common.assetBundle.LoadAsset<Sprite>(filename);
+                else rightImage.sprite = Common.assetBundle.LoadAsset<Sprite>(filename);
 #else
                 if(dir=="l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
                 else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
@@ -286,7 +273,7 @@ public class StoryController : MonoBehaviour
                     if (characterImage.enabled)
                     {
 #if UNITY_ANDROID
-                        characterImage.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/standimage/" + filename + ".png");
+                        characterImage.sprite = Common.assetBundle.LoadAsset<Sprite>(filename);
 #else
                         characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
 #endif
@@ -419,12 +406,7 @@ public class StoryController : MonoBehaviour
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
-#if UNITY_ANDROID
-                    background.sprite = Common.assetBundle.LoadAsset<Sprite>("Assets/Resources/Images/UI_Background/" + filename + ".png");
-#else
                     background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
-#endif
-
                 }
                 else if (data.StartsWith("/BGM一時停止") && allowShowing)
                 {
