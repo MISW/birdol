@@ -113,10 +113,15 @@ public class RunGacha : MonoBehaviour
             triggerdPlayer = true;
         }
 
+#if UNITY_WSA
+        if (Input.GetMouseButton(0))
+        {
+#else
         if (Input.touchCount == 1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            if (Input.GetTouch(0).phase == TouchPhase.Ended) 
             {
+#endif
                 if (!result10.activeSelf && !isResultShowing)
                 {
                     GameObject.Find("Tap").GetComponent<Text>().text = "";
@@ -129,7 +134,10 @@ public class RunGacha : MonoBehaviour
                 {
                     isSkip = true;
                 }
+#if UNITY_WSA
+#else
             }
+#endif
         }
     }
 

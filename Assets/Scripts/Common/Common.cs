@@ -26,7 +26,7 @@ public partial class Common : MonoBehaviour
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
     public static bool hasUpdate = false;
 
-    public static string version = "1.0.0";
+    public static string version = "1.0.1";
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
