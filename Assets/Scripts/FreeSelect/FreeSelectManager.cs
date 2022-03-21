@@ -36,6 +36,7 @@ public class FreeSelectManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
         mainPage.transform.SetSiblingIndex(1);
         selected = new int[CompletedCharacters.Count];
         bool completedinited = false;
@@ -181,7 +182,7 @@ public class FreeSelectManager : MonoBehaviour
         }
         if (!haschar)
         {
-            StartCoroutine(showError("1体以上のキャラクターを設定してください!"));
+            StartCoroutine(showError("1?????????L?????N?^?[??????????????????!"));
             return;
         }
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);

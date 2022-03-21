@@ -186,7 +186,7 @@ public abstract class GameWebClient : WebClient
         www.SetRequestHeader("Authorization", $"Bearer {accessToken}");
         www.SetRequestHeader("X-Birdol-Signature", signature );
         www.SetRequestHeader("X-birdol-TimeStamp", timeStamp);
-        www.SetRequestHeader("device_id", uuid);
+        www.SetRequestHeader("DeviceID", uuid);
 #if UNITY_EDITOR
         Debug.Log($"AccessToken: {Common.AccessToken}, Signature: {signature}, TimeStamp: {timeStamp}, DeviceID: {Common.Uuid}");
 #endif
