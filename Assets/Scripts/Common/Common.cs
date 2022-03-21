@@ -27,6 +27,7 @@ public partial class Common : MonoBehaviour
     public static bool hasUpdate = false;
 
     public static string version = "1.0.1";
+    public static string build_id = "20220322";
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;

@@ -73,11 +73,11 @@ public class Manager : MonoBehaviour
         Common.initSounds();
         CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
         #if UNITY_ANDROID
-            checkUpdate.SetData("Android",Common.version,"000000");
+            checkUpdate.SetData("Android",Common.version,Common.build_id);
         #elif UNITY_IPHONE
-            checkUpdate.SetData("iOS",Common.version,"000000");
+            checkUpdate.SetData("iOS",Common.version,Common.build_id);
         #else
-            checkUpdate.SetData("Win",Common.version,"000000");
+            checkUpdate.SetData("Win",Common.version,Common.build_id);
         #endif
         StartCoroutine(checkUpdate.Send());
         //Manager.manager.StateQueue((int)gamestate.Title);
