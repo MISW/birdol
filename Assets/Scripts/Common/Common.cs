@@ -231,7 +231,7 @@ public partial class Common : MonoBehaviour
     //通信関連
     public const string api_version = "v2"; //"v1" or "v2"
     public const string protocol = "https"; //"http" や "https" など
-    public const string hostname = "birdol.herokuapp.com";
+    public const string hostname = "birdol.misw.jp";
     public const string port = "443";
     public const int timeout = 4; //通信タイムアウトの秒数
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。
