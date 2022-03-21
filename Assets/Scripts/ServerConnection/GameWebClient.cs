@@ -43,21 +43,28 @@ public abstract class GameWebClient : WebClient
     /// <param name="response"></param>
     protected override IEnumerator HandleSuccessData(string response)
     {
+        Response r = JsonUtility.FromJson<Response>(response);
 #if UNITY_EDITOR
         Debug.Log($"TEST: {response}");
+        Debug.Log($"TOKEN_RESULT: {r.result}");
 #endif
-        Response r = JsonUtility.FromJson<Response>(response);
-        if (r.result == ConnectionModel.Response.ResultFail && r.error == ConnectionModel.Response.ErrInvalidToken && TryRefreshToken == true)
+        if (r.result == ConnectionModel.Response.ResultNeedTokenRefresh && TryRefreshToken == true)
         {
             //トークンのリフレッシュ要求を行う。
-            RefreshTokenWebClient refreshTokenWebClient = new RefreshTokenWebClient(HttpRequestMethod.Get, $"/api/{Common.api_version}/auth/refresh?refresh_token={Common.RefreshToken}");
+            RefreshTokenWebClient refreshTokenWebClient = new RefreshTokenWebClient(HttpRequestMethod.Get, $"/api/{Common.api_version}/refresh?refresh_token={Common.RefreshToken}");
             yield return GlobalCoroutine.StartCoroutineG(refreshTokenWebClient.Send());
 
-            if (refreshTokenWebClient.IsRefreshSuccess) //アクセストークンのリフレッシュ成功。中断されたデータを再送する。
+            if (refreshTokenWebClient.IsRefreshSuccess && TryRefreshToken == true) //アクセストークンのリフレッシュ成功。中断されたデータを再送する。
             {
                 TryRefreshToken = false;
                 base.Refresh();
                 base.Send();
+                GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
+                getCompletedWebClient.target = "home";
+                yield return getCompletedWebClient.Send();
+                GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
+                yield return getStoryWebClient.Send();
+
             }
             else //アクセストークンのリフレッシュ失敗。アカウント作成(orアカウント連携)が必要 
             {
