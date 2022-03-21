@@ -113,6 +113,26 @@ public class RunGacha : MonoBehaviour
             triggerdPlayer = true;
         }
 
+#if UNITY_ANDROID
+    if (Input.touchCount == 1)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                if (!result10.activeSelf && !isResultShowing)
+                {
+                    GameObject.Find("Tap").GetComponent<Text>().text = "";
+                    onButtonPressed10();
+                    incubator.SetActive(true);
+                    skipBtn.SetActive(true);
+                    StartCoroutine("slideIncubator");
+                }
+                else if (isResultShowing && !isSkip && isSkippable)
+                {
+                    isSkip = true;
+                }
+            }
+       }
+#elif UNITY_IOS
         if (Input.touchCount == 1)
         {
             if (Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -131,6 +151,25 @@ public class RunGacha : MonoBehaviour
                 }
             }
         }
+#else
+    if (Input.GetMouseButtonDown(0))
+    {
+                if (!result10.activeSelf && !isResultShowing)
+                {
+                    GameObject.Find("Tap").GetComponent<Text>().text = "";
+                    onButtonPressed10();
+                    incubator.SetActive(true);
+                    skipBtn.SetActive(true);
+                    StartCoroutine("slideIncubator");
+                }
+                else if (isResultShowing && !isSkip && isSkippable)
+                {
+                    isSkip = true;
+                }
+     }
+#endif
+
+
     }
 
     IEnumerator slideIncubator()
