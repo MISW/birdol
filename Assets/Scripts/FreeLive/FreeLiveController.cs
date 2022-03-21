@@ -21,6 +21,7 @@ public class FreeLiveController : MonoBehaviour
     public static int selectedcharacter;
 
     HashSet<GameObject> sailiumcollections = new HashSet<GameObject>();
+    public GameObject Alert;
     public Text RemainingText;
     float max = 1600;
     public float score = 0;
@@ -76,10 +77,12 @@ public class FreeLiveController : MonoBehaviour
         if ((dance <= 2 && visual <= 2 && vocal <= 2))
         {
             startbutton.SetActive(true);
+            Alert.SetActive(false);
         }
         else
         {
             startbutton.SetActive(false);
+            Alert.SetActive(true);
         }
     }
 

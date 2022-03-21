@@ -26,6 +26,7 @@ public class LiveController : MonoBehaviour
 
     HashSet<GameObject> sailiumcollections = new HashSet<GameObject>();
     public Image Achievement;
+    public GameObject Alert;
     public GameObject Achieved;
     public Text RemainingText;
     public float max;
@@ -81,10 +82,12 @@ public class LiveController : MonoBehaviour
         if ((dance <= 2 && visual <= 2 && vocal <= 2)&&!active)
         {
             startbutton.SetActive(true);
+            Alert.SetActive(false);
         }
         else
         {
             startbutton.SetActive(false);
+            Alert.SetActive(true);
         }
     }
 
