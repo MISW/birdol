@@ -113,63 +113,32 @@ public class RunGacha : MonoBehaviour
             triggerdPlayer = true;
         }
 
-#if UNITY_ANDROID
-    if (Input.touchCount == 1)
+#if UNITY_WSA
+        if (Input.GetMouseButton(0))
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                if (!result10.activeSelf && !isResultShowing)
-                {
-                    GameObject.Find("Tap").GetComponent<Text>().text = "";
-                    onButtonPressed10();
-                    incubator.SetActive(true);
-                    skipBtn.SetActive(true);
-                    StartCoroutine("slideIncubator");
-                }
-                else if (isResultShowing && !isSkip && isSkippable)
-                {
-                    isSkip = true;
-                }
-            }
-       }
-#elif UNITY_IOS
+#else
         if (Input.touchCount == 1)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            if (Input.GetTouch(0).phase == TouchPhase.Ended) 
             {
-                if (!result10.activeSelf && !isResultShowing)
-                {
-                    GameObject.Find("Tap").GetComponent<Text>().text = "";
-                    onButtonPressed10();
-                    incubator.SetActive(true);
-                    skipBtn.SetActive(true);
-                    StartCoroutine("slideIncubator");
-                }
-                else if (isResultShowing && !isSkip && isSkippable)
-                {
-                    isSkip = true;
-                }
-            }
-        }
-#else
-    if (Input.GetMouseButtonDown(0))
-    {
-                if (!result10.activeSelf && !isResultShowing)
-                {
-                    GameObject.Find("Tap").GetComponent<Text>().text = "";
-                    onButtonPressed10();
-                    incubator.SetActive(true);
-                    skipBtn.SetActive(true);
-                    StartCoroutine("slideIncubator");
-                }
-                else if (isResultShowing && !isSkip && isSkippable)
-                {
-                    isSkip = true;
-                }
-     }
 #endif
-
-
+                if (!result10.activeSelf && !isResultShowing)
+                {
+                    GameObject.Find("Tap").GetComponent<Text>().text = "";
+                    onButtonPressed10();
+                    incubator.SetActive(true);
+                    skipBtn.SetActive(true);
+                    StartCoroutine("slideIncubator");
+                }
+                else if (isResultShowing && !isSkip && isSkippable)
+                {
+                    isSkip = true;
+                }
+#if UNITY_WSA
+#else
+            }
+#endif
+        }
     }
 
     IEnumerator slideIncubator()

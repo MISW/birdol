@@ -844,16 +844,27 @@ PlayerSettings:
     Android: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: 2D_BuiltInRenderer
-  metroPackageVersion: 
-  metroCertificatePath: 
+  metroPackageName: birdol
+  metroPackageVersion: 1.0.0.0
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: 2D_BuiltInRenderer
-  wsaImages: {}
-  metroTileShortName: 
+  metroCertificateSubject: misw
+  metroCertificateIssuer: misw
+  metroCertificateNotAfter: 80fc1c87165cd901
+  metroApplicationDescription: birdol march
+  wsaImages:
+    65636: Assets/Resources/Images/Release/StoreLogo.scale-100.jpg
+    65661: Assets/Resources/Images/Release/StoreLogo.scale-125.jpg
+    65686: Assets/Resources/Images/Release/StoreLogo.scale-150.jpg
+    65736: Assets/Resources/Images/Release/StoreLogo.scale-200.jpg
+    65936: Assets/Resources/Images/Release/StoreLogo.scale-400.jpg
+    131272: Assets/Resources/Images/Release/SplashScreen.scale-200.png
+    2031640: Assets/Resources/Images/Release/Square44x44Logo.targetsize-24.jpg
+    2031816: Assets/Resources/Images/Release/Square44x44Logo.scale-200.jpg
+    2097352: Assets/Resources/Images/Release/Square71x71Logo.scale-200.jpg
+    2162888: Assets/Resources/Images/Release/Square150x150Logo.scale-200.jpg
+    2293960: Assets/Resources/Images/Release/Wide310x150Logo.scale-200.png
+  metroTileShortName: birdol
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
@@ -865,8 +876,11 @@ PlayerSettings:
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
-  platformCapabilities: {}
-  metroTargetDeviceFamilies: {}
+  platformCapabilities:
+    WindowsStoreApps:
+      InternetClient: True
+  metroTargetDeviceFamilies:
+    Desktop: True
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
