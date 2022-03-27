@@ -165,7 +165,6 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
     {
         coroutine = updateImg();
         StartCoroutine(coroutine);
-        //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     Dictionary<string, AudioClip> seclips;
@@ -180,10 +179,10 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
-            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
-            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
-            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
+            {"tsukamu1", Common.bundle.LoadAsset<AudioClip>("tsukamu1") },
+            {"orosu1", Common.bundle.LoadAsset<AudioClip>("orosu1") },
+            {"haneru1", Common.bundle.LoadAsset<AudioClip>("haneru1") },
+            {"skillkettei1", Common.bundle.LoadAsset<AudioClip>("skillkettei1") },
         };
     }
 

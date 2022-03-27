@@ -118,7 +118,7 @@ public class GalleryManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gallery")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG02");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG02");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

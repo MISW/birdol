@@ -60,7 +60,7 @@ public class OverlayManager : MonoBehaviour
 #endif
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
-        Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
+        Sprite sp = Common.bundle.LoadAsset<Sprite>(model.id.ToString());
 
         deviceRatio = Screen.currentResolution.height;
         deviceRatio /= Screen.currentResolution.width;

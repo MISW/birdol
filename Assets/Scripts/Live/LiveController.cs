@@ -179,10 +179,10 @@ public class LiveController : MonoBehaviour
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"gaugemax1", (AudioClip)Resources.Load("SE/live/gaugemax1") },
-            {"up1", (AudioClip)Resources.Load("SE/live/up1") },
-            {"resultsuccess1", (AudioClip)Resources.Load("SE/live/resultsuccess1") },
-            {"resultfault1", (AudioClip)Resources.Load("SE/live/resultfault1") },
+            {"gaugemax1", Common.bundle.LoadAsset<AudioClip>("gaugemax1") },
+            {"up1", Common.bundle.LoadAsset<AudioClip>("up1") },
+            {"resultsuccess1", Common.bundle.LoadAsset<AudioClip>("resultsuccess1") },
+            {"resultfault1", Common.bundle.LoadAsset<AudioClip>("resultfault1") },
         };
         enablePassives();
         backlight.transform.SetSiblingIndex(114514);
@@ -478,7 +478,7 @@ public class LiveController : MonoBehaviour
             String filename = "TM01";
             int storyid = int.Parse(Common.mainstoryid.Substring(0, 1));
             if (storyid == 4 || storyid == 7) filename = "TM02";
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/"+filename);
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>(filename);
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

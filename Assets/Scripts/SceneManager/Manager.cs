@@ -11,6 +11,7 @@ public class Manager : MonoBehaviour
 {
     public static Manager manager;
     public GameObject loadingCanvas;
+    public GameObject downloadingAssetCanvas;
     public GameObject gif;
     public Text tips;
     public AudioSource bgmplayer;
@@ -20,7 +21,6 @@ public class Manager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-        Common.initCharacters();
         Common.loadingCanvas = loadingCanvas;
         Common.loadingGif = gif;
         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -48,40 +48,20 @@ public class Manager : MonoBehaviour
         Common.seplayer.volume = Common.SEVol;
         Common.subseplayer = subseplayer;
         Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
-        init();
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas));
     }
 
     int cnt = 15;
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            ScreenCapture.CaptureScreenshot("iPhone_7/" + cnt.ToString() + ".png");
-            cnt++;
-        }
         if (statequeueflag)
         {
             StartCoroutine(StateChange());
         }
         Updater();
     }
-
-    [ContextMenu("test")]
-    void init()
-    {
-        Common.initSounds();
-        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
-        #if UNITY_ANDROID
-            checkUpdate.SetData("Android",Common.version,"000000");
-        #elif UNITY_IPHONE
-            checkUpdate.SetData("iOS",Common.version,"000000");
-        #else
-            checkUpdate.SetData("Win",Common.version,"000000");
-        #endif
-        StartCoroutine(checkUpdate.Send());
-        //Manager.manager.StateQueue((int)gamestate.Title);
-    }
+    
     [SerializeField] gamestate forTest;
 
 

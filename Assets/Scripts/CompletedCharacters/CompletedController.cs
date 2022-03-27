@@ -218,7 +218,7 @@ public class CompletedController : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "CompletedCharacters")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG03");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG03");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

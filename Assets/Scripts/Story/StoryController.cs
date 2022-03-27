@@ -69,15 +69,15 @@ public class StoryController : MonoBehaviour
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"ドア閉め", (AudioClip)Resources.Load("SE/story/ドア閉め") },
-            {"拍手", (AudioClip)Resources.Load("SE/story/拍手") },
-            {"拍手2", (AudioClip)Resources.Load("SE/story/拍手2") },
-            {"歓声", (AudioClip)Resources.Load("SE/story/歓声") },
-            {"歩く", (AudioClip)Resources.Load("SE/story/歩く") },
-            {"紙擦れ", (AudioClip)Resources.Load("SE/story/紙擦れ") },
-            {"駆け足", (AudioClip)Resources.Load("SE/story/駆け足") },
-            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
-            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"ドア閉め", Common.bundle.LoadAsset<AudioClip>("ドア閉め") },
+            {"拍手", Common.bundle.LoadAsset<AudioClip>("拍手") },
+            {"拍手2", Common.bundle.LoadAsset<AudioClip>("拍手2") },
+            {"歓声", Common.bundle.LoadAsset<AudioClip>("歓声") },
+            {"歩く", Common.bundle.LoadAsset<AudioClip>("歩く") },
+            {"紙擦れ", Common.bundle.LoadAsset<AudioClip>("紙擦れ") },
+            {"駆け足", Common.bundle.LoadAsset<AudioClip>("駆け足") },
+            {"ok1", Common.bundle.LoadAsset<AudioClip>("ok1") },
+            {"tsukamu1", Common.bundle.LoadAsset<AudioClip>("tsukamu1") },
         };
         size = datas.Length;
         UpdateDialog();
@@ -239,8 +239,8 @@ public class StoryController : MonoBehaviour
                     filename = arr[0];
                     dir = arr[1];
                 }
-                if(dir=="l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
-                else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                if(dir=="l") leftImage.sprite = Common.bundle.LoadAsset<Sprite>(filename);
+                else rightImage.sprite = Common.bundle.LoadAsset<Sprite>(filename);
                 characterName.text = name;
                 UpdateDialog();
             }
@@ -254,7 +254,7 @@ public class StoryController : MonoBehaviour
                     filename = data.Substring(data.IndexOf("(") + 1).Replace(")", "");
                     if (characterImage.enabled)
                     {
-                        characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                        characterImage.sprite = Common.bundle.LoadAsset<Sprite>(filename);
                     }
                     else
                     {
@@ -407,7 +407,7 @@ public class StoryController : MonoBehaviour
                         Common.bgmplayer.Stop();
 
                         Common.bgmplayer.time = 0;
-                        Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + bgm);
+                        Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>(bgm);
                         Common.bgmplayer.Play();
                     }
                 }

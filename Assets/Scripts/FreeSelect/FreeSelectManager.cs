@@ -200,7 +200,7 @@ public class FreeSelectManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "FreeSelect")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG04");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG04");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

@@ -96,7 +96,7 @@ public class HomeUtil : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Home")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG01");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
@@ -253,7 +253,7 @@ public class HomeUtil : MonoBehaviour
     {
         chara_id = Common.HomeStandingId;
         //standing select
-        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
+        CharacterImageSplite.sprite = Common.bundle.LoadAsset<Sprite>(chara_id.ToString());
         chosencharacter.text = "選択中　：　" + homeCharacters.Characters[chara_id].name;
     }
 

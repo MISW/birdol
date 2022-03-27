@@ -25,6 +25,7 @@ public partial class Common : MonoBehaviour
     public static string mom = "ママ";
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
     public static bool hasUpdate = false;
+    public static AssetBundle bundle;
 
     public static string version = "1.0.1";
 
@@ -174,15 +175,15 @@ public partial class Common : MonoBehaviour
     {
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"okbig1", (AudioClip)Resources.Load("SE/okbig1") },
-            {"ikuseistart1", (AudioClip)Resources.Load("SE/ikuseistart1") },
-            {"freelive1", (AudioClip)Resources.Load("SE/menu/freelive1") },
-            {"zukan1", (AudioClip)Resources.Load("SE/menu/zukan1") },
-            {"sudattabirdol1", (AudioClip)Resources.Load("SE/menu/sudattabirdol1") },
-            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
-            {"cancel1", (AudioClip)Resources.Load("SE/cancel1") },
-            {"cancel2", (AudioClip)Resources.Load("SE/cancel2") },
-            {"error1", (AudioClip)Resources.Load("SE/error1") },
+            {"okbig1", bundle.LoadAsset<AudioClip>("okbig1") },
+            {"ikuseistart1", bundle.LoadAsset<AudioClip>("ikuseistart1") },
+            {"freelive1", bundle.LoadAsset<AudioClip>("freelive1") },
+            {"zukan1", bundle.LoadAsset<AudioClip>("zukan1") },
+            {"sudattabirdol1", bundle.LoadAsset<AudioClip>("sudattabirdol1") },
+            {"ok1", bundle.LoadAsset<AudioClip>("ok1") },
+            {"cancel1", bundle.LoadAsset<AudioClip>("cancel1") },
+            {"cancel2", bundle.LoadAsset<AudioClip>("cancel2") },
+            {"error1", bundle.LoadAsset<AudioClip>("error1") },
         };
     }
     public static void initCharacters()
@@ -191,7 +192,7 @@ public partial class Common : MonoBehaviour
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
         for (int i=0;i<32;i++)
         {
-            standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
+            standImages[i] = bundle.LoadAsset<Sprite>(characters[i].id.ToString());
         }
     }
 
@@ -201,10 +202,6 @@ public partial class Common : MonoBehaviour
         progresses = JsonUtility.FromJson<ProgressData>(json).progresses;
     }
 
-    public static void syncProgress()
-    {
-
-    }
 
     /// <summary>
     /// </summary>

@@ -36,7 +36,6 @@ public class TeacherController : MonoBehaviour
     {
         coroutine = updateImg();
         StartCoroutine(coroutine);
-        //gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + characterInf.MainCharacterId);
     }
 
     public void updatePos()

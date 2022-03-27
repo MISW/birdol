@@ -406,7 +406,7 @@ public class GachaUnitManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "GachaUnit")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG01");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

@@ -429,7 +429,7 @@ public class FreeLiveController : MonoBehaviour
         if(!executingSkills)checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "FreeLive")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/"+Common.Freebgm);
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>(Common.Freebgm);
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

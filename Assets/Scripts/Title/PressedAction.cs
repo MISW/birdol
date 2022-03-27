@@ -15,7 +15,7 @@ public class PressedAction : MonoBehaviour
             NewUpdate.SetActive(true);
         }
         Common.bgmplayer.time = 0;
-        Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/TM01");
+        Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("TM01");
         Common.bgmplayer.Play();
     }
 

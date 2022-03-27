@@ -182,7 +182,7 @@ public class LessonController : MonoBehaviour
         if(!executingSkills)checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Lesson")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG06");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG06");
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

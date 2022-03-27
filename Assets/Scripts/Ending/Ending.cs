@@ -251,10 +251,8 @@ public class Ending : MonoBehaviour
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Common.progresses[i].MainCharacterId);
-            //CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Characters[i].MainCharacterId);
+            CharacterList[i].GetComponent<Image>().sprite = Common.bundle.LoadAsset<Sprite>(Common.progresses[i].MainCharacterId.ToString());
             CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0");
-            //CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Characters[i].MainCharacterId + "/Ch-0");
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
@@ -286,7 +284,7 @@ public class Ending : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Ending")
         {
-            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG09");
+            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG09");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
