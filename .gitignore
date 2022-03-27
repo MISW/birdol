@@ -1,4 +1,4 @@
-  
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
@@ -74,6 +74,7 @@ crashlytics-build.properties
 # VS Code Stuff
 /.vscode/
 
+
 # AssetBundle
 /[Aa]ssets/AssetBundles
 /[Aa]ssets/AssetBundles.meta
@@ -81,3 +82,4 @@ crashlytics-build.properties
 # Keystore
 *.keystore
 *.jks
+.DS_Store

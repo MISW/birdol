@@ -23,6 +23,7 @@ public class LessonController : MonoBehaviour
     TeacherController teacher;
     public GameObject[] LiveCharacter = new GameObject[6];
     public GameObject[] CharacterList = new GameObject[5];
+    public GameObject Alert;
 
     void checkPos()
     {
@@ -48,10 +49,12 @@ public class LessonController : MonoBehaviour
         if ((dance <= 2 && visual <= 2 && vocal <= 2)&&!active)
         {
             startbutton.SetActive(true);
+            Alert.SetActive(false);
         }
         else
         {
             startbutton.SetActive(false);
+            Alert.SetActive(true);
         }
     }
 

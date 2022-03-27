@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ public partial class Common : MonoBehaviour
     private static readonly int[] liveScoreMaxValues = { 600, 900, 1200, 2000, 2400, 3200, 4400, 5000 };
     public static bool hasUpdate = false;
 
-    public static string version = "1.0.0";
+    public static string version = "1.0.1";
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
@@ -246,7 +246,7 @@ public partial class Common : MonoBehaviour
     //通信関連
     public const string api_version = "v2"; //"v1" or "v2"
     public const string protocol = "https"; //"http" や "https" など
-    public const string hostname = "birdol.herokuapp.com";
+    public const string hostname = "birdol.misw.jp";
     public const string port = "443";
     public const int timeout = 4; //通信タイムアウトの秒数
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。

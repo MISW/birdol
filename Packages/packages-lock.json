@@ -11,8 +11,8 @@
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.play.common": "1.5.0",
-        "com.google.play.core": "1.5.0"
+        "com.google.play.common": "1.7.0",
+        "com.google.play.core": "1.7.0"
       }
     },
     "com.google.play.common": {
@@ -20,7 +20,7 @@
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.android.appbundle": "1.5.0"
+        "com.google.android.appbundle": "1.7.0"
       }
     },
     "com.google.play.core": {
@@ -28,7 +28,8 @@
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.android.appbundle": "1.5.0"
+        "com.google.android.appbundle": "1.7.0",
+        "com.google.external-dependency-manager": "1.2.169"
       }
     },
     "com.unity.2d.animation": {

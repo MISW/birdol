@@ -93,7 +93,7 @@ public class Manager : MonoBehaviour
         Common.initSounds();
         CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
 #if UNITY_ANDROID
-        checkUpdate.SetData("Android", Application.version, "000000");
+        checkUpdate.SetData("Android", Application.version, "20220322");
 #elif UNITY_IPHONE
         checkUpdate.SetData("iOS", Application.version, "000000");
 #else

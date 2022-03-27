@@ -31,21 +31,10 @@ public class GifPlayer : MonoBehaviour {
     {
         StopCoroutine(coroutine);
     }
-
-    private int GenerateRandomIntExclude4()
-    {
-        var exclude = new HashSet<int>() { 4};
-        var range = Enumerable.Range(0, 32).Where(i => !exclude.Contains(i));
-
-        var rand = new System.Random();
-        int index = rand.Next(0, 32 - exclude.Count);
-        return range.ElementAt(index);
-    }
-
     private IEnumerator updateImg()
     {
         int index = 1;
-        int gifid = GenerateRandomIntExclude4();
+        int gifid = new System.Random().Next(0, 32);
         var waittime = new WaitForSecondsRealtime(speed);
         while (true)
         {
