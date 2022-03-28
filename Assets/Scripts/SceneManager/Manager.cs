@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour
     public static Manager manager;
     public GameObject loadingCanvas;
     public GameObject downloadingAssetCanvas;
+    public GameObject downloadAssetFailed;
     public GameObject gif;
     public Text tips;
     public AudioSource bgmplayer;
@@ -37,6 +38,21 @@ public class Manager : MonoBehaviour
 
     }
 
+    public void retryDownloadAsset()
+    {
+        downloadAssetFailed.SetActive(false);
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed));
+    }
+
+    public void exitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        UnityEngine.Application.Quit();
+#endif
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +64,7 @@ public class Manager : MonoBehaviour
         Common.seplayer.volume = Common.SEVol;
         Common.subseplayer = subseplayer;
         Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
-        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas));
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed));
     }
 
     int cnt = 15;

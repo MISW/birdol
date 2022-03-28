@@ -1,108 +1,79 @@
+using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class AssetBundleLoader
+public class AssetBundleLoader : MonoBehaviour
 {
 
 #if UNITY_ANDROID
-    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/android";
-#elif UNITY_IPHONE
-    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/ios";
+    private static string filename = "android";
+#elif UNITY_IOS
+    private static string filename = "ios";
 #else
-    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/wsa";
+    private static string filename = "wsa";
 #endif
 
+    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-asset.misw.jp/Asset/" + filename;
 
-    public static IEnumerator DownloadAndCache(GameObject downloadingCanvas)
+#if !UNITY_ANDROID || UNITY_EDITOR
+    private static string savePath = $"{Application.streamingAssetsPath}/" + filename;
+#else
+    private static string savePath = $"{Application.streamingAssetsPath}/" + filename;
+#endif
+    public static IEnumerator DownloadAndCache(GameObject downloadingCanvas, GameObject downloadFailedAlert)
     {
-        // Wait for the Caching system to be ready
-        while (!Caching.ready)
+        if (!System.IO.File.Exists(savePath))
         {
-            yield return null;
-        }
-
-        UnityWebRequest www = UnityWebRequest.Get(bundleURL + ".manifest");
-        Debug.Log("Loading manifest:" + bundleURL + ".manifest");
-
-        // wait for load to finish
-        yield return www.SendWebRequest();
-
-        // if received error, exit
-        if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
-        {
-            Debug.LogError("www error: " + www.error);
-            www.Dispose();
-            yield break;
-        }
-
-
-        // create empty hash string
-        Hash128 hashString = (default(Hash128));// new Hash128(0, 0, 0, 0);
-
-        // check if received data contains 'ManifestFileVersion'
-        if (www.downloadHandler.text.Contains("ManifestFileVersion"))
-        {
-            // extract hash string from the received data, TODO should add some error checking here
-            var hashRow = www.downloadHandler.text.ToString().Split("\n".ToCharArray())[5];
-            Debug.Log("Hash:"+hashRow);
-            hashString = Hash128.Parse(hashRow.Split(':')[1].Trim());
-
-            if (hashString.isValid == true)
+            using (var request = UnityWebRequest.Get(bundleURL))
             {
-                // we can check if there is cached version or not
-                if (Caching.IsVersionCached(bundleURL, hashString) == true)
-                {
-                    Debug.Log("Bundle with this hash is already cached!");
-                }
-                else
-                {
-                    downloadingCanvas.SetActive(true);
-                    Debug.Log("No cached version founded for this hash..");
-                }
-            }
-            else
-            {
-                // invalid loaded hash, just try loading latest bundle
-                Debug.LogError("Invalid hash:" + hashString);
-                yield break;
-            }
+                downloadingCanvas.SetActive(true);
+                // DownloadHandlerをファイル用のものに差し替える
+                request.downloadHandler = new DownloadHandlerFile(savePath);
+                yield return request.SendWebRequest();
 
+                if (request.result == UnityWebRequest.Result.ProtocolError || request.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    System.IO.File.Delete(savePath);
+                    Debug.LogError("www error: " + request.error);
+                    request.Dispose();
+                    downloadFailedAlert.SetActive(true);
+                    yield break;
+                }
+                downloadingCanvas.SetActive(false);
+            }
         }
         else
         {
-            Debug.LogError("Manifest doesn't contain string 'ManifestFileVersion': " + bundleURL + ".manifest");
-            yield break;
+            if (new FileInfo(savePath).Length == 0)
+            {
+                System.IO.File.Delete(savePath);
+                yield return DownloadAndCache(downloadingCanvas, downloadFailedAlert);
+                yield break;
+            }
         }
-
-        // now download the actual bundle, with hashString parameter it uses cached version if available
-        www = UnityWebRequestAssetBundle.GetAssetBundle(bundleURL);
-
-        // wait for load to finish
-        yield return www.SendWebRequest();
-
-        if (www.error != null)
+        // すでにディスクへの書き込みが終わっているのでAssetBundle.LoadFromFileでも取得できる
+        Common.bundle = AssetBundle.LoadFromFile(savePath);
+        if (Common.bundle == null)
         {
-            Debug.LogError("www error: " + www.error);
-            www.Dispose();
-            www = null;
+            System.IO.File.Delete(savePath);
+            yield return DownloadAndCache(downloadingCanvas, downloadFailedAlert);
             yield break;
         }
-
-        // get bundle from downloadhandler
-        Common.bundle = ((DownloadHandlerAssetBundle)www.downloadHandler).assetBundle;
         Common.initCharacters();
         Common.initSounds();
         downloadingCanvas.SetActive(false);
         CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
 #if UNITY_ANDROID
         checkUpdate.SetData("Android", Common.version, "20220322");
-#elif UNITY_IPHONE
-            checkUpdate.SetData("iOS",Common.version,"20220322");
+#elif UNITY_IOS
+        checkUpdate.SetData("iOS",Common.version,"20220322");
 #else
-            checkUpdate.SetData("Win",Common.version,"20220322");
+        checkUpdate.SetData("Win",Common.version,"20220322");
 #endif
         yield return checkUpdate.Send();
+
     }
 
 }
