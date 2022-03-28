@@ -384,7 +384,7 @@ public class StoryController : MonoBehaviour
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
-                    background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
+                    background.sprite = Common.bundle.LoadAsset<Sprite>(filename);
 
                 }
                 else if (data.StartsWith("/BGM一時停止") && allowShowing)

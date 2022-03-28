@@ -5,7 +5,15 @@ using UnityEngine.Networking;
 public class AssetBundleLoader
 {
 
+#if UNITY_ANDROID
     private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/android";
+#elif UNITY_IPHONE
+    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/ios";
+#else
+    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-cdn.nanamiiiii.dev/wsa";
+#endif
+
+
     public static IEnumerator DownloadAndCache(GameObject downloadingCanvas)
     {
         // Wait for the Caching system to be ready
