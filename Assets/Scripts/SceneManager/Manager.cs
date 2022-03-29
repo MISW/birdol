@@ -12,9 +12,12 @@ public class Manager : MonoBehaviour
     public static Manager manager;
     public GameObject loadingCanvas;
     public GameObject downloadingAssetCanvas;
+    public GameObject askDownloadDialog;
     public GameObject downloadAssetFailed;
     public GameObject gif;
     public Text tips;
+    public Text downloadingProgress;
+    private const string downloadingHint = "初期データ(220MB)をダウンロードしています。少々お待ちください。";
     public AudioSource bgmplayer;
     public AudioSource seplayer;
     public AudioSource subseplayer;
@@ -38,10 +41,22 @@ public class Manager : MonoBehaviour
 
     }
 
+    public void startDownloadAsset()
+    {
+        askDownloadDialog.SetActive(false);
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed, askDownloadDialog,(progress) =>
+        {
+            downloadingProgress.text = downloadingHint + $"({(int)(progress * 100 + 9)}%)";
+        }));
+    }
+
     public void retryDownloadAsset()
     {
         downloadAssetFailed.SetActive(false);
-        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed));
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed, askDownloadDialog,(progress) =>
+        {
+            downloadingProgress.text = downloadingHint + $"({(int)(progress*100+9)}%)";
+        }));
     }
 
     public void exitGame()
@@ -64,7 +79,10 @@ public class Manager : MonoBehaviour
         Common.seplayer.volume = Common.SEVol;
         Common.subseplayer = subseplayer;
         Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
-        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed));
+        StartCoroutine(AssetBundleLoader.DownloadAndCache(downloadingAssetCanvas, downloadAssetFailed, askDownloadDialog,(progress) =>
+        {
+            downloadingProgress.text = downloadingHint + $"({(int)(progress * 100+9)}%)";
+        }));
     }
 
     int cnt = 15;

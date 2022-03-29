@@ -19,12 +19,14 @@ public class AssetBundleLoader : MonoBehaviour
 
     private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-asset.misw.jp/Asset/" + filename;
 
-    public static IEnumerator DownloadAndCache(GameObject downloadingCanvas, GameObject downloadFailedAlert)
+    public static IEnumerator DownloadAndCache(GameObject downloadingCanvas, GameObject downloadFailedAlert, GameObject askDownloadDialog, Action<float> progress)
     {
         UnityWebRequest www = UnityWebRequest.Get(bundleURL + ".manifest?");
 
         // wait for load to finish
         yield return www.SendWebRequest();
+
+        bool isDownloading = false;
 
         // if received error, exit
         if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
@@ -50,6 +52,11 @@ public class AssetBundleLoader : MonoBehaviour
                 if (Caching.IsVersionCached(bundleURL, hashString) == false)
                 {
                     downloadingCanvas.SetActive(true);
+                    if (askDownloadDialog.active)
+                    {
+                        yield break;
+                    }
+                    isDownloading = true;
                 }
             }
             else
@@ -64,17 +71,30 @@ public class AssetBundleLoader : MonoBehaviour
         }
 
         www = UnityWebRequestAssetBundle.GetAssetBundle(bundleURL, hashString, 0);
-        yield return www.SendWebRequest();
+        var async = www.SendWebRequest();
 
-        if (www.error != null)
+        while (!async.isDone)
         {
-            www.Dispose();
-            downloadFailedAlert.SetActive(true);
-            www = null;
-            
-            yield break;
+            if (www.error != null)
+            {
+                www.Dispose();
+                downloadFailedAlert.SetActive(true);
+                www = null;
+
+                yield break;
+            }
+
+            yield return null;
+
+            if(isDownloading)
+            {
+                //コールバックとして進捗(0~1)を返す
+                progress(async.progress);
+            }
         }
 
+        //正常終了
+        Debug.Log("DONE!");
         // get bundle from downloadhandle
         Common.bundle = ((DownloadHandlerAssetBundle)www.downloadHandler).assetBundle;
 
