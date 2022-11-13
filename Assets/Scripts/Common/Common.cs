@@ -27,7 +27,24 @@ public partial class Common : MonoBehaviour
     public static bool hasUpdate = false;
     public static AssetBundle bundle;
 
-    public static string version = "1.0.1";
+    public static string buildCode = "20221113";
+
+    public static IEnumerator initGame(GameObject downloadingCanvas)
+    {
+        Common.initCharacters();
+        Common.initSounds();
+        downloadingCanvas.SetActive(false);
+        Debug.Log("App version " + Application.version);
+        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
+#if UNITY_ANDROID
+        checkUpdate.SetData("Android", Application.version, Common.buildCode);
+#elif UNITY_IOS
+        checkUpdate.SetData("iOS", Application.version, Common.buildCode);
+#else
+        checkUpdate.SetData("Win",Application.version,Common.buildCode);
+#endif
+        yield return checkUpdate.Send();
+    }
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
@@ -228,7 +245,7 @@ public partial class Common : MonoBehaviour
     //通信関連
     public const string api_version = "v2"; //"v1" or "v2"
     public const string protocol = "https"; //"http" や "https" など
-    public const string hostname = "birdol.misw.jp";
+    public const string hostname = "project-birdol.com";
     public const string port = "443";
     public const int timeout = 4; //通信タイムアウトの秒数
     public const bool allowAllCertification = true; //trueの場合、オレオレ証明書を含め全ての証明書を認証し通信する。httpsプロトコル使用時に注意。

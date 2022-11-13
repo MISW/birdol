@@ -17,17 +17,17 @@ public class AssetBundleLoader : MonoBehaviour
     private static string filename = "wsa";
 #endif
 
-    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-asset.misw.jp/Asset/" + filename;
+    private static string bundleURL = "https://birdol-assets:XW7eTCuAxPCcdX79@project-birdol.com/assets/" + filename;
 
     public static IEnumerator DownloadAndCache(GameObject downloadingCanvas, GameObject downloadFailedAlert, GameObject askDownloadDialog, Action<float> progress)
     {
         UnityWebRequest www = UnityWebRequest.Get(bundleURL + ".manifest?");
+        www.certificateHandler = new ForceAllCertificationHandler();
 
         // wait for load to finish
         yield return www.SendWebRequest();
-
+        Debug.Log(www.error);
         bool isDownloading = false;
-
         // if received error, exit
         if (www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError)
         {
@@ -35,10 +35,9 @@ public class AssetBundleLoader : MonoBehaviour
             www = null;
             yield break;
         }
-
         // create empty hash string
         Hash128 hashString = (default(Hash128));// new Hash128(0, 0, 0, 0);
-
+        Debug.Log(hashString);
         // check if received data contains 'ManifestFileVersion'
         if (www.downloadHandler.text.Contains("ManifestFileVersion"))
         {
@@ -88,12 +87,12 @@ public class AssetBundleLoader : MonoBehaviour
 
             if(isDownloading)
             {
-                //コールバックとして進捗(0~1)を返す
+                //?R?[???o?b?N???????i??(0~1)??????
                 progress(async.progress);
             }
         }
 
-        //正常終了
+        //?????I??
         Debug.Log("DONE!");
         // get bundle from downloadhandle
         Common.bundle = ((DownloadHandlerAssetBundle)www.downloadHandler).assetBundle;
@@ -103,19 +102,8 @@ public class AssetBundleLoader : MonoBehaviour
             downloadFailedAlert.SetActive(true);
             yield break;
         }
-        Common.initCharacters();
-        Common.initSounds();
-        downloadingCanvas.SetActive(false);
-        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
-#if UNITY_ANDROID
-        checkUpdate.SetData("Android", Common.version, "20220322");
-#elif UNITY_IOS
-        checkUpdate.SetData("iOS",Common.version,"20220322");
-#else
-        checkUpdate.SetData("Win",Common.version,"20220322");
-#endif
-        yield return checkUpdate.Send();
 
+        yield return Common.initGame(downloadingCanvas);
     }
 
 }
