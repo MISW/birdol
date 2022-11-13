@@ -17,7 +17,7 @@ public class AssetBundleLoader : MonoBehaviour
     private static string filename = "wsa";
 #endif
 
-    private static string bundleURL = "https://birdol-client:eHNfw8EXao283mgE6ggv@birdol-asset.misw.jp/Asset/" + filename;
+    private static string bundleURL = "https://birdol-assets:XW7eTCuAxPCcdX79@project-birdol.com/assets/" + filename;
 
     public static IEnumerator DownloadAndCache(GameObject downloadingCanvas, GameObject downloadFailedAlert, GameObject askDownloadDialog, Action<float> progress)
     {
