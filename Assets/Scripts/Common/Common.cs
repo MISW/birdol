@@ -1,4 +1,4 @@
- using System;
+using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
@@ -28,6 +28,8 @@ public partial class Common : MonoBehaviour
     public static AssetBundle bundle;
 
     public static string buildCode = "20221113";
+
+    public static int keySize = 4096;
 
     public static IEnumerator initGame(GameObject downloadingCanvas)
     {
@@ -477,7 +479,7 @@ public partial class Common : MonoBehaviour
     /// </summary>
     public static (string privateKey, string publicKey) CreateRsaKeyPair()
     {
-        int size = 1024;
+        int size = keySize;
         RSACryptoServiceProvider csp = new RSACryptoServiceProvider(size);
 
         string publicKey = csp.ToXmlString(false);

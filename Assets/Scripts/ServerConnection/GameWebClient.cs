@@ -219,7 +219,7 @@ public abstract class GameWebClient : WebClient
             RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
             csp.FromXmlString( Common.StrFromBase64Str(privateKey) );
 
-            byte[] signature_b = csp.SignData(Encoding.UTF8.GetBytes(signature_raw), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            byte[] signature_b = csp.SignData(Encoding.UTF8.GetBytes(signature_raw), HashAlgorithmName.SHA512, RSASignaturePadding.Pkcs1);
             //signature = Convert.ToBase64String(signature_b);
             signature = BitConverter.ToString(signature_b).Replace("-", "").ToLower();
         }
