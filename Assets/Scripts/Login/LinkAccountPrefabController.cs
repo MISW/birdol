@@ -83,6 +83,7 @@ public class LinkAccountPrefabController : MonoBehaviour
                 Common.DefaultAccountID = id;
                 Common.Uuid = _uuid;
                 Common.RsaKeyPair = rsaKeyPair;
+                Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
                 AlertText.text = linkAccountWebClient.message;
                 yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
                 OnLinkAccountSuccess();

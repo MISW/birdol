@@ -31,6 +31,8 @@ public partial class Common : MonoBehaviour
 
     public static int keySize = 4096;
 
+    public const string KEY_RSA4096 = "rsa4096";
+
     public static IEnumerator initGame(GameObject downloadingCanvas)
     {
         Common.initCharacters();
@@ -493,6 +495,30 @@ public partial class Common : MonoBehaviour
 #endif
 
         return keyPair;
+    }
+
+    /// <summary>
+    /// Saved Key Type
+    /// Used to detect deprecated key
+    /// </summary>
+    private static string savedKeyType;
+    private const string PLAYERPREFS_SAVED_KEY_TYPE = "SAVED_KEY_TYPE";
+    public static string SavedKeyType
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(savedKeyType))
+            {
+                savedKeyType = PlayerPrefs.GetString(PLAYERPREFS_SAVED_KEY_TYPE, "unknown");
+            }
+            return savedKeyType;
+        }
+        set
+        {
+            savedKeyType = value;
+            PlayerPrefs.SetString(PLAYERPREFS_SAVED_KEY_TYPE, savedKeyType);
+            PlayerPrefs.Save();
+        }
     }
 
     /// <summary> ランダム文字列の生成 </summary>

@@ -47,6 +47,105 @@ public class PressedAction : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Refresh signing key using deprecated algorithm.
+    /// This quietly execute account link process to regenerate key with new algorithm.
+    /// </summary>
+    private IEnumerator RefreshSigningKey()
+    {
+        /* Token Authorization */
+        TokenAuthorizeWebClient tokenAuthClient = new TokenAuthorizeWebClient(
+            WebClient.HttpRequestMethod.Get, 
+            $"/api/{Common.api_version}/auth");
+
+        tokenAuthClient.IsDoBackToTitleIfTokenRefreshError = false;
+        yield return tokenAuthClient.Send();
+
+        if (tokenAuthClient.IsAuthorizeSuccess && Common.SessionID != null) // Token Auth Succeeded
+        {
+            SetAccountLinkWebClient setAccLinkClient = new SetAccountLinkWebClient(
+                WebClient.HttpRequestMethod.Put, 
+                $"/api/{Common.api_version}/auth");
+            
+            /* Use randomly generated string for password */
+            string passwd = Common.GenerateRondomString(64);
+            setAccLinkClient.SetData(passwd);
+
+            if (!setAccLinkClient.CheckRequestData())
+            {
+                /* This check is absolutely passed
+                   Process never enter this block  */
+
+                /* Back to title */
+                NetworkErrorDialogController.OpenConfirmDialog(() => {
+                    Manager.manager.StateQueue((int)gamestate.Title);
+                },
+                "不明なエラーが発生しました。\nタイトルへ戻ります。");
+            }
+            yield return setAccLinkClient.Send();
+
+            if (setAccLinkClient.isSuccess && 
+                !setAccLinkClient.isInProgress && 
+                setAccLinkClient.isSetAccountLinkSuccess) // Link Preparation Succeeded
+            {
+                LinkAccountWebClient linkAccClient = new LinkAccountWebClient(
+                    WebClient.HttpRequestMethod.Post, 
+                    $"/api/{Common.api_version}/user");
+
+                string accountId = Common.DefaultAccountID;
+                string uuid = System.Guid.NewGuid().ToString();
+                (string privKey, string pubKey) rsaKeyPair = Common.CreateRsaKeyPair();
+                linkAccClient.SetData(accountId, passwd, uuid, 
+                                      rsaKeyPair.pubKey, rsaKeyPair.privKey);
+
+                if (!linkAccClient.CheckRequestData())
+                {
+                    /* Back to title */
+                    NetworkErrorDialogController.OpenConfirmDialog(() => {
+                        Manager.manager.StateQueue((int)gamestate.Title);
+                    },
+                    "不明なエラーが発生しました。\nタイトルへ戻ります。");
+                }
+                yield return linkAccClient.Send();
+
+                if (linkAccClient.isSuccess && 
+                    !linkAccClient.isInProgress && 
+                    linkAccClient.isLinkAccountSuccess) // Link Succeeded
+                {
+                    Common.DefaultAccountID = accountId;
+                    Common.Uuid = uuid;
+                    Common.RsaKeyPair = rsaKeyPair;
+                    Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
+
+                    /* Default Login Process */
+                    LoginAndSync();
+                }
+                else // Some error occured
+                {
+                    /* Back to title */
+                    NetworkErrorDialogController.OpenConfirmDialog(() => {
+                        Manager.manager.StateQueue((int)gamestate.Title);
+                    },
+                    "エラーが発生しました。\nタイトルへ戻ります。");
+                }
+            }
+            else
+            {
+                /* Back to title */
+                NetworkErrorDialogController.OpenConfirmDialog(() => {
+                    Manager.manager.StateQueue((int)gamestate.Title);
+                },
+                "エラーが発生しました。\nタイトルへ戻ります。");
+            }
+        }
+        else if(!tokenAuthClient.IsAuthorizeSuccess && 
+                tokenAuthClient.isSuccess)             // invalid account 
+        {
+            /* Go to signup scene */
+            Manager.manager.StateQueue((int)gamestate.Signup);
+        }
+    }
+
 
     public void OnClick() {
         //ここを変える
@@ -72,7 +171,11 @@ public class PressedAction : MonoBehaviour
             {
                 StartCoroutine(SignUp()); //アカウント新規登録(またはアカウント連携)を行うSignupシーンへ遷移する
             }
-            else
+            else if (Common.SavedKeyType != Common.KEY_RSA4096) // key with deprecated algorithm
+            {
+                StartCoroutine(RefreshSigningKey());   
+            }
+            else // default login
             {
                 StartCoroutine(LoginAndSync());
             }
