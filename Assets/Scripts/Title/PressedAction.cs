@@ -118,7 +118,7 @@ public class PressedAction : MonoBehaviour
                     Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
 
                     /* Default Login Process */
-                    LoginAndSync();
+                    yield return LoginAndSync();
                 }
                 else // Some error occured
                 {
