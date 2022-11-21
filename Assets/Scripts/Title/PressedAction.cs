@@ -77,6 +77,7 @@ public class PressedAction : MonoBehaviour
                    Process never enter this block  */
 
                 /* Back to title */
+
                 NetworkErrorDialogController.OpenConfirmDialog(() => {
                     Manager.manager.StateQueue((int)gamestate.Title);
                 },
@@ -97,7 +98,6 @@ public class PressedAction : MonoBehaviour
                 (string privKey, string pubKey) rsaKeyPair = Common.CreateRsaKeyPair();
                 linkAccClient.SetData(accountId, passwd, uuid, 
                                       rsaKeyPair.pubKey, rsaKeyPair.privKey);
-
                 if (!linkAccClient.CheckRequestData())
                 {
                     /* Back to title */
@@ -116,7 +116,6 @@ public class PressedAction : MonoBehaviour
                     Common.Uuid = uuid;
                     Common.RsaKeyPair = rsaKeyPair;
                     Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
-
                     /* Default Login Process */
                     yield return LoginAndSync();
                 }
