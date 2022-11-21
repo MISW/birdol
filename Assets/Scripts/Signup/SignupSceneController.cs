@@ -93,6 +93,7 @@ public class SignupSceneController : SceneVisor
             {
                 Common.Uuid = _uuid;
                 Common.RsaKeyPair = rsaKeyPair;
+                Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
 #if UNITY_EDITOR
                 Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
 #endif

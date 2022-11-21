@@ -143,6 +143,7 @@ public class SetAccountLinkWebClient : GameWebClient
             if (aerd.result == ConnectionModel.Response.ResultOK)
             {
                 this.message = "成功しました。";
+                OnSetAccountLinkSuccess();
             }
             else
             {
