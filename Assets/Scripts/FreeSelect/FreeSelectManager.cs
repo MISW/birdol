@@ -20,7 +20,7 @@ public class FreeSelectManager : MonoBehaviour
     public static List<DendouModel> CompletedCharacters = new List<DendouModel>();
     List<GameObject> completedObjects = new List<GameObject>();
 
-    public CharacterModel[] characters=new CharacterModel[10];
+    public CharacterModel[] characters = new CharacterModel[10];
     int[] selected;
     public GameObject[] charcterIcons;
 
@@ -32,7 +32,7 @@ public class FreeSelectManager : MonoBehaviour
     int currentselected = -1;
     // Start is called before the first frame update
 
-   
+
 
     void Start()
     {
@@ -82,7 +82,7 @@ public class FreeSelectManager : MonoBehaviour
 #if UNITY_EDITOR
             Debug.Log("Current: "+ i +"value" + selected[i]);
 #endif
-            if (selected[i]!=0)
+            if (selected[i] != 0)
             {
                 if (selected[i] - 1 == currentindex)
                 {
@@ -122,7 +122,7 @@ public class FreeSelectManager : MonoBehaviour
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Vocal.ToString();
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Visual.ToString();
         pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = CompletedCharacters[currentselected].Dance.ToString();
-        if(currentselected != -1)selected[currentselected] = currentindex+1;
+        if (currentselected != -1) selected[currentselected] = currentindex + 1;
         if (backup != -1) selected[backup] = 0;
         mainPage.transform.SetSiblingIndex(1);
         completedTeamName.GetComponent<InputField>().text = "";
@@ -141,7 +141,7 @@ public class FreeSelectManager : MonoBehaviour
         pairList.GetChild(3).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = "";
         pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = "";
-        if(backup != -1)selected[backup] = 0;
+        if (backup != -1) selected[backup] = 0;
         mainPage.transform.SetSiblingIndex(1);
         completedTeamName.GetComponent<InputField>().text = "";
         currentselected = -1;
@@ -165,7 +165,7 @@ public class FreeSelectManager : MonoBehaviour
         bool haschar = false;
         for (int i = 0; i < CompletedCharacters.Count; i++)
         {
-            if (selected[i]!=0)
+            if (selected[i] != 0)
             {
                 ProgressModel progress = new ProgressModel();
                 progress.MainCharacterId = CompletedCharacters[i].MainCharacterId;
@@ -200,7 +200,7 @@ public class FreeSelectManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "FreeSelect")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG04");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG04");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

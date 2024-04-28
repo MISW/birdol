@@ -12,9 +12,51 @@ public partial class Common : MonoBehaviour
     public static Sprite[] standImages = new Sprite[34];
     public static ProgressModel[] progresses = new ProgressModel[5];
     public static DendouModel teacher;
+
+    private const string MAIN_STORY_ID = "MAIN_STORY_ID";
     public static string mainstoryid;
+    public static string MainStoryId
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(mainstoryid))
+            {
+                mainstoryid = PlayerPrefs.GetString(MAIN_STORY_ID);
+            }
+            return mainstoryid;
+        }
+        set
+        {
+            if (mainstoryid != value)
+            {
+                mainstoryid = value;
+                PlayerPrefs.SetString(MAIN_STORY_ID, mainstoryid);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    private const string LESSON_COUNT = "LESSON_COUNT";
     public static int lessonCount = 5;
+    public static int LessonCount
+    {
+        get
+        {
+            return PlayerPrefs.GetInt(LESSON_COUNT);
+        }
+        set
+        {
+            if (lessonCount != value)
+            {
+                lessonCount = value;
+                PlayerPrefs.SetInt(LESSON_COUNT, lessonCount);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
     public static int progressId;
+
     public static GameObject loadingCanvas;
     public static GameObject loadingGif;
     public static AudioSource bgmplayer;
@@ -32,23 +74,6 @@ public partial class Common : MonoBehaviour
     public static int keySize = 4096;
 
     public const string KEY_RSA4096 = "rsa4096";
-
-    public static IEnumerator initGame(GameObject downloadingCanvas)
-    {
-        Common.initCharacters();
-        Common.initSounds();
-        downloadingCanvas.SetActive(false);
-        Debug.Log("App version " + Application.version);
-        CheckVersionWebClient checkUpdate = new CheckVersionWebClient(WebClient.HttpRequestMethod.Post, $"/api/{Common.api_version}/cli/version");
-#if UNITY_ANDROID
-        checkUpdate.SetData("Android", Application.version, Common.buildCode);
-#elif UNITY_IOS
-        checkUpdate.SetData("iOS", Application.version, Common.buildCode);
-#else
-        checkUpdate.SetData("Win",Application.version,Common.buildCode);
-#endif
-        yield return checkUpdate.Send();
-    }
 
     private const string FREE_LIVE_BGM = "FREE_LIVE_BGM";
     public static string freebgm;
@@ -177,7 +202,7 @@ public partial class Common : MonoBehaviour
     {
         var fixedupdate = new WaitForFixedUpdate();
         float currentvol = BGMVol;
-        while(currentvol > 0f)
+        while (currentvol > 0f)
         {
             currentvol -= 0.001f;
 #if UNITY_EDITOR
@@ -196,31 +221,25 @@ public partial class Common : MonoBehaviour
     {
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"okbig1", bundle.LoadAsset<AudioClip>("okbig1") },
-            {"ikuseistart1", bundle.LoadAsset<AudioClip>("ikuseistart1") },
-            {"freelive1", bundle.LoadAsset<AudioClip>("freelive1") },
-            {"zukan1", bundle.LoadAsset<AudioClip>("zukan1") },
-            {"sudattabirdol1", bundle.LoadAsset<AudioClip>("sudattabirdol1") },
-            {"ok1", bundle.LoadAsset<AudioClip>("ok1") },
-            {"cancel1", bundle.LoadAsset<AudioClip>("cancel1") },
-            {"cancel2", bundle.LoadAsset<AudioClip>("cancel2") },
-            {"error1", bundle.LoadAsset<AudioClip>("error1") },
+            {"okbig1", (AudioClip)Resources.Load("SE/okbig1") },
+            {"ikuseistart1", (AudioClip)Resources.Load("SE/ikuseistart1") },
+            {"freelive1", (AudioClip)Resources.Load("SE/menu/freelive1") },
+            {"zukan1", (AudioClip)Resources.Load("SE/menu/zukan1") },
+            {"sudattabirdol1", (AudioClip)Resources.Load("SE/menu/sudattabirdol1") },
+            {"ok1", (AudioClip)Resources.Load("SE/ok1") },
+            {"cancel1", (AudioClip)Resources.Load("SE/cancel1") },
+            {"cancel2", (AudioClip)Resources.Load("SE/cancel2") },
+            {"error1", (AudioClip)Resources.Load("SE/error1") },
         };
     }
     public static void initCharacters()
     {
         string json = Resources.Load<TextAsset>("Common/characters").ToString();
         characters = JsonUtility.FromJson<CommonCharacters>(json).characters;
-        for (int i=0;i<32;i++)
+        for (int i = 0; i < 32; i++)
         {
-            standImages[i] = bundle.LoadAsset<Sprite>(characters[i].id.ToString());
+            standImages[i] = Resources.Load<Sprite>("Images/standimage/" + characters[i].id);
         }
-    }
-
-    public static void initProgress()
-    {
-        string json = Resources.Load<TextAsset>("Live/testdata").ToString();
-        progresses = JsonUtility.FromJson<ProgressData>(json).progresses;
     }
 
 
@@ -231,13 +250,14 @@ public partial class Common : MonoBehaviour
     {
         try
         {
-            int chapter = mainstoryid[0]-'0';
+            int chapter = mainstoryid[0] - '0';
             if (chapter >= 10 || chapter < 1) throw new Exception($"Unexpected mainstoryid: {mainstoryid}");
 #if UNITY_EDITOR
             Debug.Log($"chapter: {chapter}, ノルマ: {liveScoreMaxValues[chapter - 1]}");
 #endif
-            return liveScoreMaxValues[chapter-1];
-        }catch(Exception e)
+            return liveScoreMaxValues[chapter - 1];
+        }
+        catch (Exception e)
         {
 #if UNITY_EDITOR
             Debug.Log(e);
@@ -319,7 +339,7 @@ public partial class Common : MonoBehaviour
     //PlayerPrefsに保存
     //ユーザID
     private const string PLAYERPREFS_USER_ID = "PLAYERPREFS_USER_ID";
-    private static uint userID=0;
+    private static uint userID = 0;
     public static uint UserID
     {
         get
@@ -435,7 +455,8 @@ public partial class Common : MonoBehaviour
     //Signup時にサーバから受け取るアカウントID。手動で設定するアカウントIDをデバイスに保存することは現在想定していない。
     private const string PLAYERPREFS_DEFALT_ACCOUNT_ID = "PLAYERPREFS_DEFALT_ACCOUNT_ID";
     private static string defaultAccountID;
-    public static string DefaultAccountID {
+    public static string DefaultAccountID
+    {
         get
         {
             if (string.IsNullOrEmpty(defaultAccountID))
@@ -460,7 +481,7 @@ public partial class Common : MonoBehaviour
     {
         get
         {
-            if (string.IsNullOrEmpty(rsaKeyPair.privateKey) )
+            if (string.IsNullOrEmpty(rsaKeyPair.privateKey))
             {
                 rsaKeyPair.privateKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PRIVATE_KEY);
                 //rsaKeyPair.publicKey = PlayerPrefs.GetString(PLAYERPREFS_RSA_PUBLIC_KEY);
@@ -487,7 +508,7 @@ public partial class Common : MonoBehaviour
         string publicKey = csp.ToXmlString(false);
         string privateKey = csp.ToXmlString(true);
         publicKey = StrToBase64Str(publicKey);
-        privateKey= StrToBase64Str(privateKey);
+        privateKey = StrToBase64Str(privateKey);
         (string privateKey, string publicKey) keyPair = (privateKey: privateKey, publicKey: publicKey);
 #if UNITY_EDITOR
         Debug.Log($"private_key: { StrFromBase64Str(keyPair.privateKey) }");
@@ -528,7 +549,7 @@ public partial class Common : MonoBehaviour
     {
         const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         string t = "";
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
         {
             t += characters[UnityEngine.Random.Range(0, characters.Length)];
         }
@@ -555,7 +576,7 @@ public partial class Common : MonoBehaviour
         string str = "";
         try
         {
-            str = Encoding.UTF8.GetString( Convert.FromBase64String(text) );
+            str = Encoding.UTF8.GetString(Convert.FromBase64String(text));
         }
         catch (Exception e)
         {

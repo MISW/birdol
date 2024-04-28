@@ -179,10 +179,10 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"tsukamu1", Common.bundle.LoadAsset<AudioClip>("tsukamu1") },
-            {"orosu1", Common.bundle.LoadAsset<AudioClip>("orosu1") },
-            {"haneru1", Common.bundle.LoadAsset<AudioClip>("haneru1") },
-            {"skillkettei1", Common.bundle.LoadAsset<AudioClip>("skillkettei1") },
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
         };
     }
 
@@ -195,7 +195,7 @@ public class FreeCharacterController : MonoBehaviour, IDragHandler, IBeginDragHa
     public void OnDrag(PointerEventData eventData)
     {
         if (!FreeLiveController.executingSkills && eventData.position.y <= Screen.height / 2.0f + 180.0f)
-        {// ƒhƒ‰ƒbƒO’†‚ÍˆÊ’u‚ðXV‚·‚é
+        {// ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ÍˆÊ’uï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
             //parenttransform.y -= 80;

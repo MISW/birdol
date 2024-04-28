@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CompletedController : MonoBehaviour
 {
-    
+
     public static List<DendouModel> CompletedCharacters = new List<DendouModel>();
     public GameObject Container;
     public GameObject HorizontalChild;
@@ -23,15 +23,15 @@ public class CompletedController : MonoBehaviour
     public Image activeSkillGaugeImage;
     public Image passiveSkillGaugeImage;
 
-    [Header("ƒAƒNƒeƒBƒuƒXƒLƒ‹ƒQ[ƒW‚ÌSprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
-    [Header("ƒpƒbƒVƒuƒXƒLƒ‹ƒQ[ƒW‚ÌSprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
+    [Header("ï¿½Aï¿½Nï¿½eï¿½Bï¿½uï¿½Xï¿½Lï¿½ï¿½ï¿½Qï¿½[ï¿½Wï¿½ï¿½Sprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
+    [Header("ï¿½pï¿½bï¿½Vï¿½uï¿½Xï¿½Lï¿½ï¿½ï¿½Qï¿½[ï¿½Wï¿½ï¿½Sprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
 
     int maxStar = 10;
     public float maxStatus = 100;
 
     private void ChangeCurrentCharacterSKillGauge(int i)
     {
-        
+
     }
 
     public void OpenDialog(Button button)
@@ -55,26 +55,27 @@ public class CompletedController : MonoBehaviour
         Dialog.transform.SetSiblingIndex(0);
     }
 
-    private void ChangeCurrentCharacterStars(int i) {
+    private void ChangeCurrentCharacterStars(int i)
+    {
         int currentCharacterVocal = (int)Mathf.Min(CompletedCharacters[i].Vocal, maxStatus);
         int currentCharacterVisual = (int)Mathf.Min(CompletedCharacters[i].Visual, maxStatus);
         int currentCharacterDance = (int)Mathf.Min(CompletedCharacters[i].Dance, maxStatus);
 
-        currentCharacterVocal = (int) (((float) currentCharacterVocal / (float) maxStatus) * 50.0f);
-        currentCharacterVisual = (int) (((float) currentCharacterVisual / (float) maxStatus) * 50.0f);
-        currentCharacterDance = (int) (((float) currentCharacterDance / (float) maxStatus) * 50.0f);
+        currentCharacterVocal = (int)(((float)currentCharacterVocal / (float)maxStatus) * 50.0f);
+        currentCharacterVisual = (int)(((float)currentCharacterVisual / (float)maxStatus) * 50.0f);
+        currentCharacterDance = (int)(((float)currentCharacterDance / (float)maxStatus) * 50.0f);
 
         SetSongStar(currentCharacterVocal);
         SetVisualStar(currentCharacterVisual);
         SetDanceStar(currentCharacterDance);
     }
 
-        
 
-    
+
+
 
     /// <summary>
-    /// ŠeSongStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eSongStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetSongStar(int status)
@@ -103,7 +104,7 @@ public class CompletedController : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeVisualStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eVisualStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetVisualStar(int status)
@@ -132,7 +133,7 @@ public class CompletedController : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeDanceStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eDanceStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetDanceStar(int status)
@@ -161,7 +162,7 @@ public class CompletedController : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeStar‚ÌImageƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•ß‚Ü‚¦‚é
+    /// ï¿½eStarï¿½ï¿½Imageï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½ß‚Ü‚ï¿½ï¿½ï¿½
     /// </summary>
     private void FindStar()
     {
@@ -193,20 +194,20 @@ public class CompletedController : MonoBehaviour
         Common.bgmplayer.time = 0;
         CompletedCharacters.Clear();
         StartCoroutine(returnToHome());
-        
+
     }
     // Start is called be
     void Start()
     {
-        if(Common.characters==null)Common.initCharacters();
+        if (Common.characters == null) Common.initCharacters();
         int index = 0;
         GameObject horizontal = HorizontalChild;
         for (int i = 0; i < CompletedCharacters.Count; i++)
         {
-            if(index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
+            if (index == 0) horizontal = Instantiate(HorizontalChild, Container.transform);
             DendouModel dendouModel = CompletedCharacters[i];
             horizontal.transform.GetChild(index).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + dendouModel.MainCharacterId);
-            if (index == 4)index = 0;
+            if (index == 4) index = 0;
             else index++;
         }
         Destroy(HorizontalChild);
@@ -218,7 +219,7 @@ public class CompletedController : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "CompletedCharacters")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG03");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG03");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

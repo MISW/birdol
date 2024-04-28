@@ -42,11 +42,13 @@ public class GalleryManager : MonoBehaviour
     /// <summary>
     /// 図鑑データを読み込む
     /// </summary>
-    private void LoadCSV() {
+    private void LoadCSV()
+    {
         infoCSV = Resources.Load<TextAsset>("GalleryData/info");
         StringReader reader = new StringReader(infoCSV.text);
 
-        while (reader.Peek() != -1) {
+        while (reader.Peek() != -1)
+        {
             string line = reader.ReadLine();  // 一行ずつ読み込み
             csvDatas.Add(line.Split(','));
         }
@@ -74,23 +76,24 @@ public class GalleryManager : MonoBehaviour
         // ceil(キャラの数/2)だけRowNodeをScroll ViewのContent配下に生成する
         int Nodes = (ARR_SIZE + 1) / 2;
 
-        for (int i = 0; i < Nodes-1; i++)
+        for (int i = 0; i < Nodes - 1; i++)
         {
             GameObject row = Instantiate(rowNodeOriginal);
             row.transform.SetParent(content.transform, false);
         }
 
         // 顔アイコンと名前を各Nodeにセット
-        for (int i = 0; i < Nodes; i++) {
+        for (int i = 0; i < Nodes; i++)
+        {
             GameObject row = content.transform.GetChild(i).gameObject;
             GameObject left = row.transform.Find("CharaNodeLeft").gameObject;
             GameObject right = row.transform.Find("CharaNodeRight").gameObject;
 
             // キャラ数が奇数なら一番下のRowNodeのCharaNodeRightをinvisibleに
-            if (ARR_SIZE % 2 == 1 && i == Nodes-1) right.SetActive(false);
+            if (ARR_SIZE % 2 == 1 && i == Nodes - 1) right.SetActive(false);
 
-            SetCharacterData(left, 2*i);
-            SetCharacterData(right, 2*i+1);
+            SetCharacterData(left, 2 * i);
+            SetCharacterData(right, 2 * i + 1);
         }
     }
 
@@ -99,7 +102,8 @@ public class GalleryManager : MonoBehaviour
     /// </summary>
     /// <param name="node">操作したいCharaNode</param>
     /// <param name="id">NodeにセットしたいキャラクターのID</param>
-    private void SetCharacterData(GameObject node, int id) {
+    private void SetCharacterData(GameObject node, int id)
+    {
         CharaNodeManager nodeManager = node.GetComponent<CharaNodeManager>();
         nodeManager.SetCharacter(characters[id]);
     }
@@ -118,7 +122,7 @@ public class GalleryManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Gallery")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG02");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG02");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
@@ -127,36 +131,41 @@ public class GalleryManager : MonoBehaviour
     /// <summary>
     /// キャラクターのIdからCharacterModelを取得する
     /// </summary>
-    public static CharacterModel GetCharacter(int id) {
+    public static CharacterModel GetCharacter(int id)
+    {
         return characters[id];
     }
 
     /// <summary>
     /// 指定したIdにCharacterModelを設定する
     /// </summary>
-    public static void SetCharacter(int id, CharacterModel model) {
+    public static void SetCharacter(int id, CharacterModel model)
+    {
         characters[id] = model;
     }
 
     /// <summary>
     /// キャラクターのIdから解禁状況を取得する
     /// </summary>
-    public static bool GetIsUnlocked(int id) {
+    public static bool GetIsUnlocked(int id)
+    {
         return isUnlocked[id];
     }
 
     /// <summary>
     /// 指定したIdのキャラクターの解禁状況を設定する
     /// </summary>
-    public static void SetIsUnlocked(int id, bool value) {
+    public static void SetIsUnlocked(int id, bool value)
+    {
         isUnlocked[id] = value;
     }
 
     /// <summary>
     /// 指定したIdのキャラクターの図鑑データを取得する
     /// </summary>
-    public static string[] GetLine(int id) {
-        return csvDatas[id+1];
+    public static string[] GetLine(int id)
+    {
+        return csvDatas[id + 1];
     }
 
     /// <summary>

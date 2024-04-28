@@ -18,7 +18,7 @@ public class LiveController : MonoBehaviour
 
     public GameObject Heart;
     public GameObject scoreBar;
-    
+
     int dance = 0;
     int visual = 0;
     int vocal = 0;
@@ -36,8 +36,8 @@ public class LiveController : MonoBehaviour
     float maxscore = 0;
     int maxindex = 0;
 
-    public GameObject[] LiveCharacter=new GameObject[5];
-    public GameObject[] CharacterList=new GameObject[5];
+    public GameObject[] LiveCharacter = new GameObject[5];
+    public GameObject[] CharacterList = new GameObject[5];
     public GameObject[] passiveList = new GameObject[5];
     CharacterController[] characterControllers = new CharacterController[5];
 
@@ -57,10 +57,13 @@ public class LiveController : MonoBehaviour
         bool active = false;
         GameObject[] objs = new GameObject[5];
         for (int i = 0; i < 5; i++) objs[i] = LiveCharacter[i];
-        Array.Sort(objs, delegate (GameObject a1, GameObject a2) { return -1*a1.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y
-            .CompareTo(a2.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y); });
+        Array.Sort(objs, delegate (GameObject a1, GameObject a2)
+        {
+            return -1 * a1.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y
+            .CompareTo(a2.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y);
+        });
         int depth = 0;
-        for (int i=0;i<5;i++)
+        for (int i = 0; i < 5; i++)
         {
             CharacterController c = characterControllers[i];
             string area = c.area;
@@ -79,7 +82,7 @@ public class LiveController : MonoBehaviour
             }
             objs[i].transform.parent.gameObject.transform.SetSiblingIndex(i);
         }
-        if ((dance <= 2 && visual <= 2 && vocal <= 2)&&!active)
+        if ((dance <= 2 && visual <= 2 && vocal <= 2) && !active)
         {
             startbutton.SetActive(true);
             Alert.SetActive(false);
@@ -143,10 +146,10 @@ public class LiveController : MonoBehaviour
             objk.id = i;
             objk.characterInf = tempProgress[i];
             objk.name.text = tempProgress[i].Name;
-            for (int j=0;j<6;j++)
+            for (int j = 0; j < 6; j++)
             {
                 //Change Here 
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+ tempProgress[i].MainCharacterId+"/ch-"+j));
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + tempProgress[i].MainCharacterId + "/ch-" + j));
             }
             objk.initImage();
             if (i == 0) objk.SelectMe();
@@ -168,7 +171,7 @@ public class LiveController : MonoBehaviour
             {
                 GameObject instance = Instantiate(sailium, Background.transform);
                 instance.transform.parent = Background.transform;
-                instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(x,y);
+                instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
                 instance.GetComponent<Sailium>().layer = layer;
                 instance.transform.localScale *= scale;
                 sailiumcollections.Add(instance);
@@ -179,10 +182,10 @@ public class LiveController : MonoBehaviour
         }
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"gaugemax1", Common.bundle.LoadAsset<AudioClip>("gaugemax1") },
-            {"up1", Common.bundle.LoadAsset<AudioClip>("up1") },
-            {"resultsuccess1", Common.bundle.LoadAsset<AudioClip>("resultsuccess1") },
-            {"resultfault1", Common.bundle.LoadAsset<AudioClip>("resultfault1") },
+            {"gaugemax1", (AudioClip)Resources.Load("SE/live/gaugemax1") },
+            {"up1", (AudioClip)Resources.Load("SE/live/up1") },
+            {"resultsuccess1", (AudioClip)Resources.Load("SE/live/resultsuccess1") },
+            {"resultfault1", (AudioClip)Resources.Load("SE/live/resultfault1") },
         };
         enablePassives();
         backlight.transform.SetSiblingIndex(114514);
@@ -196,27 +199,27 @@ public class LiveController : MonoBehaviour
         System.Random random = new System.Random();
         float kb = (float)max / 60.0f;
         float k = 0;
-        int plus = (int)max/100;
-        
+        int plus = (int)max / 100;
+
         while (oldScore < newScore)
         {
-            oldScore+=plus;
-            k+=plus;
-            if (k>=kb&& sailiumcollections.Count>0)
+            oldScore += plus;
+            k += plus;
+            if (k >= kb && sailiumcollections.Count > 0)
             {
                 GameObject gameObject = sailiumcollections.ElementAt(random.Next(sailiumcollections.Count));
                 gameObject.GetComponent<Sailium>().enableSailium();
                 sailiumcollections.Remove(gameObject);
                 k = 0;
             }
-            if(scoreBar.active)Achievement.fillAmount = oldScore / max;
+            if (scoreBar.active) Achievement.fillAmount = oldScore / max;
             yield return fixedupdate;
         }
         if (newScore / max >= 1.0f && !achievedScore)
         {
             Common.subseplayer.PlayOneShot(seclips["gaugemax1"]);
             achievedScore = true;
-            if (Heart.active&&!Achieved.active)
+            if (Heart.active && !Achieved.active)
             {
                 Achieved.SetActive(true);
             }
@@ -224,7 +227,7 @@ public class LiveController : MonoBehaviour
     }
 
 
-    private float ApplyActiveSkill(ProgressModel targetInf,ProgressModel characterInf)
+    private float ApplyActiveSkill(ProgressModel targetInf, ProgressModel characterInf)
     {
         float activescore = 0;
         float multiply = 0.5f;
@@ -241,7 +244,7 @@ public class LiveController : MonoBehaviour
             }
             if (characterInf.ActiveSkillParams.Contains("vocal"))
             {
-                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel)* multiply;
+                activescore += (targetInf.Vocal * characterInf.ActiveSkillScore * characterInf.ActiveSkillLevel) * multiply;
             }
             if (characterInf.ActiveSkillParams.Contains("dance"))
             {
@@ -255,14 +258,14 @@ public class LiveController : MonoBehaviour
         float activescore = 0;
         ProgressModel characterInf = characterObj.characterInf;
         int count = 0;
-        if(characterInf.ActiveSkillType == "self")
+        if (characterInf.ActiveSkillType == "self")
         {
-            activescore += ApplyActiveSkill(characterInf,characterInf);
+            activescore += ApplyActiveSkill(characterInf, characterInf);
         }
         else
         {
             GameObject[] objs = LiveCharacter;
-            for (int i=0;i<5;i++)
+            for (int i = 0; i < 5; i++)
             {
                 CharacterController objinf = characterControllers[i];
                 if (characterInf.ActiveSkillType == "samearea" && characterObj.area != objinf.area)
@@ -285,9 +288,9 @@ public class LiveController : MonoBehaviour
         if (characterInf.PassiveSkillType.Contains("group"))
         {
             targetGroup = characterInf.PassiveSkillType.Replace("group", "");
-         }
+        }
         string targetArea = "";
-        if(characterInf.PassiveSkillType == "visual"
+        if (characterInf.PassiveSkillType == "visual"
             || characterInf.PassiveSkillType == "vocal"
             || characterInf.PassiveSkillType == "dance")
         {
@@ -296,7 +299,7 @@ public class LiveController : MonoBehaviour
 #if UNITY_EDITOR
         Debug.Log("Passive:" + characterInf.SupportCharacterId + " Group:" + characterInf.Group + " SkillScore " + characterInf.PassiveSkillScore + " PassiveType:" + characterInf.PassiveSkillType + " PassiveScore:" + characterInf.PassiveSkillScore);
 #endif
-        for (int i = 0; i < 5;i++)
+        for (int i = 0; i < 5; i++)
         {
             CharacterController objcc = characterControllers[i];
             ProgressModel objinf = objcc.characterInf;
@@ -328,12 +331,12 @@ public class LiveController : MonoBehaviour
         }
     }
 
-    private IEnumerator execSkillofOnePerson(CharacterController characterObj,int index,bool selected)
+    private IEnumerator execSkillofOnePerson(CharacterController characterObj, int index, bool selected)
     {
         characterObj.executingSkill = true;
         float newscore = score;
         ProgressModel characterInf = characterObj.characterInf;
-       
+
         float parascore;
         float activeskillscore = 0;
         if (characterObj.area == "visual") parascore = characterInf.Visual;
@@ -353,7 +356,7 @@ public class LiveController : MonoBehaviour
             maxscore = characterObj.score;
             maxindex = index;
         }
-        newscore += (parascore+activeskillscore);
+        newscore += (parascore + activeskillscore);
         yield return characterObj.jump();
         yield return updateScoreBar(score, newscore);
         score = newscore;
@@ -365,7 +368,7 @@ public class LiveController : MonoBehaviour
     {
         var fixedupdate = new WaitForFixedUpdate();
         RectTransform curatinrect = curtain.GetComponent<RectTransform>();
-        for (int i = 71; i > 0; i-=2)
+        for (int i = 71; i > 0; i -= 2)
         {
             curatinrect.anchoredPosition = new Vector2(curatinrect.anchoredPosition.x, curatinrect.anchoredPosition.y - i);
             yield return fixedupdate;
@@ -399,7 +402,7 @@ public class LiveController : MonoBehaviour
         {
             Common.subseplayer.PlayOneShot(seclips["resultfault1"]);
         }
-        for (int i = 1;i <= 71; i+=2)
+        for (int i = 1; i <= 71; i += 2)
         {
             curatinrect.anchoredPosition = new Vector2(curatinrect.anchoredPosition.x, curatinrect.anchoredPosition.y + i);
             yield return fixedupdate;
@@ -427,7 +430,7 @@ public class LiveController : MonoBehaviour
         backtext.SetActive(false);
         for (int i = 0; i < 5; i++)
         {
-            yield return execSkillofOnePerson(characterControllers[i],i,i==selectedcharacter);
+            yield return execSkillofOnePerson(characterControllers[i], i, i == selectedcharacter);
         }
         for (int i = 0; i < 5; i++)
         {
@@ -472,13 +475,13 @@ public class LiveController : MonoBehaviour
     bool triggeredPlayer = false;
     void Update()
     {
-        if(!executingSkills)checkPos();
+        if (!executingSkills) checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Live")
         {
             String filename = "TM01";
             int storyid = int.Parse(Common.mainstoryid.Substring(0, 1));
             if (storyid == 4 || storyid == 7) filename = "TM02";
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>(filename);
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + filename);
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

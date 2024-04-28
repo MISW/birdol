@@ -6,19 +6,19 @@ using UnityEngine.UI;
 
 public class Ending : MonoBehaviour
 {
-    #region//public•Ï”
-    [Header("Character‚ÌƒvƒŒƒnƒu")] public GameObject character;
+    #region//publicï¿½Ïï¿½
+    [Header("Characterï¿½Ìƒvï¿½ï¿½ï¿½nï¿½u")] public GameObject character;
     public GameObject canvas;
-    [Header("ŠeƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX")] public float[] characterStatus = new float[15];
-    [Header("ƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX‚ÌÅ‘å’l")]public float maxStatus; //ƒXƒe[ƒ^ƒXãŒÀ’l
-    [Header("¯‚ÌSprite")]public Sprite[] star = new Sprite[5];
-    [Header("ƒAƒNƒeƒBƒuƒXƒLƒ‹ƒQ[ƒW‚ÌSprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
-    [Header("ƒpƒbƒVƒuƒXƒLƒ‹ƒQ[ƒW‚ÌSprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
-    [Header("¯‚Ì”")]public int maxStar; //¯‚Ì”
+    [Header("ï¿½eï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½^ï¿½X")] public float[] characterStatus = new float[15];
+    [Header("ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½ÌÅ‘ï¿½l")] public float maxStatus; //ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ï¿½ï¿½ï¿½l
+    [Header("ï¿½ï¿½ï¿½ï¿½Sprite")] public Sprite[] star = new Sprite[5];
+    [Header("ï¿½Aï¿½Nï¿½eï¿½Bï¿½uï¿½Xï¿½Lï¿½ï¿½ï¿½Qï¿½[ï¿½Wï¿½ï¿½Sprite")] public Sprite[] activeSkillGaugeSprites = new Sprite[6];
+    [Header("ï¿½pï¿½bï¿½Vï¿½uï¿½Xï¿½Lï¿½ï¿½ï¿½Qï¿½[ï¿½Wï¿½ï¿½Sprite")] public Sprite[] passiveSkillGaugeSprites = new Sprite[6];
+    [Header("ï¿½ï¿½ï¿½Ìï¿½")] public int maxStar; //ï¿½ï¿½ï¿½Ìï¿½
     public ProgressModel[] Characters = new ProgressModel[5];
     #endregion
 
-    #region//private•Ï”
+    #region//privateï¿½Ïï¿½
     private int currentCharacterNumber = 0;
     private int currentCharacterVocal = 0;
     private int currentCharacterVisual = 0;
@@ -39,14 +39,14 @@ public class Ending : MonoBehaviour
         FindButton();
         FindGauge();
         CharacterButtonList[0].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
-        CharacterButtonList[0].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
+        CharacterButtonList[0].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         SetCharacter();
         ChangeCurrentCharacterStars(0);
         ChangeCurrentCharacterSKillGauge(0);
     }
 
     /// <summary>
-    /// •\¦‰æ–Ê‚ği”Ô–Ú‚ÌƒLƒƒƒ‰ƒNƒ^[‚ÉØ‚è‘Ö‚¦
+    /// ï¿½\ï¿½ï¿½ï¿½ï¿½Ê‚ï¿½iï¿½Ô–Ú‚ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÉØ‚ï¿½Ö‚ï¿½
     /// </summary>
     /// <param name="i"></param>
     public void ChangeCurrentCharacter(int i)
@@ -58,9 +58,9 @@ public class Ending : MonoBehaviour
         {
             CharacterList[currentCharacterNumber].GetComponent<Image>().enabled = false;
             CharacterButtonList[currentCharacterNumber].transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            CharacterButtonList[currentCharacterNumber].GetComponent<Image>().color = new Color(110.0f/255.0f, 110.0f / 255.0f, 110.0f / 255.0f, 1.0f);
+            CharacterButtonList[currentCharacterNumber].GetComponent<Image>().color = new Color(110.0f / 255.0f, 110.0f / 255.0f, 110.0f / 255.0f, 1.0f);
             CharacterButtonList[i].transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
-            CharacterButtonList[i].GetComponent<Image>().color = new Color(1.0f,1.0f,1.0f,1.0f);
+            CharacterButtonList[i].GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             ChangeCurrentCharacterImage(i);
             ChangeCurrentCharacterStars(i);
             ChangeCurrentCharacterSKillGauge(i);
@@ -69,7 +69,7 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// i”Ô–Ú‚ÌƒLƒƒƒ‰ƒNƒ^[‚É—§‚¿ŠG‚ğ•ÏX
+    /// iï¿½Ô–Ú‚ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½É—ï¿½ï¿½ï¿½ï¿½Gï¿½ï¿½ÏX
     /// </summary>
     /// <param name="i"></param>
     private void ChangeCurrentCharacterImage(int i)
@@ -78,15 +78,15 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// i”Ô–Ú‚ÌƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX‚É‡‚í‚¹‚Ä¯‚Ì”‚ğ•ÏX
+    /// iï¿½Ô–Ú‚ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½Éï¿½ï¿½í‚¹ï¿½Äï¿½ï¿½Ìï¿½ï¿½ï¿½ÏX
     /// </summary>
     /// <param name="i"></param>
     private void ChangeCurrentCharacterStars(int i)
     {
-        //ŠeƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX‚ğ“Ç‚İ‚İAƒXƒe[ƒ^ƒX‚ÌÅ‘å’l‚ğ’´‚¦‚Ä‚¢‚½ê‡‚Í‚»‚Ì’l‚ğƒXƒe[ƒ^ƒX‚ÌÅ‘å’l‚É•ÏX
-        currentCharacterVocal = (int)Mathf.Min(Common.progresses[i].Vocal,maxStatus);
-        currentCharacterVisual = (int)Mathf.Min(Common.progresses[i].Visual,maxStatus);
-        currentCharacterDance = (int)Mathf.Min(Common.progresses[i].Dance,maxStatus);
+        //ï¿½eï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½ï¿½Ç‚İï¿½ï¿½İAï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ÌÅ‘ï¿½lï¿½ğ’´‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Í‚ï¿½ï¿½Ì’lï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ÌÅ‘ï¿½lï¿½É•ÏX
+        currentCharacterVocal = (int)Mathf.Min(Common.progresses[i].Vocal, maxStatus);
+        currentCharacterVisual = (int)Mathf.Min(Common.progresses[i].Visual, maxStatus);
+        currentCharacterDance = (int)Mathf.Min(Common.progresses[i].Dance, maxStatus);
 
         currentCharacterVocal = (int)(((float)currentCharacterVocal / (float)maxStatus) * 50.0f);
         currentCharacterVisual = (int)(((float)currentCharacterVisual / (float)maxStatus) * 50.0f);
@@ -99,7 +99,7 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// i”Ô–Ú‚ÌƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒX‚É‡‚í‚¹‚ÄƒXƒLƒ‹ƒQ[ƒW‚ğ•ÏX
+    /// iï¿½Ô–Ú‚ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½Éï¿½ï¿½í‚¹ï¿½ÄƒXï¿½Lï¿½ï¿½ï¿½Qï¿½[ï¿½Wï¿½ï¿½ÏX
     /// </summary>
     /// <param name="i"></param>
     private void ChangeCurrentCharacterSKillGauge(int i)
@@ -109,7 +109,7 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeSongStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eSongStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetSongStar(int status)
@@ -117,7 +117,7 @@ public class Ending : MonoBehaviour
 #if UNITY_EDITOR
         //Debug.Log("Vocal" + status);
 #endif
-        for (int i=0;i<status/5;i++)
+        for (int i = 0; i < status / 5; i++)
         {
             VocalStarImage[i].enabled = true;
             VocalStarImage[i].sprite = star[4];
@@ -131,17 +131,17 @@ public class Ending : MonoBehaviour
             else
             {
                 VocalStarImage[status / 5].enabled = true;
-                VocalStarImage[status / 5].sprite = star[(status % 5)-1];
+                VocalStarImage[status / 5].sprite = star[(status % 5) - 1];
             }
         }
-        for(int i=status / 5 + 1;i<maxStar;i++)
+        for (int i = status / 5 + 1; i < maxStar; i++)
         {
             VocalStarImage[i].enabled = false;
         }
     }
 
     /// <summary>
-    /// ŠeVisualStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eVisualStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetVisualStar(int status)
@@ -163,7 +163,7 @@ public class Ending : MonoBehaviour
             else
             {
                 VisualStarImage[status / 5].enabled = true;
-                VisualStarImage[status / 5].sprite = star[(status % 5)-1];
+                VisualStarImage[status / 5].sprite = star[(status % 5) - 1];
             }
         }
         for (int i = status / 5 + 1; i < maxStar; i++)
@@ -173,7 +173,7 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeDanceStar‚ÌSprite‚ğ—^‚¦‚ç‚ê‚½status‚É‡‚í‚¹‚Ä•ÏX
+    /// ï¿½eDanceStarï¿½ï¿½Spriteï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ê‚½statusï¿½Éï¿½ï¿½í‚¹ï¿½Ä•ÏX
     /// </summary>
     /// <param name="status"></param>
     private void SetDanceStar(int status)
@@ -195,7 +195,7 @@ public class Ending : MonoBehaviour
             else
             {
                 DanceStarImage[status / 5].enabled = true;
-                DanceStarImage[status / 5].sprite = star[(status % 5)-1];
+                DanceStarImage[status / 5].sprite = star[(status % 5) - 1];
             }
         }
         for (int i = status / 5 + 1; i < maxStar; i++)
@@ -205,11 +205,11 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeStar‚ÌImageƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•ß‚Ü‚¦‚é
+    /// ï¿½eStarï¿½ï¿½Imageï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½ß‚Ü‚ï¿½ï¿½ï¿½
     /// </summary>
     private void FindStar()
     {
-        for(int i=1;i<=maxStar;i++)
+        for (int i = 1; i <= maxStar; i++)
         {
             Star = GameObject.Find("VocalStar" + i);
             VocalStarImage.Add(Star.GetComponent<Image>());
@@ -221,18 +221,18 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeButton‚ğ•ß‚Ü‚¦‚é
+    /// ï¿½eButtonï¿½ï¿½ß‚Ü‚ï¿½ï¿½ï¿½
     /// </summary>
     private void FindButton()
     {
-        for(int i=1;i<=5;i++)
+        for (int i = 1; i <= 5; i++)
         {
             CharacterButtonList.Add(GameObject.Find("CharacterButton" + i));
         }
     }
 
     /// <summary>
-    /// ŠeGauge‚ğ•ß‚Ü‚¦‚é
+    /// ï¿½eGaugeï¿½ï¿½ß‚Ü‚ï¿½ï¿½ï¿½
     /// </summary>
     private void FindGauge()
     {
@@ -241,30 +241,21 @@ public class Ending : MonoBehaviour
     }
 
     /// <summary>
-    /// ‚»‚ê‚¼‚ê‚ÌƒLƒƒƒ‰ƒNƒ^[‰æ‘œ‚ğMainCharacterID‚©‚çæ“¾
+    /// ï¿½ï¿½ï¿½ê‚¼ï¿½ï¿½ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½æ‘œï¿½ï¿½MainCharacterIDï¿½ï¿½ï¿½ï¿½æ“¾
     /// </summary>
     private void SetCharacter()
     {
         var parent = canvas.transform;
-        for(int i=0;i<5;i++)
+        for (int i = 0; i < 5; i++)
         {
             GameObject C = Instantiate(character, parent);
             CharacterList.Add(C);
             CharacterList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            CharacterList[i].GetComponent<Image>().sprite = Common.bundle.LoadAsset<Sprite>(Common.progresses[i].MainCharacterId.ToString());
+            CharacterList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/standimage/" + Common.progresses[i].MainCharacterId);
             CharacterButtonList[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/Live/Gif/" + Common.progresses[i].MainCharacterId + "/Ch-0");
             CharacterList[i].GetComponent<Image>().enabled = false;
             if (i == 0) CharacterList[i].GetComponent<Image>().enabled = true;
         }
-    }
-
-    IEnumerator ReloadHome()
-    {
-        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-        getCompletedWebClient.target = "home";
-        yield return getCompletedWebClient.Send();
-        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
-        yield return getStoryWebClient.Send();
     }
 
     public void ResetStory()
@@ -276,7 +267,8 @@ public class Ending : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         Common.mainstoryid = null;
-        StartCoroutine(ReloadHome());
+        ProgressService.FetchStory();
+        ProgressService.FetchCompletedProgressAndUpdateGameStatus("home");
     }
 
     bool triggerdPlayer = false;
@@ -284,7 +276,7 @@ public class Ending : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Ending")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG09");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG09");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

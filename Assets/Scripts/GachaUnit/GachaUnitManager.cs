@@ -29,11 +29,11 @@ public class GachaUnitManager : MonoBehaviour
     public static int[] initid;
     public static List<DendouModel> teachers = new List<DendouModel>();
 
-    public CharacterModel[] characters=new CharacterModel[10];
+    public CharacterModel[] characters = new CharacterModel[10];
     UnitInf[] unitInf = new UnitInf[5];
     bool[] selected = new bool[10];
     public GameObject[] charcterIcons;
-    List<GameObject> teacherObjects=new List<GameObject>();
+    List<GameObject> teacherObjects = new List<GameObject>();
 
     string currentdialog = "";
     int currentindex = -1;
@@ -47,11 +47,12 @@ public class GachaUnitManager : MonoBehaviour
     void Start()
     {
         mainPage.transform.SetSiblingIndex(2);
-        for (int i=0;i<5;i++)
+        for (int i = 0; i < 5; i++)
         {
             unitInf[i] = new UnitInf();
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             characters[i] = Common.characters[initid[i]];
             charcterIcons[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + characters[i].id);
         }
@@ -93,7 +94,7 @@ public class GachaUnitManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Transform param = characterPage.transform.GetChild(4);
         currentdialog = "maincharacter";
-        for (int i=0;i<10;i++)
+        for (int i = 0; i < 10; i++)
         {
             if (selected[i])
             {
@@ -116,7 +117,7 @@ public class GachaUnitManager : MonoBehaviour
                 charcterIcons[i].transform.GetChild(0).gameObject.SetActive(false);
             }
         }
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             param.GetChild(i).GetChild(1).gameObject.SetActive(false);
         }
@@ -189,12 +190,12 @@ public class GachaUnitManager : MonoBehaviour
                 transform.GetChild(3).GetChild(0).gameObject.GetComponent<Text>().text += characters[index].passivedescription;//Description
             }
             //Params
-            property.sprite = Resources.Load<Sprite>("Images/UI/"+ characters[index].bestskill);
+            property.sprite = Resources.Load<Sprite>("Images/UI/" + characters[index].bestskill);
             transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].vocal.ToString();
             transform.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].visual.ToString();
             transform.GetChild(4).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = characters[index].dance.ToString();
         }
-        
+
     }
 
     public void SelectCharacter(int index)
@@ -202,7 +203,7 @@ public class GachaUnitManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         if ((currentdialog == "maincharacter") && unitInf[currentindex].mainselected == index || (currentdialog == "supportcharacter") && unitInf[currentindex].subselected == index || !selected[index])
         {
-            if(currentcharacter != -1)
+            if (currentcharacter != -1)
             {
                 charcterIcons[currentcharacter].transform.GetChild(0).gameObject.SetActive(false);
             }
@@ -228,7 +229,7 @@ public class GachaUnitManager : MonoBehaviour
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         currentdialog = "teacher";
         teacherTeamName.GetComponent<InputField>().text = (currentteacher != -1) ? teachers[currentteacher].Name : "";
-        if(currentteacher >= 0)teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(true);
+        if (currentteacher >= 0) teacherObjects[currentteacher].transform.GetChild(0).gameObject.SetActive(true);
         teacherPage.transform.SetSiblingIndex(2);
     }
 
@@ -238,7 +239,7 @@ public class GachaUnitManager : MonoBehaviour
         Transform pairList = pairLists[currentindex].transform;
         if (currentdialog == "maincharacter" && currentcharacter != -1)
         {
-            if(unitInf[currentindex].mainselected!=-1)selected[unitInf[currentindex].mainselected] = false;
+            if (unitInf[currentindex].mainselected != -1) selected[unitInf[currentindex].mainselected] = false;
             unitInf[currentindex].mainselected = currentcharacter;
             unitInf[currentindex].unitname = characterTeamName.GetComponent<InputField>().text;
             selected[currentcharacter] = true;
@@ -248,7 +249,7 @@ public class GachaUnitManager : MonoBehaviour
             pairList.GetChild(3).GetChild(1).GetChild(0).gameObject.GetComponent<Text>().text = characters[currentcharacter].visual.ToString();
             pairList.GetChild(3).GetChild(2).GetChild(0).gameObject.GetComponent<Text>().text = characters[currentcharacter].dance.ToString();
         }
-        else if (currentdialog == "supportcharacter"&& currentcharacter!=-1)
+        else if (currentdialog == "supportcharacter" && currentcharacter != -1)
         {
             if (unitInf[currentindex].subselected != -1) selected[unitInf[currentindex].subselected] = false;
             unitInf[currentindex].subselected = currentcharacter;
@@ -397,7 +398,7 @@ public class GachaUnitManager : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
-        webClient.SetData(Common.progresses,new DendouModel[]{Common.teacher});
+        webClient.SetData(Common.progresses, new DendouModel[] { Common.teacher });
         StartCoroutine(webClient.Send());
     }
 
@@ -406,7 +407,7 @@ public class GachaUnitManager : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "GachaUnit")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG01");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }

@@ -44,7 +44,7 @@ public class HomeUtil : MonoBehaviour
         else
         {
             Common.bgmplayer.mute = false;
-            Common.bgmplayer.volume = Common.BGMVol/Common.bgmmaxvol;
+            Common.bgmplayer.volume = Common.BGMVol / Common.bgmmaxvol;
         }
     }
 
@@ -60,8 +60,8 @@ public class HomeUtil : MonoBehaviour
         {
             Common.seplayer.mute = false;
             Common.subseplayer.mute = false;
-            Common.seplayer.volume = Common.SEVol/Common.semaxvol;
-            Common.subseplayer.volume = Common.SEVol/Common.semaxvol;
+            Common.seplayer.volume = Common.SEVol / Common.semaxvol;
+            Common.subseplayer.volume = Common.SEVol / Common.semaxvol;
         }
     }
     private void Start()
@@ -84,7 +84,9 @@ public class HomeUtil : MonoBehaviour
         volumeSlider.value = Common.BGMVol / Common.bgmmaxvol;
         SEvolumeSlider.value = Common.SEVol / Common.semaxvol;
         standingChanger();
-        if (Common.mainstoryid != null && Common.mainstoryid != "opening" && Common.mainstoryid != "0")
+        Debug.Log("---------");
+        Debug.Log(Common.MainStoryId);
+        if (Common.MainStoryId != null && Common.MainStoryId != "" && Common.MainStoryId != "opening" && Common.MainStoryId != "0")
         {
             Ikusei.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/UI/button_ikuseirestart");
         }
@@ -96,7 +98,7 @@ public class HomeUtil : MonoBehaviour
     {
         if (!triggerdPlayer && SceneManager.GetActiveScene().name == "Home")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG01");
+            Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG01");
             Common.bgmplayer.Play();
             triggerdPlayer = true;
         }
@@ -110,10 +112,7 @@ public class HomeUtil : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-        getCompletedWebClient.target = "freeselect";
-        StartCoroutine(getCompletedWebClient.Send());
-
+        ProgressService.FetchCompletedProgressAndUpdateGameStatus("freeselect");
     }
 
     public void onButtonPressedGallery()
@@ -127,9 +126,7 @@ public class HomeUtil : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        GetGalleryWebClient webClient = new GetGalleryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/gallery?session_id=" + Common.SessionID);
-        StartCoroutine(webClient.Send());
-
+        ProgressService.FetchCompletedProgressAndUpdateGameStatus("gallery");
     }
 
     public void onButtonPressedDendou()
@@ -144,9 +141,7 @@ public class HomeUtil : MonoBehaviour
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
         CompletedController.CompletedCharacters.Clear();
-        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-        getCompletedWebClient.target = "completed";
-        StartCoroutine(getCompletedWebClient.Send());
+        ProgressService.FetchCompletedProgressAndUpdateGameStatus("completed");
     }
 
     private IEnumerator NewStory()
@@ -166,9 +161,9 @@ public class HomeUtil : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        if (Common.mainstoryid == null || Common.mainstoryid == "opening" || Common.mainstoryid == "0")
+        if (Common.MainStoryId == null || Common.MainStoryId == "" || Common.MainStoryId == "opening" || Common.MainStoryId == "0")
         {
-            Common.mainstoryid = "opening";
+            Common.MainStoryId = "opening";
             StartCoroutine(NewStory());
         }
         else
@@ -253,7 +248,7 @@ public class HomeUtil : MonoBehaviour
     {
         chara_id = Common.HomeStandingId;
         //standing select
-        CharacterImageSplite.sprite = Common.bundle.LoadAsset<Sprite>(chara_id.ToString());
+        CharacterImageSplite.sprite = Resources.Load<Sprite>("Images/standimage/" + chara_id);
         chosencharacter.text = "選択中　：　" + homeCharacters.Characters[chara_id].name;
     }
 

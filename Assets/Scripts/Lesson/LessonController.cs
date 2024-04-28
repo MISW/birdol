@@ -31,14 +31,17 @@ public class LessonController : MonoBehaviour
         visual = 0;
         vocal = 0;
         bool active = false;
-        GameObject[] objs= new GameObject[6];
+        GameObject[] objs = new GameObject[6];
         for (int i = 0; i < 6; i++) objs[i] = LiveCharacter[i];
-        Array.Sort(objs, delegate (GameObject a1, GameObject a2) { return -1*a1.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y
-            .CompareTo(a2.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y); });
-        int depth = 0;
-        for (int i=0;i<6;i++)
+        Array.Sort(objs, delegate (GameObject a1, GameObject a2)
         {
-            if (objs[i].name=="TeacherCharacter") continue;
+            return -1 * a1.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y
+            .CompareTo(a2.transform.parent.gameObject.GetComponent<RectTransform>().localPosition.y);
+        });
+        int depth = 0;
+        for (int i = 0; i < 6; i++)
+        {
+            if (objs[i].name == "TeacherCharacter") continue;
             string area = objs[i].GetComponent<LessonCharacterController>().area;
             if (area == "dance") dance++;
             else if (area == "visual") visual++;
@@ -46,7 +49,7 @@ public class LessonController : MonoBehaviour
             depth++;
             objs[i].transform.parent.gameObject.transform.SetSiblingIndex(i);
         }
-        if ((dance <= 2 && visual <= 2 && vocal <= 2)&&!active)
+        if ((dance <= 2 && visual <= 2 && vocal <= 2) && !active)
         {
             startbutton.SetActive(true);
             Alert.SetActive(false);
@@ -76,9 +79,9 @@ public class LessonController : MonoBehaviour
             LessonCharacterController objk = objs[i].GetComponent<LessonCharacterController>();
             objk.id = i;
             objk.name.text = Common.progresses[i].Name;
-            for (int j=0;j<6;j++)
+            for (int j = 0; j < 6; j++)
             {
-                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/"+mainCharacter.id+"/ch-"+j));
+                objk.gifsprite.Add(Resources.Load<Sprite>("Images/Live/Gif/" + mainCharacter.id + "/ch-" + j));
             }
             objk.initImage();
             listchilds[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/charactericon/" + Common.progresses[i].MainCharacterId);
@@ -99,13 +102,13 @@ public class LessonController : MonoBehaviour
         backlight.transform.SetSiblingIndex(114514);
     }
 
-    
 
-    private IEnumerator execSkillofOnePerson(LessonCharacterController characterObj,int index)
+
+    private IEnumerator execSkillofOnePerson(LessonCharacterController characterObj, int index)
     {
         characterObj.executingSkill = true;
         int score = 0;
-        if(characterObj.area==teacher.area)score = RandomArray.GetRandom(new int[] { 0,1,1,1,2,2,2,3,3,3 });
+        if (characterObj.area == teacher.area) score = RandomArray.GetRandom(new int[] { 0, 1, 1, 1, 2, 2, 2, 3, 3, 3 });
         else score = RandomArray.GetRandom(new int[] { 0, 1, 2 });
         if (characterObj.area == "visual") Common.progresses[index].Visual = (Common.progresses[index].Visual + score <= 99) ? Common.progresses[index].Visual + score : 99;
         else if (characterObj.area == "vocal") Common.progresses[index].Vocal = (Common.progresses[index].Vocal + score <= 99) ? Common.progresses[index].Vocal + score : 99;
@@ -120,7 +123,7 @@ public class LessonController : MonoBehaviour
         GameObject[] objs = LiveCharacter;
         for (int i = 0; i < 5; i++)
         {
-            yield return execSkillofOnePerson(objs[i].GetComponent<LessonCharacterController>(),i);
+            yield return execSkillofOnePerson(objs[i].GetComponent<LessonCharacterController>(), i);
         }
         Common.lessonCount--;
         remainingText.text = Common.lessonCount.ToString();
@@ -133,7 +136,7 @@ public class LessonController : MonoBehaviour
         {
             storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
             yield return storyWebClient.Send();
-            if(RandomArray.Probability(0.3f * 100.0f) && Common.remainingSubstory.Count > 0)
+            if (RandomArray.Probability(0.3f * 100.0f) && Common.remainingSubstory.Count > 0)
             {
                 Common.loadingCanvas.SetActive(true);
                 Common.loadingGif.GetComponent<GifPlayer>().index = 0;
@@ -179,10 +182,10 @@ public class LessonController : MonoBehaviour
     bool triggeredPlayer = false;
     void Update()
     {
-        if(!executingSkills)checkPos();
+        if (!executingSkills) checkPos();
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Lesson")
         {
-            Common.bgmplayer.clip = Common.bundle.LoadAsset<AudioClip>("BG06");
+            Common.bgmplayer.clip = Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/BG06");
             Common.bgmplayer.Play();
             triggeredPlayer = true;
         }

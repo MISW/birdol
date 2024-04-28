@@ -7,7 +7,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
+public class CharacterController : MonoBehaviour, IDragHandler, IBeginDragHandler, IPointerClickHandler
+{
     public bool completedActiveSkill = false;
     public bool PassiveSkillenabled = false;
     public bool executingSkill = false;
@@ -38,7 +39,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         Common.subseplayer.PlayOneShot(seclips["haneru1"]);
         for (int i = 10; i >= -10; i--)
         {
-            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x,rect.anchoredPosition.y+i);
+            rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + i);
             yield return fixedupdate;
         }
     }
@@ -67,7 +68,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         rt = transform.parent.gameObject.GetComponent<RectTransform>();
         Image standing = transform.parent.gameObject.GetComponent<Image>();
         standing.color = new Color(255f, 255f, 255f);
-        
+
     }
 
     //0:Visual 1:Vocal 2:Dance
@@ -83,7 +84,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             para.text = ((int)characterInf.Visual).ToString();
             para.color = new Color(255f / 255f, 218f / 255f, 92f / 255f);
         }
-        else if(area == "vocal")
+        else if (area == "vocal")
         {
             frame.sprite = box1[1];
             para.text = ((int)characterInf.Vocal).ToString();
@@ -96,7 +97,7 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             para.color = new Color(84f / 255f, 198f / 255f, 255f / 255f);
         }
     }
-    
+
     public void setArea()
     {
         if (executingSkill)
@@ -104,18 +105,18 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
             //setWhite();
             return;
         }
-        
+
         if (rt.localPosition.x > 100)
         {
             standing.sprite = foot[2];
             area = "dance";
-            
+
         }
         else if (rt.localPosition.x < -100)
         {
             standing.sprite = foot[1];
             area = "vocal";
-            
+
         }
         else
         {
@@ -174,10 +175,10 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
         light.GetComponent<Image>().alphaHitTestMinimumThreshold = 0.5f;
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"tsukamu1", Common.bundle.LoadAsset<AudioClip>("tsukamu1") },
-            {"orosu1", Common.bundle.LoadAsset<AudioClip>("orosu1") },
-            {"haneru1", Common.bundle.LoadAsset<AudioClip>("haneru1") },
-            {"skillkettei1", Common.bundle.LoadAsset<AudioClip>("skillkettei1") },
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
         };
     }
 
@@ -189,8 +190,8 @@ public class CharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LiveController.executingSkills && eventData.position.y<=Screen.height/2.0f+180.0f)
-        {// ƒhƒ‰ƒbƒO’†‚ÍˆÊ’u‚ðXV‚·‚é
+        if (!LiveController.executingSkills && eventData.position.y <= Screen.height / 2.0f + 180.0f)
+        {// ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ÍˆÊ’uï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
             //parenttransform.y -= 80;

@@ -59,11 +59,6 @@ public abstract class GameWebClient : WebClient
                 TryRefreshToken = false;
                 base.Refresh();
                 base.Send();
-                GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-                getCompletedWebClient.target = "home";
-                yield return getCompletedWebClient.Send();
-                GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
-                yield return getStoryWebClient.Send();
 
             }
             else //アクセストークンのリフレッシュ失敗。アカウント作成(orアカウント連携)が必要 
@@ -74,7 +69,8 @@ public abstract class GameWebClient : WebClient
 #if UNITY_EDITOR
                     Debug.LogError("認証に失敗したため、タイトルシーンに遷移します。");
 #endif
-                    NetworkErrorDialogController.OpenConfirmDialog(() => {
+                    NetworkErrorDialogController.OpenConfirmDialog(() =>
+                    {
                         Common.loadingCanvas.SetActive(true);
                         Common.loadingGif.GetComponent<GifPlayer>().index = 0;
                         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
@@ -118,28 +114,28 @@ public abstract class GameWebClient : WebClient
         {
             IsDoCheckIfContinueOrQuitConnection = false;
 
-            while (!string.IsNullOrEmpty(base.error) ) //サーバと通信できないエラーが続いている間繰り返す
+            while (!string.IsNullOrEmpty(base.error)) //サーバと通信できないエラーが続いている間繰り返す
             {
                 /*
                 if (base.error == timeoutError) //タイムアウトエラー
                 {
                 */
-                    NetworkErrorDialogController.OpenTimeoutDialog(this); //再送か否かの選択肢を表示する
-                    yield return new WaitWhile(() => { return continueConnectionChoice == ContinueConnectionChoice.None; }); //タイムアウトを受けて、終了するか、の選択待ち
+                NetworkErrorDialogController.OpenTimeoutDialog(this); //再送か否かの選択肢を表示する
+                yield return new WaitWhile(() => { return continueConnectionChoice == ContinueConnectionChoice.None; }); //タイムアウトを受けて、終了するか、の選択待ち
 
-                    if (continueConnectionChoice == ContinueConnectionChoice.Continue) //通信再送
-                    {
-                        base.isInProgress = false;
-                        yield return GlobalCoroutine.StartCoroutineG(this.Send()); //再送し終了待ち
-                    }
-                    else if (continueConnectionChoice == ContinueConnectionChoice.Quit)
-                    {
-                        base.error = null;
-                        break;
-                    }
+                if (continueConnectionChoice == ContinueConnectionChoice.Continue) //通信再送
+                {
+                    base.isInProgress = false;
+                    yield return GlobalCoroutine.StartCoroutineG(this.Send()); //再送し終了待ち
+                }
+                else if (continueConnectionChoice == ContinueConnectionChoice.Quit)
+                {
+                    base.error = null;
+                    break;
+                }
 
-                    continueConnectionChoice = ContinueConnectionChoice.None;
-                    yield return new WaitForFixedUpdate();
+                continueConnectionChoice = ContinueConnectionChoice.None;
+                yield return new WaitForFixedUpdate();
 
                 /*
                 }
@@ -154,7 +150,7 @@ public abstract class GameWebClient : WebClient
                 */
             }
         }
-        
+
         yield break;
     }
 
@@ -181,10 +177,10 @@ public abstract class GameWebClient : WebClient
         string timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
 
         string body = "";
-        if (www.uploadHandler!=null) body = Encoding.UTF8.GetString(www.uploadHandler.data);
+        if (www.uploadHandler != null) body = Encoding.UTF8.GetString(www.uploadHandler.data);
         string signature = CalcSignature(timeStamp, body, privateKey);
         www.SetRequestHeader("Authorization", $"Bearer {accessToken}");
-        www.SetRequestHeader("X-Birdol-Signature", signature );
+        www.SetRequestHeader("X-Birdol-Signature", signature);
         www.SetRequestHeader("X-birdol-TimeStamp", timeStamp);
         www.SetRequestHeader("DeviceID", uuid);
 #if UNITY_EDITOR
@@ -217,20 +213,20 @@ public abstract class GameWebClient : WebClient
             //Debug.Log($"Signature_raw: {signature_raw} ");
 #endif
             RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
-            csp.FromXmlString( Common.StrFromBase64Str(privateKey) );
+            csp.FromXmlString(Common.StrFromBase64Str(privateKey));
 
             byte[] signature_b = csp.SignData(Encoding.UTF8.GetBytes(signature_raw), HashAlgorithmName.SHA512, RSASignaturePadding.Pkcs1);
             //signature = Convert.ToBase64String(signature_b);
             signature = BitConverter.ToString(signature_b).Replace("-", "").ToLower();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
 #if UNITY_EDITOR
             Debug.Log($"Signatureの作成に失敗しました。 {e}");
 #endif
             return "";
         }
-        
+
 
         return signature;
     }

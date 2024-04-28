@@ -38,21 +38,23 @@ public class OverlayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         // キャラ画面をクリックすると図鑑画面に戻る
-        if (Input.GetMouseButton(0)) {
+        if (Input.GetMouseButton(0))
+        {
             Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
             this.gameObject.SetActive(false);
         }
     }
 
     private const string standImagePath = "Images/standimage/";
-    public void OpenOverlay(CharacterModel model) {
+    public void OpenOverlay(CharacterModel model)
+    {
         // オーバーレイを開いたときに発火
         // 渡されたキャラクターのデータに書き換える
 #if UNITY_EDITOR
@@ -60,13 +62,14 @@ public class OverlayManager : MonoBehaviour
 #endif
         Common.subseplayer.PlayOneShot(Common.seclips["ok1"]);
         Image im = standImageObject.GetComponent<Image>();
-        Sprite sp = Common.bundle.LoadAsset<Sprite>(model.id.ToString());
+        Sprite sp = Resources.Load<Sprite>(standImagePath + model.id);
 
         deviceRatio = Screen.currentResolution.height;
         deviceRatio /= Screen.currentResolution.width;
 
-        
-        if (sp != null) {
+
+        if (sp != null)
+        {
             im.sprite = sp;
 
             /*
@@ -116,13 +119,15 @@ public class OverlayManager : MonoBehaviour
 
     private const float baseImageScale = 0.88f;
 
-    private void FixImagePos(Transform tr, int id) {
+    private void FixImagePos(Transform tr, int id)
+    {
         Vector3 currentPos = new Vector3(-80, 0, 0);
 
         Vector3 currentScale = new Vector3(1.0f, 1.0f, 1.0f);
         currentScale *= baseImageScale;
 
-        switch (id) {
+        switch (id)
+        {
             case 0:
             case 4:
                 currentScale *= 1.1f;

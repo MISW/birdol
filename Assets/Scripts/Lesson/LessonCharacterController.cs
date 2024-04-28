@@ -8,7 +8,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragHandler,IPointerClickHandler { 
+public class LessonCharacterController : MonoBehaviour, IDragHandler, IBeginDragHandler, IPointerClickHandler
+{
     public bool completedActiveSkill = false;
     public bool completedPassiveSkill = false;
     public bool executingSkill = false;
@@ -87,13 +88,13 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
         {
             standing.sprite = foot[2];
             newarea = "dance";
-            
+
         }
         else if (rt.localPosition.x < -100)
         {
             standing.sprite = foot[1];
             newarea = "vocal";
-            
+
         }
         else
         {
@@ -101,7 +102,7 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
             newarea = "visual";
         }
         area = newarea;
-        if(oldarea!=newarea)setParams();
+        if (oldarea != newarea) setParams();
     }
 
     private IEnumerator updateImg()
@@ -136,23 +137,23 @@ public class LessonCharacterController : MonoBehaviour, IDragHandler,IBeginDragH
         Application.targetFrameRate = 60;
         seclips = new Dictionary<string, AudioClip>()
         {
-            {"tsukamu1", Common.bundle.LoadAsset<AudioClip>("tsukamu1") },
-            {"orosu1", Common.bundle.LoadAsset<AudioClip>("orosu1") },
-            {"haneru1", Common.bundle.LoadAsset<AudioClip>("haneru1") },
-            {"skillkettei1", Common.bundle.LoadAsset<AudioClip>("skillkettei1") },
+            {"tsukamu1", (AudioClip)Resources.Load("SE/live/tsukamu1") },
+            {"orosu1", (AudioClip)Resources.Load("SE/live/orosu1") },
+            {"haneru1", (AudioClip)Resources.Load("SE/live/haneru1") },
+            {"skillkettei1", (AudioClip)Resources.Load("SE/live/skillkettei1") },
         };
     }
 
 
     void Update()
     {
-        if(para!=null)setArea();
+        if (para != null) setArea();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!LessonController.executingSkills &&  eventData.position.y<=Screen.height/2.0f+289.0f)
-        {// ƒhƒ‰ƒbƒO’†‚ÍˆÊ’u‚ðXV‚·‚é
+        if (!LessonController.executingSkills && eventData.position.y <= Screen.height / 2.0f + 289.0f)
+        {// ï¿½hï¿½ï¿½ï¿½bï¿½Oï¿½ï¿½ï¿½ÍˆÊ’uï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
             Vector2 parenttransform = eventData.position;
             parenttransform.y -= 150;
             //parenttransform.y -= 80;

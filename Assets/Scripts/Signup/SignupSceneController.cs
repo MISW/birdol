@@ -33,7 +33,8 @@ public class SignupSceneController : SceneVisor
     private void SetUpButtonEvent()
     {
         //Signup
-        signupButton.onClick.AddListener(() => {
+        signupButton.onClick.AddListener(() =>
+        {
             OnSignupButtonClicked();
         });
         //username 中の文字としてふさわしくなさそうなものを削除する。
@@ -64,7 +65,7 @@ public class SignupSceneController : SceneVisor
         signupWebClient.SetData(username, rsaKeyPair.publicKey, _uuid, rsaKeyPair.privateKey);
 
         //データチェックをサーバへ送信する前に行う。
-        if (signupWebClient.CheckRequestData()==false)
+        if (signupWebClient.CheckRequestData() == false)
         {
             AlertText.text = signupWebClient.message;
 #if UNITY_EDITOR
@@ -128,18 +129,6 @@ public class SignupSceneController : SceneVisor
         yield break;
     }
 
-    IEnumerator Login()
-    {
-        TokenAuthorizeWebClient tokenAuthorizeWebClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
-        yield return tokenAuthorizeWebClient.Send();
-        GetCompletedWebClient getCompletedWebClient = new GetCompletedWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/complete?session_id=" + Common.SessionID);
-        getCompletedWebClient.target = "home";
-        yield return getCompletedWebClient.Send();
-        GetStoryWebClient getStoryWebClient = new GetStoryWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/story?session_id=" + Common.SessionID);
-        yield return getStoryWebClient.Send();
-
-    }
-
     /// <summary>
     /// アカウント登録に成功したときの動作。
     /// </summary>
@@ -150,14 +139,13 @@ public class SignupSceneController : SceneVisor
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        TokenAuthorizeWebClient webClient = new TokenAuthorizeWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/auth");
-        StartCoroutine(Login());
     }
 
     /// <summary>
     /// Generate UUID
     /// </summary>
-    private string GenerateGUID(){
+    private string GenerateGUID()
+    {
         System.Guid guid = System.Guid.NewGuid();
         return guid.ToString();
     }
