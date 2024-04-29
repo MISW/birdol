@@ -10,7 +10,19 @@ public class LinkOrSetAccountPrefabController : MonoBehaviour
 {
     [SerializeField] public GameObject DisplayRootUI;
 
-    private bool isAnimating=false;
+    private bool isAnimating = false;
+
+    public void ResetGame()
+    {
+        PlayerPrefs.DeleteAll();
+        DatabaseManager.ClearDB();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;//ゲームプレイ終了
+#else
+        Application.Quit();//ゲームプレイ終了
+#endif
+
+    }
 
     public void Open()
     {

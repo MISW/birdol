@@ -128,14 +128,10 @@ public class LessonController : MonoBehaviour
         Common.lessonCount--;
         remainingText.text = Common.lessonCount.ToString();
         teacher.updatePos();
-        UpdateCharacterWebClient characterWebClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
-        characterWebClient.SetData();
-        UpdateMainStoryWebClient storyWebClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
-        yield return characterWebClient.Send();
+        ProgressService.UpdateProgress(Common.progresses);
         if (Common.lessonCount > 0)
         {
-            storyWebClient.SetData(Common.mainstoryid, Common.lessonCount);
-            yield return storyWebClient.Send();
+            ProgressService.UpdateStory(Common.MainStoryId, Common.lessonCount, 0);
             if (RandomArray.Probability(0.3f * 100.0f) && Common.remainingSubstory.Count > 0)
             {
                 Common.loadingCanvas.SetActive(true);
@@ -155,11 +151,9 @@ public class LessonController : MonoBehaviour
             Common.loadingGif.GetComponent<GifPlayer>().StartGif();
             Common.bgmplayer.Stop();
             Common.bgmplayer.time = 0;
-            Common.mainstoryid = Common.mainstoryid.Replace("a", "b");
-            storyWebClient.SetData(Common.mainstoryid, 5);
+            var newMainStoryId = Common.MainStoryId.Replace("a", "b");
             StoryController.isSubStory = false;
-            storyWebClient.sceneid = (int)gamestate.Story;
-            yield return storyWebClient.Send();
+            ProgressService.UpdateStory(newMainStoryId, 5, (int)gamestate.Story);
         }
         executingSkills = false;
     }

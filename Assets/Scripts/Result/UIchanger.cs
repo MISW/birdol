@@ -74,20 +74,14 @@ public class UIchanger : MonoBehaviour
         Common.bgmplayer.time = 0;
         if (Judge_Image_num == 0)
         {   //Success
-            Common.mainstoryid = Common.mainstoryid.Replace("b", "c");
-            UpdateMainStoryWebClient webClient = new UpdateMainStoryWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/story");
-            Common.lessonCount = 5;
-            webClient.SetData(Common.mainstoryid, Common.lessonCount);
-            webClient.sceneid = (int)gamestate.Story;
-            StartCoroutine(webClient.Send());
+            var newMainStoryId = Common.MainStoryId.Replace("b", "c");
+            ProgressService.UpdateStory(newMainStoryId, 5, (int)gamestate.Story);
         }
         else
         {
             //Failed
-            FinishProgressWebClient webClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
-            webClient.SetData();
-            webClient.sceneid = (int)gamestate.Failed;
-            StartCoroutine(webClient.Send());
+            ProgressService.EndProgress();
+            ProgressService.EndStory((int)gamestate.Failed);
         }
     }
 

@@ -62,6 +62,8 @@ public class StoryController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Story Name:");
+            Debug.Log(Common.MainStoryId);
             datas = Resources.Load<TextAsset>("story/" + Common.MainStoryId).ToString().Split(
             new[] { "\r\n", "\r", "\n" },
             StringSplitOptions.None
@@ -83,12 +85,9 @@ public class StoryController : MonoBehaviour
         UpdateDialog();
     }
 
-    private IEnumerator UpdateSub()
+    private void UpdateSub()
     {
-        UpdateCharacterWebClient characterWebClient = new UpdateCharacterWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/character");
-        characterWebClient.isReturnLesson = true;
-        characterWebClient.SetData();
-        yield return characterWebClient.Send();
+        ProgressService.UpdateProgress(Common.progresses);
         if (Common.lessonCount > 0)
         {
             Manager.manager.StateQueue((int)gamestate.Lesson);
@@ -147,12 +146,12 @@ public class StoryController : MonoBehaviour
         Common.seplayer.Stop();
         Common.bgmplayer.time = 0;
         Common.seplayer.time = 0;
-        string newMainStoryId = "";
+        string newMainStoryId = Common.MainStoryId;
         int newSceneId = -1;
         if (isSubStory)
         {
             isSubStory = false;
-            StartCoroutine(UpdateSub());
+            UpdateSub();
         }
         else
         {
@@ -173,10 +172,8 @@ public class StoryController : MonoBehaviour
             }
             else if (Common.MainStoryId == "ending")
             {
-                FinishProgressWebClient finishiClient = new FinishProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/complete");
-                finishiClient.sceneid = (int)gamestate.Ending;
-                finishiClient.SetData();
-                StartCoroutine(finishiClient.Send());
+                ProgressService.EndProgress();
+                ProgressService.EndStory((int)gamestate.Ending);
                 return;
             }
             else if (Common.MainStoryId.EndsWith("a"))
@@ -192,7 +189,7 @@ public class StoryController : MonoBehaviour
             else if (Common.MainStoryId.EndsWith("c"))
             {
                 //To Live
-                newMainStoryId = (Int32.Parse(Common.mainstoryid.Replace("c", "")) + 1) + "a";
+                newMainStoryId = (Int32.Parse(Common.MainStoryId.Replace("c", "")) + 1) + "a";
                 newSceneId = (int)gamestate.Story;
             }
 
@@ -235,8 +232,8 @@ public class StoryController : MonoBehaviour
                     filename = arr[0];
                     dir = arr[1];
                 }
-                if (dir == "l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
-                else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                if (dir == "l") leftImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename.Normalize());
+                else rightImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename.Normalize());
                 characterName.text = name;
                 UpdateDialog();
             }
@@ -250,7 +247,7 @@ public class StoryController : MonoBehaviour
                     filename = data.Substring(data.IndexOf("(") + 1).Replace(")", "");
                     if (characterImage.enabled)
                     {
-                        characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename);
+                        characterImage.sprite = Resources.Load<Sprite>("Images/standimage/" + filename.Normalize());
                     }
                     else
                     {
@@ -381,7 +378,7 @@ public class StoryController : MonoBehaviour
                 {
                     int ctlength = data.IndexOf(")") - data.IndexOf("(") - 1;
                     string filename = data.Substring(data.IndexOf("(") + 1, ctlength);
-                    background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename);
+                    background.sprite = Resources.Load<Sprite>("Images/UI_Background/" + filename.Normalize());
 
                 }
                 else if (data.StartsWith("/BGM一時停止") && allowShowing)
@@ -411,17 +408,17 @@ public class StoryController : MonoBehaviour
                 else if (data.StartsWith("/active") && allowShowing)
                 {
                     skipButton.SetActive(true);
-                    foreach (ProgressModel progress in Common.progresses)
+                    for (int i = 0; i < 5; i++)
                     {
-                        if (progress.ActiveSkillLevel < 5) progress.ActiveSkillLevel++;
+                        if (Common.progresses[i].ActiveSkillLevel < 5) Common.progresses[i].ActiveSkillLevel++;
                     }
                 }
                 else if (data.StartsWith("/passive") && allowShowing)
                 {
                     skipButton.SetActive(true);
-                    foreach (ProgressModel progress in Common.progresses)
+                    for (int i = 0; i < 5; i++)
                     {
-                        if (progress.PassiveSkillLevel < 5) progress.PassiveSkillLevel++;
+                        if (Common.progresses[i].PassiveSkillLevel < 5) Common.progresses[i].PassiveSkillLevel++;
                     }
                 }
                 else if (data.StartsWith("/none") && allowShowing)

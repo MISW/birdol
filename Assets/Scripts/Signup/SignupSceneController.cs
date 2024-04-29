@@ -9,8 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class SignupSceneController : SceneVisor
 {
-    [Header("SignUp Web Client")]
-    private SignupWebClient signupWebClient;
 
     [Header("Input")]
     [SerializeField] InputField usernameInputField;
@@ -25,7 +23,6 @@ public class SignupSceneController : SceneVisor
 
     private void Start()
     {
-        this.signupWebClient = new SignupWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/user");
 
         SetUpButtonEvent();
     }
@@ -56,67 +53,20 @@ public class SignupSceneController : SceneVisor
     /// <returns></returns>
     private IEnumerator Signup()
     {
-        AlertUI.SetActive(true);
-        AlertText.text = "通信中...";
-        isConnectionInProgress = true;
         string username = usernameInputField.text;
-        (string privateKey, string publicKey) rsaKeyPair = Common.CreateRsaKeyPair();
-        string _uuid = GenerateGUID();
-        signupWebClient.SetData(username, rsaKeyPair.publicKey, _uuid, rsaKeyPair.privateKey);
+        Common.PlayerName = username;
 
-        //データチェックをサーバへ送信する前に行う。
-        if (signupWebClient.CheckRequestData() == false)
-        {
-            AlertText.text = signupWebClient.message;
-#if UNITY_EDITOR
-            Debug.Log(signupWebClient.message);
-#endif
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-            isConnectionInProgress = false;
-            yield break;
-        }
+        AlertUI.SetActive(true);
+        AlertText.text = "初期設定が完了しました。";
+        yield return new WaitForSeconds(1.0f);
 
-        float conn_start = Time.time;
-        yield return StartCoroutine(signupWebClient.Send());
-        float conn_end = Time.time;
-        if (conn_end - conn_start > 0) yield return new WaitForSeconds(0.5f); //ユーザ側視点としては、通信時間としてに必ず最低0.5秒はかかるとする。さもなくば「通信中...」の表示がフラッシュみたいになって気持ち悪い気がする。
-        AlertUI.SetActive(false);
+        Common.loadingCanvas.SetActive(true);
+        Common.loadingGif.GetComponent<GifPlayer>().index = 0;
+        Common.loadingGif.GetComponent<GifPlayer>().StartGif();
+        yield return new WaitForSeconds(0.5f);
 
-        //処理
-        if (signupWebClient.isSuccess == true && signupWebClient.isInProgress == false)
-        {
-            //成功した時
-            SignupWebClient.SignupResponseData srd = (SignupWebClient.SignupResponseData)signupWebClient.data;
-#if UNITY_EDITOR
-            Debug.Log("ParsedResponseData: \n" + srd.ToString());
-#endif
-            if (signupWebClient.isSignupSuccess)
-            {
-                Common.Uuid = _uuid;
-                Common.RsaKeyPair = rsaKeyPair;
-                Common.SavedKeyType = Common.KEY_RSA4096; // set keytype
-#if UNITY_EDITOR
-                Debug.Log($"Playerprefs Saved.\nUUID: {_uuid}");
-#endif
-
-                AlertText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-                OnSignupSuccess();
-            }
-            else
-            {
-                AlertText.text = signupWebClient.message;
-                yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-            }
-        }
-        else
-        {
-            //失敗した時
-            AlertText.text = $"<color=\"red\">{signupWebClient.message}</color>";
-            yield return StartCoroutine(ShowForWhileCoroutine(2.0f, AlertUI));
-        }
-
-        isConnectionInProgress = false;
+        ProgressService.FetchStory();
+        ProgressService.FetchCompletedProgressAndUpdateGameStatus("home");
         yield break;
     }
 

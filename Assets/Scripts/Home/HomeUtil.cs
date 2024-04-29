@@ -168,8 +168,7 @@ public class HomeUtil : MonoBehaviour
         }
         else
         {
-            GetCharacterWebClient webClient = new GetCharacterWebClient(WebClient.HttpRequestMethod.Get, $"/api/{Common.api_version}/gamedata/character?session_id=" + Common.SessionID);
-            StartCoroutine(webClient.Send());
+            ProgressService.FetchProgress();
         }
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -266,7 +267,10 @@ public class Ending : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        Common.mainstoryid = null;
+        Common.MainStoryId = null;
+        Array.Clear(Common.progresses, 0, 5);
+        Common.teacher = null;
+        Common.TriggeredSubStory = "";
         ProgressService.FetchStory();
         ProgressService.FetchCompletedProgressAndUpdateGameStatus("home");
     }

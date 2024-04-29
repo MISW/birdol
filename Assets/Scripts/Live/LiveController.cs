@@ -100,7 +100,7 @@ public class LiveController : MonoBehaviour
     void initLiveStage()
     {
         max = Common.GetLiveScoreMaxValue();
-        int chapter = Common.mainstoryid[0] - '0';
+        int chapter = Common.MainStoryId[0] - '0';
         if (chapter >= 7)
         {
             Heart.SetActive(false);
@@ -479,7 +479,7 @@ public class LiveController : MonoBehaviour
         if (!triggeredPlayer && SceneManager.GetActiveScene().name == "Live")
         {
             String filename = "TM01";
-            int storyid = int.Parse(Common.mainstoryid.Substring(0, 1));
+            int storyid = int.Parse(Common.MainStoryId.Substring(0, 1));
             if (storyid == 4 || storyid == 7) filename = "TM02";
             Common.bgmplayer.clip = (AudioClip)Resources.Load("Music/" + filename);
             Common.bgmplayer.Play();

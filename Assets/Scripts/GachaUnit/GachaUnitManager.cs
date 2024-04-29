@@ -397,9 +397,7 @@ public class GachaUnitManager : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        CreateProgressWebClient webClient = new CreateProgressWebClient(WebClient.HttpRequestMethod.Put, $"/api/{Common.api_version}/gamedata/new");
-        webClient.SetData(Common.progresses, new DendouModel[] { Common.teacher });
-        StartCoroutine(webClient.Send());
+        ProgressService.NewProgress(Common.progresses, new DendouModel[] { Common.teacher });
     }
 
     bool triggerdPlayer = false;

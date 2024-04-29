@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SQLite;
 
-[Serializable]
+[Table("teachers")]
 public class TeacherModel
 {
-    public int CharacterId;
-    public DendouModel character;
+    [PrimaryKey, AutoIncrement]
+    public int id { get; set; }
+    public int CharacterId { get; set; }
+    [Ignore] public DendouModel character { get; set; }
 }

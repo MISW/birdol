@@ -22,8 +22,14 @@ public class PressedAction : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        ProgressService.FetchStory();
-        ProgressService.FetchCompletedProgressAndUpdateGameStatus("home");
-        Manager.manager.StateQueue((int)gamestate.Home);
+        if (Common.PlayerName == "" || Common.PlayerName == null)
+        {
+            Manager.manager.StateQueue((int)gamestate.Signup);
+        }
+        else
+        {
+            ProgressService.FetchStory();
+            ProgressService.FetchCompletedProgressAndUpdateGameStatus("home");
+        }
     }
 }

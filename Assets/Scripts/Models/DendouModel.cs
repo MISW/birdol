@@ -5,8 +5,6 @@ using UnityEngine;
 using SQLite;
 
 
-
-[System.Serializable]
 [Table("completed_characters")]
 public class DendouModel
 {
@@ -27,4 +25,6 @@ public class DendouModel
 	public string PassiveSkillType { get; set; }
 	public float PassiveSkillScore { get; set; }
 }
+
+
 

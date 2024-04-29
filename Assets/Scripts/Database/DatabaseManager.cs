@@ -22,6 +22,20 @@ public class DatabaseManager
 
             Debug.Log("Database and tables created, and initial data inserted.");
         }
+        if (!File.Exists(dbPath) || _db.GetTableInfo("teachers").Count == 0)
+        {
+            _db.CreateTable<TeacherModel>();
+        }
+        if (!File.Exists(dbPath) || _db.GetTableInfo("progresses").Count == 0)
+        {
+            _db.CreateTable<ProgressModel>();
+        }
+    }
+
+    public static void ClearDB()
+    {
+        _db.Close();
+        File.Delete(dbPath);
     }
 
     public static SQLiteConnection getDB()

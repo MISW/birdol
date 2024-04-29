@@ -37,30 +37,30 @@ public class FailedManager : MonoBehaviour
         Common.loadingGif.GetComponent<GifPlayer>().StartGif();
         Common.bgmplayer.Stop();
         Common.bgmplayer.time = 0;
-        Common.mainstoryid = null;
+        Common.MainStoryId = null;
         StartCoroutine(GoToEnding());
     }
-    
+
     IEnumerator fadeIn(GameObject text)
     {
         RectTransform rect = text.GetComponent<RectTransform>();
         Image image = text.GetComponent<Image>();
         var wait = new WaitForFixedUpdate();
-        for (int i=0;i<51;i++)
+        for (int i = 0; i < 51; i++)
         {
             rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + 1);
             Color color = image.color;
-            color.a += 5f/ 255f;
+            color.a += 5f / 255f;
             image.color = color;
             yield return wait;
         }
-        
+
     }
 
     IEnumerator play()
     {
         var waittime = new WaitForFixedUpdate();
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             yield return fadeIn(texts[i]);
             yield return waittime;
@@ -70,7 +70,7 @@ public class FailedManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!playing&& SceneManager.GetActiveScene().name=="Failed")
+        if (!playing && SceneManager.GetActiveScene().name == "Failed")
         {
             playing = true;
             StartCoroutine(play());
